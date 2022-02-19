@@ -1,0 +1,27 @@
+{
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/.sfdx": true
+  },
+  "files.eol": "\n",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.rulers": [120],
+  "editor.bracketPairColorization.enabled": true,
+  "files.associations": {
+    "*.json": "jsonc",
+    "package.json": "json",
+    "package-lock.json": "json"
+  },
+  "[javascript]": {
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": true
+    }
+  },
+  "eslint.options": {
+    "extensions": [".js", ".html"]
+  },
+  "eslint.validate": ["javascript", "html"],
+  "salesforcedx-vscode-core.retrieve-test-code-coverage": true
+}

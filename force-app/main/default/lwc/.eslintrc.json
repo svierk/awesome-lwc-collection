@@ -1,0 +1,42 @@
+{
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "requireConfigFile": false,
+    "babelOptions": {
+      "parserOpts": {
+        "plugins": ["classProperties", ["decorators", { "decoratorsBeforeExport": false }]]
+      }
+    }
+  },
+  "plugins": ["@lwc/eslint-plugin-lwc"],
+  "extends": ["@salesforce/eslint-config-lwc/recommended", "@salesforce/eslint-config-lwc/i18n"],
+  "rules": {
+    "@lwc/lwc/consistent-component-name": "error",
+    "@lwc/lwc/no-deprecated": "error",
+    "@lwc/lwc/valid-api": "error",
+    "@lwc/lwc/no-document-query": "error",
+    "no-console": "error",
+    "spaced-comment": ["error", "always"],
+    "no-var": "error",
+    "prefer-const": "error",
+    "prefer-spread": "error",
+    "prefer-object-spread": "error",
+    "prefer-template": "error",
+    "camelcase": "error",
+    "max-lines": ["error", 300],
+    "max-lines-per-function": ["error", 50],
+    "no-inline-comments": "error",
+    "no-nested-ternary": "error"
+  },
+  "overrides": [
+    {
+      "files": ["*.test.js"],
+      "rules": {
+        "@lwc/lwc/no-unexpected-wire-adapter-usages": "off"
+      },
+      "env": {
+        "node": true
+      }
+    }
+  ]
+}
