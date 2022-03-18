@@ -1,8 +1,8 @@
 {
-  "name": "salesforce-app",
+  "name": "awesome-lwc-collection",
   "private": true,
   "version": "1.0.0",
-  "description": "Salesforce App",
+  "description": "A collection of ready-to-use Lightning Web Components that might help your SFDX project",
   "author": {
     "name": "Sebastiano Vierk",
     "url": "https://github.com/svierk"
@@ -19,7 +19,8 @@
     "prettier:verify": "prettier --list-different \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
     "postinstall": "husky install",
     "precommit": "lint-staged",
-    "server:lwc": "sfdx force:lightning:lwc:start"
+    "server:lwc": "sfdx force:lightning:lwc:start",
+    "docs": "jsdoc -c jsdoc.config.json"
   },
   "devDependencies": {
     "@babel/core": "^7.16.10",
@@ -35,6 +36,7 @@
     "eslint-plugin-import": "^2.25.4",
     "eslint-plugin-jest": "^25.7.0",
     "husky": "^7.0.4",
+    "jsdoc": "^3.6.10",
     "lint-staged": "^12.1.7",
     "prettier": "^2.5.1",
     "prettier-plugin-apex": "^1.10.0"
@@ -45,7 +47,7 @@
     ],
     "**/lwc/**": [
       "eslint",
-      "sfdx-lwc-jest"
+      "sfdx-lwc-jest -- --passWithNoTests"
     ]
   }
 }
