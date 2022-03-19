@@ -1,6 +1,8 @@
 # ⚡️ Awesome LWC Collection
 
-![GitHub](https://img.shields.io:/github/license/svierk/lwc-starter-kit)
+![GitHub](https://img.shields.io:/github/license/svierk/awesome-lwc-collection)
+![GitHub CI](https://github.com/svierk/awesome-lwc-collection/actions/workflows/ci.yaml/badge.svg)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=svierk_awesome-lwc-collection&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=svierk_awesome-lwc-collection)
 
 ## About the project
 
