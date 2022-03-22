@@ -8,15 +8,15 @@ describe('c-hello-world', () => {
     }
   });
 
-  it('displays greeting', () => {
+  it('should display greeting', () => {
     // given
     const element = createElement('c-hello-world', {
       is: HelloWorld
     });
-    document.body.appendChild(element);
+    element.name = 'World';
 
     // when
-    element.name = 'World';
+    document.body.appendChild(element);
 
     // then
     return Promise.resolve().then(() => {

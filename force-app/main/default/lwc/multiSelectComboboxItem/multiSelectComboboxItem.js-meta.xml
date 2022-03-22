@@ -2,6 +2,6 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>54.0</apiVersion>
     <isExposed>false</isExposed>
-    <masterLabel>Local Development Wrapper</masterLabel>
-    <description>A simple wrapper component to locally test input parameters of other components.</description>
+    <masterLabel>Multi Select Combobox Item</masterLabel>
+    <description>Component that represents an item within the multi select combobox parent component.</description>
 </LightningComponentBundle>

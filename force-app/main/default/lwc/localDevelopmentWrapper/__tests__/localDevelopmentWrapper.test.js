@@ -13,6 +13,8 @@ describe('c-local-development-wrapper', () => {
     const element = createElement('c-local-development-wrapper', {
       is: LocalDevelopmentWrapper
     });
+
+    // when
     document.body.appendChild(element);
 
     // then

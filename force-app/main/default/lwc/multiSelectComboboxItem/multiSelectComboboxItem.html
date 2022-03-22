@@ -1,0 +1,25 @@
+<template>
+  <li
+    role="presentation"
+    key={item.key}
+    class={itemClass}
+    data-id={item.key}
+    data-name={item.value}
+    onclick={handleClick}
+  >
+    <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+      <span class="slds-media__figure">
+        <lightning-icon
+          icon-name="utility:check"
+          size="x-small"
+          alternative-text="Selected"
+          class="slds-icon slds-icon--selected slds-icon--x-small slds-icon-text-default slds-m-right--x-small"
+        >
+        </lightning-icon>
+      </span>
+      <span class="slds-media__body">
+        <span class="slds-truncate" title={item.value}>{item.label}</span>
+      </span>
+    </div>
+  </li>
+</template>

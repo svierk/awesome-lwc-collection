@@ -46,6 +46,7 @@ The following list of components is part of this repo. All components contain co
 
 - [Hello World](/force-app/main/default/lwc/helloWorld)
 - [Local Development Wrapper](/force-app/main/default/lwc/localDevelopmentWrapper)
+- [Multi Select Combobox](/force-app/main/default/lwc/multiSelectCombobox)
 
 ## Quality measures
 

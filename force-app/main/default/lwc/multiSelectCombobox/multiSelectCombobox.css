@@ -1,0 +1,25 @@
+.multi-select-combobox__dropdown {
+  max-height: 500px;
+  overflow-y: auto;
+}
+
+.multi-select-combobox__input {
+  background-color: #ffffff;
+  border: 1px solid #dddbda;
+  border-radius: 0.25rem;
+  width: 100%;
+  transition: border 0.1s linear, background-color 0.1s linear;
+  display: inline-block;
+  padding: 0 1rem 0 0.75rem;
+  line-height: 1.875rem;
+  min-height: calc(1.875rem + (1px * 2));
+}
+
+.multi-select-combobox__input:disabled {
+  background-color: #ecebea;
+  border: 1px solid #c9c7c5;
+}
+
+.multi-select-combobox__listbox {
+  width: 100%;
+}
