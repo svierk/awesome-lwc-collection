@@ -79,14 +79,6 @@ export default class MultiSelectCombobox extends LightningElement {
   isVisible = false;
   isDisabled = false;
 
-  @api
-  reset() {
-    this.selectedItems = this.placeholder;
-    this.currentOptions = [];
-    this.selectedOptions = [];
-    this.isLoaded = false;
-  }
-
   connectedCallback() {
     this.isDisabled = this.disabled || this.readOnly;
     this.hasPillsEnabled = this.showPills && !this.singleSelect;
@@ -179,7 +171,6 @@ export default class MultiSelectCombobox extends LightningElement {
     this.isVisible = this.selectedOptions && this.selectedOptions.length > 0;
   }
 
-  @api
   getSelectedItems() {
     return this.currentOptions.filter((item) => item.selected);
   }

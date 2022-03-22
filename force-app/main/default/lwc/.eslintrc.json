@@ -32,6 +32,7 @@
     {
       "files": ["*.test.js"],
       "rules": {
+        "@lwc/lwc/no-async-operation": "off",
         "@lwc/lwc/no-unexpected-wire-adapter-usages": "off",
         "max-lines-per-function": "off"
       },
