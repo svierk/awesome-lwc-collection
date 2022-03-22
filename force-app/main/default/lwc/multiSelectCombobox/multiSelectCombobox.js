@@ -129,13 +129,13 @@ export default class MultiSelectCombobox extends LightningElement {
   change(event) {
     // remove previous selection for single select picklist
     if (this.singleSelect) {
-      this.currentOptions.map((item) => (item.selected = false));
+      this.currentOptions.forEach((item) => (item.selected = false));
     }
 
     // set selected items
     this.currentOptions
       .filter((item) => item.value === event.detail.item.value)
-      .map((item) => (item.selected = event.detail.selected));
+      .forEach((item) => (item.selected = event.detail.selected));
     this.setSelection();
     const selection = this.getSelectedItems();
     this.dispatchEvent(new CustomEvent('change', { detail: this.singleSelect ? selection[0] : selection }));
