@@ -57,15 +57,15 @@ export default class MultiSelectCombobox extends LightningElement {
    */
   @api required = false;
 
-  // switch between single and multi select
   /**
+   * If present, the combobox only allows the selection of a single value.
    * @type {boolean}
    * @default false
    */
   @api singleSelect = false;
 
-  // show pill container with selected options below pick list
   /**
+   * If present, the combobox will show a pill container with the currently selected options.
    * @type {boolean}
    * @default false
    */
