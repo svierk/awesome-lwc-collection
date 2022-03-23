@@ -20,6 +20,10 @@
   border: 1px solid #c9c7c5;
 }
 
+.multi-select-combobox__icon {
+  margin-right: -3px;
+}
+
 .multi-select-combobox__listbox {
   width: 100%;
 }
