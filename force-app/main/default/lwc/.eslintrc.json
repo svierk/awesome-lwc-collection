@@ -11,6 +11,7 @@
   "plugins": ["@lwc/eslint-plugin-lwc"],
   "extends": ["@salesforce/eslint-config-lwc/recommended", "@salesforce/eslint-config-lwc/i18n"],
   "rules": {
+    "@lwc/lwc/no-async-operation": "off",
     "@lwc/lwc/consistent-component-name": "error",
     "@lwc/lwc/no-deprecated": "error",
     "@lwc/lwc/valid-api": "error",
@@ -32,7 +33,6 @@
     {
       "files": ["*.test.js"],
       "rules": {
-        "@lwc/lwc/no-async-operation": "off",
         "@lwc/lwc/no-unexpected-wire-adapter-usages": "off",
         "max-lines-per-function": "off"
       },
