@@ -1,29 +1,78 @@
 import { api, LightningElement } from 'lwc';
 
+/**
+ * A simple custom slider with different configuration options.
+ * @alias CustomSlider
+ * @extends LightningElement
+ * @hideconstructor
+ *
+ * @example
+ * <c-custom-slider
+    slides-data={slides}
+    custom-height="500px"
+    custom-width="100%"
+    auto-scroll
+    hide-navigation-buttons
+    hide-slide-text
+    hide-slide-number
+ ></c-custom-slider>
+ */
 export default class CustomSlider extends LightningElement {
-  // set slider max width
-  @api customWidth = '600px';
-
-  // set slider max height
-  @api customHeight = '';
-
-  // Enable automatic slide scrolling
+  /**
+   * If present, automatic slide scrolling will be enabled.
+   * @type {boolean}
+   * @default false
+   */
   @api autoScroll = false;
 
-  // Set durtion after which to show the next slide
-  @api scrollDuration = 5000;
+  /**
+   * Set maximum height of the slider in percent or pixels.
+   * @type {string}
+   * @default ''
+   */
+  @api customHeight = '';
 
-  // Hide "next" and "prev" buttons.
+  /**
+   * Set maximum width of the slider in percent or pixels.
+   * @type {string}
+   * @default '600px'
+   */
+  @api customWidth = '600px';
+
+  /**
+   * If present, the "next" and "prev" navigation buttons will be hidden.
+   * @type {boolean}
+   * @default false
+   */
   @api hideNavigationButtons = false;
 
-  // Hide navigation dots below slider.
+  /**
+   * If present, the navigation dots below the slider will be hidden.
+   * @type {boolean}
+   * @default false
+   */
   @api hideNavigationDots = false;
 
-  // Hide the current slide number.
+  /**
+   * If present, the current slide number will be hidden.
+   * @type {boolean}
+   * @default false
+   */
   @api hideSlideNumber = false;
 
-  // Hide text overlay with heading and description.
+  /**
+   * If present, the text overlay with heading and description will be hidden.
+   * @type {boolean}
+   * @default false
+   */
   @api hideSlideText = false;
+
+  /**
+   * Set the duration in milliseconds after which the next slide should be displayed.
+   * @type {number}
+   * @default 5000
+   */
+  @api scrollDuration = 5000;
 
   slides = [];
   slideIndex = 1;
@@ -37,6 +86,24 @@ export default class CustomSlider extends LightningElement {
     return `height: ${this.customHeight}`;
   }
 
+  /**
+   * A list of slides that are displayed in the custom slider.
+   * Each slide has the following attributes: image, heading and description.
+   * @type {Array}
+   * @example
+   * slideData = [
+   *   {
+   *     "image": "some image link",
+   *     "heading": "Slide 1",
+   *     "description": "Some description for slide 1"
+   *   },
+   *   {
+   *     "image": "another image link",
+   *     "heading": "Slide 2",
+   *     "description": "Some description for slide 2"
+   *   }
+   * ]
+   */
   @api
   get slidesData() {
     return this.slides;
