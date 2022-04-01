@@ -1,0 +1,15 @@
+{
+  "slideData": [
+    {
+      "image": "some link",
+      "heading": "Slide 1",
+      "description": "Some description for slide 1"
+    },
+    {
+      "image": "another link",
+      "heading": "Slide 2",
+      "description": "Some description for slide 2"
+    }
+  ],
+  "autoScroll": true
+}

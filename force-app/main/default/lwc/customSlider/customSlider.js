@@ -80,7 +80,7 @@ export default class CustomSlider extends LightningElement {
     this.handleSlideSelection(slideIndex);
   }
 
-  slideBack() {
+  slideBackward() {
     const slideIndex = this.slideIndex - 1;
     this.handleSlideSelection(slideIndex);
   }
