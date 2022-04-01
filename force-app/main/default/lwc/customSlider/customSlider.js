@@ -8,14 +8,14 @@ import { api, LightningElement } from 'lwc';
  *
  * @example
  * <c-custom-slider
-    slides-data={slides}
-    custom-height="500px"
-    custom-width="100%"
-    auto-scroll
-    hide-navigation-buttons
-    hide-slide-text
-    hide-slide-number
- ></c-custom-slider>
+ *   slides-data={slides}
+ *   custom-height="500px"
+ *   custom-width="100%"
+ *   auto-scroll
+ *   hide-navigation-buttons
+ *   hide-slide-text
+ *   hide-slide-number
+ * ></c-custom-slider>
  */
 export default class CustomSlider extends LightningElement {
   /**
