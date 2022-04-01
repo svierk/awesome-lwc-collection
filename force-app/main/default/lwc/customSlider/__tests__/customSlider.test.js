@@ -7,7 +7,7 @@ let element;
 
 describe('c-custom-slider', () => {
   beforeEach(() => {
-    element = createElement('c-multi-select-combobox', {
+    element = createElement('c-custom-slider', {
       is: CustomSlider
     });
   });
