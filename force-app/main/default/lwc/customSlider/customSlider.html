@@ -3,7 +3,7 @@
     <template for:each={slidesData} for:item="slide">
       <div key={slide.index} class={slide.slideClass}>
         <div if:false={hideSlideNumber} class="slideNumbers">{slide.index}/{slidesData.length}</div>
-        <img src={slide.image} style={maxHeight} />
+        <img src={slide.image} alt={slide.description} style={maxHeight} />
         <div if:false={hideSlideText} class="text-section slds-p-around_medium">
           <h3 class="slds-text-heading_large">{slide.heading}</h3>
           <div class="slds-text-heading_small">{slide.description}</div>
