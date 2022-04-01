@@ -22,12 +22,10 @@ describe('c-multi-select-combobox-item', () => {
 
     // when
     document.body.appendChild(element);
+    const item = element.shadowRoot.querySelector('span.slds-truncate');
 
     // then
-    return Promise.resolve().then(() => {
-      const item = element.shadowRoot.querySelector('span.slds-truncate');
-      expect(item.textContent).toBe('label');
-    });
+    expect(item.textContent).toBe('label');
   });
 
   it('should fire change event when clicked', () => {

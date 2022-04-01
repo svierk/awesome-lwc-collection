@@ -17,11 +17,9 @@ describe('c-hello-world', () => {
 
     // when
     document.body.appendChild(element);
+    const div = element.shadowRoot.querySelector('div');
 
     // then
-    return Promise.resolve().then(() => {
-      const div = element.shadowRoot.querySelector('div');
-      expect(div.textContent).toBe('Hello, World!');
-    });
+    expect(div.textContent).toBe('Hello, World!');
   });
 });

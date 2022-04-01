@@ -33,6 +33,17 @@ export default class MultiSelectCombobox extends LightningElement {
   /**
    * A list of options that are available for selection. Each option has the following attributes: label and value.
    * @type {Array}
+   * @example
+   * options = [
+   *   {
+   *     "label": "Option 1",
+   *     "value": "option1"
+   *   },
+   *   {
+   *     "label": "Option 2",
+   *     "value": "option2"
+   *   },
+   * ]
    */
   @api options = [];
 
