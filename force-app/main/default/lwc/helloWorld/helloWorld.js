@@ -13,7 +13,7 @@ export default class HelloWorld extends LightningElement {
   /**
    * Enter the name of the person to greet.
    * @type {string}
-   * @default ''
+   * @default 'World'
    */
   @api name = 'World';
 }
