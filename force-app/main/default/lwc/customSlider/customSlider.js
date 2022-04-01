@@ -2,10 +2,10 @@ import { api, LightningElement } from 'lwc';
 
 export default class CustomSlider extends LightningElement {
   // set slider max width
-  @api customWidth = '100%';
+  @api customWidth = '600px';
 
   // set slider max height
-  @api customHeight = '600px';
+  @api customHeight = '';
 
   // Enable automatic slide scrolling
   @api autoScroll = false;
@@ -34,7 +34,7 @@ export default class CustomSlider extends LightningElement {
   }
 
   get maxHeight() {
-    return `width: ${this.customHeight}`;
+    return `height: ${this.customHeight}`;
   }
 
   @api

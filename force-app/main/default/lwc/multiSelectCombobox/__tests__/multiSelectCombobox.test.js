@@ -29,12 +29,10 @@ describe('c-multi-select-combobox', () => {
 
     // when
     document.body.appendChild(element);
+    const label = element.shadowRoot.querySelector('label');
 
     // then
-    return Promise.resolve().then(() => {
-      const label = element.shadowRoot.querySelector('label');
-      expect(label.textContent).toBe(mockData.label);
-    });
+    expect(label.textContent).toBe(mockData.label);
   });
 
   it('should load correct number of child components', () => {

@@ -18,8 +18,6 @@ describe('c-local-development-wrapper', () => {
     document.body.appendChild(element);
 
     // then
-    return Promise.resolve().then(() => {
-      expect(element).toBeTruthy();
-    });
+    expect(element).toBeTruthy();
   });
 });
