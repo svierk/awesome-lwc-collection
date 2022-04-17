@@ -1,6 +1,6 @@
 # Hello World
 
-Add a classic greeting to any page.
+An example LWC that adds a classic greeting to any page.
 
 <img src="../../../../../images/hello-world.png" alt="hello-world" width="300"/>
 
