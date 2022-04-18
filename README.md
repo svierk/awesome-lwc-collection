@@ -44,6 +44,7 @@ Run `npm run server:lwc` to start the server on http://localhost:3333 and access
 
 The following list of components is part of this repo. All components contain corresponding unit tests and docs.
 
+- [Custom Datatable](/force-app/main/default/lwc/customDatatable)
 - [Custom Slider](/force-app/main/default/lwc/customSlider)
 - [Hello World](/force-app/main/default/lwc/helloWorld)
 - [Local Development Wrapper](/force-app/main/default/lwc/localDevelopmentWrapper)
