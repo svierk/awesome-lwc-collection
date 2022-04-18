@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>54.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Custom Datatable</masterLabel>
+    <description>Configurable Datatable</description>
+    <targets>
+      <target>lightning__AppPage</target>
+      <target>lightning__HomePage</target>
+      <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+      <targetConfig targets="lightning__AppPage, lightning__HomePage, lightning__RecordPage">
+          <property
+        name="objectApiName"
+        label="Object API Name"
+        type="String"
+        description="API name of the object that will be displayed in the table."
+      />
+          <property
+        name="fieldSetApiName"
+        label="Field Set API Name"
+        type="String"
+        description="API name of the field set that specifies which fields are displayed in the table."
+      />
+          <property
+        name="whereConditions"
+        label="SOQL Where Conditions"
+        type="String"
+        description="Optional where clause conditions for loaded data records. Example format: Status = 'New'"
+      />
+          <property
+        name="readOnly"
+        label="Read-Only Table"
+        type="Boolean"
+        default="false"
+        description="If present, then all datatable fields are not editable."
+      />
+          <property
+        name="hideCheckboxColumn"
+        label="Hidden Checkbox Column"
+        type="Boolean"
+        default="false"
+        description="If present, the checkbox column for row selection is hidden."
+      />
+          <property
+        name="maxRowSelection"
+        label="Maximum number of selected rows"
+        type="Integer"
+        default="50"
+        description="The maximum number of rows that can be selected."
+      />
+          <property
+        name="rowNumberOffset"
+        label="Row Number Offset"
+        type="Integer"
+        default="0"
+        description="Determines where to start counting the row number."
+      />
+        <property
+        name="showRowNumberColumn"
+        label="Visible Row Number Column "
+        type="Boolean"
+        default="false"
+        description="If present, the row numbers are shown in the first column."
+      />
+      </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

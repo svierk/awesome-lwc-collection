@@ -1,0 +1,15 @@
+<template>
+  <template if:true={isLoading}>
+    <lightning-spinner alternative-text="Loading" variant="brand"></lightning-spinner>
+  </template>
+  <c-custom-datatable-extension
+    key-field="Id"
+    data={records}
+    columns={columns}
+    hide-checkbox-column={hideCheckboxColumn}
+    max-row-selection={maxRowSelection}
+    row-number-offset={rowNumberOffset}
+    show-row-number-column={showRowNumberColumn}
+    >>
+  </c-custom-datatable-extension>
+</template>
