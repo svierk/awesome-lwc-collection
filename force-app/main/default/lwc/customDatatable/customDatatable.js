@@ -1,5 +1,8 @@
+import { refreshApex } from '@salesforce/apex';
 import getColumns from '@salesforce/apex/CustomDatatableUtil.convertFieldSetToColumns';
 import getRecords from '@salesforce/apex/CustomDatatableUtil.getRecordsWithFieldSet';
+import { NavigationMixin } from 'lightning/navigation';
+import { deleteRecord } from 'lightning/uiRecordApi';
 import { api, LightningElement, track, wire } from 'lwc';
 
 /**
@@ -17,7 +20,7 @@ import { api, LightningElement, track, wire } from 'lwc';
  *   show-row-number-column
  * ></c-custom-datatable>
  */
-export default class CustomDatatable extends LightningElement {
+export default class CustomDatatable extends NavigationMixin(LightningElement) {
   /**
    * API name of the object that will be displayed in the table.
    * @type {string}
@@ -74,6 +77,28 @@ export default class CustomDatatable extends LightningElement {
    */
   @api showRowNumberColumn = false;
 
+  /**
+   * If present, the last column contains a view record action.
+   * @type {boolean}
+   * @default false
+   */
+  @api showViewRowAction = false;
+
+  /**
+   * If present, the last column contains a edit record action.
+   * @type {boolean}
+   * @default false
+   */
+  @api showEditRowAction = false;
+
+  /**
+   * If present, the last column contains a delete record action.
+   * @type {boolean}
+   * @default false
+   */
+  @api showDeleteRowAction = false;
+
+  @track wiredRecords = [];
   @track records = [];
   @track columns = [];
 
@@ -83,7 +108,8 @@ export default class CustomDatatable extends LightningElement {
   wiredGetColumns({ data }) {
     if (data) {
       this.isLoading = false;
-      this.columns = data;
+      this.columns = data.slice();
+      this.addRowActions();
     }
   }
 
@@ -92,9 +118,67 @@ export default class CustomDatatable extends LightningElement {
     fieldSetName: '$fieldSetApiName',
     whereConditions: '$whereConditions'
   })
-  wiredGetRecords({ data }) {
-    if (data) {
-      this.records = data;
+  wiredGetRecords(result) {
+    this.wiredRecords = result;
+    if (result.data) {
+      this.records = result.data;
     }
+  }
+
+  addRowActions() {
+    const actions = [];
+    if (this.showViewRowAction) actions.push({ label: 'View', name: 'view' });
+    if (this.showEditRowAction) actions.push({ label: 'Edit', name: 'edit' });
+    if (this.showDeleteRowAction) actions.push({ label: 'Delete', name: 'delete' });
+    if (actions.length) {
+      this.columns.push({ type: 'action', typeAttributes: { rowActions: actions, menuAlignment: 'right' } });
+    }
+  }
+
+  handleRowAction(event) {
+    const actionName = event.detail.action.name;
+    const row = event.detail.row;
+    switch (actionName) {
+      case 'view':
+        this.viewCurrentRecord(row);
+        break;
+      case 'edit':
+        this.editCurrentRecord(row);
+        break;
+      case 'delete':
+        this.deleteCurrentRecord(row);
+        break;
+      default:
+    }
+  }
+
+  viewCurrentRecord(row) {
+    this[NavigationMixin.Navigate]({
+      type: 'standard__recordPage',
+      attributes: {
+        recordId: row.Id,
+        objectApiName: this.objectName,
+        actionName: 'view'
+      }
+    });
+  }
+
+  editCurrentRecord(row) {
+    this[NavigationMixin.Navigate]({
+      type: 'standard__recordPage',
+      attributes: {
+        recordId: row.Id,
+        objectApiName: this.objectName,
+        actionName: 'edit'
+      }
+    });
+  }
+
+  deleteCurrentRecord(row) {
+    this.isLoading = true;
+    deleteRecord(row.Id).then(() => {
+      refreshApex(this.wiredRecords);
+      this.isLoading = false;
+    });
   }
 }

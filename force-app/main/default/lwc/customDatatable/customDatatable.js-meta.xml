@@ -38,14 +38,14 @@
       />
           <property
         name="hideCheckboxColumn"
-        label="Hidden Checkbox Column"
+        label="Hide Checkbox Column"
         type="Boolean"
         default="false"
         description="If present, the checkbox column for row selection is hidden."
       />
           <property
         name="maxRowSelection"
-        label="Maximum number of selected rows"
+        label="Maximum Row Selection"
         type="Integer"
         default="50"
         description="The maximum number of rows that can be selected."
@@ -59,10 +59,31 @@
       />
         <property
         name="showRowNumberColumn"
-        label="Visible Row Number Column "
+        label="Show Row Number Column"
         type="Boolean"
         default="false"
         description="If present, the row numbers are shown in the first column."
+      />
+        <property
+        name="showViewRowAction"
+        label="Show View Row Action"
+        type="Boolean"
+        default="false"
+        description="If present, the last column contains a view record action."
+      />
+        <property
+        name="showEditRowAction"
+        label="Show Edit Row Action"
+        type="Boolean"
+        default="false"
+        description="If present, the last column contains a edit record action."
+      />
+        <property
+        name="showDeleteRowAction"
+        label="Show Delete Row Action"
+        type="Boolean"
+        default="false"
+        description="If present, the last column contains a delete record action."
       />
       </targetConfig>
     </targetConfigs>
