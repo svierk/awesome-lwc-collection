@@ -2,7 +2,8 @@ import { refreshApex } from '@salesforce/apex';
 import getColumns from '@salesforce/apex/CustomDatatableUtil.convertFieldSetToColumns';
 import getRecords from '@salesforce/apex/CustomDatatableUtil.getRecordsWithFieldSet';
 import { NavigationMixin } from 'lightning/navigation';
-import { deleteRecord } from 'lightning/uiRecordApi';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { deleteRecord, updateRecord } from 'lightning/uiRecordApi';
 import { api, LightningElement, track, wire } from 'lwc';
 
 /**
@@ -180,6 +181,7 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   @api whereConditions = '';
 
   @track columns = [];
+  @track draftValues = [];
   @track records = [];
   @track wiredRecords = [];
 
@@ -257,9 +259,58 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
 
   deleteCurrentRecord(row) {
     this.isLoading = true;
-    deleteRecord(row.Id).then(() => {
-      refreshApex(this.wiredRecords);
-      this.isLoading = false;
+    deleteRecord(row.Id)
+      .then(() => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: 'Success',
+            message: 'Record deleted',
+            variant: 'success'
+          })
+        );
+        return refreshApex(this.wiredRecords).then(() => {
+          this.isLoading = false;
+        });
+      })
+      .catch((error) => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: 'Error deleting record',
+            message: error.body.message,
+            variant: 'error'
+          })
+        );
+      });
+  }
+
+  handleSave(event) {
+    const recordInputs = event.detail.draftValues.slice().map((draft) => {
+      const fields = { ...draft };
+      return { fields };
     });
+
+    const promises = recordInputs.map((recordInput) => updateRecord(recordInput));
+    Promise.all(promises)
+      .then(() => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: 'Success',
+            message: 'Records updated',
+            variant: 'success'
+          })
+        );
+        return refreshApex(this.wiredRecords).then(() => {
+          this.draftValues = [];
+        });
+      })
+      .catch((error) => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: 'Error updating records',
+            message: error.body.message,
+            variant: 'error'
+          })
+        );
+      });
   }
 }
