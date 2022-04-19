@@ -11,7 +11,7 @@
     </targets>
     <targetConfigs>
       <targetConfig targets="lightning__AppPage, lightning__HomePage, lightning__RecordPage">
-          <property
+      <property
         name="name"
         label="Name"
         type="String"

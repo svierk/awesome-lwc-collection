@@ -22,31 +22,21 @@ import { api, LightningElement, track, wire } from 'lwc';
  */
 export default class CustomDatatable extends NavigationMixin(LightningElement) {
   /**
-   * API name of the object that will be displayed in the table.
-   * @type {string}
-   */
-  @api objectApiName = '';
-
-  /**
-   * API name of the field set that specifies which fields are displayed in the table.
-   * @type {string}
-   */
-  @api fieldSetApiName = '';
-
-  /**
-   * Optional where clause conditions for loaded data records.
+   * If show card option is active,, the card icon is displayed in the header before the card title.
+   * It should contain the SLDS name of the icon.
+   * Specify the name in the format 'utility:down' where 'utility' is the category and 'down' the icon to be displayed.
    * @type {string}
    * @default ''
-   * @example Status = 'New'
+   * @example 'standard:case'
    */
-  @api whereConditions = '';
+  @api cardIcon = '';
 
   /**
-   * If present, then all datatable fields are not editable.
-   * @type {boolean}
-   * @default false
+   * If show card option is active, The card title can include text and is displayed in the header above the table.
+   * @type {string}
+   * @default ''
    */
-  @api readOnly = false;
+  @api cardTitle = '';
 
   /**
    * Specifies how column widths are calculated. Set to 'fixed' for columns with equal widths.
@@ -64,6 +54,12 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   @api defaultSortDirection = 'asc';
 
   /**
+   * API name of the field set that specifies which fields are displayed in the table.
+   * @type {string}
+   */
+  @api fieldSetApiName = '';
+
+  /**
    * If present, the checkbox column for row selection is hidden.
    * @type {boolean}
    * @default false
@@ -76,6 +72,13 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
    * @default false
    */
   @api hideTableHeader = false;
+
+  /**
+   * Required field for better table performance. Associates each row with a unique Id.
+   * @type {string}
+   * @default 'Id'
+   */
+  @api keyField = 'Id';
 
   /**
    * The maximum width for all columns. The default is 1000px.
@@ -100,6 +103,19 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   @api minColumnWidth = 50;
 
   /**
+   * API name of the object that will be displayed in the table.
+   * @type {string}
+   */
+  @api objectApiName = '';
+
+  /**
+   * If present, then all datatable fields are not editable.
+   * @type {boolean}
+   * @default false
+   */
+  @api readOnly = false;
+
+  /**
    * If present, column resizing is disabled.
    * @type {boolean}
    * @default false
@@ -112,6 +128,27 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
    * @default 0
    */
   @api rowNumberOffset = 0;
+
+  /**
+   * If present, the table is wrapped in a lightning card to fit better into the overall page layout.
+   * @type {boolean}
+   * @default false
+   */
+  @api showCard = false;
+
+  /**
+   * If present, the last column contains a delete record action.
+   * @type {boolean}
+   * @default false
+   */
+  @api showDeleteRowAction = false;
+
+  /**
+   * If present, the last column contains a edit record action.
+   * @type {boolean}
+   * @default false
+   */
+  @api showEditRowAction = false;
 
   /**
    * If present, the row numbers are shown in the first column.
@@ -128,29 +165,23 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   @api showViewRowAction = false;
 
   /**
-   * If present, the last column contains a edit record action.
-   * @type {boolean}
-   * @default false
-   */
-  @api showEditRowAction = false;
-
-  /**
-   * If present, the last column contains a delete record action.
-   * @type {boolean}
-   * @default false
-   */
-  @api showDeleteRowAction = false;
-
-  /**
    * If present, the footer that displays the Save and Cancel buttons is hidden during inline editing.
    * @type {boolean}
    * @default false
    */
   @api suppressBottomBar = false;
 
-  @track wiredRecords = [];
-  @track records = [];
+  /**
+   * Optional where clause conditions for loaded data records.
+   * @type {string}
+   * @default ''
+   * @example Status = 'New'
+   */
+  @api whereConditions = '';
+
   @track columns = [];
+  @track records = [];
+  @track wiredRecords = [];
 
   isLoading = true;
 

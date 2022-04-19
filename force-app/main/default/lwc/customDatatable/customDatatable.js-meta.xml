@@ -11,123 +11,149 @@
     </targets>
     <targetConfigs>
       <targetConfig targets="lightning__AppPage, lightning__HomePage, lightning__RecordPage">
-          <property
+      <property
         name="objectApiName"
         label="Object API Name"
         type="String"
         description="API name of the object that will be displayed in the table."
       />
-          <property
+      <property
         name="fieldSetApiName"
         label="Field Set API Name"
         type="String"
         description="API name of the field set that specifies which fields are displayed in the table."
       />
-          <property
+      <property
         name="whereConditions"
         label="SOQL Where Conditions"
         type="String"
         description="Optional where clause conditions for loaded data records. Example format: Status = 'New'"
       />
-          <property
+      <property
+        name="keyField"
+        label="Key Field"
+        type="String"
+        default="Id"
+        description="Required field for better table performance. Associates each row with a unique Id."
+      />
+      <property
         name="readOnly"
         label="Read-Only Table"
         type="Boolean"
         default="false"
         description="If present, then all datatable fields are not editable."
       />
-        <property
-        name="columnWidthsMode"
-        label="Column Width Mode"
-        type="String"
-        default="fixed"
-        description="Specifies how column widths are calculated. Set to 'fixed' for columns with equal widths. Set to 'auto' for column widths that are based on the width of the column content and the table width."
-      />
-        <property
-        name="defaultSortDirection"
-        label="Default Sort Direction"
-        type="String"
-        default="asc"
-        description="Specifies the default sorting direction on an unsorted column. Valid options include 'asc' and 'desc'."
-      />
-          <property
+      <property
         name="hideCheckboxColumn"
         label="Hide Checkbox Column"
         type="Boolean"
         default="false"
         description="If present, the checkbox column for row selection is hidden."
       />
-        <property
+      <property
         name="hideTableHeader"
         label="Hide Table Header"
         type="Boolean"
         default="false"
         description="If present, the table header is hidden."
       />
-        <property
-        name="maxColumnWidth"
-        label="Maximum Column Width"
-        type="Integer"
-        default="1000"
-        description="The maximum width for all columns. The default is 1000px."
-      />
-          <property
-        name="maxRowSelection"
-        label="Maximum Row Selection"
-        type="Integer"
-        default="50"
-        description="The maximum number of rows that can be selected."
-      />
-        <property
-        name="minColumnWidth"
-        label="Minimum Column Width"
-        type="Integer"
-        default="50"
-        description="The minimum width for all columns. The default is 50px."
-      />
-        <property
-        name="resizeColumnDisabled"
-        label="Disable Column Resizing"
+      <property
+        name="showCard"
+        label="Show Lightning Card"
         type="Boolean"
         default="false"
-        description="If present, column resizing is disabled."
+        description="If present, the table is wrapped in a lightning card to fit better into the overall page layout."
       />
-          <property
-        name="rowNumberOffset"
-        label="Row Number Offset"
-        type="Integer"
-        default="0"
-        description="Determines where to start counting the row number."
+      <property
+        name="cardIcon"
+        label="Card Icon"
+        type="String"
+        description="If show card option is active,, the card icon is displayed in the header before the card title. It should contain the SLDS name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category and 'down' the icon to be displayed."
       />
-        <property
+      <property
+        name="cardTitle"
+        label="Card Title"
+        type="String"
+        description="If show card option is active, The card title can include text and is displayed in the header above the table."
+      />
+      <property
         name="showRowNumberColumn"
         label="Show Row Number Column"
         type="Boolean"
         default="false"
         description="If present, the row numbers are shown in the first column."
       />
-        <property
+      <property
+        name="rowNumberOffset"
+        label="Row Number Offset"
+        type="Integer"
+        default="0"
+        description="Determines where to start counting the row number."
+      />
+      <property
+        name="maxRowSelection"
+        label="Maximum Row Selection"
+        type="Integer"
+        default="50"
+        description="The maximum number of rows that can be selected."
+      />
+      <property
         name="showViewRowAction"
         label="Show View Row Action"
         type="Boolean"
         default="false"
         description="If present, the last column contains a view record action."
       />
-        <property
+      <property
         name="showEditRowAction"
         label="Show Edit Row Action"
         type="Boolean"
         default="false"
         description="If present, the last column contains a edit record action."
       />
-        <property
+      <property
         name="showDeleteRowAction"
         label="Show Delete Row Action"
         type="Boolean"
         default="false"
         description="If present, the last column contains a delete record action."
       />
-        <property
+      <property
+        name="columnWidthsMode"
+        label="Column Width Mode"
+        type="String"
+        default="fixed"
+        description="Specifies how column widths are calculated. Set to 'fixed' for columns with equal widths. Set to 'auto' for column widths that are based on the width of the column content and the table width."
+      />
+      <property
+        name="minColumnWidth"
+        label="Minimum Column Width"
+        type="Integer"
+        default="50"
+        description="The minimum width for all columns. The default is 50px."
+      />
+      <property
+        name="maxColumnWidth"
+        label="Maximum Column Width"
+        type="Integer"
+        default="1000"
+        description="The maximum width for all columns. The default is 1000px."
+      />
+      <property
+        name="resizeColumnDisabled"
+        label="Disable Column Resizing"
+        type="Boolean"
+        default="false"
+        description="If present, column resizing is disabled."
+      />
+      <property
+        name="defaultSortDirection"
+        label="Default Sort Direction"
+        type="String"
+        default="asc"
+        description="Specifies the default sorting direction on an unsorted column. Valid options include 'asc' and 'desc'."
+      />
+      <property
         name="suppressBottomBar"
         label="Suppress Bottom Bar"
         type="Boolean"
