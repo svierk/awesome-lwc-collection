@@ -49,11 +49,40 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   @api readOnly = false;
 
   /**
+   * Specifies how column widths are calculated. Set to 'fixed' for columns with equal widths.
+   * Set to 'auto' for column widths that are based on the width of the column content and the table width.
+   * @type {string}
+   * @default 'fixed'
+   */
+  @api columnWidthsMode = 'fixed';
+
+  /**
+   * Specifies the default sorting direction on an unsorted column. Valid options include 'asc' and 'desc'.
+   * @type {string}
+   * @default 'asc'
+   */
+  @api defaultSortDirection = 'asc';
+
+  /**
    * If present, the checkbox column for row selection is hidden.
    * @type {boolean}
    * @default false
    */
   @api hideCheckboxColumn = false;
+
+  /**
+   * If present, the table header is hidden.
+   * @type {boolean}
+   * @default false
+   */
+  @api hideTableHeader = false;
+
+  /**
+   * The maximum width for all columns. The default is 1000px.
+   * @type {number}
+   * @default 1000
+   */
+  @api maxColumnWidth = 1000;
 
   /**
    * The maximum number of rows that can be selected.
@@ -62,6 +91,20 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
    * @default 50
    */
   @api maxRowSelection = 50;
+
+  /**
+   * The minimum width for all columns. The default is 50px.
+   * @type {number}
+   * @default 50
+   */
+  @api minColumnWidth = 50;
+
+  /**
+   * If present, column resizing is disabled.
+   * @type {boolean}
+   * @default false
+   */
+  @api resizeColumnDisabled = false;
 
   /**
    * Determines where to start counting the row number.
@@ -97,6 +140,13 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
    * @default false
    */
   @api showDeleteRowAction = false;
+
+  /**
+   * If present, the footer that displays the Save and Cancel buttons is hidden during inline editing.
+   * @type {boolean}
+   * @default false
+   */
+  @api suppressBottomBar = false;
 
   @track wiredRecords = [];
   @track records = [];

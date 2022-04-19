@@ -36,6 +36,20 @@
         default="false"
         description="If present, then all datatable fields are not editable."
       />
+        <property
+        name="columnWidthsMode"
+        label="Column Width Mode"
+        type="String"
+        default="fixed"
+        description="Specifies how column widths are calculated. Set to 'fixed' for columns with equal widths. Set to 'auto' for column widths that are based on the width of the column content and the table width."
+      />
+        <property
+        name="defaultSortDirection"
+        label="Default Sort Direction"
+        type="String"
+        default="asc"
+        description="Specifies the default sorting direction on an unsorted column. Valid options include 'asc' and 'desc'."
+      />
           <property
         name="hideCheckboxColumn"
         label="Hide Checkbox Column"
@@ -43,12 +57,40 @@
         default="false"
         description="If present, the checkbox column for row selection is hidden."
       />
+        <property
+        name="hideTableHeader"
+        label="Hide Table Header"
+        type="Boolean"
+        default="false"
+        description="If present, the table header is hidden."
+      />
+        <property
+        name="maxColumnWidth"
+        label="Maximum Column Width"
+        type="Integer"
+        default="1000"
+        description="The maximum width for all columns. The default is 1000px."
+      />
           <property
         name="maxRowSelection"
         label="Maximum Row Selection"
         type="Integer"
         default="50"
         description="The maximum number of rows that can be selected."
+      />
+        <property
+        name="minColumnWidth"
+        label="Minimum Column Width"
+        type="Integer"
+        default="50"
+        description="The minimum width for all columns. The default is 50px."
+      />
+        <property
+        name="resizeColumnDisabled"
+        label="Disable Column Resizing"
+        type="Boolean"
+        default="false"
+        description="If present, column resizing is disabled."
       />
           <property
         name="rowNumberOffset"
@@ -84,6 +126,13 @@
         type="Boolean"
         default="false"
         description="If present, the last column contains a delete record action."
+      />
+        <property
+        name="suppressBottomBar"
+        label="Suppress Bottom Bar"
+        type="Boolean"
+        default="false"
+        description="If present, the footer that displays the Save and Cancel buttons is hidden during inline editing"
       />
       </targetConfig>
     </targetConfigs>
