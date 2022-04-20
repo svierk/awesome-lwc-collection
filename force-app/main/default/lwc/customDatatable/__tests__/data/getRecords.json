@@ -1,0 +1,29 @@
+[
+  {
+    "CaseNumber": "00001002",
+    "Reason": "Installation",
+    "CreatedDate": "2022-03-27T23:59:35.000Z",
+    "ContactId": "0037Q000007dN20QAE",
+    "AccountId": "0017Q00000DzcOQQAZ",
+    "Status": "New",
+    "Id": "5007Q000008M5kDQAS"
+  },
+  {
+    "CaseNumber": "00001016",
+    "Reason": "Feedback",
+    "CreatedDate": "2022-03-27T23:59:35.000Z",
+    "ContactId": "0037Q000007dN29QAE",
+    "AccountId": "0017Q00000DzcOVQAZ",
+    "Status": "New",
+    "Id": "5007Q000008M5kRQAS"
+  },
+  {
+    "CaseNumber": "00001024",
+    "Reason": "Equipment Design",
+    "CreatedDate": "2022-03-27T23:59:35.000Z",
+    "ContactId": "0037Q000007dN21QAE",
+    "AccountId": "0017Q00000DzcOQQAZ",
+    "Status": "New",
+    "Id": "5007Q000008M5kZQAS"
+  }
+]

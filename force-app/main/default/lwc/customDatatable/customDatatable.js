@@ -240,7 +240,6 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
       type: 'standard__recordPage',
       attributes: {
         recordId: row.Id,
-        objectApiName: this.objectName,
         actionName: 'view'
       }
     });
@@ -251,7 +250,6 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
       type: 'standard__recordPage',
       attributes: {
         recordId: row.Id,
-        objectApiName: this.objectName,
         actionName: 'edit'
       }
     });

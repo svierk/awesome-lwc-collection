@@ -1,0 +1,11 @@
+{
+  "cardIcon": "standard:case",
+  "cardTitle": "New Cases",
+  "fieldSetApiName": "CaseFieldSet",
+  "objectApiName": "Case",
+  "showCard": true,
+  "showDeleteRowAction": true,
+  "showEditRowAction": true,
+  "showViewRowAction": true,
+  "whereConditions": "Status = 'New'"
+}

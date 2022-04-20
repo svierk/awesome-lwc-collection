@@ -1,0 +1,69 @@
+[
+  {
+    "editable": false,
+    "fieldName": "CaseNumber",
+    "label": "Case Number",
+    "sortable": false,
+    "type": "text"
+  },
+  {
+    "editable": true,
+    "fieldName": "Reason",
+    "label": "Case Reason",
+    "sortable": false,
+    "type": "text"
+  },
+  {
+    "editable": true,
+    "fieldName": "Description",
+    "label": "Description",
+    "sortable": false,
+    "type": "text"
+  },
+  {
+    "editable": false,
+    "fieldName": "CreatedDate",
+    "label": "Created Date",
+    "sortable": false,
+    "type": "date"
+  },
+  {
+    "editable": true,
+    "fieldName": "ContactId",
+    "initialWidth": 180,
+    "label": "Contact ID",
+    "sortable": false,
+    "type": "datatableLookup",
+    "typeAttributes": {
+      "disabled": false,
+      "fieldName": "ContactId",
+      "objectName": "Case",
+      "recordId": {
+        "fieldName": "Id"
+      }
+    }
+  },
+  {
+    "editable": true,
+    "fieldName": "AccountId",
+    "initialWidth": 180,
+    "label": "Account ID",
+    "sortable": false,
+    "type": "datatableLookup",
+    "typeAttributes": {
+      "disabled": false,
+      "fieldName": "AccountId",
+      "objectName": "Case",
+      "recordId": {
+        "fieldName": "Id"
+      }
+    }
+  },
+  {
+    "editable": true,
+    "fieldName": "Status",
+    "label": "Status",
+    "sortable": false,
+    "type": "text"
+  }
+]
