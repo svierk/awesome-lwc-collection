@@ -21,13 +21,9 @@ public with sharing class CustomDatatableUtil {
   }
 
   private static List<SObject> getRecords(String objectName, String fieldList, String whereConditions) {
-    String var1 = fieldList;
-    String var2 = objectName;
-    String var3 = whereConditions;
-
-    String query = 'SELECT ' + var1 + ' FROM ' + var2;
-    if (String.isNotBlank(var3)) {
-      query = query + ' WHERE ' + var3;
+    String query = 'SELECT ' + String.escapeSingleQuotes(fieldList) + ' FROM ' + String.escapeSingleQuotes(objectName);
+    if (String.isNotBlank(whereConditions)) {
+      query = query + ' WHERE ' + whereConditions;
     }
 
     return Database.query(query);
