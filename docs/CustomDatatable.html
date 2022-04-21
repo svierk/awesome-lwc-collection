@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>JSDoc: Class: CustomDatatable</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css" />
+  </head>
+
+  <body>
+    <div id="main">
+      <h1 class="page-title">Class: CustomDatatable</h1>
+
+      <section>
+        <header>
+          <h2>
+            <span class="attribs"><span class="type-signature"></span></span>CustomDatatable
+          </h2>
+
+          <div class="class-description">A custom datatable with different configuration options.</div>
+        </header>
+
+        <article>
+          <div class="container-overview">
+            <dl class="details">
+              <dt class="tag-source">Source:</dt>
+              <dd class="tag-source">
+                <ul class="dummy">
+                  <li>
+                    <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                    <a href="customDatatable_customDatatable.js.html#line24">line 24</a>
+                  </li>
+                </ul>
+              </dd>
+            </dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>&lt;c-custom-datatable
+  object-api-name="Case"
+  field-set-api-name="CaseFieldSet"
+  where-conditions="Status = 'New'"
+  hide-checkbox-column
+  show-row-number-column
+>&lt;/c-custom-datatable></code></pre>
+          </div>
+
+          <h3 class="subsection-title">Extends</h3>
+
+          <ul>
+            <li>LightningElement</li>
+          </ul>
+
+          <h3 class="subsection-title">Members</h3>
+
+          <h4 class="name" id="cardIcon">
+            <span class="type-signature"></span>cardIcon<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">
+            If show card option is active,, the card icon is displayed in the header before the card title. It should
+            contain the SLDS name of the icon. Specify the name in the format 'utility:down' where 'utility' is the
+            category and 'down' the icon to be displayed.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>''</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line33">line 33</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h5>Example</h5>
+
+          <pre class="prettyprint"><code>'standard:case'</code></pre>
+
+          <h4 class="name" id="cardTitle">
+            <span class="type-signature"></span>cardTitle<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">
+            If show card option is active, The card title can include text and is displayed in the header above the
+            table.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>''</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line40">line 40</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="columnWidthsMode">
+            <span class="type-signature"></span>columnWidthsMode<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">
+            Specifies how column widths are calculated. Set to 'fixed' for columns with equal widths. Set to 'auto' for
+            column widths that are based on the width of the column content and the table width.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>'fixed'</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line48">line 48</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="defaultSortDirection">
+            <span class="type-signature"></span>defaultSortDirection<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">
+            Specifies the default sorting direction on an unsorted column. Valid options include 'asc' and 'desc'.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>'asc'</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line55">line 55</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="fieldSetApiName">
+            <span class="type-signature"></span>fieldSetApiName<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">
+            API name of the field set that specifies which fields are displayed in the table.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line61">line 61</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="hideCheckboxColumn">
+            <span class="type-signature"></span>hideCheckboxColumn<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">If present, the checkbox column for row selection is hidden.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>false</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line68">line 68</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="hideTableHeader">
+            <span class="type-signature"></span>hideTableHeader<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">If present, the table header is hidden.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>false</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line75">line 75</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="keyField">
+            <span class="type-signature"></span>keyField<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">
+            Required field for better table performance. Associates each row with a unique Id.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>'Id'</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line82">line 82</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="maxColumnWidth">
+            <span class="type-signature"></span>maxColumnWidth<span class="type-signature"> :number</span>
+          </h4>
+
+          <div class="description">The maximum width for all columns. The default is 1000px.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">number</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>1000</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line89">line 89</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="maxRowSelection">
+            <span class="type-signature"></span>maxRowSelection<span class="type-signature"> :number</span>
+          </h4>
+
+          <div class="description">
+            The maximum number of rows that can be selected. Checkboxes are used for selection by default, and radio
+            buttons are used when maxRowSelection is 1.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">number</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>50</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line97">line 97</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="minColumnWidth">
+            <span class="type-signature"></span>minColumnWidth<span class="type-signature"> :number</span>
+          </h4>
+
+          <div class="description">The minimum width for all columns. The default is 50px.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">number</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>50</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line104">line 104</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="objectApiName">
+            <span class="type-signature"></span>objectApiName<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">API name of the object that will be displayed in the table.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line110">line 110</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="readOnly">
+            <span class="type-signature"></span>readOnly<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">If present, then all datatable fields are not editable.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>false</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line117">line 117</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="resizeColumnDisabled">
+            <span class="type-signature"></span>resizeColumnDisabled<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">If present, column resizing is disabled.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>false</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line124">line 124</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="rowNumberOffset">
+            <span class="type-signature"></span>rowNumberOffset<span class="type-signature"> :number</span>
+          </h4>
+
+          <div class="description">Determines where to start counting the row number.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">number</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>0</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line131">line 131</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="showCard">
+            <span class="type-signature"></span>showCard<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">
+            If present, the table is wrapped in a lightning card to fit better into the overall page layout.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>false</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line138">line 138</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="showDeleteRowAction">
+            <span class="type-signature"></span>showDeleteRowAction<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">If present, the last column contains a delete record action.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>false</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line145">line 145</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="showEditRowAction">
+            <span class="type-signature"></span>showEditRowAction<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">If present, the last column contains a edit record action.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>false</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line152">line 152</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="showRowNumberColumn">
+            <span class="type-signature"></span>showRowNumberColumn<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">If present, the row numbers are shown in the first column.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>false</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line159">line 159</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="showViewRowAction">
+            <span class="type-signature"></span>showViewRowAction<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">If present, the last column contains a view record action.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>false</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line166">line 166</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="suppressBottomBar">
+            <span class="type-signature"></span>suppressBottomBar<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">
+            If present, the footer that displays the Save and Cancel buttons is hidden during inline editing.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>false</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line173">line 173</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="whereConditions">
+            <span class="type-signature"></span>whereConditions<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">Optional where clause conditions for loaded data records.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>''</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customDatatable_customDatatable.js.html">customDatatable/customDatatable.js</a>,
+                  <a href="customDatatable_customDatatable.js.html#line181">line 181</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h5>Example</h5>
+
+          <pre class="prettyprint"><code>Status = 'New'</code></pre>
+        </article>
+      </section>
+    </div>
+
+    <nav>
+      <h2><a href="index.html">Home</a></h2>
+      <h3>Classes</h3>
+      <ul>
+        <li><a href="CustomDatatable.html">CustomDatatable</a></li>
+        <li><a href="CustomSlider.html">CustomSlider</a></li>
+        <li><a href="HelloWorld.html">HelloWorld</a></li>
+        <li><a href="LocalDevelopmentWrapper.html">LocalDevelopmentWrapper</a></li>
+        <li><a href="MultiSelectCombobox.html">MultiSelectCombobox</a></li>
+        <li><a href="MultiSelectComboboxItem.html">MultiSelectComboboxItem</a></li>
+      </ul>
+      <h3>Global</h3>
+      <ul>
+        <li><a href="global.html#slidesData">slidesData</a></li>
+      </ul>
+    </nav>
+
+    <br class="clear" />
+
+    <footer>
+      Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Thu Apr 21 2022 23:44:36
+      GMT+0200 (Mitteleuropäische Sommerzeit)
+    </footer>
+
+    <script>
+      prettyPrint();
+    </script>
+    <script src="scripts/linenumber.js"></script>
+  </body>
+</html>

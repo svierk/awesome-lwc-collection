@@ -14,9 +14,6 @@ deploy-options.json
 # LWC Jest coverage reports
 coverage/
 
-# LWC JSDoc files
-docs/
-
 # Logs
 logs
 *.log
