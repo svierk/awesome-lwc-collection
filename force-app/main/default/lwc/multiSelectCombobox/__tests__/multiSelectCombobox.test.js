@@ -16,6 +16,7 @@ describe('c-multi-select-combobox', () => {
     while (document.body.firstChild) {
       document.body.removeChild(document.body.firstChild);
     }
+    jest.clearAllMocks();
   });
 
   it('should show combobox label', () => {
@@ -46,13 +47,13 @@ describe('c-multi-select-combobox', () => {
 
     // when
     document.body.appendChild(element);
+    const input = element.shadowRoot.querySelector('.multi-select-combobox__input');
+    input.click();
 
     // then
     return Promise.resolve().then(() => {
-      setTimeout(() => {
-        const childs = element.shadowRoot.querySelectorAll('c-multi-select-combobox-item');
-        expect(childs.length).toBe(4);
-      }, 0);
+      const itemList = element.shadowRoot.querySelectorAll('c-multi-select-combobox-item');
+      expect(itemList.length).toBe(mockData.options.length);
     });
   });
 
@@ -100,7 +101,7 @@ describe('c-multi-select-combobox', () => {
         child.dispatchEvent(
           new CustomEvent('change', {
             detail: {
-              item: { label: mockData.options[index].label, name: mockData.options[index].name, selected: true },
+              item: { label: mockData.options[index].label, value: mockData.options[index].value, selected: true },
               selected: true
             }
           })
@@ -108,7 +109,7 @@ describe('c-multi-select-combobox', () => {
       });
 
       // then
-      expect(mockChangeHandler).toHaveBeenCalledTimes(4);
+      expect(mockChangeHandler).toHaveBeenCalledTimes(mockData.options.length);
     });
   });
 
@@ -135,7 +136,7 @@ describe('c-multi-select-combobox', () => {
       child.dispatchEvent(
         new CustomEvent('change', {
           detail: {
-            item: { label: mockData.options[0].label, name: mockData.options[0].name, selected: true },
+            item: { label: mockData.options[0].label, value: mockData.options[0].value, selected: true },
             selected: true
           }
         })

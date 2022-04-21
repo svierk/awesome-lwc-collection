@@ -16,6 +16,7 @@ describe('c-custom-slider', () => {
     while (document.body.firstChild) {
       document.body.removeChild(document.body.firstChild);
     }
+    jest.clearAllMocks();
   });
 
   it('should load correct number of slides', () => {
@@ -25,14 +26,10 @@ describe('c-custom-slider', () => {
 
     // when
     document.body.appendChild(element);
+    const slidesContainer = element.shadowRoot.querySelector('div[class="slds-is-relative container"]');
 
     // then
-    return Promise.resolve().then(() => {
-      setTimeout(() => {
-        const slides = element.shadowRoot.querySelectorAll('[class*="fade"]');
-        expect(slides.length).toBe(2);
-      }, 0);
-    });
+    expect(slidesContainer.childNodes.length).toBe(mockData.slideData.length);
   });
 
   it('should slide forward on next button click', () => {

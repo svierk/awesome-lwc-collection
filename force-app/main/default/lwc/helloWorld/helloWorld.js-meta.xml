@@ -11,10 +11,11 @@
     </targets>
     <targetConfigs>
       <targetConfig targets="lightning__AppPage, lightning__HomePage, lightning__RecordPage">
-          <property
+      <property
         name="name"
-        type="String"
         label="Name"
+        type="String"
+        default="World"
         placeholder="World"
         description="Enter the name of the person to greet."
       />
