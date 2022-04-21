@@ -21,7 +21,7 @@ export const NavigationMixin = (Base) => {
     }
     [GenerateUrl](pageReference) {
       _generatePageReference = pageReference;
-      return new Promise((resolve) => resolve('https://www.example.com'));
+      return Promise.resolve('https://www.example.com');
     }
   };
 };
