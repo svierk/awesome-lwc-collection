@@ -23,23 +23,24 @@
     "docs": "jsdoc -c jsdoc.config.json"
   },
   "devDependencies": {
-    "@babel/core": "^7.16.10",
-    "@babel/eslint-parser": "^7.16.5",
-    "@lwc/eslint-plugin-lwc": "^1.1.1",
-    "@prettier/plugin-xml": "^1.2.0",
-    "@salesforce/eslint-config-lwc": "^3.2.1",
-    "@salesforce/eslint-plugin-aura": "^2.0.0",
+    "@babel/core": "^7.17.10",
+    "@babel/eslint-parser": "^7.17.0",
+    "@lwc/eslint-plugin-lwc": "^1.2.1",
+    "@prettier/plugin-xml": "^2.1.0",
+    "@salesforce/eslint-config-lwc": "^3.3.0",
+    "@salesforce/eslint-plugin-aura": "^2.1.0",
     "@salesforce/eslint-plugin-lightning": "^1.0.0",
     "@salesforce/sfdx-lwc-jest": "^1.1.0",
     "eslint": "^7.32.0",
-    "eslint-plugin-compat": "^4.0.1",
-    "eslint-plugin-import": "^2.25.4",
-    "eslint-plugin-jest": "^25.7.0",
+    "eslint-plugin-compat": "^4.0.2",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^26.1.5",
     "husky": "^7.0.4",
     "jsdoc": "^3.6.10",
-    "lint-staged": "^12.1.7",
+    "lint-staged": "^12.4.1",
     "prettier": "^2.5.1",
-    "prettier-plugin-apex": "^1.10.0"
+    "prettier-plugin-apex": "^1.10.0",
+    "typescript": "~4.6.4"
   },
   "lint-staged": {
     "**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}": [
