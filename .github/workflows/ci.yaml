@@ -28,7 +28,7 @@ jobs:
       - name: Check Prettier
         run: npm run prettier
       - name: Check ESLint
-        run: npm run lint
+        run: npm run lint:sonar
       - name: LWC Unit Tests
         run: npm run test:unit:coverage
       - name: SonarCloud Scan
