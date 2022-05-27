@@ -8,6 +8,8 @@ import { createElement } from 'lwc';
 const mockData = require('./data/customDatatable.json');
 const mockGetColumns = require('./data/getColumns.json');
 const mockGetRecords = require('./data/getRecords.json');
+const mockDeleteRecordError = require('./data/updateRecordError.json');
+const mockUpdateRecordError = require('./data/deleteRecordError.json');
 
 jest.mock(
   '@salesforce/apex/CustomDatatableUtil.convertFieldSetToColumns',
@@ -154,6 +156,34 @@ describe('c-custom-datatable', () => {
     expect(deleteRecord.mock.calls[0][0]).toEqual(mockGetRecords[0].Id);
   });
 
+  it('should handle error when delete record operation fails', () => {
+    // given
+    element.objectApiName = mockData.objectApiName;
+    element.fieldSetApiName = mockData.fieldSetApiName;
+
+    // when
+    deleteRecord.mockRejectedValue(mockDeleteRecordError);
+    document.body.appendChild(element);
+    getColumns.emit(mockGetColumns);
+    getRecords.emit(mockGetRecords);
+
+    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    childElement.dispatchEvent(
+      new CustomEvent('rowaction', {
+        detail: {
+          action: {
+            name: 'delete'
+          },
+          row: mockGetRecords[0]
+        }
+      })
+    );
+
+    // then
+    expect(deleteRecord).toHaveBeenCalledTimes(1);
+    expect(deleteRecord.mock.calls[0][0]).toEqual(mockGetRecords[0].Id);
+  });
+
   it('should execute nothing when invalid row action event is fired', () => {
     // given
     const mockRowActionHandler = jest.fn();
@@ -188,6 +218,33 @@ describe('c-custom-datatable', () => {
     element.fieldSetApiName = mockData.fieldSetApiName;
 
     // when
+    document.body.appendChild(element);
+    getColumns.emit(mockGetColumns);
+    getRecords.emit(mockGetRecords);
+
+    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    childElement.dispatchEvent(
+      new CustomEvent('save', {
+        detail: {
+          draftValues: [mockGetRecords[0]]
+        }
+      })
+    );
+
+    // then
+    return Promise.resolve().then(() => {
+      expect(updateRecord).toHaveBeenCalledTimes(1);
+      expect(updateRecord.mock.calls[0][0].fields).toEqual(mockGetRecords[0]);
+    });
+  });
+
+  it('should handle error when update record operation fails', () => {
+    // given
+    element.objectApiName = mockData.objectApiName;
+    element.fieldSetApiName = mockData.fieldSetApiName;
+
+    // when
+    updateRecord.mockRejectedValue(mockUpdateRecordError);
     document.body.appendChild(element);
     getColumns.emit(mockGetColumns);
     getRecords.emit(mockGetRecords);
