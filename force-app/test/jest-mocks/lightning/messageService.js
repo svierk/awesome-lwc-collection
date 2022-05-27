@@ -14,11 +14,11 @@ export const releaseMessageContext = jest.fn();
 
 const handlers = {};
 
-export const publish = jest.fn((messageContext, messageChannel, message) => {
+export const publish = jest.fn((_messageContext, messageChannel, message) => {
   handlers[messageChannel]?.forEach((handlerObj) => handlerObj.handler(message));
 });
 
-export const subscribe = jest.fn((messageContext, messageChannel, messageHandler) => {
+export const subscribe = jest.fn((_messageContext, messageChannel, messageHandler) => {
   const subscriptionId = crypto.randomUUID();
 
   if (!handlers[messageChannel]) {
