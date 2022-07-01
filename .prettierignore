@@ -6,5 +6,7 @@
 .localdevserver
 .sfdx
 .vscode
+.sf
 
 coverage/
+tests/
