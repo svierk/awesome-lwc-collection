@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>iFrame</masterLabel>
+    <description>Configurable iFrame</description>
+    <targets>
+      <target>lightning__AppPage</target>
+      <target>lightning__HomePage</target>
+      <target>lightning__FlowScreen</target>
+      <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage, lightning__FlowScreen, lightning__HomePage, lightning__RecordPage">
+        <property
+        name="url"
+        label="iFrame URL"
+        type="String"
+        description="Specifies the address of the document to embed in the iframe."
+      />
+        <property
+        name="height"
+        label="Height"
+        type="String"
+        default="500px"
+        description="Specifies the height of the iframe. Default height is 500 pixels."
+      />
+        <property
+        name="width"
+        label="Width"
+        type="String"
+        default="100%"
+        description="Specifies the width of an iframe. Default width is 100 percent."
+      />
+        <property
+        name="referrerPolicy"
+        label="Referrer Policy"
+        type="String"
+        default="no-referrer"
+        description="Specifies which referrer information to send when fetching the iframe."
+      />
+        <property
+        name="sandbox"
+        label="Sandbox"
+        type="String"
+        description="Enables an extra set of restrictions for the content in an iframe."
+      />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

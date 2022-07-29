@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>JSDoc: Class: LocalDevelopmentWrapper</title>
+    <title>JSDoc: Source: iFrame/iFrame.js</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -15,40 +15,64 @@
 
   <body>
     <div id="main">
-      <h1 class="page-title">Class: LocalDevelopmentWrapper</h1>
+      <h1 class="page-title">Source: iFrame/iFrame.js</h1>
 
       <section>
-        <header>
-          <h2>
-            <span class="attribs"><span class="type-signature"></span></span>LocalDevelopmentWrapper
-          </h2>
-
-          <div class="class-description">
-            A simple wrapper component to locally test input parameters of other components.
-          </div>
-        </header>
-
         <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="localDevelopmentWrapper_localDevelopmentWrapper.js.html"
-                      >localDevelopmentWrapper/localDevelopmentWrapper.js</a
-                    >, <a href="localDevelopmentWrapper_localDevelopmentWrapper.js.html#line9">line 9</a>
-                  </li>
-                </ul>
-              </dd>
-            </dl>
-          </div>
+          <pre class="prettyprint source linenums"><code>import { api, LightningElement } from 'lwc';
 
-          <h3 class="subsection-title">Extends</h3>
+/**
+ * A custom iFrame component with different configuration options.
+ * @alias IFrame
+ * @extends LightningElement
+ * @hideconstructor
+ *
+ * @example
+ * &lt;c-i-frame
+ *   url="https://example.com/"
+ *   height="500px"
+ *   width="100%"
+ *   referrerpolicy="no-referrer"
+ *   sandbox=""
+ * >&lt;/c-i-frame>
+ */
+export default class IFrame extends LightningElement {
+  /**
+   * Specifies the height of the iframe. Default height is 500 pixels.
+   * @type {string}
+   * @default ''
+   */
+  @api height = '500px';
 
-          <ul>
-            <li>LightningElement</li>
-          </ul>
+  /**
+   * Specifies which referrer information to send when fetching the iframe.
+   * @type {string}
+   * @default ''
+   */
+  @api referrerPolicy = 'no-referrer';
+
+  /**
+   * Enables an extra set of restrictions for the content in an iframe.
+   * @type {string}
+   * @default ''
+   */
+  @api sandbox = '';
+
+  /**
+   * Specifies the address of the document to embed in the iframe.
+   * @type {string}
+   * @default ''
+   */
+  @api url = '';
+
+  /**
+   * Specifies the width of an iframe. Default width is 100 percent.
+   * @type {string}
+   * @default ''
+   */
+  @api width = '100%';
+}
+</code></pre>
         </article>
       </section>
     </div>

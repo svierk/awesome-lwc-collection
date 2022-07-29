@@ -47,6 +47,7 @@ The following list of components is part of this repo. All components contain co
 - [Custom Datatable](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/customDatatable)
 - [Custom Slider](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/customSlider)
 - [Hello World](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/helloWorld)
+- [iFrame](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/iFrame)
 - [Local Development Wrapper](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/localDevelopmentWrapper)
 - [Multi Select Combobox](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/multiSelectCombobox)
 

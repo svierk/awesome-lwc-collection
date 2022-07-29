@@ -8,5 +8,5 @@
   "name": "awesome-lwc-collection",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
-  "sourceApiVersion": "53.0"
+  "sourceApiVersion": "55.0"
 }
