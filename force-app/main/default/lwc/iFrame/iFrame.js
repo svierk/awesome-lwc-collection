@@ -19,14 +19,14 @@ export default class IFrame extends LightningElement {
   /**
    * Specifies the height of the iframe. Default height is 500 pixels.
    * @type {string}
-   * @default ''
+   * @default '500px'
    */
   @api height = '500px';
 
   /**
    * Specifies which referrer information to send when fetching the iframe.
    * @type {string}
-   * @default ''
+   * @default 'no-referrer'
    */
   @api referrerPolicy = 'no-referrer';
 
@@ -47,7 +47,7 @@ export default class IFrame extends LightningElement {
   /**
    * Specifies the width of an iframe. Default width is 100 percent.
    * @type {string}
-   * @default ''
+   * @default '100%'
    */
   @api width = '100%';
 }
