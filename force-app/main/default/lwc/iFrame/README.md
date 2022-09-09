@@ -13,4 +13,3 @@ A custom iFrame component with different configuration options.
 | sandbox         | string | ''            | Enables an extra set of restrictions for the content in an iframe.     |
 | url             | string | ''            | Specifies the address of the document to embed in the iframe.          |
 | width           | string | '100%'        | Specifies the width of an iframe. Default width is 100 percent.        |
-|                 |
