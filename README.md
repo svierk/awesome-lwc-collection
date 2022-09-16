@@ -44,6 +44,7 @@ Run `npm run server:lwc` to start the server on http://localhost:3333 and access
 
 The following list of components is part of this repo. All components contain corresponding unit tests and docs.
 
+- [CSV To Datatable](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/csvToDatatable)
 - [Custom Datatable](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/customDatatable)
 - [Custom Slider](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/customSlider)
 - [Hello World](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/helloWorld)
