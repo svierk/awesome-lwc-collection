@@ -1,0 +1,18 @@
+<template>
+  <lightning-card title="CSV To Datatable" icon-name="doctype:csv">
+    <div class="slds-p-around_medium">
+      <strong>Your file:</strong> {fileName} <br /><br />
+      <lightning-input
+        type="file"
+        label="Please upload a UTF-8 encoded, comma separated .csv file"
+        accept=".csv"
+        onchange={handleFileUpload}
+      >
+      </lightning-input>
+    </div>
+
+    <div style="height: 300px">
+      <lightning-datatable key-field="id" data={data} columns={columns}> </lightning-datatable>
+    </div>
+  </lightning-card>
+</template>
