@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>JSDoc: Source: helloWorld/helloWorld.js</title>
+    <title>JSDoc: Source: csvToDatatable/csvToDatatable.js</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -15,28 +15,88 @@
 
   <body>
     <div id="main">
-      <h1 class="page-title">Source: helloWorld/helloWorld.js</h1>
+      <h1 class="page-title">Source: csvToDatatable/csvToDatatable.js</h1>
 
       <section>
         <article>
-          <pre class="prettyprint source linenums"><code>import { api, LightningElement } from 'lwc';
+          <pre class="prettyprint source linenums"><code>import { LightningElement, track } from 'lwc';
 
 /**
- * An example LWC that adds a classic greeting to any page.
- * @alias HelloWorld
+ * A simple parser for UTF-8 encoded, comma separated .csv files.
+ * @alias CsvToDatatable
  * @extends LightningElement
  * @hideconstructor
  *
  * @example
- * &lt;c-hello-world name="World">&lt;/c-hello-world>
+ * &lt;c-csv-to-datatable>&lt;/c-csv-to-datatable>
  */
-export default class HelloWorld extends LightningElement {
-  /**
-   * Enter the name of the person to greet.
-   * @type {string}
-   * @default 'World'
-   */
-  @api name = 'World';
+export default class CsvToDatatable extends LightningElement {
+  fileName = 'No file uploaded yet.';
+  @track columns = [];
+  @track data = [];
+
+  handleFileUpload(event) {
+    const files = event.detail.files;
+
+    if (files.length > 0) {
+      const file = files[0];
+      this.fileName = file.name;
+
+      this.read(file);
+    }
+  }
+
+  async read(file) {
+    try {
+      const result = await this.load(file);
+      this.parse(result);
+    } catch (e) {
+      this.error = e;
+      console.log(e);
+    }
+  }
+
+  async load(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+      reader.onerror = () => {
+        reject(reader.error);
+      };
+      reader.readAsText(file);
+    });
+  }
+
+  parse(csv) {
+    console.log(csv);
+    const lines = csv.split(/\r\n|\n/);
+
+    const headers = lines[0].split(',');
+
+    const columns = [];
+    headers.forEach((header) => {
+      columns.push({ label: header, fieldName: header });
+    });
+    this.columns = columns;
+
+    const data = [];
+    lines.forEach((line, i) => {
+      if (i === 0) return;
+
+      const obj = {};
+      const currentline = line.split(',');
+
+      for (let j = 0; j &lt; headers.length; j++) {
+        obj[headers[j]] = currentline[j];
+      }
+
+      data.push(obj);
+    });
+    this.data = data;
+  }
 }
 </code></pre>
         </article>
