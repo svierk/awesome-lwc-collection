@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>JSDoc: Source: multiSelectComboboxItem/multiSelectComboboxItem.js</title>
+    <title>JSDoc: Class: CsvToDatatable</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -15,41 +15,41 @@
 
   <body>
     <div id="main">
-      <h1 class="page-title">Source: multiSelectComboboxItem/multiSelectComboboxItem.js</h1>
+      <h1 class="page-title">Class: CsvToDatatable</h1>
 
       <section>
+        <header>
+          <h2>
+            <span class="attribs"><span class="type-signature"></span></span>CsvToDatatable
+          </h2>
+
+          <div class="class-description">A simple parser for UTF-8 encoded, comma separated .csv files.</div>
+        </header>
+
         <article>
-          <pre class="prettyprint source linenums"><code>import { api, LightningElement } from 'lwc';
+          <div class="container-overview">
+            <dl class="details">
+              <dt class="tag-source">Source:</dt>
+              <dd class="tag-source">
+                <ul class="dummy">
+                  <li>
+                    <a href="csvToDatatable_csvToDatatable.js.html">csvToDatatable/csvToDatatable.js</a>,
+                    <a href="csvToDatatable_csvToDatatable.js.html#line12">line 12</a>
+                  </li>
+                </ul>
+              </dd>
+            </dl>
 
-/**
- * Component that represents an item within the multi select combobox parent component.
- * @alias MultiSelectComboboxItem
- * @extends LightningElement
- * @hideconstructor
- *
- * @example
- * &lt;c-multi-select-combobox-item key={item.key} item={item} onchange={handleChange}>&lt;/c-multi-select-combobox-item>
- */
-export default class MultiSelectComboboxItem extends LightningElement {
-  /**
-   * Single selectable item received from the multi select combobox parent component.
-   * @type {Object}
-   */
-  @api item;
+            <h5>Example</h5>
 
-  get itemClass() {
-    return `slds-listbox__item ${this.item.selected ? 'slds-is-selected' : ''}`;
-  }
+            <pre class="prettyprint"><code>&lt;c-csv-to-datatable>&lt;/c-csv-to-datatable></code></pre>
+          </div>
 
-  handleClick() {
-    this.dispatchEvent(
-      new CustomEvent('change', {
-        detail: { item: this.item, selected: !this.item.selected }
-      })
-    );
-  }
-}
-</code></pre>
+          <h3 class="subsection-title">Extends</h3>
+
+          <ul>
+            <li>LightningElement</li>
+          </ul>
         </article>
       </section>
     </div>
