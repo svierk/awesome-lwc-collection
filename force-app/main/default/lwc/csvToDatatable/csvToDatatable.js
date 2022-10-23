@@ -52,12 +52,9 @@ export default class CsvToDatatable extends LightningElement {
     const lines = csv.split(/\r\n|\n/);
 
     const headers = lines[0].split(',');
-
-    const columns = [];
-    headers.forEach((header) => {
-      columns.push({ label: header, fieldName: header });
+    this.columns = headers.map((header) => {
+      return { label: header, fieldName: header };
     });
-    this.columns = columns;
 
     const data = [];
     lines.forEach((line, i) => {
