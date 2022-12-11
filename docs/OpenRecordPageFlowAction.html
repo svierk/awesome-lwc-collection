@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>JSDoc: Class: HelloWorld</title>
+    <title>JSDoc: Class: OpenRecordPageFlowAction</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -15,15 +15,15 @@
 
   <body>
     <div id="main">
-      <h1 class="page-title">Class: HelloWorld</h1>
+      <h1 class="page-title">Class: OpenRecordPageFlowAction</h1>
 
       <section>
         <header>
           <h2>
-            <span class="attribs"><span class="type-signature"></span></span>HelloWorld
+            <span class="attribs"><span class="type-signature"></span></span>OpenRecordPageFlowAction
           </h2>
 
-          <div class="class-description">An example LWC that adds a classic greeting to any page.</div>
+          <div class="class-description">Component to forward to a record page from flow.</div>
         </header>
 
         <article>
@@ -33,8 +33,9 @@
               <dd class="tag-source">
                 <ul class="dummy">
                   <li>
-                    <a href="helloWorld_helloWorld.js.html">helloWorld/helloWorld.js</a>,
-                    <a href="helloWorld_helloWorld.js.html#line12">line 12</a>
+                    <a href="openRecordPageFlowAction_openRecordPageFlowAction.js.html"
+                      >openRecordPageFlowAction/openRecordPageFlowAction.js</a
+                    >, <a href="openRecordPageFlowAction_openRecordPageFlowAction.js.html#line12">line 12</a>
                   </li>
                 </ul>
               </dd>
@@ -42,7 +43,9 @@
 
             <h5>Example</h5>
 
-            <pre class="prettyprint"><code>&lt;c-hello-world name="World">&lt;/c-hello-world></code></pre>
+            <pre
+              class="prettyprint"
+            ><code>&lt;c-open-record-page-flow-action record-id={recordId} target="_blank">&lt;/c-open-record-page-flow-action></code></pre>
           </div>
 
           <h3 class="subsection-title">Extends</h3>
@@ -53,11 +56,11 @@
 
           <h3 class="subsection-title">Members</h3>
 
-          <h4 class="name" id="name">
-            <span class="type-signature"></span>name<span class="type-signature"> :string</span>
+          <h4 class="name" id="recordId">
+            <span class="type-signature"></span>recordId<span class="type-signature"> :string</span>
           </h4>
 
-          <div class="description">Enter the name of the person to greet.</div>
+          <div class="description">Record Id of the record page to which the action should forward.</div>
 
           <h5>Type:</h5>
           <ul>
@@ -70,7 +73,7 @@
             <dt class="tag-default">Default Value:</dt>
             <dd class="tag-default">
               <ul class="dummy">
-                <li>'World'</li>
+                <li>''</li>
               </ul>
             </dd>
 
@@ -78,8 +81,42 @@
             <dd class="tag-source">
               <ul class="dummy">
                 <li>
-                  <a href="helloWorld_helloWorld.js.html">helloWorld/helloWorld.js</a>,
-                  <a href="helloWorld_helloWorld.js.html#line18">line 18</a>
+                  <a href="openRecordPageFlowAction_openRecordPageFlowAction.js.html"
+                    >openRecordPageFlowAction/openRecordPageFlowAction.js</a
+                  >, <a href="openRecordPageFlowAction_openRecordPageFlowAction.js.html#line18">line 18</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="target">
+            <span class="type-signature"></span>target<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">Open the page in the same '_self' or in a new tab '_blank '.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>''</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="openRecordPageFlowAction_openRecordPageFlowAction.js.html"
+                    >openRecordPageFlowAction/openRecordPageFlowAction.js</a
+                  >, <a href="openRecordPageFlowAction_openRecordPageFlowAction.js.html#line25">line 25</a>
                 </li>
               </ul>
             </dd>
