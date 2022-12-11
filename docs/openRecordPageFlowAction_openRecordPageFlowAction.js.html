@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>JSDoc: Source: csvToDatatable/csvToDatatable.js</title>
+    <title>JSDoc: Source: openRecordPageFlowAction/openRecordPageFlowAction.js</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -15,82 +15,39 @@
 
   <body>
     <div id="main">
-      <h1 class="page-title">Source: csvToDatatable/csvToDatatable.js</h1>
+      <h1 class="page-title">Source: openRecordPageFlowAction/openRecordPageFlowAction.js</h1>
 
       <section>
         <article>
-          <pre class="prettyprint source linenums"><code>import { LightningElement, track } from 'lwc';
+          <pre class="prettyprint source linenums"><code>import { api, LightningElement } from 'lwc';
 
 /**
- * A simple parser for UTF-8 encoded, comma separated .csv files.
- * @alias CsvToDatatable
+ * Component to forward to a record page from flow.
+ * @alias OpenRecordPageFlowAction
  * @extends LightningElement
  * @hideconstructor
  *
  * @example
- * &lt;c-csv-to-datatable>&lt;/c-csv-to-datatable>
+ * &lt;c-open-record-page-flow-action record-id={recordId} target="_blank">&lt;/c-open-record-page-flow-action>
  */
-export default class CsvToDatatable extends LightningElement {
-  fileName = 'No file uploaded yet.';
-  @track columns = [];
-  @track data = [];
+export default class OpenRecordPageFlowAction extends LightningElement {
+  /**
+   * Record Id of the record page to which the action should forward.
+   * @type {string}
+   * @default ''
+   */
+  @api recordId;
 
-  handleFileUpload(event) {
-    const files = event.detail.files;
+  /**
+   * Open the page in the same '_self' or in a new tab '_blank '.
+   * @type {string}
+   * @default ''
+   */
+  @api target = '_blank';
 
-    if (files.length > 0) {
-      const file = files[0];
-      this.fileName = file.name;
-
-      this.read(file);
-    }
-  }
-
-  async read(file) {
-    try {
-      const result = await this.load(file);
-      this.parse(result);
-    } catch (e) {
-      this.error = e;
-    }
-  }
-
-  async load(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        resolve(reader.result);
-      };
-      reader.onerror = () => {
-        reject(reader.error);
-      };
-      reader.readAsText(file);
-    });
-  }
-
-  parse(csv) {
-    const lines = csv.split(/\r\n|\n/);
-
-    const headers = lines[0].split(',');
-    this.columns = headers.map((header) => {
-      return { label: header, fieldName: header };
-    });
-
-    const data = [];
-    lines.forEach((line, i) => {
-      if (i === 0) return;
-
-      const obj = {};
-      const currentline = line.split(',');
-
-      for (let j = 0; j &lt; headers.length; j++) {
-        obj[headers[j]] = currentline[j];
-      }
-
-      data.push(obj);
-    });
-    this.data = data;
+  connectedCallback() {
+    const completeURL = `${window.location.origin}/${this.recordId}`;
+    window.open(completeURL, this.target);
   }
 }
 </code></pre>
