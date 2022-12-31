@@ -8,7 +8,7 @@ describe('c-custom-datatable-extension', () => {
     }
   });
 
-  it('should create', () => {
+  it('should create and be accessible', async () => {
     // given
     const element = createElement('c-custom-datatable-extension', {
       is: CustomDatatableExtension
@@ -19,5 +19,6 @@ describe('c-custom-datatable-extension', () => {
 
     // then
     expect(element).toBeTruthy();
+    await expect(element).toBeAccessible();
   });
 });
