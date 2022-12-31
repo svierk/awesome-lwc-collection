@@ -8,7 +8,7 @@ describe('c-i-frame', () => {
     }
   });
 
-  it('should create', () => {
+  it('should create and be accessible', async () => {
     // given
     const element = createElement('c-i-frame', {
       is: IFrame
@@ -19,5 +19,6 @@ describe('c-i-frame', () => {
 
     // then
     expect(element).toBeTruthy();
+    await expect(element).toBeAccessible();
   });
 });

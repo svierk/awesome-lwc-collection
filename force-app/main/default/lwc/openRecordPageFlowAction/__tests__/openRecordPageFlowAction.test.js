@@ -8,7 +8,7 @@ describe('c-open-record-page-flow-action', () => {
     }
   });
 
-  it('should redirect to record page', () => {
+  it('should be accessible and redirect to record page', async () => {
     // given
     window.open = jest.fn();
     const element = createElement('c-open-record-page-flow-action', {
@@ -22,5 +22,6 @@ describe('c-open-record-page-flow-action', () => {
 
     // then
     expect(window.open).toHaveBeenCalledTimes(1);
+    await expect(element).toBeAccessible();
   });
 });

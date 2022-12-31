@@ -16,7 +16,7 @@ describe('c-multi-select-combobox-item', () => {
     }
   });
 
-  it('should show label of selected item', () => {
+  it('should be accessible and show label of selected item', async () => {
     // given
     element.item = { name: 'name', label: 'label', selected: true };
 
@@ -26,6 +26,7 @@ describe('c-multi-select-combobox-item', () => {
 
     // then
     expect(item.textContent).toBe('label');
+    await expect(element).toBeAccessible();
   });
 
   it('should fire change event when clicked', () => {

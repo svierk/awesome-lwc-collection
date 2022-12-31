@@ -19,7 +19,7 @@ describe('c-multi-select-combobox', () => {
     jest.clearAllMocks();
   });
 
-  it('should show combobox label', () => {
+  it('should be accessible and show combobox label', async () => {
     // given
     element.label = mockData.label;
     element.name = mockData.name;
@@ -34,6 +34,7 @@ describe('c-multi-select-combobox', () => {
 
     // then
     expect(label.textContent).toBe(mockData.label);
+    await expect(element).toBeAccessible();
   });
 
   it('should load correct number of child components', () => {

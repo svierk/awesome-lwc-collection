@@ -17,7 +17,7 @@ describe('c-csv-to-datatable', () => {
     jest.clearAllMocks();
   });
 
-  it('should handle csv file upload successfully', async () => {
+  it('should be accessible and handle csv file upload successfully', async () => {
     // given
     jest.spyOn(global, 'FileReader').mockImplementation(function () {
       this.readAsText = jest.fn(
@@ -50,6 +50,7 @@ describe('c-csv-to-datatable', () => {
     expect(reader.readAsText).toHaveBeenCalledWith(files[0]);
     expect(reader.onload).toEqual(expect.any(Function));
     reader.onload();
+    await expect(element).toBeAccessible();
   });
 
   it('should handle csv file upload errors properly', async () => {

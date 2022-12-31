@@ -49,7 +49,7 @@ describe('c-custom-datatable', () => {
     jest.clearAllMocks();
   });
 
-  it('should show card icon and card title when show card option is selected', () => {
+  it('should be accessible and show card icon and title when show card option is selected', async () => {
     // given
     element.cardIcon = mockData.cardIcon;
     element.cardTitle = mockData.cardTitle;
@@ -69,6 +69,7 @@ describe('c-custom-datatable', () => {
     // then
     expect(card.iconName).toBe(mockData.cardIcon);
     expect(card.title).toBe(mockData.cardTitle);
+    await expect(element).toBeAccessible();
   });
 
   it('should execute view record navigation when view row action event is fired', () => {

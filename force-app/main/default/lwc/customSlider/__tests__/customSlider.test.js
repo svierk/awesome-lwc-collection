@@ -19,7 +19,7 @@ describe('c-custom-slider', () => {
     jest.clearAllMocks();
   });
 
-  it('should load correct number of slides', () => {
+  it('should be accessible and load correct number of slides', async () => {
     // given
     element.slideData = mockData.slideData;
     element.autoScroll = mockData.autoScroll;
@@ -30,6 +30,7 @@ describe('c-custom-slider', () => {
 
     // then
     expect(slidesContainer.childNodes.length).toBe(mockData.slideData.length);
+    await expect(element).toBeAccessible();
   });
 
   it('should slide forward on next button click', () => {

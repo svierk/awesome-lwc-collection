@@ -8,7 +8,7 @@ describe('c-hello-world', () => {
     }
   });
 
-  it('should display greeting', () => {
+  it('is accessible and displays greeting', async () => {
     // given
     const element = createElement('c-hello-world', {
       is: HelloWorld
@@ -17,9 +17,10 @@ describe('c-hello-world', () => {
 
     // when
     document.body.appendChild(element);
-    const div = element.shadowRoot.querySelector('div');
 
     // then
+    const div = element.shadowRoot.querySelector('div');
     expect(div.textContent).toBe('Hello, World!');
+    await expect(element).toBeAccessible();
   });
 });

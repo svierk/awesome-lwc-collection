@@ -8,7 +8,7 @@ describe('c-custom-datatable-lookup', () => {
     }
   });
 
-  it('should create', () => {
+  it('should create and be accessible', async () => {
     // given
     const element = createElement('c-custom-datatable-lookup', {
       is: CustomDatatableLookup
@@ -19,5 +19,6 @@ describe('c-custom-datatable-lookup', () => {
 
     // then
     expect(element).toBeTruthy();
+    await expect(element).toBeAccessible();
   });
 });

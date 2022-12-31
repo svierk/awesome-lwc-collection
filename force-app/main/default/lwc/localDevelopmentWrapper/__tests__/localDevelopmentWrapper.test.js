@@ -8,7 +8,7 @@ describe('c-local-development-wrapper', () => {
     }
   });
 
-  it('should create', () => {
+  it('should create and be accessible', async () => {
     // given
     const element = createElement('c-local-development-wrapper', {
       is: LocalDevelopmentWrapper
@@ -19,5 +19,6 @@ describe('c-local-development-wrapper', () => {
 
     // then
     expect(element).toBeTruthy();
+    await expect(element).toBeAccessible();
   });
 });
