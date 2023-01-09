@@ -1,0 +1,8 @@
+<template>
+  <lightning-card title="Base64 To PDF" icon-name="doctype:pdf">
+    <a class="slds-button slds-button_brand" href={pdf} download={fileName} slot="actions">Download PDF File</a>
+    <div class="slds-p-around_medium">
+      <iframe src={pdfSrc} height={height} width={width}></iframe>
+    </div>
+  </lightning-card>
+</template>
