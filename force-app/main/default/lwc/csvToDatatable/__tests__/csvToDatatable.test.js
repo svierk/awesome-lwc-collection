@@ -33,6 +33,7 @@ describe('c-csv-to-datatable', () => {
 
     // when
     document.body.appendChild(element);
+    const card = element.shadowRoot.querySelector('lightning-card');
     const input = element.shadowRoot.querySelector('lightning-input');
     const files = [new Blob()];
     input.dispatchEvent(
@@ -44,6 +45,8 @@ describe('c-csv-to-datatable', () => {
     );
 
     // then
+    expect(card.iconName).toBe('doctype:csv');
+    expect(card.title).toBe('CSV To Datatable');
     expect(FileReader).toHaveBeenCalledTimes(1);
     const reader = FileReader.mock.instances[0];
     expect(reader.readAsText).toHaveBeenCalledTimes(1);
