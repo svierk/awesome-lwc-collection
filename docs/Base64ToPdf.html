@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>JSDoc: Class: OpenRecordPageFlowAction</title>
+    <title>JSDoc: Class: Base64ToPdf</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -15,15 +15,17 @@
 
   <body>
     <div id="main">
-      <h1 class="page-title">Class: OpenRecordPageFlowAction</h1>
+      <h1 class="page-title">Class: Base64ToPdf</h1>
 
       <section>
         <header>
           <h2>
-            <span class="attribs"><span class="type-signature"></span></span>OpenRecordPageFlowAction
+            <span class="attribs"><span class="type-signature"></span></span>Base64ToPdf
           </h2>
 
-          <div class="class-description">Component to forward to a record page from flow.</div>
+          <div class="class-description">
+            A simple utility for Base64 encoded strings to decode them into PDF files.
+          </div>
         </header>
 
         <article>
@@ -33,9 +35,8 @@
               <dd class="tag-source">
                 <ul class="dummy">
                   <li>
-                    <a href="openRecordPageFlowAction_openRecordPageFlowAction.js.html"
-                      >openRecordPageFlowAction/openRecordPageFlowAction.js</a
-                    >, <a href="openRecordPageFlowAction_openRecordPageFlowAction.js.html#line12">line 12</a>
+                    <a href="base64ToPdf_base64ToPdf.js.html">base64ToPdf/base64ToPdf.js</a>,
+                    <a href="base64ToPdf_base64ToPdf.js.html#line13">line 13</a>
                   </li>
                 </ul>
               </dd>
@@ -45,7 +46,7 @@
 
             <pre
               class="prettyprint"
-            ><code>&lt;c-open-record-page-flow-action record-id={recordId} target="_blank">&lt;/c-open-record-page-flow-action></code></pre>
+            ><code>&lt;c-base64-to-pdf height="500px" width="100%">&lt;/c-base64-to-pdf></code></pre>
           </div>
 
           <h3 class="subsection-title">Extends</h3>
@@ -56,11 +57,11 @@
 
           <h3 class="subsection-title">Members</h3>
 
-          <h4 class="name" id="recordId">
-            <span class="type-signature"></span>recordId<span class="type-signature"> :string</span>
+          <h4 class="name" id="height">
+            <span class="type-signature"></span>height<span class="type-signature"> :string</span>
           </h4>
 
-          <div class="description">Record Id of the record page to which the action should forward.</div>
+          <div class="description">Specifies the height of the pdf iframe. Default height is 500 pixels.</div>
 
           <h5>Type:</h5>
           <ul>
@@ -73,7 +74,7 @@
             <dt class="tag-default">Default Value:</dt>
             <dd class="tag-default">
               <ul class="dummy">
-                <li>''</li>
+                <li>'500px'</li>
               </ul>
             </dd>
 
@@ -81,19 +82,18 @@
             <dd class="tag-source">
               <ul class="dummy">
                 <li>
-                  <a href="openRecordPageFlowAction_openRecordPageFlowAction.js.html"
-                    >openRecordPageFlowAction/openRecordPageFlowAction.js</a
-                  >, <a href="openRecordPageFlowAction_openRecordPageFlowAction.js.html#line18">line 18</a>
+                  <a href="base64ToPdf_base64ToPdf.js.html">base64ToPdf/base64ToPdf.js</a>,
+                  <a href="base64ToPdf_base64ToPdf.js.html#line19">line 19</a>
                 </li>
               </ul>
             </dd>
           </dl>
 
-          <h4 class="name" id="target">
-            <span class="type-signature"></span>target<span class="type-signature"> :string</span>
+          <h4 class="name" id="width">
+            <span class="type-signature"></span>width<span class="type-signature"> :string</span>
           </h4>
 
-          <div class="description">Open the page in the same '_self' or in a new tab '_blank '.</div>
+          <div class="description">Specifies the width of the pdf iframe. Default width is 100 percent.</div>
 
           <h5>Type:</h5>
           <ul>
@@ -106,7 +106,7 @@
             <dt class="tag-default">Default Value:</dt>
             <dd class="tag-default">
               <ul class="dummy">
-                <li>''</li>
+                <li>'100%'</li>
               </ul>
             </dd>
 
@@ -114,9 +114,8 @@
             <dd class="tag-source">
               <ul class="dummy">
                 <li>
-                  <a href="openRecordPageFlowAction_openRecordPageFlowAction.js.html"
-                    >openRecordPageFlowAction/openRecordPageFlowAction.js</a
-                  >, <a href="openRecordPageFlowAction_openRecordPageFlowAction.js.html#line25">line 25</a>
+                  <a href="base64ToPdf_base64ToPdf.js.html">base64ToPdf/base64ToPdf.js</a>,
+                  <a href="base64ToPdf_base64ToPdf.js.html#line26">line 26</a>
                 </li>
               </ul>
             </dd>

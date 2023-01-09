@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>JSDoc: Source: openRecordPageFlowAction/openRecordPageFlowAction.js</title>
+    <title>JSDoc: Source: base64ToPdf/base64ToPdf.js</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -15,39 +15,42 @@
 
   <body>
     <div id="main">
-      <h1 class="page-title">Source: openRecordPageFlowAction/openRecordPageFlowAction.js</h1>
+      <h1 class="page-title">Source: base64ToPdf/base64ToPdf.js</h1>
 
       <section>
         <article>
           <pre class="prettyprint source linenums"><code>import { api, LightningElement } from 'lwc';
+import { base64 } from './example.js';
 
 /**
- * Component to forward to a record page from flow.
- * @alias OpenRecordPageFlowAction
+ * A simple utility for Base64 encoded strings to decode them into PDF files.
+ * @alias Base64ToPdf
  * @extends LightningElement
  * @hideconstructor
  *
  * @example
- * &lt;c-open-record-page-flow-action record-id={recordId} target="_blank">&lt;/c-open-record-page-flow-action>
+ * &lt;c-base64-to-pdf height="500px" width="100%">&lt;/c-base64-to-pdf>
  */
-export default class OpenRecordPageFlowAction extends LightningElement {
+export default class Base64ToPdf extends LightningElement {
   /**
-   * Record Id of the record page to which the action should forward.
+   * Specifies the height of the pdf iframe. Default height is 500 pixels.
    * @type {string}
-   * @default ''
+   * @default '500px'
    */
-  @api recordId;
+  @api height = '500px';
 
   /**
-   * Open the page in the same '_self' or in a new tab '_blank '.
+   * Specifies the width of the pdf iframe. Default width is 100 percent.
    * @type {string}
-   * @default ''
+   * @default '100%'
    */
-  @api target = '_blank';
+  @api width = '100%';
 
-  connectedCallback() {
-    const completeURL = `${window.location.origin}/${this.recordId}`;
-    window.open(completeURL, this.target);
+  pdf = `data:application/pdf;base64,${base64}`;
+  fileName = 'example.pdf';
+
+  get pdfSrc() {
+    return this.pdf;
   }
 }
 </code></pre>
