@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>JSDoc: Class: CustomMapView</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css" />
+  </head>
+
+  <body>
+    <div id="main">
+      <h1 class="page-title">Class: CustomMapView</h1>
+
+      <section>
+        <header>
+          <h2>
+            <span class="attribs"><span class="type-signature"></span></span>CustomMapView
+          </h2>
+
+          <div class="class-description">Configurable map component for displaying locations via Google Maps API.</div>
+        </header>
+
+        <article>
+          <div class="container-overview">
+            <dl class="details">
+              <dt class="tag-source">Source:</dt>
+              <dd class="tag-source">
+                <ul class="dummy">
+                  <li>
+                    <a href="customMapView_customMapView.js.html">customMapView/customMapView.js</a>,
+                    <a href="customMapView_customMapView.js.html#line23">line 23</a>
+                  </li>
+                </ul>
+              </dd>
+            </dl>
+
+            <h5>Example</h5>
+
+            <pre class="prettyprint"><code>&lt;c-custom-map-view
+  object-api-name="Account"
+  height="400px"
+  width="100%"
+>&lt;/c-custom-map-view></code></pre>
+          </div>
+
+          <h3 class="subsection-title">Extends</h3>
+
+          <ul>
+            <li>LightningElement</li>
+          </ul>
+
+          <h3 class="subsection-title">Members</h3>
+
+          <h4 class="name" id="cityField">
+            <span class="type-signature"></span>cityField<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">API name of the field that contains the city.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customMapView_customMapView.js.html">customMapView/customMapView.js</a>,
+                  <a href="customMapView_customMapView.js.html#line74">line 74</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="countryField">
+            <span class="type-signature"></span>countryField<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">API name of the field that contains the country.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customMapView_customMapView.js.html">customMapView/customMapView.js</a>,
+                  <a href="customMapView_customMapView.js.html#line80">line 80</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="height">
+            <span class="type-signature"></span>height<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">Height of the map component in percent or pixels. The default is 400px.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>'400px'</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customMapView_customMapView.js.html">customMapView/customMapView.js</a>,
+                  <a href="customMapView_customMapView.js.html#line41">line 41</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="listView">
+            <span class="type-signature"></span>listView<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">
+            Displays or hides the list of locations. Valid values are visible, hidden, or auto.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>'auto'</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customMapView_customMapView.js.html">customMapView/customMapView.js</a>,
+                  <a href="customMapView_customMapView.js.html#line55">line 55</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="objectApiName">
+            <span class="type-signature"></span>objectApiName<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">
+            If the component is used on a lightning record page, the page sets the property to the API name of the
+            current object.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customMapView_customMapView.js.html">customMapView/customMapView.js</a>,
+                  <a href="customMapView_customMapView.js.html#line34">line 34</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="postalCodeField">
+            <span class="type-signature"></span>postalCodeField<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">API name of the field that contains the postal code.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customMapView_customMapView.js.html">customMapView/customMapView.js</a>,
+                  <a href="customMapView_customMapView.js.html#line86">line 86</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="recordId">
+            <span class="type-signature"></span>recordId<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">
+            If the component is used on a lightning record page, the page sets the property to the id of the current
+            record.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customMapView_customMapView.js.html">customMapView/customMapView.js</a>,
+                  <a href="customMapView_customMapView.js.html#line28">line 28</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="stateField">
+            <span class="type-signature"></span>stateField<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">API name of the field that contains the state.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customMapView_customMapView.js.html">customMapView/customMapView.js</a>,
+                  <a href="customMapView_customMapView.js.html#line92">line 92</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="streetField">
+            <span class="type-signature"></span>streetField<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">API name of the field that contains the street.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customMapView_customMapView.js.html">customMapView/customMapView.js</a>,
+                  <a href="customMapView_customMapView.js.html#line98">line 98</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="titleField">
+            <span class="type-signature"></span>titleField<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">
+            API name of the field that contains the location title. The default is the Name field.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>'Name'</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customMapView_customMapView.js.html">customMapView/customMapView.js</a>,
+                  <a href="customMapView_customMapView.js.html#line68">line 68</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="width">
+            <span class="type-signature"></span>width<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">Width of the map component in percent or pixels. The default is 100%.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>'100%'</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customMapView_customMapView.js.html">customMapView/customMapView.js</a>,
+                  <a href="customMapView_customMapView.js.html#line48">line 48</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="zoomLevel">
+            <span class="type-signature"></span>zoomLevel<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">
+            Supports zoom levels from 1 to 20. If not specified, the component calculates a zoom level to accommodate
+            the markers in the map.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="customMapView_customMapView.js.html">customMapView/customMapView.js</a>,
+                  <a href="customMapView_customMapView.js.html#line61">line 61</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+        </article>
+      </section>
+    </div>
+
+    <nav>
+      <h2><a href="index.html">Home</a></h2>
+      <h3>Classes</h3>
+      <ul>
+        <li><a href="Base64ToPdf.html">Base64ToPdf</a></li>
+        <li><a href="CsvToDatatable.html">CsvToDatatable</a></li>
+        <li><a href="CustomDatatable.html">CustomDatatable</a></li>
+        <li><a href="CustomMapView.html">CustomMapView</a></li>
+        <li><a href="CustomSlider.html">CustomSlider</a></li>
+        <li><a href="HelloWorld.html">HelloWorld</a></li>
+        <li><a href="IFrame.html">IFrame</a></li>
+        <li><a href="LocalDevelopmentWrapper.html">LocalDevelopmentWrapper</a></li>
+        <li><a href="MultiSelectCombobox.html">MultiSelectCombobox</a></li>
+        <li><a href="MultiSelectComboboxItem.html">MultiSelectComboboxItem</a></li>
+        <li><a href="OpenRecordPageFlowAction.html">OpenRecordPageFlowAction</a></li>
+      </ul>
+      <h3>Global</h3>
+      <ul>
+        <li><a href="global.html#slidesData">slidesData</a></li>
+      </ul>
+    </nav>
+
+    <br class="clear" />
+
+    <footer>
+      Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.0</a> on Thu Feb 16 2023 11:49:13
+      GMT+0100 (Central European Standard Time)
+    </footer>
+
+    <script>
+      prettyPrint();
+    </script>
+    <script src="scripts/linenumber.js"></script>
+  </body>
+</html>
