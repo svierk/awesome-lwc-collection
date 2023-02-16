@@ -1,0 +1,25 @@
+{
+  "apiName": "Account",
+  "fields": {
+    "Name": {
+      "displayValue": null,
+      "value": "Test Account"
+    },
+    "BillingCity": {
+      "displayValue": null,
+      "value": "Test City"
+    },
+    "BillingCountry": {
+      "displayValue": "Test Country",
+      "value": "US"
+    },
+    "BillingPostalCode": {
+      "displayValue": null,
+      "value": "12345"
+    },
+    "BillingStreet": {
+      "displayValue": null,
+      "value": "Test Street 50"
+    }
+  }
+}
