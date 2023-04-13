@@ -36,3 +36,5 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: Codecov Coverage Upload
+        uses: codecov/codecov-action@v3
