@@ -38,7 +38,3 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Codecov Coverage Upload
         uses: codecov/codecov-action@main
-      - name: OSS Compliance Scan
-        uses: fossas/fossa-action@main
-        with:
-          api-key: ${{secrets.FOSSA_TOKEN}}
