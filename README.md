@@ -1,9 +1,9 @@
 # ⚡️ Awesome LWC Collection
 
-![GitHub](https://img.shields.io:/github/license/svierk/awesome-lwc-collection)
 ![GitHub CI](https://github.com/svierk/awesome-lwc-collection/actions/workflows/ci.yaml/badge.svg)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=svierk_awesome-lwc-collection&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=svierk_awesome-lwc-collection)
 [![codecov](https://codecov.io/gh/svierk/awesome-lwc-collection/branch/main/graph/badge.svg?token=UFE3TWMECQ)](https://codecov.io/gh/svierk/awesome-lwc-collection)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsvierk%2Fawesome-lwc-collection.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsvierk%2Fawesome-lwc-collection?ref=badge_shield)
 
 ## About the project
 

@@ -15,11 +15,11 @@ jobs:
         node-version: [16.19.0]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@main
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@main
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
@@ -37,4 +37,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.REPO_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Codecov Coverage Upload
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@main
