@@ -14,14 +14,14 @@ export default class CsvToDatatable extends LightningElement {
   @track columns = [];
   @track data = [];
 
-  handleFileUpload(event) {
+  async handleFileUpload(event) {
     const files = event.detail.files;
 
     if (files.length > 0) {
       const file = files[0];
       this.fileName = file.name;
 
-      this.read(file);
+      await this.read(file);
     }
   }
 

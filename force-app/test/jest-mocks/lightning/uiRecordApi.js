@@ -20,12 +20,12 @@ export const getFieldValue = jest.fn((data, fieldReference) => {
     const fields = fieldReference.fieldApiName.split('.');
     if (data.result) {
       const fieldData = fields.reduce((o, i) => o[i], data.result.fields);
-      if (fieldData && fieldData.value) {
+      if (fieldData?.value) {
         return fieldData.value;
       }
     } else {
       const fieldData = fields.reduce((o, i) => o[i], data.fields);
-      if (fieldData && fieldData.value) {
+      if (fieldData?.value) {
         return fieldData.value;
       }
     }

@@ -101,7 +101,7 @@ export default class CustomMapView extends LightningElement {
 
   @wire(getRecord, { recordId: '$recordId', layoutTypes: ['Full'] })
   wiredRecord({ error, data }) {
-    if (data && data.fields) {
+    if (data?.fields) {
       const fields = data.fields;
       const title = fields[this.titleField]?.value;
       const city = fields[this.cityField]?.value;
