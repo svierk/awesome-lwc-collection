@@ -10,7 +10,7 @@
   "license": "MIT",
   "engines": {
     "node": "16.20.0",
-    "npm": "9.x.x"
+    "npm": "8.x.x"
   },
   "scripts": {
     "lint": "eslint **/lwc/**/*.js",
