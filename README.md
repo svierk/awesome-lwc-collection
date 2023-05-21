@@ -11,7 +11,7 @@ The repository should provide a collection of ready-to-use Lightning Web Compone
 
 ## Prerequisites
 
-To use this library and try out the components locally, [Node](https://nodejs.org/en/) and the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli) should already be installed.
+To use this library and try out the components locally, the [Node](https://nodejs.org/en/) version specified in the *package.json* and the latest version of the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli) should already be installed.
 
 ## Getting started
 
