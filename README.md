@@ -17,7 +17,11 @@ To use this library and try out the components locally, the [Node](https://nodej
 
 ### Install all dependencies
 
-To get the components up and runnning, you need to open the repository with VS Code, install all the recommended extensions and run `npm install` to install all required dependencies.
+To get the components up and runnning, you need to open the repository with VS Code, install all the recommended extensions and run the following command to install all required dependencies:
+
+```
+npm install
+```
 
 ### Authorize an org
 
@@ -39,7 +43,11 @@ The local development server and its configuration are provided by a Salesforce 
 sfdx plugins:install @salesforce/lwc-dev-server
 ```
 
-Run `npm run server:lwc` to start the server on http://localhost:3333 and access all components of this project.
+To start the server on http://localhost:3333 and access all components of this project run:
+
+```
+npm run server:lwc
+```
 
 ## Components available
 
@@ -66,20 +74,43 @@ The project includes client-side pre-commit git hooks using [husky](https://gith
 
 ### Prettier for code formatting
 
-Run `npm run prettier` to check all files for _Prettier_ issues.
+Run _Prettier_ to check all files for formatting issues:
+
+```
+npm run prettier
+```
 
 ### Code linting with ESLint
 
-Run `npm run lint` to check for _ESLint_ issues.
+Run _ESLint_ to check for linting issues:
+
+```
+npm run lint
+```
 
 ### Unit tests with Jest
 
-Run
+To execute all unit tests only once run:
 
-- `npm run test:unit` to execute all unit tests only once
-- `npm run test:unit:watch` to execute all unit tests in watch mode for development
-- `npm run test:unit:coverage` to execute all unit tests with generated code coverage
+```
+npm run test:unit
+``` 
+
+To execute all unit tests in watch mode for development run:
+
+```
+npm run test:unit:watch
+``` 
+
+To execute all unit tests with generated code coverage run:
+```
+npm run test:unit:coverage 
+```
 
 ### Documentation with JSDoc
 
-Run `npm run docs` to generate code documentation with _JSDoc_ in HTML format.
+To generate code documentation with _JSDoc_ in HTML format run:
+
+```
+npm run docs
+```
