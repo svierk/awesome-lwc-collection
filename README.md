@@ -11,7 +11,7 @@ The repository should provide a collection of ready-to-use Lightning Web Compone
 
 ## Prerequisites
 
-To use this library and try out the components locally, the [Node](https://nodejs.org/en/) version specified in the *package.json* and the latest version of the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli) should already be installed.
+To use this library and try out the components locally, the [Node](https://nodejs.org/en/) version specified in the _package.json_ and the latest version of the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli) should already be installed.
 
 ## Getting started
 
@@ -94,17 +94,18 @@ To execute all unit tests only once run:
 
 ```
 npm run test:unit
-``` 
+```
 
 To execute all unit tests in watch mode for development run:
 
 ```
 npm run test:unit:watch
-``` 
+```
 
 To execute all unit tests with generated code coverage run:
+
 ```
-npm run test:unit:coverage 
+npm run test:unit:coverage
 ```
 
 ### Documentation with JSDoc
