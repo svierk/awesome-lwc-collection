@@ -23,7 +23,6 @@
         <article>
           <h1>⚡️ Awesome LWC Collection</h1>
           <p>
-            <img src="https://img.shields.io:/github/license/svierk/awesome-lwc-collection" alt="GitHub" />
             <img
               src="https://github.com/svierk/awesome-lwc-collection/actions/workflows/ci.yaml/badge.svg"
               alt="GitHub CI"
@@ -32,6 +31,16 @@
               ><img
                 src="https://sonarcloud.io/api/project_badges/measure?project=svierk_awesome-lwc-collection&amp;metric=alert_status"
                 alt="Quality Gate Status"
+            /></a>
+            <a href="https://codecov.io/gh/svierk/awesome-lwc-collection"
+              ><img
+                src="https://codecov.io/gh/svierk/awesome-lwc-collection/branch/main/graph/badge.svg?token=UFE3TWMECQ"
+                alt="codecov"
+            /></a>
+            <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Fsvierk%2Fawesome-lwc-collection?ref=badge_shield"
+              ><img
+                src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsvierk%2Fawesome-lwc-collection.svg?type=shield"
+                alt="FOSSA Status"
             /></a>
           </p>
           <h2>About the project</h2>
@@ -43,15 +52,19 @@
           </p>
           <h2>Prerequisites</h2>
           <p>
-            To use this library and try out the components locally, <a href="https://nodejs.org/en/">Node</a> and the
-            <a href="https://developer.salesforce.com/tools/sfdxcli">Salesforce CLI</a> should already be installed.
+            To use this library and try out the components locally, the
+            <a href="https://nodejs.org/en/">Node</a> version specified in the <em>package.json</em> and the latest
+            version of the <a href="https://developer.salesforce.com/tools/sfdxcli">Salesforce CLI</a> should already be
+            installed.
           </p>
           <h2>Getting started</h2>
           <h3>Install all dependencies</h3>
           <p>
             To get the components up and runnning, you need to open the repository with VS Code, install all the
-            recommended extensions and run <code>npm install</code> to install all required dependencies.
+            recommended extensions and run the following command to install all required dependencies:
           </p>
+          <pre class="prettyprint source"><code>npm install
+</code></pre>
           <h3>Authorize an org</h3>
           <p>
             You need to authorize an org before you use the local development server. This is necessary because all data
@@ -73,10 +86,9 @@
           </p>
           <pre class="prettyprint source"><code>sfdx plugins:install @salesforce/lwc-dev-server
 </code></pre>
-          <p>
-            Run <code>npm run server:lwc</code> to start the server on http://localhost:3333 and access all components
-            of this project.
-          </p>
+          <p>To start the server on http://localhost:3333 and access all components of this project run:</p>
+          <pre class="prettyprint source"><code>npm run server:lwc
+</code></pre>
           <h2>Components available</h2>
           <p>
             The following list of components is part of this repo. All components contain corresponding unit tests and
@@ -155,18 +167,27 @@
             Prettier, Linter and unit tests are automatically executed before each commit.
           </p>
           <h3>Prettier for code formatting</h3>
-          <p>Run <code>npm run prettier</code> to check all files for <em>Prettier</em> issues.</p>
+          <p>Run <em>Prettier</em> to check all files for formatting issues:</p>
+          <pre class="prettyprint source"><code>npm run prettier
+</code></pre>
           <h3>Code linting with ESLint</h3>
-          <p>Run <code>npm run lint</code> to check for <em>ESLint</em> issues.</p>
+          <p>Run <em>ESLint</em> to check for linting issues:</p>
+          <pre class="prettyprint source"><code>npm run lint
+</code></pre>
           <h3>Unit tests with Jest</h3>
-          <p>Run</p>
-          <ul>
-            <li><code>npm run test:unit</code> to execute all unit tests only once</li>
-            <li><code>npm run test:unit:watch</code> to execute all unit tests in watch mode for development</li>
-            <li><code>npm run test:unit:coverage</code> to execute all unit tests with generated code coverage</li>
-          </ul>
+          <p>To execute all unit tests only once run:</p>
+          <pre class="prettyprint source"><code>npm run test:unit
+</code></pre>
+          <p>To execute all unit tests in watch mode for development run:</p>
+          <pre class="prettyprint source"><code>npm run test:unit:watch
+</code></pre>
+          <p>To execute all unit tests with generated code coverage run:</p>
+          <pre class="prettyprint source"><code>npm run test:unit:coverage
+</code></pre>
           <h3>Documentation with JSDoc</h3>
-          <p>Run <code>npm run docs</code> to generate code documentation with <em>JSDoc</em> in HTML format.</p>
+          <p>To generate code documentation with <em>JSDoc</em> in HTML format run:</p>
+          <pre class="prettyprint source"><code>npm run docs
+</code></pre>
         </article>
       </section>
     </div>
@@ -196,8 +217,8 @@
     <br class="clear" />
 
     <footer>
-      Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Thu Mar 23 2023 10:59:55
-      GMT+0100 (Central European Standard Time)
+      Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Fri May 26 2023 11:29:08
+      GMT+0200 (Central European Summer Time)
     </footer>
 
     <script>
