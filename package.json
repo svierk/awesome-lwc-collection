@@ -28,7 +28,7 @@
     "docs": "jsdoc -c jsdoc.config.json"
   },
   "devDependencies": {
-    "@babel/core": "^7.21.8",
+    "@babel/core": "^7.22.1",
     "@babel/eslint-parser": "^7.21.8",
     "@locker/eslint-config-locker": "^0.19.6",
     "@lwc/eslint-plugin-lwc": "^1.6.2",
