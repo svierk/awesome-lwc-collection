@@ -93,6 +93,7 @@ export default class MultiSelectCombobox extends LightningElement {
   connectedCallback() {
     this.isDisabled = this.disabled || this.readOnly;
     this.hasPillsEnabled = this.showPills && !this.singleSelect;
+    this.currentOptions = this.options;
   }
 
   renderedCallback() {
