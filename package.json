@@ -30,7 +30,7 @@
   "devDependencies": {
     "@babel/core": "^7.22.5",
     "@babel/eslint-parser": "^7.22.5",
-    "@locker/eslint-config-locker": "^0.19.8",
+    "@locker/eslint-config-locker": "^0.19.10",
     "@lwc/eslint-plugin-lwc": "^1.6.3",
     "@prettier/plugin-xml": "^2.2.0",
     "@sa11y/jest": "^5.2.0",
