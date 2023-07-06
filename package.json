@@ -28,11 +28,11 @@
     "docs": "jsdoc -c jsdoc.config.json"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.5",
-    "@babel/eslint-parser": "^7.22.5",
+    "@babel/core": "^7.22.7",
+    "@babel/eslint-parser": "^7.22.7",
     "@locker/eslint-config-locker": "^0.19.10",
     "@lwc/eslint-plugin-lwc": "^1.6.3",
-    "@prettier/plugin-xml": "^2.2.0",
+    "@prettier/plugin-xml": "^3.0.0",
     "@sa11y/jest": "^5.2.0",
     "@salesforce/eslint-config-lwc": "^3.5.0",
     "@salesforce/eslint-plugin-aura": "^2.1.0",
@@ -46,8 +46,8 @@
     "jest-junit": "^16.0.0",
     "jsdoc": "^4.0.2",
     "lint-staged": "^13.2.3",
-    "prettier": "^2.8.8",
-    "prettier-plugin-apex": "^1.13.0",
+    "prettier": "^3.0.0",
+    "prettier-plugin-apex": "^2.0.1",
     "typescript": "~5.1.6"
   },
   "lint-staged": {

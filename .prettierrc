@@ -1,4 +1,5 @@
 {
+  "plugins": ["@prettier/plugin-xml", "prettier-plugin-apex"],
   "trailingComma": "none",
   "overrides": [
     {
