@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>JSDoc: Class: LocalDevelopmentWrapper</title>
+    <title>JSDoc: Source: visualforceToPdf/visualforceToPdf.js</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -15,40 +15,44 @@
 
   <body>
     <div id="main">
-      <h1 class="page-title">Class: LocalDevelopmentWrapper</h1>
+      <h1 class="page-title">Source: visualforceToPdf/visualforceToPdf.js</h1>
 
       <section>
-        <header>
-          <h2>
-            <span class="attribs"><span class="type-signature"></span></span>LocalDevelopmentWrapper
-          </h2>
-
-          <div class="class-description">
-            A simple wrapper component to locally test input parameters of other components.
-          </div>
-        </header>
-
         <article>
-          <div class="container-overview">
-            <dl class="details">
-              <dt class="tag-source">Source:</dt>
-              <dd class="tag-source">
-                <ul class="dummy">
-                  <li>
-                    <a href="localDevelopmentWrapper_localDevelopmentWrapper.js.html"
-                      >localDevelopmentWrapper/localDevelopmentWrapper.js</a
-                    >, <a href="localDevelopmentWrapper_localDevelopmentWrapper.js.html#line9">line 9</a>
-                  </li>
-                </ul>
-              </dd>
-            </dl>
-          </div>
+          <pre class="prettyprint source linenums"><code>import { api, LightningElement } from 'lwc';
 
-          <h3 class="subsection-title">Extends</h3>
+/**
+ * A simple utility for displaying Visualforce based PDF documents.
+ * @alias VisualforceToPdf
+ * @extends LightningElement
+ * @hideconstructor
+ *
+ * @example
+ * &lt;c-visualforce-to-pdf url="/apex/AccountDetails" height="500px" width="100%">&lt;/c-visualforce-to-pdf>
+ */
+export default class VisualforceToPdf extends LightningElement {
+  /**
+   * Specifies the height of the PFD viewer. Default height is 500 pixels.
+   * @type {string}
+   * @default '500px'
+   */
+  @api height = '500px';
 
-          <ul>
-            <li>LightningElement</li>
-          </ul>
+  /**
+   * Specifies the Visualforce Page address of the document to be displayed.
+   * @type {string}
+   * @default ''
+   */
+  @api url = '';
+
+  /**
+   * Specifies the width of the PFD viewer. Default width is 100 percent.
+   * @type {string}
+   * @default '100%'
+   */
+  @api width = '100%';
+}
+</code></pre>
         </article>
       </section>
     </div>
