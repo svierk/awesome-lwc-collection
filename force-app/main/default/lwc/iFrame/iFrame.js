@@ -12,7 +12,6 @@ import { api, LightningElement } from 'lwc';
  *   height="500px"
  *   width="100%"
  *   referrerpolicy="no-referrer"
- *   sandbox=""
  * ></c-i-frame>
  */
 export default class IFrame extends LightningElement {
@@ -50,4 +49,11 @@ export default class IFrame extends LightningElement {
    * @default '100%'
    */
   @api width = '100%';
+
+  renderedCallback() {
+    if (this.sandbox) {
+      const element = this.template.querySelector('iframe');
+      element.sandbox = this.sandbox;
+    }
+  }
 }

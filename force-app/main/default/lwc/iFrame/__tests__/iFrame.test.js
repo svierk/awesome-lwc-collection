@@ -13,6 +13,7 @@ describe('c-i-frame', () => {
     const element = createElement('c-i-frame', {
       is: IFrame
     });
+    element.sandbox = 'test';
 
     // when
     document.body.appendChild(element);
