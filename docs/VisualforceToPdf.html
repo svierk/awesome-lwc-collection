@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>JSDoc: Class: IFrame</title>
+    <title>JSDoc: Class: VisualforceToPdf</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -15,15 +15,15 @@
 
   <body>
     <div id="main">
-      <h1 class="page-title">Class: IFrame</h1>
+      <h1 class="page-title">Class: VisualforceToPdf</h1>
 
       <section>
         <header>
           <h2>
-            <span class="attribs"><span class="type-signature"></span></span>IFrame
+            <span class="attribs"><span class="type-signature"></span></span>VisualforceToPdf
           </h2>
 
-          <div class="class-description">A custom iFrame component with different configuration options.</div>
+          <div class="class-description">A simple utility for displaying Visualforce based PDF documents.</div>
         </header>
 
         <article>
@@ -33,8 +33,8 @@
               <dd class="tag-source">
                 <ul class="dummy">
                   <li>
-                    <a href="iFrame_iFrame.js.html">iFrame/iFrame.js</a>,
-                    <a href="iFrame_iFrame.js.html#line17">line 17</a>
+                    <a href="visualforceToPdf_visualforceToPdf.js.html">visualforceToPdf/visualforceToPdf.js</a>,
+                    <a href="visualforceToPdf_visualforceToPdf.js.html#line12">line 12</a>
                   </li>
                 </ul>
               </dd>
@@ -42,12 +42,9 @@
 
             <h5>Example</h5>
 
-            <pre class="prettyprint"><code>&lt;c-i-frame
-  url="https://example.com/"
-  height="500px"
-  width="100%"
-  referrerpolicy="no-referrer"
->&lt;/c-i-frame></code></pre>
+            <pre
+              class="prettyprint"
+            ><code>&lt;c-visualforce-to-pdf url="/apex/AccountDetails" height="500px" width="100%">&lt;/c-visualforce-to-pdf></code></pre>
           </div>
 
           <h3 class="subsection-title">Extends</h3>
@@ -62,7 +59,7 @@
             <span class="type-signature"></span>height<span class="type-signature"> :string</span>
           </h4>
 
-          <div class="description">Specifies the height of the iframe. Default height is 500 pixels.</div>
+          <div class="description">Specifies the height of the PFD viewer. Default height is 500 pixels.</div>
 
           <h5>Type:</h5>
           <ul>
@@ -83,72 +80,8 @@
             <dd class="tag-source">
               <ul class="dummy">
                 <li>
-                  <a href="iFrame_iFrame.js.html">iFrame/iFrame.js</a>,
-                  <a href="iFrame_iFrame.js.html#line23">line 23</a>
-                </li>
-              </ul>
-            </dd>
-          </dl>
-
-          <h4 class="name" id="referrerPolicy">
-            <span class="type-signature"></span>referrerPolicy<span class="type-signature"> :string</span>
-          </h4>
-
-          <div class="description">Specifies which referrer information to send when fetching the iframe.</div>
-
-          <h5>Type:</h5>
-          <ul>
-            <li>
-              <span class="param-type">string</span>
-            </li>
-          </ul>
-
-          <dl class="details">
-            <dt class="tag-default">Default Value:</dt>
-            <dd class="tag-default">
-              <ul class="dummy">
-                <li>'no-referrer'</li>
-              </ul>
-            </dd>
-
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source">
-              <ul class="dummy">
-                <li>
-                  <a href="iFrame_iFrame.js.html">iFrame/iFrame.js</a>,
-                  <a href="iFrame_iFrame.js.html#line30">line 30</a>
-                </li>
-              </ul>
-            </dd>
-          </dl>
-
-          <h4 class="name" id="sandbox">
-            <span class="type-signature"></span>sandbox<span class="type-signature"> :string</span>
-          </h4>
-
-          <div class="description">Enables an extra set of restrictions for the content in an iframe.</div>
-
-          <h5>Type:</h5>
-          <ul>
-            <li>
-              <span class="param-type">string</span>
-            </li>
-          </ul>
-
-          <dl class="details">
-            <dt class="tag-default">Default Value:</dt>
-            <dd class="tag-default">
-              <ul class="dummy">
-                <li>''</li>
-              </ul>
-            </dd>
-
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source">
-              <ul class="dummy">
-                <li>
-                  <a href="iFrame_iFrame.js.html">iFrame/iFrame.js</a>,
-                  <a href="iFrame_iFrame.js.html#line37">line 37</a>
+                  <a href="visualforceToPdf_visualforceToPdf.js.html">visualforceToPdf/visualforceToPdf.js</a>,
+                  <a href="visualforceToPdf_visualforceToPdf.js.html#line18">line 18</a>
                 </li>
               </ul>
             </dd>
@@ -158,7 +91,7 @@
             <span class="type-signature"></span>url<span class="type-signature"> :string</span>
           </h4>
 
-          <div class="description">Specifies the address of the document to embed in the iframe.</div>
+          <div class="description">Specifies the Visualforce Page address of the document to be displayed.</div>
 
           <h5>Type:</h5>
           <ul>
@@ -179,8 +112,8 @@
             <dd class="tag-source">
               <ul class="dummy">
                 <li>
-                  <a href="iFrame_iFrame.js.html">iFrame/iFrame.js</a>,
-                  <a href="iFrame_iFrame.js.html#line44">line 44</a>
+                  <a href="visualforceToPdf_visualforceToPdf.js.html">visualforceToPdf/visualforceToPdf.js</a>,
+                  <a href="visualforceToPdf_visualforceToPdf.js.html#line25">line 25</a>
                 </li>
               </ul>
             </dd>
@@ -190,7 +123,7 @@
             <span class="type-signature"></span>width<span class="type-signature"> :string</span>
           </h4>
 
-          <div class="description">Specifies the width of an iframe. Default width is 100 percent.</div>
+          <div class="description">Specifies the width of the PFD viewer. Default width is 100 percent.</div>
 
           <h5>Type:</h5>
           <ul>
@@ -211,8 +144,8 @@
             <dd class="tag-source">
               <ul class="dummy">
                 <li>
-                  <a href="iFrame_iFrame.js.html">iFrame/iFrame.js</a>,
-                  <a href="iFrame_iFrame.js.html#line51">line 51</a>
+                  <a href="visualforceToPdf_visualforceToPdf.js.html">visualforceToPdf/visualforceToPdf.js</a>,
+                  <a href="visualforceToPdf_visualforceToPdf.js.html#line32">line 32</a>
                 </li>
               </ul>
             </dd>
