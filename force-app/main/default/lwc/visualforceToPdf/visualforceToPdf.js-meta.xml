@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Visualforce To PDF</masterLabel>
+    <description>A simple utility for displaying Visualforce based PDF documents.</description>
+    <targets>
+      <target>lightning__AppPage</target>
+      <target>lightning__HomePage</target>
+      <target>lightning__FlowScreen</target>
+      <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage, lightning__FlowScreen, lightning__HomePage, lightning__RecordPage">
+        <property
+        name="url"
+        label="Visualforce Page URL"
+        type="String"
+        description="Specifies the Visualforce Page address of the document to be displayed."
+      />
+        <property
+        name="height"
+        label="Height"
+        type="String"
+        default="500px"
+        description="Specifies the height of the PFD viewer. Default height is 500 pixels."
+      />
+        <property
+        name="width"
+        label="Width"
+        type="String"
+        default="100%"
+        description="Specifies the width of the PFD viewer. Default width is 100 percent."
+      />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
