@@ -4,7 +4,7 @@ import getRecords from '@salesforce/apex/CustomDatatableUtil.getRecordsWithField
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { deleteRecord, updateRecord } from 'lightning/uiRecordApi';
-import { api, LightningElement, track, wire } from 'lwc';
+import { LightningElement, api, track, wire } from 'lwc';
 
 /**
  * A custom datatable with different configuration options.
@@ -73,6 +73,13 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
    * @default false
    */
   @api hideTableHeader = false;
+
+  /**
+   * If present, the table is wrapped with the correct page header to fit better into the related list layout.
+   * @type {boolean}
+   * @default false
+   */
+  @api isUsedAsRelatedList = false;
 
   /**
    * Required field for better table performance. Associates each row with a unique Id.
