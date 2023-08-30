@@ -1,6 +1,6 @@
 # Multi Select Combobox
 
-Combobox with different configuration options that also supports multi select.
+Combobox with different configuration options that also supports multi select. How the component was built and works in detail is explained in the following Medium post: [How to Create the LWC Multi-Select Combobox that Salesforce is Still Missing](https://javascript.plainenglish.io/how-to-create-the-lwc-multi-select-combobox-that-salesforce-is-still-missing-c7bf3a2850dd)
 
 <img src="../../../../../images/multi-select-combobox.png" alt="multi-select-combobox" width="400"/>
 

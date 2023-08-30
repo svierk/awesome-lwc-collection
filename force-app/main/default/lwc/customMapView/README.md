@@ -1,8 +1,8 @@
 # Custom Map View
 
-Configurable map component for displaying locations via Google Maps API.
+Configurable map component for displaying locations via Google Maps API. How the component was built and works in detail is explained in the following Medium post: [How To Create a Generic and Reusable Custom Map View With LWC](https://betterprogramming.pub/how-to-create-a-generic-and-reusable-custom-map-view-with-lwc-4bfe38a27785)
 
-<img src="../../../../../images/custom-map-view.png" alt="custom-datatable" width="800"/>
+<img src="../../../../../images/custom-map-view.png" alt="custom-map-view" width="800"/>
 
 ## Attributes
 

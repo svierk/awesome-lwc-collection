@@ -1,6 +1,6 @@
 # iFrame
 
-A custom iFrame component with different configuration options.
+A custom iFrame component with different configuration options. How the component was built and works in detail is explained in the following Medium post: [How to Build a Reusable iFrame with Lightning Web Components](https://medium.com/javascript-in-plain-english/how-to-build-a-reusable-iframe-with-lightning-web-components-76a2ad27286)
 
 <img src="../../../../../images/iframe.png" alt="iframe" width="500"/>
 
