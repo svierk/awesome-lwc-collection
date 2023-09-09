@@ -1,12 +1,10 @@
-/*
- * Copyright (c) 2018, salesforce.com, inc.
- * All rights reserved.
- * SPDX-License-Identifier: MIT
- * For full license text, see the LICENSE file in the repo root or https://opensource.org/licenses/MIT
+/**
+ * This is a modified version of the lightning/uiRecordApi mock from:
+ * https://github.com/trailheadapps/lwc-recipes/blob/main/force-app/test/jest-mocks/lightning/uiRecordApi.js
  */
-
 import { createLdsTestWireAdapter } from '@salesforce/wire-service-jest-util';
 export const getRecord = createLdsTestWireAdapter(jest.fn());
+export const getRecords = createLdsTestWireAdapter(jest.fn());
 export const getRecordCreateDefaults = createLdsTestWireAdapter(jest.fn());
 export const updateRecord = jest.fn().mockResolvedValue({});
 export const createRecord = jest.fn().mockResolvedValue({});
@@ -15,17 +13,19 @@ export const generateRecordInputForCreate = jest.fn();
 export const generateRecordInputForUpdate = jest.fn();
 export const createRecordInputFilteredByEditedFields = jest.fn();
 export const refresh = jest.fn().mockResolvedValue();
+export const notifyRecordUpdateAvailable = jest.fn().mockResolvedValue();
+
 export const getFieldValue = jest.fn((data, fieldReference) => {
   if (data) {
     const fields = fieldReference.fieldApiName.split('.');
     if (data.result) {
       const fieldData = fields.reduce((o, i) => o[i], data.result.fields);
-      if (fieldData?.value) {
+      if (fieldData && fieldData.value) {
         return fieldData.value;
       }
     } else {
       const fieldData = fields.reduce((o, i) => o[i], data.fields);
-      if (fieldData?.value) {
+      if (fieldData && fieldData.value) {
         return fieldData.value;
       }
     }

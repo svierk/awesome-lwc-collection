@@ -5,7 +5,6 @@
  * This is a modified version from:
  * https://github.com/trailheadapps/lwc-recipes/blob/main/force-app/test/jest-mocks/lightning/messageService.js
  */
-
 export const APPLICATION_SCOPE = Symbol('APPLICATION_SCOPE');
 export const createMessageChannel = jest.fn();
 export const createMessageContext = jest.fn();

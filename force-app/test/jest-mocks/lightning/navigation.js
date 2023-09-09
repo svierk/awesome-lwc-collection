@@ -5,7 +5,6 @@
  * This is a modified version from:
  * https://github.com/trailheadapps/lwc-recipes/blob/main/force-app/test/jest-mocks/lightning/navigation.js
  */
-
 import { createTestWireAdapter } from '@salesforce/wire-service-jest-util';
 export const CurrentPageReference = createTestWireAdapter(jest.fn());
 
