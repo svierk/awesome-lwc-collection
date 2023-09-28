@@ -9,46 +9,6 @@
 
 The repository should provide a collection of ready-to-use Lightning Web Components that might help your SFDX project and is intended to grow over time. Additionally, it also includes an initial configuration of Prettier, linting rules, git hooks and unit tests as well as useful VS Code settings. The setup really focuses on LWC development.
 
-## Prerequisites
-
-To use this library and try out the components locally, the [Node](https://nodejs.org/en/) version specified in the _package.json_ and the latest version of the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli) should already be installed.
-
-## Getting started
-
-### Install all dependencies
-
-To get the components up and runnning, you need to open the repository with VS Code, install all the recommended extensions and run the following command to install all required dependencies:
-
-```
-npm install
-```
-
-### Authorize an org
-
-You need to authorize an org before you use the local development server. This is necessary because all data requests using Lightning Data Service or Apex will get proxied to the Salesforce org and returned in the local components. In VS Code the authorization can be done by pressing **Command + Shift + P**, enter "sfdx", and select **SFDX: Authorize an Org**.
-
-Alternatively you can also run the following command from the command line:
-
-```
-sfdx force:auth:web:login
-```
-
-### Install the local development server
-
-Lightning Web Components can be viewed and developed locally without the need to push them to an org first. To set up local development you only nedd to install the development server after you authorized an org.
-
-The local development server and its configuration are provided by a Salesforce CLI plugin that can be installed as follows:
-
-```
-sfdx plugins:install @salesforce/lwc-dev-server
-```
-
-To start the server on http://localhost:3333 and access all components of this project run:
-
-```
-npm run server:lwc
-```
-
 ## Components available
 
 The following list of components is part of this repo. All components contain corresponding unit tests and docs.
@@ -66,6 +26,54 @@ The following list of components is part of this repo. All components contain co
 - [Visualforce To PDF](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/visualforceToPdf)
 
 You can also find many more useful and reusable Lightning Web Components in the official [lwc-recipes](https://github.com/trailheadapps/lwc-recipes).
+
+## Prerequisites
+
+To use this library and try out the components in one of your orgs or locally, the [Node](https://nodejs.org/en/) version specified in the _package.json_ and the latest version of the [Salesforce CLI](https://developer.salesforce.com/tools/sfdxcli) should already be installed.
+
+## Getting started
+
+### Install all dependencies
+
+To get everything up and runnning, you need to open the repository with VS Code, install all the recommended extensions and run the following command to install all required dependencies:
+
+```
+npm install
+```
+
+### Authorize an org
+
+You need to authorize an org before you can push the components or use the local development server. Even for trying the components locally this is necessary because all data requests using Lightning Data Service or Apex will get proxied to the Salesforce org and returned in the local components. In VS Code the authorization can be done by pressing **Command + Shift + P**, enter "sfdx", and select **SFDX: Authorize an Org**.
+
+Alternatively you can also run the following command from the command line:
+
+```
+sf org login web
+```
+
+### Deploy components to an org
+
+To deploy all components of this project to the currently connected org execute:
+
+```
+sf project deploy start
+```
+
+### Install & use the local development server
+
+Lightning Web Components can be viewed and developed locally without the need to push them to an org first. To set up local development you only nedd to install the development server after you authorized an org.
+
+The local development server and its configuration are provided by a Salesforce CLI plugin that can be installed as follows:
+
+```
+sf plugins install @salesforce/lwc-dev-server
+```
+
+To start the server on http://localhost:3333 and access all components of this project run:
+
+```
+npm run server:lwc
+```
 
 ## Quality measures
 

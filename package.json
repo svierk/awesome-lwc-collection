@@ -24,7 +24,7 @@
     "prettier:verify": "prettier --list-different \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
     "postinstall": "husky install",
     "precommit": "lint-staged",
-    "server:lwc": "sfdx force:lightning:lwc:start",
+    "server:lwc": "sf force lightning lwc start",
     "docs": "jsdoc -c jsdoc.config.json"
   },
   "devDependencies": {
