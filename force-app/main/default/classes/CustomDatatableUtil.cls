@@ -52,6 +52,7 @@ public with sharing class CustomDatatableUtil {
     return columns;
   }
 
+  @TestVisible
   private static TypeAttributes getCustomTypeAttributes(TableColumn column, String objectName) {
     TypeAttributes typeAttr = new TypeAttributes();
     typeAttr.fieldName = column.fieldName;
