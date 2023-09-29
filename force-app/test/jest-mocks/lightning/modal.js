@@ -20,7 +20,7 @@ function query(nodes, selectors) {
   return [...nodes].reduce((previousValue, currentValue) => {
     const matches = [];
     // Root nodes, ignores text nodes
-    if (currentValue.matches && currentValue.matches(selectors)) {
+    if (currentValue?.matches(selectors)) {
       matches.push(currentValue);
     }
     // Query nested nodes, ignroes text nodes
