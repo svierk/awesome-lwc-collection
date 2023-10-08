@@ -26,5 +26,6 @@ module.exports = {
       }
     ]
   ],
+  setupFiles: ['jest-webgl-canvas-mock'],
   setupFilesAfterEnv
 };

@@ -44,6 +44,7 @@
     "eslint-plugin-jest": "^27.4.2",
     "husky": "^8.0.3",
     "jest-junit": "^16.0.0",
+    "jest-webgl-canvas-mock": "^2.5.0",
     "jsdoc": "^4.0.2",
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
