@@ -39,7 +39,7 @@ export default class Render3DElementsThreeJS extends LightningElement {
     // define cube element with crate material texture
     const geometry = new THREE.BoxGeometry();
     const textureLoader = new THREE.TextureLoader();
-    const material = 'https://github.com/svierk/awesome-lwc-collection/blob/main/images/crate-material.gif';
+    const material = 'https://raw.githubusercontent.com/svierk/awesome-lwc-collection/main/images/crate-material.gif';
     const materials = [
       new THREE.MeshBasicMaterial({ map: textureLoader.load(material) }),
       new THREE.MeshBasicMaterial({ map: textureLoader.load(material) }),
