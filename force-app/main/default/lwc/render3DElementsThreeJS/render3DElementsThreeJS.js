@@ -28,28 +28,23 @@ export default class Render3DElementsThreeJS extends LightningElement {
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight, true);
 
-    // append canvas element and define its size
+    // add cube element with crate material texture to scene
+    const geometry = new THREE.BoxGeometry();
+    const texture = new THREE.TextureLoader().load(
+      'https://raw.githubusercontent.com/svierk/awesome-lwc-collection/main/images/crate-material.gif'
+    );
+    const material = new THREE.MeshBasicMaterial({ map: texture });
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+
+    // append canvas element after defining its size and camera position
+    renderer.setSize(window.innerWidth, window.innerHeight, true);
+    camera.position.z = 3;
     const container = this.template.querySelector('.container');
     container.appendChild(renderer.domElement);
     this.template.querySelector('canvas').style.width = '100%';
     this.template.querySelector('canvas').style.height = 'auto';
-
-    // define cube element with crate material texture
-    const geometry = new THREE.BoxGeometry();
-    const textureLoader = new THREE.TextureLoader();
-    const material = 'https://raw.githubusercontent.com/svierk/awesome-lwc-collection/main/images/crate-material.gif';
-    const materials = [
-      new THREE.MeshBasicMaterial({ map: textureLoader.load(material) }),
-      new THREE.MeshBasicMaterial({ map: textureLoader.load(material) }),
-      new THREE.MeshBasicMaterial({ map: textureLoader.load(material) }),
-      new THREE.MeshBasicMaterial({ map: textureLoader.load(material) }),
-      new THREE.MeshBasicMaterial({ map: textureLoader.load(material) }),
-      new THREE.MeshBasicMaterial({ map: textureLoader.load(material) })
-    ];
-    const cube = new THREE.Mesh(geometry, materials);
-    scene.add(cube);
 
     // add animation loop to rotate the cube
     function animate() {
@@ -59,7 +54,5 @@ export default class Render3DElementsThreeJS extends LightningElement {
       renderer.render(scene, camera);
     }
     animate();
-
-    camera.position.z = 3;
   }
 }
