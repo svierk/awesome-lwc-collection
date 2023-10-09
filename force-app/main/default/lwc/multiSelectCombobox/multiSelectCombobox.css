@@ -5,7 +5,7 @@
 
 .multi-select-combobox__input {
   background-color: #ffffff;
-  border: 1px solid #dddbda;
+  border: var(--lwc-borderWidthThin, 1px) solid #dddbda;
   border-radius: 0.25rem;
   width: 100%;
   transition:
@@ -14,12 +14,12 @@
   display: inline-block;
   padding: 0 1rem 0 0.75rem;
   line-height: 1.875rem;
-  min-height: calc(1.875rem + (1px * 2));
+  min-height: calc(1.875rem + (var(--lwc-borderWidthThin, 1px) * 2));
 }
 
 .multi-select-combobox__input:disabled {
   background-color: #ecebea;
-  border: 1px solid #c9c7c5;
+  border: var(--lwc-borderWidthThin, 1px) solid #c9c7c5;
 }
 
 .multi-select-combobox__icon {

@@ -1,7 +1,7 @@
 div.page-header {
-  border: 1px solid rgb(201, 201, 201);
+  border: var(--lwc-borderWidthThin, 1px) solid rgb(201, 201, 201);
 }
 
 ul.page-header-detail {
-  border-top: 1px solid rgb(201, 201, 201);
+  border-top: var(--lwc-borderWidthThin, 1px) solid rgb(201, 201, 201);
 }
