@@ -50,45 +50,6 @@
             Prettier, linting rules, git hooks and unit tests as well as useful VS Code settings. The setup really
             focuses on LWC development.
           </p>
-          <h2>Prerequisites</h2>
-          <p>
-            To use this library and try out the components locally, the
-            <a href="https://nodejs.org/en/">Node</a> version specified in the <em>package.json</em> and the latest
-            version of the <a href="https://developer.salesforce.com/tools/sfdxcli">Salesforce CLI</a> should already be
-            installed.
-          </p>
-          <h2>Getting started</h2>
-          <h3>Install all dependencies</h3>
-          <p>
-            To get the components up and runnning, you need to open the repository with VS Code, install all the
-            recommended extensions and run the following command to install all required dependencies:
-          </p>
-          <pre class="prettyprint source"><code>npm install
-</code></pre>
-          <h3>Authorize an org</h3>
-          <p>
-            You need to authorize an org before you use the local development server. This is necessary because all data
-            requests using Lightning Data Service or Apex will get proxied to the Salesforce org and returned in the
-            local components. In VS Code the authorization can be done by pressing <strong>Command + Shift + P</strong>,
-            enter &quot;sfdx&quot;, and select <strong>SFDX: Authorize an Org</strong>.
-          </p>
-          <p>Alternatively you can also run the following command from the command line:</p>
-          <pre class="prettyprint source"><code>sfdx force:auth:web:login
-</code></pre>
-          <h3>Install the local development server</h3>
-          <p>
-            Lightning Web Components can be viewed and developed locally without the need to push them to an org first.
-            To set up local development you only nedd to install the development server after you authorized an org.
-          </p>
-          <p>
-            The local development server and its configuration are provided by a Salesforce CLI plugin that can be
-            installed as follows:
-          </p>
-          <pre class="prettyprint source"><code>sfdx plugins:install @salesforce/lwc-dev-server
-</code></pre>
-          <p>To start the server on http://localhost:3333 and access all components of this project run:</p>
-          <pre class="prettyprint source"><code>npm run server:lwc
-</code></pre>
           <h2>Components available</h2>
           <p>
             The following list of components is part of this repo. All components contain corresponding unit tests and
@@ -164,6 +125,50 @@
             You can also find many more useful and reusable Lightning Web Components in the official
             <a href="https://github.com/trailheadapps/lwc-recipes">lwc-recipes</a>.
           </p>
+          <h2>Prerequisites</h2>
+          <p>
+            To use this library and try out the components in one of your orgs or locally, the
+            <a href="https://nodejs.org/en/">Node</a> version specified in the <em>package.json</em> and the latest
+            version of the <a href="https://developer.salesforce.com/tools/sfdxcli">Salesforce CLI</a> should already be
+            installed.
+          </p>
+          <h2>Getting started</h2>
+          <h3>Install all dependencies</h3>
+          <p>
+            To get everything up and runnning, you need to open the repository with VS Code, install all the recommended
+            extensions and run the following command to install all required dependencies:
+          </p>
+          <pre class="prettyprint source"><code>npm install
+</code></pre>
+          <h3>Authorize an org</h3>
+          <p>
+            You need to authorize an org before you can push the components or use the local development server. Even
+            for trying the components locally this is necessary because all data requests using Lightning Data Service
+            or Apex will get proxied to the Salesforce org and returned in the local components. In VS Code the
+            authorization can be done by pressing <strong>Command + Shift + P</strong>, enter &quot;sfdx&quot;, and
+            select <strong>SFDX: Authorize an Org</strong>.
+          </p>
+          <p>Alternatively you can also run the following command from the command line:</p>
+          <pre class="prettyprint source"><code>sf org login web
+</code></pre>
+          <h3>Deploy components to an org</h3>
+          <p>To deploy all components of this project to the currently connected org execute:</p>
+          <pre class="prettyprint source"><code>sf project deploy start
+</code></pre>
+          <h3>Install &amp; use the local development server</h3>
+          <p>
+            Lightning Web Components can be viewed and developed locally without the need to push them to an org first.
+            To set up local development you only nedd to install the development server after you authorized an org.
+          </p>
+          <p>
+            The local development server and its configuration are provided by a Salesforce CLI plugin that can be
+            installed as follows:
+          </p>
+          <pre class="prettyprint source"><code>sf plugins install @salesforce/lwc-dev-server
+</code></pre>
+          <p>To start the server on http://localhost:3333 and access all components of this project run:</p>
+          <pre class="prettyprint source"><code>npm run server:lwc
+</code></pre>
           <h2>Quality measures</h2>
           <h3>Git hooks</h3>
           <p>
@@ -213,6 +218,7 @@
         <li><a href="MultiSelectCombobox.html">MultiSelectCombobox</a></li>
         <li><a href="MultiSelectComboboxItem.html">MultiSelectComboboxItem</a></li>
         <li><a href="OpenRecordPageFlowAction.html">OpenRecordPageFlowAction</a></li>
+        <li><a href="Render3DElementsThreeJS.html">Render3DElementsThreeJS</a></li>
         <li><a href="VisualforceToPdf.html">VisualforceToPdf</a></li>
       </ul>
       <h3>Global</h3>
@@ -224,7 +230,7 @@
     <br class="clear" />
 
     <footer>
-      Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Aug 28 2023 07:40:28
+      Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Sun Oct 08 2023 20:47:10
       GMT+0200 (Central European Summer Time)
     </footer>
 
