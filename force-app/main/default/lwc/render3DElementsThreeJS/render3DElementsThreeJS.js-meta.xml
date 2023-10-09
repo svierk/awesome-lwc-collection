@@ -2,8 +2,8 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>58.0</apiVersion>
     <isExposed>true</isExposed>
-    <masterLabel>Render 3D Objects (three.js)</masterLabel>
-    <description>Render 3D objects using the JS library three.js</description>
+    <masterLabel>Render 3D Objects (Three.js)</masterLabel>
+    <description>Render 3D objects using the JS library Three.js</description>
     <targets>
       <target>lightning__AppPage</target>
       <target>lightning__HomePage</target>
