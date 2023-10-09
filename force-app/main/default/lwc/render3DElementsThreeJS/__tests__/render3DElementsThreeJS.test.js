@@ -21,7 +21,9 @@ describe('c-render3-d-elements-three-j-s', () => {
           PerspectiveCamera: jest.fn(),
           WebGLRenderer: jest.fn(),
           BoxGeometry: jest.fn(),
-          MeshBasicMaterial: jest.fn()
+          TextureLoader: jest.fn(),
+          MeshBasicMaterial: jest.fn(),
+          Mesh: jest.fn()
         };
         resolve();
       })
@@ -34,7 +36,6 @@ describe('c-render3-d-elements-three-j-s', () => {
 
     // when
     document.body.appendChild(element);
-    await Promise.resolve('loadScript promise');
 
     // then
     expect(element).toBeTruthy();
