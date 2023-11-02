@@ -26,6 +26,19 @@
             </div>
           </div>
         </div>
+
+        <div class="slds-page-header__col-actions">
+          <div class="slds-page-header__controls">
+            <div class="slds-page-header__control">
+              <lightning-button
+                lwc:if={hasSelectedRecords}
+                label="Delete"
+                slot="actions"
+                onclick={deleteSelectedRecords}
+              ></lightning-button>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="slds-page-header__row slds-page-header__row_gutters">
@@ -48,6 +61,7 @@
               show-row-number-column={showRowNumberColumn}
               suppress-bottom-bar={suppressBottomBar}
               onrowaction={handleRowAction}
+              onrowselection={getSelectedRecords}
               onsave={handleSave}
             >
             </c-custom-datatable-extension>
@@ -58,6 +72,12 @@
   </template>
   <template lwc:elseif={showCard}>
     <lightning-card title={cardTitle} icon-name={cardIcon}>
+      <lightning-button
+        lwc:if={hasSelectedRecords}
+        label="Delete"
+        slot="actions"
+        onclick={deleteSelectedRecords}
+      ></lightning-button>
       <c-custom-datatable-extension
         key-field={keyField}
         data={records}
@@ -75,6 +95,7 @@
         show-row-number-column={showRowNumberColumn}
         suppress-bottom-bar={suppressBottomBar}
         onrowaction={handleRowAction}
+        onrowselection={getSelectedRecords}
         onsave={handleSave}
       >
       </c-custom-datatable-extension>
@@ -98,6 +119,7 @@
       show-row-number-column={showRowNumberColumn}
       suppress-bottom-bar={suppressBottomBar}
       onrowaction={handleRowAction}
+      onrowselection={getSelectedRecords}
       onsave={handleSave}
     >
     </c-custom-datatable-extension>
