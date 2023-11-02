@@ -2,10 +2,12 @@
   "cardIcon": "standard:case",
   "cardTitle": "New Cases",
   "fieldSetApiName": "CaseFieldSet",
+  "isUsedAsRelatedList": true,
   "objectApiName": "Case",
   "showCard": true,
   "showDeleteRowAction": true,
   "showEditRowAction": true,
+  "showMultipleRowDeleteAction": true,
   "showViewRowAction": true,
   "whereConditions": "Status = 'New'"
 }

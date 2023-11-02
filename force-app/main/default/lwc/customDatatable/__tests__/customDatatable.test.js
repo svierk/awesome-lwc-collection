@@ -265,4 +265,76 @@ describe('c-custom-datatable', () => {
       expect(updateRecord.mock.calls[0][0].fields).toEqual(mockGetRecords[0]);
     });
   });
+
+  it('should execute delete record action when multiple rows are selected', async () => {
+    // given
+    element.cardIcon = mockData.cardIcon;
+    element.cardTitle = mockData.cardTitle;
+    element.fieldSetApiName = mockData.fieldSetApiName;
+    element.isUsedAsRelatedList = mockData.isUsedAsRelatedList;
+    element.objectApiName = mockData.objectApiName;
+    element.showCard = mockData.showCard;
+    element.showMultipleRowDeleteAction = mockData.showMultipleRowDeleteAction;
+
+    // when
+    deleteRecord.mockResolvedValue();
+    document.body.appendChild(element);
+    getColumns.emit(mockGetColumns);
+    getRecords.emit(mockGetRecords);
+
+    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    childElement.dispatchEvent(
+      new CustomEvent('rowselection', {
+        detail: {
+          selectedRows: mockGetRecords
+        }
+      })
+    );
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    const deleteButton = element.shadowRoot.querySelector('lightning-button');
+    deleteButton.click();
+
+    // then
+    return Promise.resolve().then(() => {
+      expect(deleteRecord).toHaveBeenCalledTimes(3);
+    });
+  });
+
+  it('should handle error when delete operation for multiple records fails', async () => {
+    // given
+    element.cardIcon = mockData.cardIcon;
+    element.cardTitle = mockData.cardTitle;
+    element.fieldSetApiName = mockData.fieldSetApiName;
+    element.isUsedAsRelatedList = mockData.isUsedAsRelatedList;
+    element.objectApiName = mockData.objectApiName;
+    element.showCard = mockData.showCard;
+    element.showMultipleRowDeleteAction = mockData.showMultipleRowDeleteAction;
+
+    // when
+    deleteRecord.mockRejectedValue(mockDeleteRecordError);
+    document.body.appendChild(element);
+    getColumns.emit(mockGetColumns);
+    getRecords.emit(mockGetRecords);
+
+    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    childElement.dispatchEvent(
+      new CustomEvent('rowselection', {
+        detail: {
+          selectedRows: mockGetRecords
+        }
+      })
+    );
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    const deleteButton = element.shadowRoot.querySelector('lightning-button');
+    deleteButton.click();
+
+    // then
+    return Promise.resolve().then(() => {
+      expect(deleteRecord).toHaveBeenCalledTimes(3);
+    });
+  });
 });
