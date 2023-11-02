@@ -159,6 +159,15 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   @api showEditRowAction = false;
 
   /**
+   * If present, a delete action button is available when multiple records are selected.
+   * This is only available if the checkbox column is visible and the table is either displayed with a Lightning Card
+   * or as a Related List.
+   * @type {boolean}
+   * @default false
+   */
+  @api showMultipleRowDeleteAction = false;
+
+  /**
    * If present, the row numbers are shown in the first column.
    * @type {boolean}
    * @default false
@@ -190,9 +199,11 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   @track columns = [];
   @track draftValues = [];
   @track records = [];
+  @track selectedRecords = [];
   @track wiredRecords = [];
 
   isLoading = true;
+  hasSelectedRecords = false;
 
   @wire(getColumns, { objectName: '$objectApiName', fieldSetName: '$fieldSetApiName', readOnly: '$readOnly' })
   wiredGetColumns({ data }) {
@@ -312,6 +323,39 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
         this.dispatchEvent(
           new ShowToastEvent({
             title: 'Error updating records',
+            message: error.body.message,
+            variant: 'error'
+          })
+        );
+      });
+  }
+
+  getSelectedRecords(event) {
+    this.selectedRecords = event.detail.selectedRows;
+    this.hasSelectedRecords = this.selectedRecords.length > 0;
+  }
+
+  deleteSelectedRecords() {
+    this.isLoading = true;
+    const records = this.selectedRecords;
+    const promises = records.map((record) => deleteRecord(record.Id));
+    Promise.all(promises)
+      .then(() => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: 'Success',
+            message: 'Records deleted',
+            variant: 'success'
+          })
+        );
+        return refreshApex(this.wiredRecords).then(() => {
+          this.isLoading = false;
+        });
+      })
+      .catch((error) => {
+        this.dispatchEvent(
+          new ShowToastEvent({
+            title: 'Error deleting records',
             message: error.body.message,
             variant: 'error'
           })

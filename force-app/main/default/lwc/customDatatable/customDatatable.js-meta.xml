@@ -85,6 +85,13 @@
         description="If show card option is active, The card title can include text and is displayed in the header above the table."
       />
       <property
+        name="showMultipleRowDeleteAction"
+        label="Show Multiple Row Delete Action"
+        type="Boolean"
+        default="false"
+        description="If present, a delete action button is available when multiple records are selected. This is only available if the checkbox column is visible and the table is either displayed with a Lightning Card or as a Related List."
+      />
+      <property
         name="showRowNumberColumn"
         label="Show Row Number Column"
         type="Boolean"
