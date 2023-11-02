@@ -159,6 +159,15 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   @api showEditRowAction = false;
 
   /**
+   * If present, a delete action button is available when multiple records are selected.
+   * This is only available if the checkbox column is visible and the table is either displayed with a Lightning Card
+   * or as a Related List.
+   * @type {boolean}
+   * @default false
+   */
+  @api showMultipleRowDeleteAction = false;
+
+  /**
    * If present, the row numbers are shown in the first column.
    * @type {boolean}
    * @default false

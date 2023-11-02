@@ -30,12 +30,13 @@
         <div class="slds-page-header__col-actions">
           <div class="slds-page-header__controls">
             <div class="slds-page-header__control">
-              <lightning-button
-                lwc:if={hasSelectedRecords}
-                label="Delete"
-                slot="actions"
-                onclick={deleteSelectedRecords}
-              ></lightning-button>
+              <template lwc:if={showMultipleRowDeleteAction}>
+                <lightning-button
+                  lwc:if={hasSelectedRecords}
+                  label="Delete"
+                  onclick={deleteSelectedRecords}
+                ></lightning-button>
+              </template>
             </div>
           </div>
         </div>
@@ -72,12 +73,14 @@
   </template>
   <template lwc:elseif={showCard}>
     <lightning-card title={cardTitle} icon-name={cardIcon}>
-      <lightning-button
-        lwc:if={hasSelectedRecords}
-        label="Delete"
-        slot="actions"
-        onclick={deleteSelectedRecords}
-      ></lightning-button>
+      <template lwc:if={showMultipleRowDeleteAction}>
+        <lightning-button
+          lwc:if={hasSelectedRecords}
+          label="Delete"
+          slot="actions"
+          onclick={deleteSelectedRecords}
+        ></lightning-button>
+      </template>
       <c-custom-datatable-extension
         key-field={keyField}
         data={records}
