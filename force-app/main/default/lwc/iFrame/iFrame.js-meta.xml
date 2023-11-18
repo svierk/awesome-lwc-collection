@@ -33,13 +33,6 @@
         description="Specifies the width of an iframe. Default width is 100 percent."
       />
         <property
-        name="referrerPolicy"
-        label="Referrer Policy"
-        type="String"
-        default="no-referrer"
-        description="Specifies which referrer information to send when fetching the iframe."
-      />
-        <property
         name="sandbox"
         label="Sandbox"
         type="String"

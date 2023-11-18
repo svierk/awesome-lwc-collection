@@ -11,7 +11,6 @@ import { api, LightningElement } from 'lwc';
  *   url="https://example.com/"
  *   height="500px"
  *   width="100%"
- *   referrerpolicy="no-referrer"
  * ></c-i-frame>
  */
 export default class IFrame extends LightningElement {
@@ -21,13 +20,6 @@ export default class IFrame extends LightningElement {
    * @default '500px'
    */
   @api height = '500px';
-
-  /**
-   * Specifies which referrer information to send when fetching the iframe.
-   * @type {string}
-   * @default 'no-referrer'
-   */
-  @api referrerPolicy = 'no-referrer';
 
   /**
    * Enables an extra set of restrictions for the content in an iframe.
