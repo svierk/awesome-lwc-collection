@@ -3,29 +3,11 @@
     <apiVersion>59.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>Base64 To PDF</masterLabel>
-    <description>A simple utility for Base64 encoded strings to decode them into PDF files.</description>
+    <description>A simple utility for Base64 encoded strings to decode and download them as PDF file.</description>
     <targets>
       <target>lightning__AppPage</target>
       <target>lightning__HomePage</target>
       <target>lightning__FlowScreen</target>
       <target>lightning__RecordPage</target>
     </targets>
-    <targetConfigs>
-      <targetConfig targets="lightning__AppPage, lightning__FlowScreen, lightning__HomePage, lightning__RecordPage">
-      <property
-        name="height"
-        label="Height"
-        type="String"
-        default="500px"
-        description="Specifies the height of the pdf iframe. Default height is 500 pixels."
-      />
-      <property
-        name="width"
-        label="Width"
-        type="String"
-        default="100%"
-        description="Specifies the width of the pdf iframe. Default width is 100 percent."
-      />
-      </targetConfig>
-  </targetConfigs>
 </LightningComponentBundle>

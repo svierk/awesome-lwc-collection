@@ -8,7 +8,7 @@ describe('c-base64-to-pdf', () => {
     }
   });
 
-  it('is accessible and displays pdf', async () => {
+  it('is accessible and displays correct icon and title', async () => {
     // given
     const element = createElement('c-base64-to-pdf', {
       is: Base64ToPdf
