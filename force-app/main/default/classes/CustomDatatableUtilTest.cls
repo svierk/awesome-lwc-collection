@@ -1,7 +1,7 @@
 @IsTest
 public with sharing class CustomDatatableUtilTest {
   @TestSetup
-  static void makeData() {
+  static void setup() {
     User u = new User();
     u.FirstName = 'Test';
     u.LastName = 'User';
@@ -38,7 +38,7 @@ public with sharing class CustomDatatableUtilTest {
       );
       Test.stopTest();
 
-      Assert.areNotEqual(null, records, 'Returned records list empty.');
+      Assert.areNotEqual(null, records, 'Returned records list is empty.');
       Assert.areEqual(100, records.size(), 'Number of returned records is not correct.');
     }
   }
