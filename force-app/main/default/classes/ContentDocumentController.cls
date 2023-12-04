@@ -1,11 +1,11 @@
 public with sharing class ContentDocumentController {
-  @AuraEnabled
-  public static String getDocuments(Id recordId, String library) {
+  @AuraEnabled(cacheable=true)
+  public static String getDocuments(String library, String folder, Id recordId) {
     try {
-      String objectName = recordId.getSObjectType().getDescribe().getName();
+      String folderName = folder != null ? folder : recordId.getSObjectType().getDescribe().getName();
 
       // get workspace library
-      ContentWorkspace workspace = [
+      ContentWorkspace cw = [
         SELECT Id, Name
         FROM ContentWorkspace
         WHERE Name LIKE :library
@@ -14,30 +14,30 @@ public with sharing class ContentDocumentController {
       ];
 
       // get specific folder from library based on object api name
-      ContentFolder folder = [
+      ContentFolder cf = [
         SELECT Id, Name
         FROM ContentFolder
-        WHERE ParentContentFolder.Name = :workspace.Id AND Name = :objectName
+        WHERE ParentContentFolder.Name = :cw.Id AND Name = :folderName
         WITH USER_MODE
         LIMIT 1
       ];
 
       // get all files that are in the folder
-      List<Id> folderMemberIdList = new List<Id>();
-      for (ContentFolderMember link : [
+      List<Id> cfmIdList = new List<Id>();
+      for (ContentFolderMember cfm : [
         SELECT Id, ParentContentFolderId, ParentContentFolder.Name, ChildRecordId, ChildRecord.title
         FROM ContentFolderMember
-        WHERE ParentContentFolderId = :folder.Id
+        WHERE ParentContentFolderId = :cf.Id
         WITH USER_MODE
       ]) {
-        folderMemberIdList.add(link.ChildRecordId);
+        cfmIdList.add(cfm.ChildRecordId);
       }
 
       return JSON.serialize(
         [
           SELECT Id, Title, Description, FileExtension, FileType, ContentSize, CreatedDate
           FROM ContentDocument
-          WHERE Id IN :folderMemberIdList
+          WHERE Id IN :cfmIdList
         ]
       );
     } catch (Exception e) {

@@ -31,7 +31,7 @@ public class ContentDocumentControllerTest {
       Id contentDocumentId = createContentSetup(accountId);
       Test.stopTest();
 
-      String jsonString = ContentDocumentController.getDocuments(accountId, 'Test Documents');
+      String jsonString = ContentDocumentController.getDocuments('Test Documents', null, accountId);
       Assert.areNotEqual('', jsonString, 'Returned documents list is empty.');
     }
   }
