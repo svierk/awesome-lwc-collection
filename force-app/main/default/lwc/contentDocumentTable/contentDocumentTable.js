@@ -1,9 +1,9 @@
 import { refreshApex } from '@salesforce/apex';
-import deleteDocument from '@salesforce/apex/ContentDocumentController.deleteDocument';
 import getDocuments from '@salesforce/apex/ContentDocumentController.getDocuments';
 import getLatestVersion from '@salesforce/apex/ContentDocumentController.getLatestVersion';
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { deleteRecord } from 'lightning/uiRecordApi';
 import { api, LightningElement, track, wire } from 'lwc';
 
 const ICONS = {
@@ -219,7 +219,8 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
   }
 
   delete(row) {
-    deleteDocument({ recordId: row.Id })
+    this.isLoading = true;
+    deleteRecord(row.Id)
       .then(() => {
         this.dispatchEvent(
           new ShowToastEvent({
