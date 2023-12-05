@@ -47,21 +47,6 @@ public with sharing class ContentDocumentController {
   }
 
   @AuraEnabled
-  public static void deleteDocument(Id recordId) {
-    try {
-      ContentDocument document = [SELECT Id FROM ContentDocument WHERE Id = :recordId WITH USER_MODE LIMIT 1];
-
-      if (!Schema.sObjectType.ContentDocument.isDeletable()) {
-        System.debug('The document cannot be deleted by the current user.');
-      }
-
-      delete document;
-    } catch (Exception e) {
-      System.debug('The following exception has occurred: ' + e.getMessage());
-    }
-  }
-
-  @AuraEnabled
   public static string getLatestVersion(Id recordId) {
     return [
       SELECT Id, IsLatest, Title, ContentDocumentId

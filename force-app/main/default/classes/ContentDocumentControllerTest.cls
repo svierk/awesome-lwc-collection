@@ -51,27 +51,6 @@ public class ContentDocumentControllerTest {
     }
   }
 
-  @IsTest
-  public static void deleteDocumentTest() {
-    User u = [SELECT Id FROM User WHERE Username = '123test@example.com'];
-
-    System.runAs(u) {
-      Test.startTest();
-      Id accountId = [SELECT Id FROM Account WHERE Name = 'Test Account' LIMIT 1].Id;
-      Id contentDocumentId = createContentSetup(accountId);
-      ContentDocumentController.deleteDocument(contentDocumentId);
-      Test.stopTest();
-
-      ContentDocument deletedDocument = [
-        SELECT Id, IsDeleted
-        FROM ContentDocument
-        WHERE Id = :contentDocumentId
-        ALL ROWS
-      ];
-      Assert.areEqual(true, deletedDocument.IsDeleted, 'Document could not be deleted.');
-    }
-  }
-
   private static Id createContentSetup(Id recordId) {
     ContentWorkspace cw = getContentWorkspace('Test Documents');
     insert cw;
