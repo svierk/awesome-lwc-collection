@@ -32,3 +32,12 @@ A basic custom datatable with different configuration options.
 | show-view-row-action            | boolean | false   | If present, the last column contains a view record action.                                                                                                                                                                                                     |
 | suppress-bottom-bar             | boolean | false   | If present, the footer that displays the Save and Cancel buttons is hidden during inline editing.                                                                                                                                                              |
 | where-conditions                | string  | ''      | Optional where clause conditions for loaded data records.                                                                                                                                                                                                      |
+
+## Component Dependencies
+
+| Name                     | Type | Description                                                                            |
+| ------------------------ | ---- | -------------------------------------------------------------------------------------- |
+| customDatatableExtension | LWC  | Custom extension of the standard LWC datatable to support individual table cell types. |
+| customDatatableLookup    | LWC  | Custom datatable cell type to display lookup fields that are not supported by default. |
+| CustomDatatableUtil      | Apex | Controller class for handling the columns configuration and data provisioning.         |
+| CustomDatatableUtilTest  | Apex | Test class for CustomDatatableUtil.                                                    |

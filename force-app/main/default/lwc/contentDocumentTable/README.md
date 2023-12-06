@@ -17,3 +17,13 @@ A generic table to show shared documents from a Salesforce Files library.
 | show-delete-action   | boolean | false            | If present, the last column contains a delete file action.                                                                                                                                                                                                       |
 | show-download-action | boolean | false            | If present, the last column contains a download file action.                                                                                                                                                                                                     |
 | show-view-action     | boolean | false            | If present, the last column contains a view file action.                                                                                                                                                                                                         |
+
+## Component Dependencies
+
+| Name                          | Type | Description                                                                                   |
+| ----------------------------- | ---- | --------------------------------------------------------------------------------------------- |
+| contentDocumentIcon           | LWC  | Custom datatable cell type to display the appropriate icon based on the file type.            |
+| contentDocumentPreview        | LWC  | Custom datatable cell type that is used to display a file preview when clicking on the title. |
+| contentDocumentTableExtension | LWC  | Custom extension of the standard LWC datatable to support individual table cell types.        |
+| ContentDocumentController     | Apex | Controller class for retrieving content documents from files library.                         |
+| ContentDocumentControllerTest | Apex | Test class for ContentDocumentController.                                                     |

@@ -17,3 +17,9 @@ Combobox with different configuration options that also supports multi select. H
 | required      | boolean | false              | If present, a value must be selected before a form can be submitted.                                           |
 | single-select | boolean | false              | If present, the combobox only allows the selection of a single value.                                          |
 | show-pills    | boolean | false              | If present, the combobox will show a pill container with the currently selected options.                       |
+
+## Component Dependencies
+
+| Name                    | Type | Description                                                                              |
+| ----------------------- | ---- | ---------------------------------------------------------------------------------------- |
+| multiSelectComboboxItem | LWC  | Child component that represents an item within the multiSelectCombobox parent component. |
