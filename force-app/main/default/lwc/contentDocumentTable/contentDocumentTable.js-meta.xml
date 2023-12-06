@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Content Document Table</masterLabel>
+    <description>A generic table to show shared documents from a Salesforce Files library.</description>
+    <targets>
+      <target>lightning__AppPage</target>
+      <target>lightning__FlowScreen</target>
+      <target>lightning__HomePage</target>
+      <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+      <targetConfig targets="lightning__AppPage, lightning__FlowScreen, lightning__HomePage, lightning__RecordPage">
+      <property
+        name="library"
+        label="Library Folder"
+        type="String"
+        default="Documents"
+        description="Files library name."
+      />
+      <property name="folder" label="Content Folder" type="String" description="Folder name within Files library." />
+      <property
+        name="showCard"
+        label="Show Lightning Card"
+        type="Boolean"
+        default="false"
+        description="If present, the table is wrapped in a lightning card to fit better into the overall page layout."
+      />
+      <property
+        name="cardIcon"
+        label="Card Icon"
+        type="String"
+        default="standard:file"
+        description="If show card option is active, the card icon is displayed in the header before the card title. It should contain the SLDS name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category and 'down' the icon to be displayed."
+      />
+      <property
+        name="cardTitle"
+        label="Card Title"
+        type="String"
+        default="Document Table"
+        description="If show card option is active, the card title can include text and is displayed in the header above the table."
+      />
+      <property
+        name="showDownloadAction"
+        label="Show Download File Action"
+        type="Boolean"
+        default="false"
+        description="If present, the last column contains a download file action."
+      />
+      <property
+        name="showViewAction"
+        label="Show View File Action"
+        type="Boolean"
+        default="false"
+        description="If present, the last column contains a view file action."
+      />
+      <property
+        name="showDeleteAction"
+        label="Show Delete File Action"
+        type="Boolean"
+        default="false"
+        description="If present, the last column contains a delete file action."
+      />
+      </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

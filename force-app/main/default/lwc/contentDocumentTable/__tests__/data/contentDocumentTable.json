@@ -1,0 +1,11 @@
+{
+  "cardIcon": "standard:file",
+  "cardTitle": "Document Table",
+  "folder": null,
+  "library": "Documents",
+  "recordId": "123",
+  "showCard": true,
+  "showDeleteAction": true,
+  "showDownloadAction": true,
+  "showViewAction": true
+}

@@ -8,8 +8,8 @@ import { createElement } from 'lwc';
 const mockData = require('./data/customDatatable.json');
 const mockGetColumns = require('./data/getColumns.json');
 const mockGetRecords = require('./data/getRecords.json');
-const mockDeleteRecordError = require('./data/updateRecordError.json');
-const mockUpdateRecordError = require('./data/deleteRecordError.json');
+const mockDeleteRecordError = require('./data/deleteRecordError.json');
+const mockUpdateRecordError = require('./data/updateRecordError.json');
 
 jest.mock(
   '@salesforce/apex/CustomDatatableUtil.convertFieldSetToColumns',

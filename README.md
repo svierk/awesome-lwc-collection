@@ -14,6 +14,7 @@ The repository should provide a collection of ready-to-use Lightning Web Compone
 The following list of components is part of this repo. All components contain corresponding unit tests and docs.
 
 - [Base64 To PDF](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/base64ToPdf)
+- [Content Document Table](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/contentDocumentTable)
 - [CSV To Datatable](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/csvToDatatable)
 - [Custom Datatable](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/customDatatable)
 - [Custom Map View](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/customMapView)

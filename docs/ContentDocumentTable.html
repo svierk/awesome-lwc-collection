@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>JSDoc: Class: ContentDocumentTable</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css" />
+  </head>
+
+  <body>
+    <div id="main">
+      <h1 class="page-title">Class: ContentDocumentTable</h1>
+
+      <section>
+        <header>
+          <h2>
+            <span class="attribs"><span class="type-signature"></span></span>ContentDocumentTable
+          </h2>
+
+          <div class="class-description">A generic table to show shared documents from a Salesforce Files library.</div>
+        </header>
+
+        <article>
+          <div class="container-overview">
+            <dl class="details">
+              <dt class="tag-source">Source:</dt>
+              <dd class="tag-source">
+                <ul class="dummy">
+                  <li>
+                    <a href="contentDocumentTable_contentDocumentTable.js.html"
+                      >contentDocumentTable/contentDocumentTable.js</a
+                    >, <a href="contentDocumentTable_contentDocumentTable.js.html#line64">line 64</a>
+                  </li>
+                </ul>
+              </dd>
+            </dl>
+
+            <h5>Example</h5>
+
+            <pre
+              class="prettyprint"
+            ><code>&lt;c-content-document-table library="Documents" record-id={recordid}>&lt;/c-content-document-table></code></pre>
+          </div>
+
+          <h3 class="subsection-title">Extends</h3>
+
+          <ul>
+            <li>LightningElement</li>
+          </ul>
+
+          <h3 class="subsection-title">Members</h3>
+
+          <h4 class="name" id="cardIcon">
+            <span class="type-signature"></span>cardIcon<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">
+            If show card option is active,, the card icon is displayed in the header before the card title. It should
+            contain the SLDS name of the icon. Specify the name in the format 'standard:case' where 'standard' is the
+            category and 'case' the icon to be displayed.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>''</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line73">line 73</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h5>Example</h5>
+
+          <pre class="prettyprint"><code>'standard:case'</code></pre>
+
+          <h4 class="name" id="cardTitle">
+            <span class="type-signature"></span>cardTitle<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">
+            If show card option is active, The card title can include text and is displayed in the header above the
+            table.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>'Document Table'</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line80">line 80</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="folder">
+            <span class="type-signature"></span>folder<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">Folder name within Files library.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line86">line 86</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="library">
+            <span class="type-signature"></span>library<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">Files library name.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>'Documents'</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line93">line 93</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="recordId">
+            <span class="type-signature"></span>recordId<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">
+            If the component is used on a lightning record page, the page sets the property to the id of the current
+            record.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line99">line 99</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="showCard">
+            <span class="type-signature"></span>showCard<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">
+            If present, the table is wrapped in a lightning card to fit better into the overall page layout.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>false</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line106">line 106</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="showDeleteAction">
+            <span class="type-signature"></span>showDeleteAction<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">If present, the last column contains a delete file action.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>false</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line113">line 113</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="showDownloadAction">
+            <span class="type-signature"></span>showDownloadAction<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">If present, the last column contains a download file action.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>false</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line120">line 120</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="showViewAction">
+            <span class="type-signature"></span>showViewAction<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">If present, the last column contains a view file action.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>false</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line127">line 127</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+        </article>
+      </section>
+    </div>
+
+    <nav>
+      <h2><a href="index.html">Home</a></h2>
+      <h3>Classes</h3>
+      <ul>
+        <li><a href="Base64ToPdf.html">Base64ToPdf</a></li>
+        <li><a href="ContentDocumentTable.html">ContentDocumentTable</a></li>
+        <li><a href="CsvToDatatable.html">CsvToDatatable</a></li>
+        <li><a href="CustomDatatable.html">CustomDatatable</a></li>
+        <li><a href="CustomMapView.html">CustomMapView</a></li>
+        <li><a href="CustomSlider.html">CustomSlider</a></li>
+        <li><a href="HelloWorld.html">HelloWorld</a></li>
+        <li><a href="IFrame.html">IFrame</a></li>
+        <li><a href="LocalDevelopmentWrapper.html">LocalDevelopmentWrapper</a></li>
+        <li><a href="MultiSelectCombobox.html">MultiSelectCombobox</a></li>
+        <li><a href="MultiSelectComboboxItem.html">MultiSelectComboboxItem</a></li>
+        <li><a href="OpenRecordPageFlowAction.html">OpenRecordPageFlowAction</a></li>
+        <li><a href="Render3DElementsThreeJS.html">Render3DElementsThreeJS</a></li>
+        <li><a href="VisualforceToPdf.html">VisualforceToPdf</a></li>
+      </ul>
+      <h3>Global</h3>
+      <ul>
+        <li><a href="global.html#slidesData">slidesData</a></li>
+      </ul>
+    </nav>
+
+    <br class="clear" />
+
+    <footer>
+      Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Wed Dec 06 2023 09:59:02
+      GMT+0100 (Central European Standard Time)
+    </footer>
+
+    <script>
+      prettyPrint();
+    </script>
+    <script src="scripts/linenumber.js"></script>
+  </body>
+</html>

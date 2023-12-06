@@ -23,7 +23,7 @@ import { LightningElement, api, track, wire } from 'lwc';
  */
 export default class CustomDatatable extends NavigationMixin(LightningElement) {
   /**
-   * If show card option is active,, the card icon is displayed in the header before the card title.
+   * If show card option is active, the card icon is displayed in the header before the card title.
    * It should contain the SLDS name of the icon.
    * Specify the name in the format 'utility:down' where 'utility' is the category and 'down' the icon to be displayed.
    * @type {string}
@@ -33,7 +33,7 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   @api cardIcon = '';
 
   /**
-   * If show card option is active, The card title can include text and is displayed in the header above the table.
+   * If show card option is active, the card title can include text and is displayed in the header above the table.
    * @type {string}
    * @default ''
    */

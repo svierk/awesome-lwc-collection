@@ -3,7 +3,7 @@
     <apiVersion>59.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>Custom Datatable</masterLabel>
-    <description>Configurable Datatable</description>
+    <description>A custom datatable with different configuration options.</description>
     <targets>
       <target>lightning__AppPage</target>
       <target>lightning__FlowScreen</target>
@@ -76,13 +76,13 @@
         name="cardIcon"
         label="Card Icon"
         type="String"
-        description="If show card option is active,, the card icon is displayed in the header before the card title. It should contain the SLDS name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category and 'down' the icon to be displayed."
+        description="If show card option is active, the card icon is displayed in the header before the card title. It should contain the SLDS name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category and 'down' the icon to be displayed."
       />
       <property
         name="cardTitle"
         label="Card Title"
         type="String"
-        description="If show card option is active, The card title can include text and is displayed in the header above the table."
+        description="If show card option is active, the card title can include text and is displayed in the header above the table."
       />
       <property
         name="showMultipleRowDeleteAction"
