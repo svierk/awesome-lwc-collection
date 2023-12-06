@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>JSDoc: Class: CustomSlider</title>
+    <title>JSDoc: Class: ContentDocumentTable</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -15,15 +15,15 @@
 
   <body>
     <div id="main">
-      <h1 class="page-title">Class: CustomSlider</h1>
+      <h1 class="page-title">Class: ContentDocumentTable</h1>
 
       <section>
         <header>
           <h2>
-            <span class="attribs"><span class="type-signature"></span></span>CustomSlider
+            <span class="attribs"><span class="type-signature"></span></span>ContentDocumentTable
           </h2>
 
-          <div class="class-description">A simple custom slider with different configuration options.</div>
+          <div class="class-description">A generic table to show shared documents from a Salesforce Files library.</div>
         </header>
 
         <article>
@@ -33,8 +33,9 @@
               <dd class="tag-source">
                 <ul class="dummy">
                   <li>
-                    <a href="customSlider_customSlider.js.html">customSlider/customSlider.js</a>,
-                    <a href="customSlider_customSlider.js.html#line20">line 20</a>
+                    <a href="contentDocumentTable_contentDocumentTable.js.html"
+                      >contentDocumentTable/contentDocumentTable.js</a
+                    >, <a href="contentDocumentTable_contentDocumentTable.js.html#line64">line 64</a>
                   </li>
                 </ul>
               </dd>
@@ -42,15 +43,9 @@
 
             <h5>Example</h5>
 
-            <pre class="prettyprint"><code>&lt;c-custom-slider
-  slides-data={slides}
-  custom-height="500px"
-  custom-width="100%"
-  auto-scroll
-  hide-navigation-buttons
-  hide-slide-text
-  hide-slide-number
->&lt;/c-custom-slider></code></pre>
+            <pre
+              class="prettyprint"
+            ><code>&lt;c-content-document-table library="Documents" record-id={recordid}>&lt;/c-content-document-table></code></pre>
           </div>
 
           <h3 class="subsection-title">Extends</h3>
@@ -61,43 +56,15 @@
 
           <h3 class="subsection-title">Members</h3>
 
-          <h4 class="name" id="autoScroll">
-            <span class="type-signature"></span>autoScroll<span class="type-signature"> :boolean</span>
+          <h4 class="name" id="cardIcon">
+            <span class="type-signature"></span>cardIcon<span class="type-signature"> :string</span>
           </h4>
 
-          <div class="description">If present, automatic slide scrolling will be enabled.</div>
-
-          <h5>Type:</h5>
-          <ul>
-            <li>
-              <span class="param-type">boolean</span>
-            </li>
-          </ul>
-
-          <dl class="details">
-            <dt class="tag-default">Default Value:</dt>
-            <dd class="tag-default">
-              <ul class="dummy">
-                <li>false</li>
-              </ul>
-            </dd>
-
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source">
-              <ul class="dummy">
-                <li>
-                  <a href="customSlider_customSlider.js.html">customSlider/customSlider.js</a>,
-                  <a href="customSlider_customSlider.js.html#line26">line 26</a>
-                </li>
-              </ul>
-            </dd>
-          </dl>
-
-          <h4 class="name" id="customHeight">
-            <span class="type-signature"></span>customHeight<span class="type-signature"> :string</span>
-          </h4>
-
-          <div class="description">Set maximum height of the slider in percent or pixels.</div>
+          <div class="description">
+            If show card option is active,, the card icon is displayed in the header before the card title. It should
+            contain the SLDS name of the icon. Specify the name in the format 'standard:case' where 'standard' is the
+            category and 'case' the icon to be displayed.
+          </div>
 
           <h5>Type:</h5>
           <ul>
@@ -118,18 +85,26 @@
             <dd class="tag-source">
               <ul class="dummy">
                 <li>
-                  <a href="customSlider_customSlider.js.html">customSlider/customSlider.js</a>,
-                  <a href="customSlider_customSlider.js.html#line33">line 33</a>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line73">line 73</a>
                 </li>
               </ul>
             </dd>
           </dl>
 
-          <h4 class="name" id="customWidth">
-            <span class="type-signature"></span>customWidth<span class="type-signature"> :string</span>
+          <h5>Example</h5>
+
+          <pre class="prettyprint"><code>'standard:case'</code></pre>
+
+          <h4 class="name" id="cardTitle">
+            <span class="type-signature"></span>cardTitle<span class="type-signature"> :string</span>
           </h4>
 
-          <div class="description">Set maximum width of the slider in percent or pixels.</div>
+          <div class="description">
+            If show card option is active, The card title can include text and is displayed in the header above the
+            table.
+          </div>
 
           <h5>Type:</h5>
           <ul>
@@ -142,7 +117,7 @@
             <dt class="tag-default">Default Value:</dt>
             <dd class="tag-default">
               <ul class="dummy">
-                <li>'600px'</li>
+                <li>'Document Table'</li>
               </ul>
             </dd>
 
@@ -150,23 +125,50 @@
             <dd class="tag-source">
               <ul class="dummy">
                 <li>
-                  <a href="customSlider_customSlider.js.html">customSlider/customSlider.js</a>,
-                  <a href="customSlider_customSlider.js.html#line40">line 40</a>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line80">line 80</a>
                 </li>
               </ul>
             </dd>
           </dl>
 
-          <h4 class="name" id="hideNavigationButtons">
-            <span class="type-signature"></span>hideNavigationButtons<span class="type-signature"> :boolean</span>
+          <h4 class="name" id="folder">
+            <span class="type-signature"></span>folder<span class="type-signature"> :string</span>
           </h4>
 
-          <div class="description">If present, the "next" and "prev" navigation buttons will be hidden.</div>
+          <div class="description">Folder name within Files library.</div>
 
           <h5>Type:</h5>
           <ul>
             <li>
-              <span class="param-type">boolean</span>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line86">line 86</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="library">
+            <span class="type-signature"></span>library<span class="type-signature"> :string</span>
+          </h4>
+
+          <div class="description">Files library name.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">string</span>
             </li>
           </ul>
 
@@ -174,7 +176,7 @@
             <dt class="tag-default">Default Value:</dt>
             <dd class="tag-default">
               <ul class="dummy">
-                <li>false</li>
+                <li>'Documents'</li>
               </ul>
             </dd>
 
@@ -182,121 +184,55 @@
             <dd class="tag-source">
               <ul class="dummy">
                 <li>
-                  <a href="customSlider_customSlider.js.html">customSlider/customSlider.js</a>,
-                  <a href="customSlider_customSlider.js.html#line47">line 47</a>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line93">line 93</a>
                 </li>
               </ul>
             </dd>
           </dl>
 
-          <h4 class="name" id="hideNavigationDots">
-            <span class="type-signature"></span>hideNavigationDots<span class="type-signature"> :boolean</span>
-          </h4>
-
-          <div class="description">If present, the navigation dots below the slider will be hidden.</div>
-
-          <h5>Type:</h5>
-          <ul>
-            <li>
-              <span class="param-type">boolean</span>
-            </li>
-          </ul>
-
-          <dl class="details">
-            <dt class="tag-default">Default Value:</dt>
-            <dd class="tag-default">
-              <ul class="dummy">
-                <li>false</li>
-              </ul>
-            </dd>
-
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source">
-              <ul class="dummy">
-                <li>
-                  <a href="customSlider_customSlider.js.html">customSlider/customSlider.js</a>,
-                  <a href="customSlider_customSlider.js.html#line54">line 54</a>
-                </li>
-              </ul>
-            </dd>
-          </dl>
-
-          <h4 class="name" id="hideSlideNumber">
-            <span class="type-signature"></span>hideSlideNumber<span class="type-signature"> :boolean</span>
-          </h4>
-
-          <div class="description">If present, the current slide number will be hidden.</div>
-
-          <h5>Type:</h5>
-          <ul>
-            <li>
-              <span class="param-type">boolean</span>
-            </li>
-          </ul>
-
-          <dl class="details">
-            <dt class="tag-default">Default Value:</dt>
-            <dd class="tag-default">
-              <ul class="dummy">
-                <li>false</li>
-              </ul>
-            </dd>
-
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source">
-              <ul class="dummy">
-                <li>
-                  <a href="customSlider_customSlider.js.html">customSlider/customSlider.js</a>,
-                  <a href="customSlider_customSlider.js.html#line61">line 61</a>
-                </li>
-              </ul>
-            </dd>
-          </dl>
-
-          <h4 class="name" id="hideSlideText">
-            <span class="type-signature"></span>hideSlideText<span class="type-signature"> :boolean</span>
-          </h4>
-
-          <div class="description">If present, the text overlay with heading and description will be hidden.</div>
-
-          <h5>Type:</h5>
-          <ul>
-            <li>
-              <span class="param-type">boolean</span>
-            </li>
-          </ul>
-
-          <dl class="details">
-            <dt class="tag-default">Default Value:</dt>
-            <dd class="tag-default">
-              <ul class="dummy">
-                <li>false</li>
-              </ul>
-            </dd>
-
-            <dt class="tag-source">Source:</dt>
-            <dd class="tag-source">
-              <ul class="dummy">
-                <li>
-                  <a href="customSlider_customSlider.js.html">customSlider/customSlider.js</a>,
-                  <a href="customSlider_customSlider.js.html#line68">line 68</a>
-                </li>
-              </ul>
-            </dd>
-          </dl>
-
-          <h4 class="name" id="scrollDuration">
-            <span class="type-signature"></span>scrollDuration<span class="type-signature"> :number</span>
+          <h4 class="name" id="recordId">
+            <span class="type-signature"></span>recordId<span class="type-signature"> :string</span>
           </h4>
 
           <div class="description">
-            Set the duration in milliseconds after which the next slide should be displayed.
+            If the component is used on a lightning record page, the page sets the property to the id of the current
+            record.
           </div>
 
           <h5>Type:</h5>
           <ul>
             <li>
-              <span class="param-type">number</span>
+              <span class="param-type">string</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line99">line 99</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="showCard">
+            <span class="type-signature"></span>showCard<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">
+            If present, the table is wrapped in a lightning card to fit better into the overall page layout.
+          </div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
             </li>
           </ul>
 
@@ -304,7 +240,7 @@
             <dt class="tag-default">Default Value:</dt>
             <dd class="tag-default">
               <ul class="dummy">
-                <li>5000</li>
+                <li>false</li>
               </ul>
             </dd>
 
@@ -312,8 +248,108 @@
             <dd class="tag-source">
               <ul class="dummy">
                 <li>
-                  <a href="customSlider_customSlider.js.html">customSlider/customSlider.js</a>,
-                  <a href="customSlider_customSlider.js.html#line75">line 75</a>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line106">line 106</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="showDeleteAction">
+            <span class="type-signature"></span>showDeleteAction<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">If present, the last column contains a delete file action.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>false</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line113">line 113</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="showDownloadAction">
+            <span class="type-signature"></span>showDownloadAction<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">If present, the last column contains a download file action.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>false</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line120">line 120</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="showViewAction">
+            <span class="type-signature"></span>showViewAction<span class="type-signature"> :boolean</span>
+          </h4>
+
+          <div class="description">If present, the last column contains a view file action.</div>
+
+          <h5>Type:</h5>
+          <ul>
+            <li>
+              <span class="param-type">boolean</span>
+            </li>
+          </ul>
+
+          <dl class="details">
+            <dt class="tag-default">Default Value:</dt>
+            <dd class="tag-default">
+              <ul class="dummy">
+                <li>false</li>
+              </ul>
+            </dd>
+
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="contentDocumentTable_contentDocumentTable.js.html"
+                    >contentDocumentTable/contentDocumentTable.js</a
+                  >, <a href="contentDocumentTable_contentDocumentTable.js.html#line127">line 127</a>
                 </li>
               </ul>
             </dd>
