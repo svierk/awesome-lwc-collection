@@ -53,7 +53,7 @@ const COLUMNS = [
 ];
 
 /**
- * A generic table to show shared documents from files library.
+ * A generic table to show shared documents from a Salesforce Files library.
  * @alias ContentDocumentTable
  * @extends LightningElement
  * @hideconstructor

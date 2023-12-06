@@ -3,7 +3,7 @@
     <apiVersion>59.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>Content Document Table</masterLabel>
-    <description>A generic table to show shared documents from files library.</description>
+    <description>A generic table to show shared documents from a Salesforce Files library.</description>
     <targets>
       <target>lightning__AppPage</target>
       <target>lightning__FlowScreen</target>
