@@ -28,7 +28,7 @@ public class ContentDocumentControllerTest {
     System.runAs(u) {
       Test.startTest();
       Id accountId = [SELECT Id FROM Account WHERE Name = 'Test Account' LIMIT 1].Id;
-      Id contentDocumentId = createContentSetup(accountId);
+      createContentSetup(accountId);
       Test.stopTest();
 
       String jsonString = ContentDocumentController.getDocuments('Test Documents', null, accountId);
