@@ -16,7 +16,7 @@
   },
   "[javascript]": {
     "editor.codeActionsOnSave": {
-      "source.organizeImports": true
+      "source.organizeImports": "explicit"
     }
   },
   "eslint.options": {
