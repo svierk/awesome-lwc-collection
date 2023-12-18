@@ -4,16 +4,14 @@
   </template>
   <template lwc:if={showCard}>
     <lightning-card icon-name={cardIcon} title={cardTitle}>
-      <div class="slds-var-m-horizontal_medium">
-        <c-content-document-table-extension
-          key-field="id"
-          columns={columns}
-          data={documents}
-          onrowaction={handleRowAction}
-          hide-checkbox-column
-        >
-        </c-content-document-table-extension>
-      </div>
+      <c-content-document-table-extension
+        key-field="id"
+        columns={columns}
+        data={documents}
+        onrowaction={handleRowAction}
+        hide-checkbox-column
+      >
+      </c-content-document-table-extension>
     </lightning-card>
   </template>
   <template lwc:else>
