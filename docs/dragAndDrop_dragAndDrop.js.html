@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>JSDoc: Source: render3DElementsThreeJS/render3DElementsThreeJS.js</title>
+    <title>JSDoc: Source: dragAndDrop/dragAndDrop.js</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -15,66 +15,74 @@
 
   <body>
     <div id="main">
-      <h1 class="page-title">Source: render3DElementsThreeJS/render3DElementsThreeJS.js</h1>
+      <h1 class="page-title">Source: dragAndDrop/dragAndDrop.js</h1>
 
       <section>
         <article>
-          <pre class="prettyprint source linenums"><code>/* eslint-disable no-undef */
-import threejs from '@salesforce/resourceUrl/threejs';
-import { loadScript } from 'lightning/platformResourceLoader';
-import { LightningElement } from 'lwc';
+          <pre class="prettyprint source linenums"><code>import { LightningElement, track } from 'lwc';
+
+const COLUMNS = [
+  {
+    label: 'Id',
+    fieldName: 'id',
+    hideDefaultActions: true
+  },
+  {
+    label: 'Label',
+    fieldName: 'label',
+    hideDefaultActions: true
+  }
+];
+
+const DEFAULT_STYLES = 'background-color: rgb(255, 255, 255); border-color: rgb(201, 201, 201);';
+const DRAG_OVER_STYLES = 'background-color: pink; border-color:red;';
 
 /**
- * A simple demo for rendering 3D elements using three.js.
- * @alias Render3DElementsThreeJS
+ * HTML Drag and Drop API usage example.
+ * @alias DragAndDrop
  * @extends LightningElement
  * @hideconstructor
  *
  * @example
- * &lt;c-render3-d-elements-three-j-s>&lt;/c-render3-d-elements-three-j-s>
+ * &lt;c-drag-and-drop>&lt;/c-drag-and-drop>
  */
-export default class Render3DElementsThreeJS extends LightningElement {
+export default class DragAndDrop extends LightningElement {
+  elements = [];
+  columns = COLUMNS;
+  @track data = [];
+
   connectedCallback() {
-    loadScript(this, threejs)
-      .then(() => {
-        this.init();
-      })
-      .catch((error) => {
-        this.error = error;
-      });
+    for (let i = 1; i &lt;= 12; i++) {
+      this.elements.push({ id: i, label: `Element ${i}` });
+    }
   }
 
-  init() {
-    // initialize scene, camera and renderer
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+  handleDragStart(event) {
+    event.dataTransfer.setData('id', event.target.dataset.id);
+    event.dataTransfer.setData('label', event.target.dataset.name);
+  }
 
-    // add cube element with crate material texture to scene
-    const geometry = new THREE.BoxGeometry();
-    const texture = new THREE.TextureLoader().load(
-      'https://raw.githubusercontent.com/svierk/awesome-lwc-collection/main/images/crate-material.gif'
-    );
-    const material = new THREE.MeshBasicMaterial({ map: texture });
-    const cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
+  handleDragOver(event) {
+    event.preventDefault();
+    event.currentTarget.style = DRAG_OVER_STYLES;
+  }
 
-    // append canvas element after defining its size and camera position
-    renderer.setSize(window.innerWidth, window.innerHeight, true);
-    camera.position.z = 3;
-    const container = this.template.querySelector('.container');
-    container.appendChild(renderer.domElement);
-    this.template.querySelector('canvas').style.width = '100%';
-    this.template.querySelector('canvas').style.height = 'auto';
+  handleDragLeave(event) {
+    event.preventDefault();
+    event.currentTarget.style = DEFAULT_STYLES;
+  }
 
-    // add animation loop to rotate the cube
-    function animate() {
-      requestAnimationFrame(animate);
-      cube.rotation.x += 0.01;
-      cube.rotation.y += 0.01;
-      renderer.render(scene, camera);
-    }
-    animate();
+  handleDrop(event) {
+    event.preventDefault();
+    event.currentTarget.style = DEFAULT_STYLES;
+
+    const id = event.dataTransfer.getData('id');
+    const label = event.dataTransfer.getData('label');
+    const element = this.template.querySelector(`div[data-id="${id}"]`);
+    element.remove();
+
+    this.data.push({ id: id, label: label });
+    this.data = JSON.parse(JSON.stringify(this.data));
   }
 }
 </code></pre>
