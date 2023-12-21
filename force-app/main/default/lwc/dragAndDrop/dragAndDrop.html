@@ -1,0 +1,78 @@
+<template>
+  <div class="slds-grid slds-gutters">
+    <div class="slds-col slds-size_1-of-2">
+      <article class="slds-card card-height">
+        <div class="slds-card__header slds-grid">
+          <header class="slds-media slds-media_center slds-has-flexi-truncate">
+            <div class="slds-media__figure">
+              <span class="slds-icon_container">
+                <lightning-icon
+                  icon-name="utility:drag"
+                  alternative-text="utility:drag"
+                  title="Draggable Elements"
+                  size="small"
+                ></lightning-icon>
+              </span>
+            </div>
+            <div class="slds-media__body">
+              <h2 class="slds-card__header-title">Draggable Elements</h2>
+            </div>
+          </header>
+        </div>
+        <div class="slds-card__body">
+          <div class="slds-grid slds-wrap">
+            <template for:each={elements} for:item="element">
+              <div key={element.id} class="slds-col slds-size_1-of-3">
+                <div
+                  data-id={element.id}
+                  data-name={element.label}
+                  class="slds-box slds-theme_shade slds-text-align_center slds-var-m-bottom_x-small grabbable"
+                  draggable="true"
+                  ondragstart={handleDragStart}
+                >
+                  {element.label}
+                </div>
+              </div>
+            </template>
+          </div>
+        </div>
+      </article>
+    </div>
+    <div class="slds-col slds-size_1-of-2">
+      <article
+        class="slds-card dropzone card-height"
+        ondragover={handleDragOver}
+        ondragleave={handleDragLeave}
+        ondrop={handleDrop}
+      >
+        <div class="slds-card__header slds-grid">
+          <header class="slds-media slds-media_center slds-has-flexi-truncate">
+            <div class="slds-media__figure">
+              <span class="slds-icon_container">
+                <lightning-icon
+                  icon-name="utility:table"
+                  alternative-text="utility:table"
+                  title="Drop"
+                  size="small"
+                ></lightning-icon>
+              </span>
+            </div>
+            <div class="slds-media__body">
+              <h2 class="slds-card__header-title">Dropzone</h2>
+            </div>
+          </header>
+        </div>
+        <div class="slds-card__body">
+          <div class="datatable-height">
+            <lightning-datatable
+              key-field="id"
+              columns={columns}
+              data={data}
+              hide-checkbox-column
+            ></lightning-datatable>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</template>
