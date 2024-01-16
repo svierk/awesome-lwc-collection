@@ -26,12 +26,13 @@ public class ContentDocumentControllerTest {
     User u = [SELECT Id FROM User WHERE Username = '123test@example.com'];
 
     System.runAs(u) {
-      Test.startTest();
       Id accountId = [SELECT Id FROM Account WHERE Name = 'Test Account' LIMIT 1].Id;
       createContentSetup(accountId);
+
+      Test.startTest();
+      String jsonString = ContentDocumentController.getDocuments('Test Documents', null, accountId);
       Test.stopTest();
 
-      String jsonString = ContentDocumentController.getDocuments('Test Documents', null, accountId);
       Assert.areNotEqual('', jsonString, 'Returned documents list is empty.');
     }
   }
@@ -41,12 +42,13 @@ public class ContentDocumentControllerTest {
     User u = [SELECT Id FROM User WHERE Username = '123test@example.com'];
 
     System.runAs(u) {
-      Test.startTest();
       Id accountId = [SELECT Id FROM Account WHERE Name = 'Test Account' LIMIT 1].Id;
       Id contentDocumentId = createContentSetup(accountId);
+
+      Test.startTest();
+      String version = ContentDocumentController.getLatestVersion(contentDocumentId);
       Test.stopTest();
 
-      String version = ContentDocumentController.getLatestVersion(contentDocumentId);
       Assert.areNotEqual('', version, 'Document version does not exist.');
     }
   }
