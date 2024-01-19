@@ -5,7 +5,6 @@
  * This is a modified version from:
  * https://github.com/trailheadapps/lwc-recipes/blob/main/force-app/test/jest-mocks/lightning/platformShowToastEvent.js
  */
-
 export const ShowToastEventName = 'lightning__showtoast';
 
 export class ShowToastEvent extends CustomEvent {
