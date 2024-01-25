@@ -13,11 +13,6 @@
         <isRequired>false</isRequired>
     </displayedFields>
     <displayedFields>
-        <field>NumberofLocations__c</field>
-        <isFieldManaged>false</isFieldManaged>
-        <isRequired>false</isRequired>
-    </displayedFields>
-    <displayedFields>
         <field>NumberOfEmployees</field>
         <isFieldManaged>false</isFieldManaged>
         <isRequired>false</isRequired>
