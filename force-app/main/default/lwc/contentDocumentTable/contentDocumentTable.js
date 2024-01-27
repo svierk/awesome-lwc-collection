@@ -197,13 +197,7 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
         window.open(`/sfc/servlet.shepherd/version/download/${version}`);
       })
       .catch((error) => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: 'Error downloading file',
-            message: error.body.message,
-            variant: 'error'
-          })
-        );
+        this.showToast('Error downloading file', error.body.message, 'error');
       });
   }
 
@@ -222,26 +216,18 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
     this.isLoading = true;
     deleteRecord(row.Id)
       .then(() => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: 'Success',
-            message: 'File deleted',
-            variant: 'success'
-          })
-        );
+        this.showToast('Success', 'File deleted', 'success');
         return refreshApex(this.wiredRecords).then(() => {
           this.isLoading = false;
         });
       })
       .catch((error) => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: 'Error deleting file',
-            message: error.body.message,
-            variant: 'error'
-          })
-        );
+        this.showToast('Error deleting file', error.body.message, 'error');
       });
+  }
+
+  showToast(title, message, variant) {
+    this.dispatchEvent(new ShowToastEvent({ title: title, message: message, variant: variant }));
   }
 
   formatSize(size) {

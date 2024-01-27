@@ -277,25 +277,13 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
     this.isLoading = true;
     deleteRecord(row.Id)
       .then(() => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: 'Success',
-            message: 'Record deleted',
-            variant: 'success'
-          })
-        );
+        this.showToast('Success', 'Record deleted', 'success');
         return refreshApex(this.wiredRecords).then(() => {
           this.isLoading = false;
         });
       })
       .catch((error) => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: 'Error deleting record',
-            message: error.body.message,
-            variant: 'error'
-          })
-        );
+        this.showToast('Error deleting record', error.body.message, 'error');
       });
   }
 
@@ -308,25 +296,13 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
     const promises = recordInputs.map((recordInput) => updateRecord(recordInput));
     Promise.all(promises)
       .then(() => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: 'Success',
-            message: 'Records updated',
-            variant: 'success'
-          })
-        );
+        this.showToast('Success', 'Records updated', 'success');
         return refreshApex(this.wiredRecords).then(() => {
           this.draftValues = [];
         });
       })
       .catch((error) => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: 'Error updating records',
-            message: error.body.message,
-            variant: 'error'
-          })
-        );
+        this.showToast('Error updating records', error.body.message, 'error');
       });
   }
 
@@ -341,25 +317,17 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
     const promises = records.map((record) => deleteRecord(record.Id));
     Promise.all(promises)
       .then(() => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: 'Success',
-            message: 'Records deleted',
-            variant: 'success'
-          })
-        );
+        this.showToast('Success', 'Records deleted', 'success');
         return refreshApex(this.wiredRecords).then(() => {
           this.isLoading = false;
         });
       })
       .catch((error) => {
-        this.dispatchEvent(
-          new ShowToastEvent({
-            title: 'Error deleting records',
-            message: error.body.message,
-            variant: 'error'
-          })
-        );
+        this.showToast('Error deleting records', error.body.message, 'error');
       });
+  }
+
+  showToast(title, message, variant) {
+    this.dispatchEvent(new ShowToastEvent({ title: title, message: message, variant: variant }));
   }
 }
