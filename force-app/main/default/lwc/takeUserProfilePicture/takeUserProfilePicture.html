@@ -1,0 +1,27 @@
+<template>
+  <lightning-card icon-name="custom:custom38" title="Take User Profile Picture">
+    <div slot="footer">
+      <lightning-button-group>
+        <lightning-button label="Start Camera" icon-name="utility:video" onclick={startCamera}></lightning-button>
+        <lightning-button label="Stop Camera" icon-name="utility:video_off" onclick={stopCamera}></lightning-button>
+        <lightning-button label="Capture Photo" icon-name="utility:photo" onclick={capturePhoto}></lightning-button>
+        <lightning-button
+          label="Update Profile Picture"
+          icon-name="utility:save"
+          onclick={updatePhoto}
+          variant="brand"
+        ></lightning-button>
+      </lightning-button-group>
+    </div>
+
+    <div class="slds-grid slds-gutters">
+      <div class="slds-col slds-size_1-of-2">
+        <video class="slds-p-left_small video" autoplay></video>
+        <canvas class="slds-hide canvas"></canvas>
+      </div>
+      <div class="slds-col slds-size_1-of-2">
+        <img src="" class="slds-p-right_small slds-hide preview" alt="Captured User Photo" />
+      </div>
+    </div>
+  </lightning-card>
+</template>
