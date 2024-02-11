@@ -21,11 +21,11 @@ export default class TakeUserProfilePicture extends LightningElement {
   }
 
   async startCamera() {
-    if (navigator.mediaDevices && navigator.mediaDevices) {
+    if (navigator.mediaDevices) {
       try {
         this.video.srcObject = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
       } catch (error) {
-        this.showToast('Error accessing camera', error.body.message, 'error');
+        this.showToast('Error accessing camera', error?.body?.message, 'error');
       }
     } else {
       this.showToast('Error', 'getUserMedia is not supported in this browser', 'error');
@@ -65,7 +65,7 @@ export default class TakeUserProfilePicture extends LightningElement {
         );
       })
       .catch((error) => {
-        this.showToast('Error saving the profile picture', error.body.message, 'error');
+        this.showToast('Error saving the profile picture', error?.body?.message, 'error');
       });
   }
 

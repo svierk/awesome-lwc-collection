@@ -197,7 +197,7 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
         window.open(`/sfc/servlet.shepherd/version/download/${version}`);
       })
       .catch((error) => {
-        this.showToast('Error downloading file', error.body.message, 'error');
+        this.showToast('Error downloading file', error?.body?.message, 'error');
       });
   }
 
@@ -222,7 +222,7 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
         });
       })
       .catch((error) => {
-        this.showToast('Error deleting file', error.body.message, 'error');
+        this.showToast('Error deleting file', error?.body?.message, 'error');
       });
   }
 
