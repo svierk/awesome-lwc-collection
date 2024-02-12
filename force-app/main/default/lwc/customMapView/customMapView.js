@@ -127,7 +127,7 @@ export default class CustomMapView extends LightningElement {
       this.dispatchEvent(
         new ShowToastEvent({
           title: 'Error loading location data',
-          message: error.body.message,
+          message: error?.body?.message,
           variant: 'error'
         })
       );

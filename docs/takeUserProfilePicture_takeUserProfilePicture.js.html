@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>JSDoc: Source: takeUserProfilePicture/takeUserProfilePicture.js</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css" />
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css" />
+  </head>
+
+  <body>
+    <div id="main">
+      <h1 class="page-title">Source: takeUserProfilePicture/takeUserProfilePicture.js</h1>
+
+      <section>
+        <article>
+          <pre
+            class="prettyprint source linenums"
+          ><code>import updateProfilePicture from '@salesforce/apex/UserProfilePictureController.updateProfilePicture';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { LightningElement } from 'lwc';
+
+/**
+ * Create a photo using the device's camera and use it to update the user profile.
+ * @alias TakeUserProfilePicture
+ * @extends LightningElement
+ * @hideconstructor
+ *
+ * @example
+ * &lt;c-take-user-profile-picture>&lt;/c-take-user-profile-picture>
+ */
+export default class TakeUserProfilePicture extends LightningElement {
+  video;
+  canvas;
+
+  renderedCallback() {
+    this.video = this.template.querySelector('.video');
+    this.canvas = this.template.querySelector('.canvas');
+  }
+
+  async startCamera() {
+    if (navigator.mediaDevices) {
+      try {
+        this.video.srcObject = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+      } catch (error) {
+        this.showToast('Error accessing camera', error?.body?.message, 'error');
+      }
+    } else {
+      this.showToast('Error', 'getUserMedia is not supported in this browser', 'error');
+    }
+  }
+
+  stopCamera() {
+    this.video.srcObject.getTracks().forEach((track) => track.stop());
+    this.video.srcObject = null;
+    this.hidePreview();
+  }
+
+  capturePhoto() {
+    if (this.video &amp;&amp; this.video.srcObject !== null) {
+      this.canvas.height = this.video.videoHeight;
+      this.canvas.width = this.video.videoWidth;
+      const context = this.canvas.getContext('2d');
+      context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
+      const dataUrl = this.canvas.toDataURL('image/png');
+      const preview = this.template.querySelector('.preview');
+      preview.setAttribute('src', dataUrl);
+      preview.classList.add('slds-show');
+      preview.classList.remove('slds-hide');
+    }
+  }
+
+  updatePhoto() {
+    const dataUrl = this.canvas.toDataURL('image/png');
+    const base64 = dataUrl.replace('data:', '').replace(/^.+,/, '');
+
+    updateProfilePicture({ base64: base64 })
+      .then(() => {
+        this.showToast(
+          'Success',
+          'Profile picture has been updated, it takes some time until the change is visible',
+          'success'
+        );
+      })
+      .catch((error) => {
+        this.showToast('Error saving the profile picture', error?.body?.message, 'error');
+      });
+  }
+
+  hidePreview() {
+    const preview = this.template.querySelector('.preview');
+    preview.setAttribute('src', '');
+    preview.classList.add('slds-hide');
+    preview.classList.remove('slds-show');
+  }
+
+  showToast(title, message, variant) {
+    this.dispatchEvent(new ShowToastEvent({ title: title, message: message, variant: variant }));
+  }
+}
+</code></pre>
+        </article>
+      </section>
+    </div>
+
+    <nav>
+      <h2><a href="index.html">Home</a></h2>
+      <h3>Classes</h3>
+      <ul>
+        <li><a href="Base64ToPdf.html">Base64ToPdf</a></li>
+        <li><a href="ContentDocumentTable.html">ContentDocumentTable</a></li>
+        <li><a href="CsvToDatatable.html">CsvToDatatable</a></li>
+        <li><a href="CustomDatatable.html">CustomDatatable</a></li>
+        <li><a href="CustomMapView.html">CustomMapView</a></li>
+        <li><a href="CustomSlider.html">CustomSlider</a></li>
+        <li><a href="DragAndDrop.html">DragAndDrop</a></li>
+        <li><a href="HelloWorld.html">HelloWorld</a></li>
+        <li><a href="IFrame.html">IFrame</a></li>
+        <li><a href="LocalDevelopmentWrapper.html">LocalDevelopmentWrapper</a></li>
+        <li><a href="MultiSelectCombobox.html">MultiSelectCombobox</a></li>
+        <li><a href="MultiSelectComboboxItem.html">MultiSelectComboboxItem</a></li>
+        <li><a href="OpenRecordPageFlowAction.html">OpenRecordPageFlowAction</a></li>
+        <li><a href="Render3DElementsThreeJS.html">Render3DElementsThreeJS</a></li>
+        <li><a href="TakeUserProfilePicture.html">TakeUserProfilePicture</a></li>
+        <li><a href="VisualforceToPdf.html">VisualforceToPdf</a></li>
+      </ul>
+      <h3>Global</h3>
+      <ul>
+        <li><a href="global.html#slidesData">slidesData</a></li>
+      </ul>
+    </nav>
+
+    <br class="clear" />
+
+    <footer>
+      Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.2</a> on Mon Feb 12 2024 08:47:36
+      GMT+0100 (GMT+01:00)
+    </footer>
+
+    <script>
+      prettyPrint();
+    </script>
+    <script src="scripts/linenumber.js"></script>
+  </body>
+</html>
