@@ -8,20 +8,15 @@ on:
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@main
+      - name: Checkout
+        uses: actions/checkout@main
         with:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
-      - name: Get Node.js Version
-        run: |
-          echo "$(cat ./package.json)" | jq .engines.node | xargs -I {} echo "NodeVersion="{} >> $GITHUB_ENV
-      - name: Use Node.js ${{ env.NodeVersion }}
-        uses: actions/setup-node@main
-        with:
-          node-version: ${{ env.NodeVersion }}
-          cache: 'npm'
+      - name: Select Node Version
+        uses: svierk/get-node-version@main
       - name: Run npm clean-install
         run: npm ci
       - name: Check Prettier
