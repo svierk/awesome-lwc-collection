@@ -25,6 +25,16 @@ jobs:
         run: npm run lint:sonar
       - name: LWC Unit Tests
         run: npm run test:unit:coverage
+      - name: Install SF CLI
+        run: |
+          npm i -g @salesforce/cli
+          sf version
+      - name: Salesforce Org Login
+        run: sf org login sfdx-url --set-default --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL }}")
+      - name: Deploy Metadata
+        run: sf project deploy start
+      - name: Apex Unit Tests
+        run: sf apex run test --test-level=RunLocalTests --code-coverage --result-format=human -w 30 -d ./tests/apex --detailed-coverage
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
