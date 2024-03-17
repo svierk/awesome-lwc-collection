@@ -30,7 +30,9 @@ jobs:
           npm i -g @salesforce/cli
           sf version
       - name: Salesforce Org Login
-        run: sf org login sfdx-url --set-default --sfdx-url-file <(echo "${{ secrets.SFDX_AUTH_URL }}")
+        run: |
+          echo ${{ secrets.SFDX_AUTH_URL }} | base64 --decode | jq > authFile.json
+          sf org login sfdx-url --set-default --sfdx-url-file authFile.json
       - name: Deploy Metadata
         run: sf project deploy start
       - name: Apex Unit Tests
