@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
       - name: Select Node Version
         uses: svierk/get-node-version@main
-      - name: Run npm clean-install
+      - name: Install Dependencies
         run: npm ci
       - name: Check Prettier
         run: npm run prettier
