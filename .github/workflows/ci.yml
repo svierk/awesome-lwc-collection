@@ -31,7 +31,9 @@ jobs:
       - name: Salesforce Org Login
         uses: svierk/sfdx-login@main
         with:
-          sfdx-url: ${{ secrets.SFDX_AUTH_URL }}
+          client-id: ${{ secrets.SFDX_CONSUMER_KEY }}
+          jwt-secret-key: ${{ secrets.SFDX_JWT_SECRET_KEY }}
+          username: ${{ secrets.SFDX_USERNAME }}
       - name: Deploy Metadata
         run: sf project deploy start
       - name: Apex Unit Tests
