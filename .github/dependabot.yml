@@ -11,6 +11,8 @@ updates:
       interval: 'monthly'
     groups:
       dependencies:
-        dependency-type: 'production'
-      dev-dependencies:
-        dependency-type: 'development'
+        patterns:
+          - '*'
+    ignore:
+      - dependency-name: 'eslint'
+        update-types: ['version-update:semver-major']
