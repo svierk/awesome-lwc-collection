@@ -1,0 +1,18 @@
+<template>
+    <article class="slds-card my-card slds-card_boundary slds-m-bottom_x-small">
+        <div class="slds-card__body slds-card__body_inner">
+            <div class="slds-grid slds-gutters slds-p-vertical_small">
+                <div class="slds-col slds-size_2-of-6">
+                    <c-multi-select-combobox
+                        name="ContractStartMonth"
+                        label="Contract Start Months"                                                                    
+                        options={monthYearOptions}
+                        onchange={handleChange}  
+                        selected-values={selectedOptions}         
+                        selected-display-count=3                                                         
+                    ></c-multi-select-combobox>
+                </div>               
+            </div>
+        </div>
+    </article>
+</template>

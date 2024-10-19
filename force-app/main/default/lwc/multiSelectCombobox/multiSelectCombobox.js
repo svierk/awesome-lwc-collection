@@ -83,10 +83,27 @@ export default class MultiSelectCombobox extends LightningElement {
    */
   @api showPills = false;
 
+  _selectedValues = []; // Internal property to hold the selected options
+
+  @api
+  get selectedValues(){
+      return this._selectedValues;
+  }
+
+  set selectedValues(value) {
+      if(value !== this._selectedValues){
+          this._selectedValues = value;
+          this.selectedOptions = value;
+          this.handleSelectedValues(); //Automatically trigger the handler when selectedValues changes
+      }
+  }
+
   @track currentOptions = [];
-  selectedItems = [];
+  @api selectedDisplayCount = 2;
   selectedOptions = [];
+  selectedItems = [];
   isInitialized = false;
+  
   isLoaded = false;
   isVisible = false;
   isDisabled = false;
@@ -97,8 +114,9 @@ export default class MultiSelectCombobox extends LightningElement {
     this.currentOptions = this.options;
   }
 
+  
   renderedCallback() {
-    if (!this.isInitialized) {
+    if(!this.isInitialized){
       this.template.querySelector('.multi-select-combobox__input').addEventListener('click', (event) => {
         this.handleClick(event.target);
         event.stopPropagation();
@@ -109,10 +127,25 @@ export default class MultiSelectCombobox extends LightningElement {
       document.addEventListener('click', () => {
         this.close();
       });
+
       this.isInitialized = true;
       this.setSelection();
     }
   }
+  
+  handleSelectedValues(){
+    this.options = this.options.map(option => {
+      const matchedLabel = this._selectedValues.find(selected => selected.value === option.value);
+      if(matchedLabel){        
+        return{ ...option, selected: true };  // Set selected to true if label matches            
+      }else{
+        return{ ...option, selected: false };  // Set selected to false if label doesn't match
+      }
+    });
+    this.currentOptions = JSON.parse(JSON.stringify(this.options));       
+    this.setSelection();
+  }
+
 
   handleChange(event) {
     this.change(event);
@@ -167,12 +200,18 @@ export default class MultiSelectCombobox extends LightningElement {
   }
 
   setSelection() {
+    if(this.currentOptions.length == 0){
+      this.currentOptions = JSON.parse(JSON.stringify(this.options));
+    } 
+
+
     const selectedItems = this.getSelectedItems();
     let selection = '';
+
     if (selectedItems.length < 1) {
       selection = this.placeholder;
       this.selectedOptions = [];
-    } else if (selectedItems.length > 2) {
+    } else if (selectedItems.length > this.selectedDisplayCount) {
       selection = `${selectedItems.length} Options Selected`;
 
       this.selectedOptions = this.getSelectedItems();
