@@ -103,24 +103,17 @@ export default class CustomMapView extends LightningElement {
   wiredRecord({ error, data }) {
     if (data?.fields) {
       const fields = data.fields;
-      const title = fields[this.titleField]?.value;
-      const city = fields[this.cityField]?.value;
-      const country = fields[this.countryField]?.displayValue;
-      const postalCode = fields[this.postalCodeField]?.value;
-      const state = fields[this.stateField]?.value;
-      const street = fields[this.streetField]?.value;
-      const location = {
-        City: city,
-        Country: country,
-        PostalCode: postalCode,
-        State: state,
-        Street: street
-      };
       this.mapMarkers = [
         {
-          location: location,
+          location: {
+            City: fields[this.cityField]?.value,
+            Country: fields[this.countryField]?.displayValue,
+            PostalCode: fields[this.postalCodeField]?.value,
+            State: fields[this.stateField]?.value,
+            Street: fields[this.streetField]?.value
+          },
           icon: ICONS[this.objectApiName],
-          title: title
+          title: fields[this.titleField]?.value
         }
       ];
     } else if (error) {
