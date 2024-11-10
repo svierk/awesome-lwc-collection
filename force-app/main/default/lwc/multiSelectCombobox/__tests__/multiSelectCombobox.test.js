@@ -37,7 +37,7 @@ describe('c-multi-select-combobox', () => {
     await expect(element).toBeAccessible();
   });
 
-  it('should load correct number of child components', () => {
+  it('should load correct number of child components', async () => {
     // given
     element.label = mockData.label;
     element.name = mockData.name;
@@ -58,7 +58,7 @@ describe('c-multi-select-combobox', () => {
     });
   });
 
-  it('should fire click event when input is clicked', () => {
+  it('should fire click event when input is clicked', async () => {
     // given
     const mockClickHandler = jest.fn();
     element.label = mockData.label;
@@ -78,7 +78,7 @@ describe('c-multi-select-combobox', () => {
     expect(mockClickHandler).toHaveBeenCalledTimes(1);
   });
 
-  it('should fire change events when multiple options are selected', () => {
+  it('should fire change events when multiple options are selected', async () => {
     // given
     const mockChangeHandler = jest.fn();
     element.label = mockData.label;
@@ -114,7 +114,7 @@ describe('c-multi-select-combobox', () => {
     });
   });
 
-  it('should close the dropdown when option is selected while using single select configuration', () => {
+  it('should close the dropdown when option is selected while using single select configuration', async () => {
     // given
     const mockCloseHandler = jest.fn();
     element.label = mockData.label;

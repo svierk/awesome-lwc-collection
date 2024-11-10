@@ -72,7 +72,7 @@ describe('c-custom-datatable', () => {
     await expect(element).toBeAccessible();
   });
 
-  it('should execute view record navigation when view row action event is fired', () => {
+  it('should execute view record navigation when view row action event is fired', async () => {
     // given
     element.objectApiName = mockData.objectApiName;
     element.fieldSetApiName = mockData.fieldSetApiName;
@@ -101,7 +101,7 @@ describe('c-custom-datatable', () => {
     expect(pageReference.attributes.actionName).toBe('view');
   });
 
-  it('should execute edit record navigation when edit row action event is fired', () => {
+  it('should execute edit record navigation when edit row action event is fired', async () => {
     // given
     element.objectApiName = mockData.objectApiName;
     element.fieldSetApiName = mockData.fieldSetApiName;
@@ -130,7 +130,7 @@ describe('c-custom-datatable', () => {
     expect(pageReference.attributes.actionName).toBe('edit');
   });
 
-  it('should execute delete record operation when delete row action event is fired', () => {
+  it('should execute delete record operation when delete row action event is fired', async () => {
     // given
     element.objectApiName = mockData.objectApiName;
     element.fieldSetApiName = mockData.fieldSetApiName;
@@ -157,7 +157,7 @@ describe('c-custom-datatable', () => {
     expect(deleteRecord.mock.calls[0][0]).toEqual(mockGetRecords[0].Id);
   });
 
-  it('should handle error when delete record operation fails', () => {
+  it('should handle error when delete record operation fails', async () => {
     // given
     element.objectApiName = mockData.objectApiName;
     element.fieldSetApiName = mockData.fieldSetApiName;
@@ -185,7 +185,7 @@ describe('c-custom-datatable', () => {
     expect(deleteRecord.mock.calls[0][0]).toEqual(mockGetRecords[0].Id);
   });
 
-  it('should execute nothing when invalid row action event is fired', () => {
+  it('should execute nothing when invalid row action event is fired', async () => {
     // given
     const mockRowActionHandler = jest.fn();
     element.objectApiName = mockData.objectApiName;
@@ -213,7 +213,7 @@ describe('c-custom-datatable', () => {
     expect(mockRowActionHandler).toHaveBeenCalledTimes(1);
   });
 
-  it('should execute update record operation when save event is fired after inline editing', () => {
+  it('should execute update record operation when save event is fired after inline editing', async () => {
     // given
     element.objectApiName = mockData.objectApiName;
     element.fieldSetApiName = mockData.fieldSetApiName;
@@ -239,7 +239,7 @@ describe('c-custom-datatable', () => {
     });
   });
 
-  it('should handle error when update record operation fails', () => {
+  it('should handle error when update record operation fails', async () => {
     // given
     element.objectApiName = mockData.objectApiName;
     element.fieldSetApiName = mockData.fieldSetApiName;

@@ -69,7 +69,7 @@ describe('c-content-document-table', () => {
     await expect(element).toBeAccessible();
   });
 
-  it('should execute download file action when download file event is fired', () => {
+  it('should execute download file action when download file event is fired', async () => {
     // given
     window.open = jest.fn();
     element.folder = mockData.folder;
@@ -97,7 +97,7 @@ describe('c-content-document-table', () => {
     expect(getLatestVersion).toHaveBeenCalledTimes(1);
   });
 
-  it('should handle error when download file action fails', () => {
+  it('should handle error when download file action fails', async () => {
     // given
     window.open = jest.fn();
     element.folder = mockData.folder;
@@ -154,7 +154,7 @@ describe('c-content-document-table', () => {
     expect(pageReference.attributes.actionName).toBe('view');
   });
 
-  it('should execute delete file operation when delete file action event is fired', () => {
+  it('should execute delete file operation when delete file action event is fired', async () => {
     // given
     element.folder = mockData.folder;
     element.library = mockData.library;
@@ -181,7 +181,7 @@ describe('c-content-document-table', () => {
     expect(deleteRecord.mock.calls[0][0]).toEqual(mockGetDocuments[0].Id);
   });
 
-  it('should handle error when delete file operation fails', () => {
+  it('should handle error when delete file operation fails', async () => {
     // given
     element.folder = mockData.folder;
     element.library = mockData.library;
@@ -209,7 +209,7 @@ describe('c-content-document-table', () => {
     expect(deleteRecord.mock.calls[0][0]).toEqual(mockGetDocuments[0].Id);
   });
 
-  it('should execute nothing when invalid row action event is fired', () => {
+  it('should execute nothing when invalid row action event is fired', async () => {
     // given
     const mockRowActionHandler = jest.fn();
     element.folder = mockData.folder;
