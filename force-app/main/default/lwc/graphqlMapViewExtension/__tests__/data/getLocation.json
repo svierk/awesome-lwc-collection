@@ -1,0 +1,30 @@
+{
+  "uiapi": {
+    "query": {
+      "Account": {
+        "edges": [
+          {
+            "node": {
+              "Id": "001J8000009I56WIAS",
+              "Name": {
+                "value": "Jon Doe"
+              },
+              "BillingCity": {
+                "value": "Sample City"
+              },
+              "BillingCountry": {
+                "value": "Sample Country"
+              },
+              "BillingPostalCode": {
+                "value": "12345"
+              },
+              "BillingStreet": {
+                "value": "Sample Street"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
