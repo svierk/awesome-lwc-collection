@@ -33,7 +33,7 @@ describe('c-custom-slider', () => {
     await expect(element).toBeAccessible();
   });
 
-  it('should slide forward on next button click', () => {
+  it('should slide forward on next button click', async () => {
     // given
     const mockClickHandler = jest.fn();
     element.slideData = mockData.slideData;
@@ -48,7 +48,7 @@ describe('c-custom-slider', () => {
     expect(mockClickHandler).toHaveBeenCalledTimes(1);
   });
 
-  it('should slide backward on prev button click', () => {
+  it('should slide backward on prev button click', async () => {
     // given
     const mockClickHandler = jest.fn();
     element.slideData = mockData.slideData;

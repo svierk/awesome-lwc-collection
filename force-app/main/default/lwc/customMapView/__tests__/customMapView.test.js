@@ -20,7 +20,7 @@ describe('c-custom-map-view', () => {
     jest.clearAllMocks();
   });
 
-  it('should be accessible and successfully load map view', () => {
+  it('should be accessible and successfully load map view', async () => {
     // given
     element.recordId = '123';
     element.objectApiName = 'Account';
@@ -40,9 +40,10 @@ describe('c-custom-map-view', () => {
 
     // then
     expect(element).toBeTruthy();
+    await expect(element).toBeAccessible();
   });
 
-  it('should handle errors properly', () => {
+  it('should handle errors properly', async () => {
     // when
     document.body.appendChild(element);
     getRecord.error();

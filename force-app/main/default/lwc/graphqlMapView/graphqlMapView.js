@@ -1,26 +1,19 @@
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { getRecord } from 'lightning/uiRecordApi';
-import { api, LightningElement, track, wire } from 'lwc';
-
-const ICONS = {
-  Account: 'standard:account',
-  Asset: 'standard:asset_object'
-};
+import { api, LightningElement } from 'lwc';
 
 /**
  * Configurable map component for displaying locations via Google Maps API.
- * @alias CustomMapView
+ * @alias GraphqlMapView
  * @extends LightningElement
  * @hideconstructor
  *
  * @example
- * <c-custom-map-view
+ * <c-graphql-map-view
  *   object-api-name="Account"
  *   height="400px"
  *   width="100%"
- * ></c-custom-map-view>
+ * ></c-graphql-map-view>
  */
-export default class CustomMapView extends LightningElement {
+export default class GraphqlMapView extends LightningElement {
   /**
    * If the component is used on a lightning record page, the page sets the property to the id of the current record.
    * @type {string}
@@ -97,37 +90,22 @@ export default class CustomMapView extends LightningElement {
    */
   @api streetField;
 
-  @track mapMarkers;
-
-  @wire(getRecord, { recordId: '$recordId', layoutTypes: ['Full'] })
-  wiredRecord({ error, data }) {
-    if (data?.fields) {
-      const fields = data.fields;
-      this.mapMarkers = [
-        {
-          location: {
-            City: fields[this.cityField]?.value,
-            Country: fields[this.countryField]?.displayValue,
-            PostalCode: fields[this.postalCodeField]?.value,
-            State: fields[this.stateField]?.value,
-            Street: fields[this.streetField]?.value
-          },
-          icon: ICONS[this.objectApiName],
-          title: fields[this.titleField]?.value
-        }
-      ];
-    } else if (error) {
-      this.dispatchEvent(
-        new ShowToastEvent({
-          title: 'Error loading location data',
-          message: error?.body?.message,
-          variant: 'error'
-        })
-      );
-    }
-  }
-
-  get styles() {
-    return `height:${this.height}; width:${this.width}`;
+  connectedCallback() {
+    window.mapConfig = {
+      id: this.recordId,
+      object: this.objectApiName,
+      height: this.height,
+      width: this.width,
+      view: this.listView,
+      zoom: this.zoomLevel,
+      fields: {
+        title: this.titleField,
+        city: this.cityField,
+        country: this.countryField,
+        code: this.postalCodeField,
+        state: this.stateField,
+        street: this.streetField
+      }
+    };
   }
 }

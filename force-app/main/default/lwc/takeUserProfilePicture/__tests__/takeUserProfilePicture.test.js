@@ -40,7 +40,7 @@ describe('c-take-user-profile-picture', () => {
     jest.clearAllMocks();
   });
 
-  it('should allow taking and updating user profile picture', () => {
+  it('should allow taking and updating user profile picture', async () => {
     // when
     updateProfilePicture.mockResolvedValue();
     document.body.appendChild(element);
@@ -54,9 +54,10 @@ describe('c-take-user-profile-picture', () => {
 
     // then
     expect(updateProfilePicture).toHaveBeenCalledTimes(1);
+    await expect(element).toBeAccessible();
   });
 
-  it('should handle error when updating user profile picture', () => {
+  it('should handle error when updating user profile picture', async () => {
     // when
     updateProfilePicture.mockRejectedValue();
     document.body.appendChild(element);
@@ -70,5 +71,6 @@ describe('c-take-user-profile-picture', () => {
 
     // then
     expect(updateProfilePicture).toHaveBeenCalledTimes(1);
+    await expect(element).toBeAccessible();
   });
 });

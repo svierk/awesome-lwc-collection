@@ -29,7 +29,7 @@ describe('c-multi-select-combobox-item', () => {
     await expect(element).toBeAccessible();
   });
 
-  it('should fire change event when clicked', () => {
+  it('should fire change event when clicked', async () => {
     // given
     const mockClickHandler = jest.fn();
     element.item = { name: 'name', label: 'label', selected: false };

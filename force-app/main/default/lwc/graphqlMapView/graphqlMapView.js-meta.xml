@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>GraphQL Map View</masterLabel>
+    <description>Configurable map component for displaying locations via Google Maps API.</description>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__RecordPage">
+            <property
+        name="height"
+        label="Map Height"
+        type="String"
+        description="Height of the map component in percent or pixels. The default is 400px."
+        default="400px"
+      />
+            <property
+        name="width"
+        label="Map Width"
+        type="String"
+        description="Width of the map component in percent or pixels. The default is 100%."
+        default="100%"
+      />
+            <property
+        name="listView"
+        label="List View"
+        type="String"
+        description="Displays or hides the list of locations. Valid values are visible, hidden, or auto."
+        default="auto"
+      />
+            <property
+        name="zoomLevel"
+        label="Zoom Level"
+        type="String"
+        description="Supports zoom levels from 1 to 20. If not specified, the component calculates a zoom level to accommodate the markers in the map."
+      />
+            <property
+        name="titleField"
+        label="Location Title"
+        type="String"
+        description="API name of the field that contains the location title. The default is the Name field."
+        default="Name"
+      />
+            <property
+        name="cityField"
+        label="City Field"
+        type="String"
+        description="API name of the field that contains the city."
+      />
+            <property
+        name="countryField"
+        label="Country Field"
+        type="String"
+        description="API name of the field that contains the country."
+      />
+            <property
+        name="postalCodeField"
+        label="Postal Code Field"
+        type="String"
+        description="API name of the field that contains the postal code."
+      />
+            <property
+        name="stateField"
+        label="State Field"
+        type="String"
+        description="API name of the field that contains the state."
+      />
+            <property
+        name="streetField"
+        label="Street Field"
+        type="String"
+        description="API name of the field that contains the street."
+      />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
