@@ -28,28 +28,28 @@
     "server:lwc": "sf force lightning lwc start"
   },
   "devDependencies": {
-    "@babel/core": "^7.26.0",
-    "@babel/eslint-parser": "^7.25.9",
-    "@locker/eslint-config-locker": "^0.24.1",
-    "@lwc/eslint-plugin-lwc": "^1.9.0",
+    "@babel/core": "^7.26.7",
+    "@babel/eslint-parser": "^7.26.5",
+    "@locker/eslint-config-locker": "^0.24.4",
+    "@lwc/eslint-plugin-lwc": "^2.1.0",
     "@prettier/plugin-xml": "^3.4.1",
     "@sa11y/jest": "^7.0.0",
-    "@salesforce/eslint-config-lwc": "^3.6.0",
+    "@salesforce/eslint-config-lwc": "^3.7.1",
     "@salesforce/eslint-plugin-aura": "^2.1.0",
-    "@salesforce/eslint-plugin-lightning": "^1.0.0",
+    "@salesforce/eslint-plugin-lightning": "^1.0.1",
     "@salesforce/sfdx-lwc-jest": "^7.0.1",
     "eslint": "^8.57.0",
     "eslint-plugin-compat": "^6.0.2",
     "eslint-plugin-import": "^2.31.0",
-    "eslint-plugin-jest": "^28.10.0",
+    "eslint-plugin-jest": "^28.11.0",
     "husky": "^9.1.7",
     "jest-canvas-mock": "^2.5.2",
     "jest-junit": "^16.0.0",
     "jsdoc": "^4.0.4",
-    "lint-staged": "^15.3.0",
+    "lint-staged": "^15.4.3",
     "prettier": "^3.4.2",
     "prettier-plugin-apex": "^2.2.2",
-    "typescript": "~5.7.2"
+    "typescript": "~5.7.3"
   },
   "lint-staged": {
     "**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}": [
