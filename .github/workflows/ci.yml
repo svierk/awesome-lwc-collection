@@ -39,7 +39,7 @@ jobs:
       - name: Apex Unit Tests
         run: sf apex run test --test-level=RunLocalTests --code-coverage --result-format=human -w 30 -d ./tests/apex --detailed-coverage
       - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
+        uses: SonarSource/sonarqube-scan-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
