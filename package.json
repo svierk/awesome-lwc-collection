@@ -28,9 +28,9 @@
     "server:lwc": "sf force lightning lwc start"
   },
   "devDependencies": {
-    "@babel/core": "^7.26.9",
-    "@babel/eslint-parser": "^7.26.8",
-    "@locker/eslint-config-locker": "^0.24.5",
+    "@babel/core": "^7.26.10",
+    "@babel/eslint-parser": "^7.27.0",
+    "@locker/eslint-config-locker": "^0.24.8",
     "@lwc/eslint-plugin-lwc": "^2.1.0",
     "@prettier/plugin-xml": "^3.4.1",
     "@sa11y/jest": "^7.0.0",
@@ -46,9 +46,9 @@
     "jest-canvas-mock": "^2.5.2",
     "jest-junit": "^16.0.0",
     "jsdoc": "^4.0.4",
-    "lint-staged": "^15.4.3",
-    "prettier": "^3.5.2",
-    "prettier-plugin-apex": "^2.2.4",
+    "lint-staged": "^15.5.0",
+    "prettier": "^3.5.3",
+    "prettier-plugin-apex": "^2.2.5",
     "typescript": "~5.8.2"
   },
   "lint-staged": {
