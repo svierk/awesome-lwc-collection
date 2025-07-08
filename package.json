@@ -10,7 +10,7 @@
   "license": "MIT",
   "engines": {
     "node": "20.x.x",
-    "npm": "10.x.x"
+    "npm": "11.x.x"
   },
   "scripts": {
     "docs": "jsdoc -c jsdoc.config.json",
