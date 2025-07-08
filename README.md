@@ -64,21 +64,9 @@ To deploy all components of this project to the currently connected org execute:
 sf project deploy start
 ```
 
-### Install & use the local development server
+### Local development
 
-Lightning Web Components can be viewed and developed locally without the need to push them to an org first. To set up local development you only nedd to install the development server after you authorized an org.
-
-The local development server and its configuration are provided by a Salesforce CLI plugin that can be installed as follows:
-
-```
-sf plugins install @salesforce/lwc-dev-server
-```
-
-To start the server on http://localhost:3333 and access all components of this project run:
-
-```
-npm run server:lwc
-```
+Local Dev for Lightning Web Components lets you create and modify components leveraging a real-time browser preview: [Preview Components with Local Dev](https://developer.salesforce.com/docs/platform/lwc/guide/get-started-test-components.html)
 
 ## Quality measures
 
