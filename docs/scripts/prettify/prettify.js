@@ -51,12 +51,12 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
       });
       f = [];
       j = [NaN, NaN];
-      for (c = 0; c < b.length; ++c) (i = b[c]), i[0] <= j[1] + 1 ? (j[1] = Math.max(j[1], i[1])) : f.push((j = i));
+      for (c = 0; c < b.length; ++c) ((i = b[c]), i[0] <= j[1] + 1 ? (j[1] = Math.max(j[1], i[1])) : f.push((j = i)));
       b = ['['];
       o && b.push('^');
       b.push.apply(b, a);
       for (c = 0; c < f.length; ++c)
-        (i = f[c]), b.push(e(i[0])), i[1] > i[0] && (i[1] + 1 > i[0] && b.push('-'), b.push(e(i[1])));
+        ((i = f[c]), b.push(e(i[0])), i[1] > i[0] && (i[1] + 1 > i[0] && b.push('-'), b.push(e(i[1]))));
       b.push(']');
       return b.join('');
     }
@@ -77,14 +77,14 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
       }
       for (c = 1; c < d.length; ++c) -1 === d[c] && (d[c] = ++t);
       for (i = c = 0; c < b; ++c)
-        (j = f[c]),
+        ((j = f[c]),
           j === '('
             ? (++i, d[i] === void 0 && (f[c] = '(?:'))
-            : '\\' === j.charAt(0) && (j = +j.substring(1)) && j <= i && (f[c] = '\\' + d[i]);
+            : '\\' === j.charAt(0) && (j = +j.substring(1)) && j <= i && (f[c] = '\\' + d[i]));
       for (i = c = 0; c < b; ++c) '^' === f[c] && '^' !== f[c + 1] && (f[c] = '');
       if (a.ignoreCase && s)
         for (c = 0; c < b; ++c)
-          (j = f[c]),
+          ((j = f[c]),
             (a = j.charAt(0)),
             j.length >= 2 && a === '['
               ? (f[c] = h(j))
@@ -92,7 +92,7 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
                 (f[c] = j.replace(/[A-Za-z]/g, function (a) {
                   a = a.charCodeAt(0);
                   return '[' + String.fromCharCode(a & -33, a | 32) + ']';
-                }));
+                })));
       return f.join('');
     }
     for (var t = 0, s = !1, l = !1, p = 0, d = a.length; p < d; ++p) {
@@ -118,17 +118,17 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
           if (e.test(a.className)) break;
           for (var g = a.firstChild; g; g = g.nextSibling) m(g);
           g = a.nodeName;
-          if ('BR' === g || 'LI' === g) (h[s] = '\n'), (t[s << 1] = y++), (t[(s++ << 1) | 1] = a);
+          if ('BR' === g || 'LI' === g) ((h[s] = '\n'), (t[s << 1] = y++), (t[(s++ << 1) | 1] = a));
           break;
         case 3:
         case 4:
-          (g = a.nodeValue),
+          ((g = a.nodeValue),
             g.length &&
               ((g = p ? g.replace(/\r\n?/g, '\n') : g.replace(/[\t\n\r ]+/g, ' ')),
               (h[s] = g),
               (t[s << 1] = y),
               (y += g.length),
-              (t[(s++ << 1) | 1] = a));
+              (t[(s++ << 1) | 1] = a)));
       }
     }
     var e = /(?:^|\s)nocode(?:\s|$)/,
@@ -157,7 +157,7 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
         if (typeof b === 'string') c = !1;
         else {
           var i = h[f.charAt(0)];
-          if (i) (o = f.match(i[1])), (b = i[0]);
+          if (i) ((o = f.match(i[1])), (b = i[0]));
           else {
             for (c = 0; c < t; ++c)
               if (((i = m[c]), (o = f.match(i[1])))) {
@@ -167,7 +167,7 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
             o || (b = 'pln');
           }
           if ((c = b.length >= 5 && 'lang-' === b.substring(0, 5)) && !(o && typeof o[1] === 'string'))
-            (c = !1), (b = 'src');
+            ((c = !1), (b = 'src'));
           c || (r[f] = b);
         }
         i = d;
@@ -259,7 +259,7 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
       switch (a.nodeType) {
         case 1:
           if (k.test(a.className)) break;
-          if ('BR' === a.nodeName) h(a), a.parentNode && a.parentNode.removeChild(a);
+          if ('BR' === a.nodeName) (h(a), a.parentNode && a.parentNode.removeChild(a));
           else for (a = a.firstChild; a; a = a.nextSibling) e(a);
           break;
         case 3:
@@ -285,7 +285,7 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
           var f = b(f, 1),
             g = a.nextSibling;
           f.appendChild(e);
-          for (var h = g; h; h = g) (g = h.nextSibling), f.appendChild(h);
+          for (var h = g; h; h = g) ((g = h.nextSibling), f.appendChild(h));
         }
         return e;
       }
@@ -307,10 +307,10 @@ window.PR_SHOULD_USE_CONTINUATION = !0;
     var r = s.createElement('OL');
     r.className = 'linenums';
     for (var n = Math.max(0, (m - 1) | 0) || 0, g = 0, z = d.length; g < z; ++g)
-      (l = d[g]),
+      ((l = d[g]),
         (l.className = 'L' + ((g + n) % 10)),
         l.firstChild || l.appendChild(s.createTextNode('\xa0')),
-        r.appendChild(l);
+        r.appendChild(l));
     a.appendChild(r);
   }
   function k(a, m) {
