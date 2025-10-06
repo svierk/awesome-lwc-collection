@@ -5,9 +5,9 @@ public with sharing class CustomDatatableUtilTest {
     User u = new User();
     u.FirstName = 'Test';
     u.LastName = 'User';
-    u.Username = '123test@example.com';
-    u.Alias = '123test';
-    u.Email = '123test@example.com';
+    u.Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com';
+    u.Alias = 'a86f';
+    u.Email = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com';
     u.ProfileId = [SELECT Id FROM Profile WHERE Name = 'System Administrator' LIMIT 1].Id;
     u.TimeZoneSidKey = 'America/Chicago';
     u.LocaleSidKey = 'en_US';
@@ -27,7 +27,7 @@ public with sharing class CustomDatatableUtilTest {
 
   @IsTest
   static void getRecordsWithFieldSetTest() {
-    User u = [SELECT Id FROM User WHERE Username = '123test@example.com'];
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
 
     System.runAs(u) {
       Test.startTest();
@@ -45,7 +45,7 @@ public with sharing class CustomDatatableUtilTest {
 
   @IsTest
   static void convertFieldSetToColumnsTest() {
-    User u = [SELECT Id FROM User WHERE Username = '123test@example.com'];
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
 
     System.runAs(u) {
       Test.startTest();
@@ -63,7 +63,7 @@ public with sharing class CustomDatatableUtilTest {
 
   @IsTest
   static void getCustomTypeAttributesTest() {
-    User u = [SELECT Id FROM User WHERE Username = '123test@example.com'];
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
 
     System.runAs(u) {
       Test.startTest();
