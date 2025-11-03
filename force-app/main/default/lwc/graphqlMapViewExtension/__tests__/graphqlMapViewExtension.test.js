@@ -1,5 +1,5 @@
 import GraphqlMapViewExtension from 'c/graphqlMapViewExtension';
-import { graphql } from 'lightning/uiGraphQLApi';
+import { graphql } from 'lightning/graphql';
 import { createElement } from 'lwc';
 
 const mockGraphQL = require('./data/getLocation.json');
