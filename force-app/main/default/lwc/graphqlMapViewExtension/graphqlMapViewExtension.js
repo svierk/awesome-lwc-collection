@@ -1,5 +1,5 @@
+import { gql, graphql } from 'lightning/graphql';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { gql, graphql } from 'lightning/uiGraphQLApi';
 import { LightningElement, track, wire } from 'lwc';
 
 const ICONS = {
