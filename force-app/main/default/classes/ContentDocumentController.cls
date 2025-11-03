@@ -5,41 +5,50 @@ public with sharing class ContentDocumentController {
       String folderName = folder != null ? folder : recordId.getSObjectType().getDescribe().getName();
 
       // get workspace library
-      ContentWorkspace cw = [
+      List<ContentWorkspace> cwList = [
         SELECT Id, Name
         FROM ContentWorkspace
         WHERE Name LIKE :library
         WITH USER_MODE
         LIMIT 1
       ];
+      if (cwList.isEmpty())
+        return null;
+      ContentWorkspace cw = cwList[0];
 
       // get specific folder from library based on object api name
-      ContentFolder cf = [
+      List<ContentFolder> cfList = [
         SELECT Id, Name
         FROM ContentFolder
         WHERE ParentContentFolder.Name = :cw.Id AND Name = :folderName
         WITH USER_MODE
         LIMIT 1
       ];
+      if (cfList.isEmpty())
+        return null;
+      ContentFolder cf = cfList[0];
 
       // get all files that are in the folder
       List<Id> cfmIdList = new List<Id>();
-      for (ContentFolderMember cfm : [
+      List<ContentFolderMember> cfmList = [
         SELECT Id, ParentContentFolderId, ParentContentFolder.Name, ChildRecordId, ChildRecord.title
         FROM ContentFolderMember
         WHERE ParentContentFolderId = :cf.Id
         WITH USER_MODE
-      ]) {
+        LIMIT 200
+      ];
+      for (ContentFolderMember cfm : cfmList) {
         cfmIdList.add(cfm.ChildRecordId);
       }
 
-      return JSON.serialize(
-        [
-          SELECT Id, Title, Description, FileExtension, FileType, ContentSize, CreatedDate
-          FROM ContentDocument
-          WHERE Id IN :cfmIdList
-        ]
-      );
+      List<ContentDocument> documents = [
+        SELECT Id, Title, Description, FileExtension, FileType, ContentSize, CreatedDate
+        FROM ContentDocument
+        WHERE Id IN :cfmIdList
+        LIMIT 200
+      ];
+
+      return JSON.serialize(documents);
     } catch (Exception e) {
       System.debug('The following exception has occurred: ' + e.getMessage());
       return null;
@@ -47,14 +56,14 @@ public with sharing class ContentDocumentController {
   }
 
   @AuraEnabled
-  public static string getLatestVersion(Id recordId) {
-    return [
+  public static String getLatestVersion(Id recordId) {
+    List<ContentVersion> versionList = [
       SELECT Id, IsLatest, Title, ContentDocumentId
       FROM ContentVersion
-      WHERE ContentDocumentId = :recordId AND isLatest = TRUE
+      WHERE ContentDocumentId = :recordId AND IsLatest = TRUE
       WITH USER_MODE
       LIMIT 1
-    ]
-    .Id;
+    ];
+    return versionList.isEmpty() ? null : versionList[0].Id;
   }
 }
