@@ -33,4 +33,15 @@ public class UserProfilePictureControllerTest {
       Assert.isTrue(System.today().isSameDay(uModified.LastModifiedDate.date()), 'LastModifiedDate is not today.');
     }
   }
+
+  @IsTest
+  public static void updateProfilePictureNullPointerTest() {
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
+
+    System.runAs(u) {
+      Test.startTest();
+      UserProfilePictureController.updateProfilePicture(null);
+      Test.stopTest();
+    }
+  }
 }

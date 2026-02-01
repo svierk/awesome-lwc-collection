@@ -11,7 +11,6 @@ public with sharing class UserProfilePictureController {
       System.debug('Connect API error occurred: ' + e.getMessage());
     } catch (NullPointerException e) {
       System.debug('Null pointer error occurred: ' + e.getMessage());
-      throw new AuraHandledException('Fehlende Bilddaten. Bitte laden Sie ein Bild hoch.');
     } catch (Exception e) {
       System.debug('Error has occurred: ' + e.getMessage());
     }
