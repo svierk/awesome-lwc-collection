@@ -152,7 +152,7 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
           };
           if (element.ContentSize) element.ContentSize = this.formatSize(element.ContentSize);
         });
-        this.documents = JSON.parse(JSON.stringify(documents));
+        this.documents = structuredClone(documents);
       }
       this.isLoading = false;
     }
@@ -231,6 +231,6 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
   }
 
   formatSize(size) {
-    return size && size / 1000000 >= 1 ? `${(size / 1000000).toFixed(1)} MB` : `${parseInt(size / 1000, 10)} KB`;
+    return size && size / 1000000 >= 1 ? `${(size / 1000000).toFixed(1)} MB` : `${Number.parseInt(size / 1000, 10)} KB`;
   }
 }
