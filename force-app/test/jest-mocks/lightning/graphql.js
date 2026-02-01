@@ -3,7 +3,7 @@
  * https://github.com/salesforce/sfdx-lwc-jest/blob/master/src/lightning-stubs/graphql/graphql.js
  */
 import { createTestWireAdapter } from '@salesforce/wire-service-jest-util';
-export class graphql extends createTestWireAdapter() {
+export class Graphql extends createTestWireAdapter() {
   static emit(value, filterFn, refreshFn) {
     super.emit(
       {
