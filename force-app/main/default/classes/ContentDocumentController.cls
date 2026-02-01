@@ -49,8 +49,20 @@ public with sharing class ContentDocumentController {
       ];
 
       return JSON.serialize(documents);
+    } catch (QueryException e) {
+      System.debug('Query error occurred: ' + e.getMessage());
+      return null;
+    } catch (DmlException e) {
+      System.debug('DML error occurred: ' + e.getMessage());
+      return null;
+    } catch (NullPointerException e) {
+      System.debug('Null pointer error occurred: ' + e.getMessage());
+      return null;
+    } catch (JSONException e) {
+      System.debug('JSON serialization error occurred: ' + e.getMessage());
+      return null;
     } catch (Exception e) {
-      System.debug('The following exception has occurred: ' + e.getMessage());
+      System.debug('Error has occurred: ' + e.getMessage());
       return null;
     }
   }
