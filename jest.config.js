@@ -1,6 +1,6 @@
 const { jestConfig } = require('@salesforce/sfdx-lwc-jest/config');
 const setupFilesAfterEnv = jestConfig.setupFilesAfterEnv || [];
-setupFilesAfterEnv.push('<rootDir>/jest-sa11y-setup.js', 'jest-canvas-mock');
+setupFilesAfterEnv.push('<rootDir>/jest-setup.js', 'jest-canvas-mock');
 
 module.exports = {
   ...jestConfig,
