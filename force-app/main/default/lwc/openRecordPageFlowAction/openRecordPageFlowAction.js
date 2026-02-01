@@ -25,7 +25,7 @@ export default class OpenRecordPageFlowAction extends LightningElement {
   @api target = '_blank';
 
   connectedCallback() {
-    const completeURL = `${window.location.origin}/${this.recordId}`;
-    window.open(completeURL, this.target);
+    const completeURL = `${globalThis.location.origin}/${this.recordId}`;
+    globalThis.open(completeURL, this.target);
   }
 }

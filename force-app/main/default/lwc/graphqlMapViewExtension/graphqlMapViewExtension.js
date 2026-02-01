@@ -15,7 +15,7 @@ export default class GraphqlMapViewExtension extends LightningElement {
 
   constructor() {
     super();
-    this.config = window.mapConfig;
+    this.config = globalThis.mapConfig;
 
     let fields = '';
     if (this.config?.fields) {

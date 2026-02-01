@@ -194,7 +194,7 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
   download(row) {
     getLatestVersion({ recordId: row.Id })
       .then((version) => {
-        window.open(`/sfc/servlet.shepherd/version/download/${version}`);
+        globalThis.open(`/sfc/servlet.shepherd/version/download/${version}`);
       })
       .catch((error) => {
         this.showToast('Error downloading file', error?.body?.message, 'error');

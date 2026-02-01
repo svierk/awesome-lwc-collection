@@ -26,7 +26,7 @@ export default class Render3DElementsThreeJS extends LightningElement {
   init() {
     // initialize scene, camera and renderer
     const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const camera = new THREE.PerspectiveCamera(75, globalThis.innerWidth / globalThis.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ antialias: true });
 
     // add cube element with crate material texture to scene
@@ -39,7 +39,7 @@ export default class Render3DElementsThreeJS extends LightningElement {
     scene.add(cube);
 
     // append canvas element after defining its size and camera position
-    renderer.setSize(window.innerWidth, window.innerHeight, true);
+    renderer.setSize(globalThis.innerWidth, globalThis.innerHeight, true);
     camera.position.z = 3;
     const container = this.template.querySelector('.container');
     container.appendChild(renderer.domElement);
