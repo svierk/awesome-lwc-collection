@@ -23,7 +23,7 @@ export const isEmpEnabled = jest.fn().mockResolvedValue();
 
 // Mock function for "publishing" platform event
 export const jestMockPublish = jest.fn((channel, message) => {
-  if (_channels[channel] && _channels[channel].onMessageCallback instanceof Function) {
+  if (_channels[channel] && typeof _channels[channel].onMessageCallback === 'function') {
     _channels[channel].onMessageCallback(message);
   }
   Promise.resolve(true);
