@@ -71,6 +71,7 @@ describe('c-content-document-table', () => {
 
   it('should execute download file action when download file event is fired', async () => {
     // given
+    globalThis.open = jest.fn();
     element.folder = mockData.folder;
     element.library = mockData.library;
     element.recordId = mockData.recordId;
@@ -98,6 +99,7 @@ describe('c-content-document-table', () => {
 
   it('should handle error when download file action fails', async () => {
     // given
+    globalThis.open = jest.fn();
     element.folder = mockData.folder;
     element.library = mockData.library;
     element.recordId = mockData.recordId;
