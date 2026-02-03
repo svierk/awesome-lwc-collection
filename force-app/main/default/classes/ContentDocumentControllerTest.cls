@@ -38,6 +38,47 @@ public class ContentDocumentControllerTest {
   }
 
   @IsTest
+  public static void getDocumentsNoLibraryTest() {
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
+
+    System.runAs(u) {
+      Id accountId = [SELECT Id FROM Account WHERE Name = 'Test Account' LIMIT 1].Id;
+
+      Test.startTest();
+      String jsonString = ContentDocumentController.getDocuments('Non-Existent Library', null, accountId);
+      Test.stopTest();
+
+      Assert.isNull(jsonString, 'Should return null when library does not exist.');
+    }
+  }
+
+  @IsTest
+  public static void getDocumentsNoFolderTest() {
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
+
+    System.runAs(u) {
+      Id accountId = [SELECT Id FROM Account WHERE Name = 'Test Account' LIMIT 1].Id;
+      ContentWorkspace cw = getContentWorkspace('Test Documents');
+      insert cw;
+
+      Test.startTest();
+      String jsonString = ContentDocumentController.getDocuments('Test Documents', null, accountId);
+      Test.stopTest();
+
+      Assert.isNull(jsonString, 'Should return null when folder does not exist.');
+    }
+  }
+
+  @IsTest
+  public static void getDocumentsNullPointerTest() {
+    Test.startTest();
+    String jsonString = ContentDocumentController.getDocuments('Test', null, null);
+    Test.stopTest();
+
+    Assert.isNull(jsonString, 'Should return null on NullPointerException.');
+  }
+
+  @IsTest
   public static void getLatestVersionTest() {
     User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
 
@@ -50,6 +91,21 @@ public class ContentDocumentControllerTest {
       Test.stopTest();
 
       Assert.areNotEqual('', version, 'Document version does not exist.');
+    }
+  }
+
+  @IsTest
+  public static void getLatestVersionNoVersionTest() {
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
+
+    System.runAs(u) {
+      Id accountId = [SELECT Id FROM Account WHERE Name = 'Test Account' LIMIT 1].Id;
+
+      Test.startTest();
+      String version = ContentDocumentController.getLatestVersion(accountId);
+      Test.stopTest();
+
+      Assert.isNull(version, 'Should return null when no version exists.');
     }
   }
 

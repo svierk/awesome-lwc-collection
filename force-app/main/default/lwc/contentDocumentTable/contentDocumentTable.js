@@ -152,7 +152,7 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
           };
           if (element.ContentSize) element.ContentSize = this.formatSize(element.ContentSize);
         });
-        this.documents = JSON.parse(JSON.stringify(documents));
+        this.documents = structuredClone(documents);
       }
       this.isLoading = false;
     }
@@ -194,7 +194,7 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
   download(row) {
     getLatestVersion({ recordId: row.Id })
       .then((version) => {
-        window.open(`/sfc/servlet.shepherd/version/download/${version}`);
+        globalThis.open(`/sfc/servlet.shepherd/version/download/${version}`);
       })
       .catch((error) => {
         this.showToast('Error downloading file', error?.body?.message, 'error');
@@ -231,6 +231,6 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
   }
 
   formatSize(size) {
-    return size && size / 1000000 >= 1 ? `${(size / 1000000).toFixed(1)} MB` : `${parseInt(size / 1000, 10)} KB`;
+    return size && size / 1000000 >= 1 ? `${(size / 1000000).toFixed(1)} MB` : `${Number.parseInt(size / 1000, 10)} KB`;
   }
 }

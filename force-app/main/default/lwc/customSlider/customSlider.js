@@ -130,7 +130,7 @@ export default class CustomSlider extends LightningElement {
 
   connectedCallback() {
     if (this.autoScroll) {
-      this.timer = window.setInterval(() => {
+      this.timer = globalThis.setInterval(() => {
         this.handleSlideSelection(this.slideIndex + 1);
       }, Number(this.scrollDuration));
     }
@@ -138,7 +138,7 @@ export default class CustomSlider extends LightningElement {
 
   disconnectedCallback() {
     if (this.autoScroll) {
-      window.clearInterval(this.timer);
+      globalThis.clearInterval(this.timer);
     }
   }
 

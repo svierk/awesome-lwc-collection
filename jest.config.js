@@ -1,7 +1,6 @@
 const { jestConfig } = require('@salesforce/sfdx-lwc-jest/config');
 const setupFilesAfterEnv = jestConfig.setupFilesAfterEnv || [];
-setupFilesAfterEnv.push('<rootDir>/jest-sa11y-setup.js');
-setupFilesAfterEnv.push('jest-canvas-mock');
+setupFilesAfterEnv.push('<rootDir>/jest-setup.js', 'jest-canvas-mock');
 
 module.exports = {
   ...jestConfig,
@@ -12,7 +11,6 @@ module.exports = {
     '^lightning/actions$': '<rootDir>/force-app/test/jest-mocks/lightning/actions',
     '^lightning/empApi$': '<rootDir>/force-app/test/jest-mocks/lightning/empApi',
     '^lightning/flowSupport$': '<rootDir>/force-app/test/jest-mocks/lightning/flowSupport',
-    '^lightning/graphql$': '<rootDir>/force-app/test/jest-mocks/lightning/graphql',
     '^lightning/messageService$': '<rootDir>/force-app/test/jest-mocks/lightning/messageService',
     '^lightning/modal$': '<rootDir>/force-app/test/jest-mocks/lightning/modal',
     '^lightning/navigation$': '<rootDir>/force-app/test/jest-mocks/lightning/navigation',

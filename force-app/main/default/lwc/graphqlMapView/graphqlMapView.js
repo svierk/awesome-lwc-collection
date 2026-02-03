@@ -91,7 +91,7 @@ export default class GraphqlMapView extends LightningElement {
   @api streetField;
 
   connectedCallback() {
-    window.mapConfig = {
+    globalThis.mapConfig = {
       id: this.recordId,
       object: this.objectApiName,
       height: this.height,

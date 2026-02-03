@@ -35,17 +35,12 @@ export default class CsvToDatatable extends LightningElement {
   }
 
   async load(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        resolve(reader.result);
-      };
-      reader.onerror = () => {
-        reject(reader.error);
-      };
-      reader.readAsText(file);
-    });
+    try {
+      return await file.text();
+    } catch (e) {
+      this.error = e;
+      return null;
+    }
   }
 
   parse(csv) {

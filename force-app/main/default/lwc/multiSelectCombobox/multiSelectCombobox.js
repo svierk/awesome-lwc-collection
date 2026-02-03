@@ -126,7 +126,7 @@ export default class MultiSelectCombobox extends LightningElement {
   handleClick() {
     // initialize picklist options on first click to make them editable
     if (this.isLoaded === false || this.currentOptions?.length !== this.options?.length) {
-      this.currentOptions = JSON.parse(JSON.stringify(this.options));
+      this.currentOptions = structuredClone(this.options);
       this.isLoaded = true;
     }
 

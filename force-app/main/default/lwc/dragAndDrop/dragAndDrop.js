@@ -61,6 +61,6 @@ export default class DragAndDrop extends LightningElement {
     element.remove();
 
     this.data.push({ id: id, label: label });
-    this.data = JSON.parse(JSON.stringify(this.data));
+    this.data = structuredClone(this.data);
   }
 }

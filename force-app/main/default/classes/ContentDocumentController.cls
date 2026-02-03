@@ -49,8 +49,11 @@ public with sharing class ContentDocumentController {
       ];
 
       return JSON.serialize(documents);
+    } catch (NullPointerException e) {
+      System.debug('Null pointer error occurred: ' + e.getMessage());
+      return null;
     } catch (Exception e) {
-      System.debug('The following exception has occurred: ' + e.getMessage());
+      System.debug('Error has occurred: ' + e.getMessage());
       return null;
     }
   }
