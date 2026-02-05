@@ -1,7 +1,79 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>65.0</apiVersion>
-    <isExposed>false</isExposed>
+    <isExposed>true</isExposed>
     <masterLabel>Custom Slider</masterLabel>
     <description>A simple custom slider with different configuration options.</description>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+      <targetConfig targets="lightning__AppPage,lightning__HomePage,lightning__RecordPage">
+      <property
+        name="slidesData"
+        type="String"
+        label="Slides Data (JSON)"
+        description="JSON array of slides with image, heading, and description properties. Example: [{'image':'url','heading':'Title','description':'Text'}]"
+        required="true"
+      />
+      <property
+        name="customHeight"
+        type="String"
+        label="Custom Height"
+        description="Maximum height of the slider (e.g., '500px', '80vh')"
+        default=""
+      />
+      <property
+        name="customWidth"
+        type="String"
+        label="Custom Width"
+        description="Maximum width of the slider (e.g., '600px', '100%')"
+        default="600px"
+      />
+      <property
+        name="autoScroll"
+        type="Boolean"
+        label="Auto Scroll"
+        description="Enable automatic slide scrolling"
+        default="false"
+      />
+      <property
+        name="scrollDuration"
+        type="Integer"
+        label="Scroll Duration (ms)"
+        description="Duration in milliseconds after which the next slide is displayed"
+        default="5000"
+      />
+      <property
+        name="hideNavigationButtons"
+        type="Boolean"
+        label="Hide Navigation Buttons"
+        description="Hide the 'next' and 'prev' navigation buttons"
+        default="false"
+      />
+      <property
+        name="hideNavigationDots"
+        type="Boolean"
+        label="Hide Navigation Dots"
+        description="Hide the navigation dots below the slider"
+        default="false"
+      />
+      <property
+        name="hideSlideNumber"
+        type="Boolean"
+        label="Hide Slide Number"
+        description="Hide the current slide number indicator"
+        default="false"
+      />
+      <property
+        name="hideSlideText"
+        type="Boolean"
+        label="Hide Slide Text"
+        description="Hide the text overlay with heading and description"
+        default="false"
+      />
+      </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>

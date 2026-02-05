@@ -110,20 +110,28 @@ export default class CustomSlider extends LightningElement {
   }
 
   set slidesData(data) {
-    this.slides = data.map((slide, i) => {
-      if (i === 0) {
-        return {
-          ...slide,
-          index: i + 1,
-          slideClass: 'fade slds-show',
-          dotClass: 'dot active'
-        };
+    let parsedData = data;
+
+    if (typeof data === 'string') {
+      try {
+        parsedData = JSON.parse(data);
+      } catch (e) {
+        this.error = e;
+        parsedData = [];
       }
+    }
+
+    if (!parsedData || !Array.isArray(parsedData)) {
+      this.slides = [];
+      return;
+    }
+
+    this.slides = parsedData.map((slide, i) => {
       return {
         ...slide,
         index: i + 1,
-        slideClass: 'fade slds-hide',
-        dotClass: 'dot'
+        slideClass: i === 0 ? 'fade slds-show' : 'fade slds-hide',
+        dotClass: i === 0 ? 'dot active' : 'dot'
       };
     });
   }
@@ -167,17 +175,10 @@ export default class CustomSlider extends LightningElement {
     }
 
     this.slides = this.slides.map((slide) => {
-      if (this.slideIndex === slide.index) {
-        return {
-          ...slide,
-          slideClass: 'fade slds-show',
-          dotClass: 'dot active'
-        };
-      }
       return {
         ...slide,
-        slideClass: 'fade slds-hide',
-        dotClass: 'dot'
+        slideClass: this.slideIndex === slide.index ? 'fade slds-show' : 'fade slds-hide',
+        dotClass: this.slideIndex === slide.index ? 'dot active' : 'dot'
       };
     });
   }
