@@ -175,17 +175,10 @@ export default class CustomSlider extends LightningElement {
     }
 
     this.slides = this.slides.map((slide) => {
-      if (this.slideIndex === slide.index) {
-        return {
-          ...slide,
-          slideClass: 'fade slds-show',
-          dotClass: 'dot active'
-        };
-      }
       return {
         ...slide,
-        slideClass: 'fade slds-hide',
-        dotClass: 'dot'
+        slideClass: this.slideIndex === slide.index ? 'fade slds-show' : 'fade slds-hide',
+        dotClass: this.slideIndex === slide.index ? 'dot active' : 'dot'
       };
     });
   }

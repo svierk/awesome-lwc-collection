@@ -46,12 +46,12 @@ describe('c-custom-slider', () => {
     expect(activeDot).toBeTruthy();
 
     // when
-    const nextButton = element.shadowRoot.querySelector('.next');
-    nextButton.click();
-    await Promise.resolve();
-
     const prevButton = element.shadowRoot.querySelector('.prev');
     prevButton.click();
+    await Promise.resolve();
+
+    const nextButton = element.shadowRoot.querySelector('.next');
+    nextButton.click();
     await Promise.resolve();
 
     const dots = element.shadowRoot.querySelectorAll('.dot');
