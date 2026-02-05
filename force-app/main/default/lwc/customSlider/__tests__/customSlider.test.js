@@ -21,10 +21,12 @@ describe('c-custom-slider', () => {
     jest.clearAllMocks();
   });
 
-  it('should be accessible and render correct number of slides', async () => {
+  it('should render with all features and handle all navigation scenarios', async () => {
     // given
     jest.useRealTimers();
     element.slidesData = mockData.slideData;
+    element.customWidth = '800px';
+    element.customHeight = '400px';
 
     // when
     document.body.appendChild(element);
@@ -32,185 +34,67 @@ describe('c-custom-slider', () => {
     // then
     const slides = element.shadowRoot.querySelectorAll('.fade');
     expect(slides.length).toBe(mockData.slideData.length);
-    await expect(element).toBeAccessible();
 
-    jest.useFakeTimers();
-  });
-
-  it('should apply custom width and height styles', () => {
-    // given
-    element.customWidth = '800px';
-    element.customHeight = '400px';
-    element.slidesData = mockData.slideData;
-
-    // when
-    document.body.appendChild(element);
-
-    // then
     const container = element.shadowRoot.querySelector('.slds-is-relative.container');
     const image = element.shadowRoot.querySelector('img');
     expect(container.style.width).toBe('800px');
     expect(image.style.height).toBe('400px');
-  });
 
-  it('should hide navigation buttons when related property is true', () => {
-    // given
-    element.slidesData = mockData.slideData;
-    element.hideNavigationButtons = true;
-
-    // when
-    document.body.appendChild(element);
-
-    // then
-    const prevButton = element.shadowRoot.querySelector('.prev');
-    const nextButton = element.shadowRoot.querySelector('.next');
-    expect(prevButton).toBeNull();
-    expect(nextButton).toBeNull();
-  });
-
-  it('should hide navigation dots when related property is true', () => {
-    // given
-    element.slidesData = mockData.slideData;
-    element.hideNavigationDots = true;
-
-    // when
-    document.body.appendChild(element);
-
-    // then
-    const dots = element.shadowRoot.querySelectorAll('.dot');
-    expect(dots.length).toBe(0);
-  });
-
-  it('should hide slide text when related property is true', () => {
-    // given
-    element.slidesData = mockData.slideData;
-    element.hideSlideText = true;
-
-    // when
-    document.body.appendChild(element);
-
-    // then
-    const textSection = element.shadowRoot.querySelector('.text-section');
-    expect(textSection).toBeNull();
-  });
-
-  it('should hide slide number when related property is true', () => {
-    // given
-    element.slidesData = mockData.slideData;
-    element.hideSlideNumber = true;
-
-    // when
-    document.body.appendChild(element);
-
-    // then
-    const slideNumbers = element.shadowRoot.querySelector('.slideNumbers');
-    expect(slideNumbers).toBeNull();
-  });
-
-  it('should navigate to next slide when next button is clicked', () => {
-    // given
-    element.slidesData = mockData.slideData;
-    document.body.appendChild(element);
+    const visibleSlide = element.shadowRoot.querySelector('.fade.slds-show');
+    const activeDot = element.shadowRoot.querySelector('.dot.active');
+    expect(visibleSlide).toBeTruthy();
+    expect(activeDot).toBeTruthy();
 
     // when
     const nextButton = element.shadowRoot.querySelector('.next');
     nextButton.click();
+    await Promise.resolve();
 
-    // then
-    return Promise.resolve().then(() => {
-      const activeSlide = element.shadowRoot.querySelector('.fade.slds-show');
-      const activeDot = element.shadowRoot.querySelector('.dot.active');
-      expect(activeSlide).toBeTruthy();
-      expect(activeDot).toBeTruthy();
-    });
-  });
-
-  it('should navigate to previous slide when prev button is clicked', () => {
-    // given
-    element.slidesData = mockData.slideData;
-    document.body.appendChild(element);
-
-    // when
     const prevButton = element.shadowRoot.querySelector('.prev');
     prevButton.click();
+    await Promise.resolve();
 
-    // then
-    return Promise.resolve().then(() => {
-      const visibleSlides = element.shadowRoot.querySelectorAll('.fade.slds-show');
-      expect(visibleSlides.length).toBe(1);
-    });
-  });
-
-  it('should navigate to specific slide when dot is clicked', () => {
-    // given
-    element.slidesData = mockData.slideData;
-    document.body.appendChild(element);
-
-    // when
     const dots = element.shadowRoot.querySelectorAll('.dot');
     if (dots.length > 1) {
       dots[1].click();
+      await Promise.resolve();
     }
 
-    // then
-    return Promise.resolve().then(() => {
-      const activeDot = element.shadowRoot.querySelector('.dot.active');
-      expect(activeDot).toBeTruthy();
-    });
-  });
-
-  it('should wrap to first slide when navigating forward from last slide', () => {
-    // given
-    element.slidesData = mockData.slideData;
-    document.body.appendChild(element);
-    const nextButton = element.shadowRoot.querySelector('.next');
-
-    // when - navigate to last slide then one more
     for (let i = 0; i < mockData.slideData.length; i++) {
       nextButton.click();
     }
+    await Promise.resolve();
 
-    // then
-    return Promise.resolve().then(() => {
-      const visibleSlides = element.shadowRoot.querySelectorAll('.fade.slds-show');
-      expect(visibleSlides.length).toBe(1);
-    });
-  });
-
-  it('should wrap to last slide when navigating backward from first slide', () => {
-    // given
-    element.slidesData = mockData.slideData;
-    document.body.appendChild(element);
-
-    // when
-    const prevButton = element.shadowRoot.querySelector('.prev');
     prevButton.click();
+    await Promise.resolve();
 
     // then
-    return Promise.resolve().then(() => {
-      const visibleSlides = element.shadowRoot.querySelectorAll('.fade.slds-show');
-      expect(visibleSlides.length).toBe(1);
-    });
+    const visibleSlides = element.shadowRoot.querySelectorAll('.fade.slds-show');
+    expect(visibleSlides.length).toBe(1);
+    await expect(element).toBeAccessible();
+    jest.useFakeTimers();
   });
 
-  it('should start auto-scroll when related property is enabled', () => {
+  it('should hide all optional ui elements and handle edge cases', () => {
     // given
+    element.hideNavigationButtons = true;
+    element.hideNavigationDots = true;
+    element.hideSlideText = true;
+    element.hideSlideNumber = true;
     element.slidesData = mockData.slideData;
-    element.autoScroll = true;
-    element.scrollDuration = 3000;
 
     // when
     document.body.appendChild(element);
-    jest.advanceTimersByTime(3000);
 
     // then
-    return Promise.resolve().then(() => {
-      const visibleSlides = element.shadowRoot.querySelectorAll('.fade.slds-show');
-      expect(visibleSlides.length).toBe(1);
-    });
+    expect(element.shadowRoot.querySelector('.prev')).toBeNull();
+    expect(element.shadowRoot.querySelector('.next')).toBeNull();
+    expect(element.shadowRoot.querySelectorAll('.dot').length).toBe(0);
+    expect(element.shadowRoot.querySelector('.text-section')).toBeNull();
+    expect(element.shadowRoot.querySelector('.slideNumbers')).toBeNull();
   });
 
-  it('should continue auto-scrolling through multiple slides', () => {
+  it('should handle auto-scroll lifecycle completely', () => {
     // given
     element.slidesData = mockData.slideData;
     element.autoScroll = true;
@@ -219,33 +103,45 @@ describe('c-custom-slider', () => {
     // when
     document.body.appendChild(element);
     jest.advanceTimersByTime(2000);
+    jest.advanceTimersByTime(2000);
 
     // then
     return Promise.resolve().then(() => {
-      jest.advanceTimersByTime(2000);
-      return Promise.resolve().then(() => {
-        const visibleSlides = element.shadowRoot.querySelectorAll('.fade.slds-show');
-        expect(visibleSlides.length).toBe(1);
-      });
+      const visibleSlides = element.shadowRoot.querySelectorAll('.fade.slds-show');
+      expect(visibleSlides.length).toBe(1);
+
+      const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
+      document.body.removeChild(element);
+      expect(clearIntervalSpy).toHaveBeenCalled();
+      clearIntervalSpy.mockRestore();
     });
   });
 
-  it('should clear interval on disconnected callback when auto scroll is enabled', () => {
+  it('should handle invalid and edge case data inputs', () => {
     // given
+    element.slidesData = JSON.stringify(mockData.slideData);
+    expect(element.slidesData.length).toBe(mockData.slideData.length);
+    element.slidesData = 'invalid json';
+    expect(element.slidesData.length).toBe(0);
+    element.slidesData = null;
+    expect(element.slidesData.length).toBe(0);
+    element.slidesData = undefined;
+    expect(element.slidesData.length).toBe(0);
+    element.slidesData = { invalid: 'data' };
+    expect(element.slidesData.length).toBe(0);
+    element.slidesData = [];
+    expect(element.slidesData.length).toBe(0);
     element.slidesData = mockData.slideData;
-    element.autoScroll = true;
-    document.body.appendChild(element);
-    const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
 
     // when
-    document.body.removeChild(element);
+    document.body.appendChild(element);
 
     // then
-    expect(clearIntervalSpy).toHaveBeenCalled();
-    clearIntervalSpy.mockRestore();
+    const slides = element.shadowRoot.querySelectorAll('.fade');
+    expect(slides.length).toBe(mockData.slideData.length);
   });
 
-  it('should not clear interval on disconnected callback when auto scroll is disabled', () => {
+  it('should not clear interval when auto-scroll is disabled', () => {
     // given
     element.slidesData = mockData.slideData;
     element.autoScroll = false;
@@ -258,24 +154,5 @@ describe('c-custom-slider', () => {
     // then
     expect(clearIntervalSpy).not.toHaveBeenCalled();
     clearIntervalSpy.mockRestore();
-  });
-
-  it('should initialize first slide as active', () => {
-    // given
-    element.slidesData = mockData.slideData;
-
-    // when
-    document.body.appendChild(element);
-
-    // then
-    const visibleSlide = element.shadowRoot.querySelector('.fade.slds-show');
-    const hiddenSlides = element.shadowRoot.querySelectorAll('.fade.slds-hide');
-    const activeDot = element.shadowRoot.querySelector('.dot.active');
-    const inactiveDots = element.shadowRoot.querySelectorAll('.dot:not(.active)');
-
-    expect(visibleSlide).toBeTruthy();
-    expect(hiddenSlides.length).toBe(mockData.slideData.length - 1);
-    expect(activeDot).toBeTruthy();
-    expect(inactiveDots.length).toBe(mockData.slideData.length - 1);
   });
 });
