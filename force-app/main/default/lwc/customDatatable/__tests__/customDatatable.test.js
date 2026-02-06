@@ -366,16 +366,11 @@ describe('c-custom-datatable', () => {
     await new Promise((r) => setTimeout(r, 0));
 
     // then
-    const buttons = element.shadowRoot.querySelectorAll('lightning-button');
-    const buttonLabels = [...buttons].map((b) => b.label);
-    expect(buttonLabels).toContain('First');
-    expect(buttonLabels).toContain('Previous');
-    expect(buttonLabels).toContain('Next');
-    expect(buttonLabels).toContain('Last');
-
-    const paginationText = element.shadowRoot.querySelector('.slds-align-middle');
-    expect(paginationText).not.toBeNull();
-    expect(paginationText.textContent).toContain('Page 1 of');
+    const pagination = element.shadowRoot.querySelector('c-custom-datatable-pagination');
+    expect(pagination).not.toBeNull();
+    expect(pagination.paginationLabel).toContain('Page 1 of');
+    expect(pagination.isFirstPage).toBe(true);
+    expect(pagination.isLastPage).toBe(false);
   });
 
   it('should not show pagination controls when enable pagination is false', async () => {
@@ -393,11 +388,11 @@ describe('c-custom-datatable', () => {
     await new Promise((r) => setTimeout(r, 0));
 
     // then
-    const paginationText = element.shadowRoot.querySelector('.slds-align-middle');
-    expect(paginationText).toBeNull();
+    const pagination = element.shadowRoot.querySelector('c-custom-datatable-pagination');
+    expect(pagination).toBeNull();
   });
 
-  it('should update current page when navigation handlers are called', async () => {
+  it('should update current page when navigation events are dispatched', async () => {
     // given
     element.objectApiName = mockData.objectApiName;
     element.fieldSetApiName = mockData.fieldSetApiName;
@@ -412,43 +407,35 @@ describe('c-custom-datatable', () => {
 
     await new Promise((r) => setTimeout(r, 0));
 
-    const nextButton = [...element.shadowRoot.querySelectorAll('lightning-button')].find((b) => b.label === 'Next');
-    nextButton.click();
+    const pagination = element.shadowRoot.querySelector('c-custom-datatable-pagination');
+    pagination.dispatchEvent(new CustomEvent('next'));
 
     await new Promise((r) => setTimeout(r, 0));
 
     // then
-    const paginationText = element.shadowRoot.querySelector('.slds-align-middle');
-    expect(paginationText.textContent).toContain('Page 2 of');
+    expect(pagination.paginationLabel).toContain('Page 2 of');
 
     // when
-    const lastButton = [...element.shadowRoot.querySelectorAll('lightning-button')].find((b) => b.label === 'Last');
-    lastButton.click();
-
+    pagination.dispatchEvent(new CustomEvent('last'));
     await new Promise((r) => setTimeout(r, 0));
 
     // then
-    const paginationTextAfterLast = element.shadowRoot.querySelector('.slds-align-middle');
-    expect(paginationTextAfterLast.textContent).toContain(`Page ${mockGetRecords.length} of`);
+    expect(pagination.paginationLabel).toContain(`Page ${mockGetRecords.length} of`);
+    expect(pagination.isLastPage).toBe(true);
 
     // when
-    const prevButton = [...element.shadowRoot.querySelectorAll('lightning-button')].find((b) => b.label === 'Previous');
-    prevButton.click();
-
+    pagination.dispatchEvent(new CustomEvent('previous'));
     await new Promise((r) => setTimeout(r, 0));
 
     // then
-    const paginationTextAfterPrev = element.shadowRoot.querySelector('.slds-align-middle');
-    expect(paginationTextAfterPrev.textContent).toContain(`Page ${mockGetRecords.length - 1} of`);
+    expect(pagination.paginationLabel).toContain(`Page ${mockGetRecords.length - 1} of`);
 
     // when
-    const firstButton = [...element.shadowRoot.querySelectorAll('lightning-button')].find((b) => b.label === 'First');
-    firstButton.click();
-
+    pagination.dispatchEvent(new CustomEvent('first'));
     await new Promise((r) => setTimeout(r, 0));
 
     // then
-    const paginationTextAfterFirst = element.shadowRoot.querySelector('.slds-align-middle');
-    expect(paginationTextAfterFirst.textContent).toContain('Page 1 of');
+    expect(pagination.paginationLabel).toContain('Page 1 of');
+    expect(pagination.isFirstPage).toBe(true);
   });
 });

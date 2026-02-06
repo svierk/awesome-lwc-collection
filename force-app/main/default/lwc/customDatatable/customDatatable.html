@@ -66,41 +66,16 @@
             >
             </c-custom-datatable-extension>
           </ul>
-          <template lwc:if={showPagination}>
-            <div class="slds-grid slds-grid_align-center slds-m-top_small">
-              <lightning-button
-                label="First"
-                icon-name="utility:jump_to_left"
-                onclick={handleFirst}
-                disabled={isFirstPage}
-                class="slds-m-right_xx-small"
-              ></lightning-button>
-              <lightning-button
-                label="Previous"
-                icon-name="utility:chevronleft"
-                onclick={handlePrevious}
-                disabled={isFirstPage}
-                class="slds-m-right_xx-small"
-              ></lightning-button>
-              <span class="slds-align-middle slds-p-horizontal_small slds-text-body_small"> {paginationLabel} </span>
-              <lightning-button
-                label="Next"
-                icon-name="utility:chevronright"
-                icon-position="right"
-                onclick={handleNext}
-                disabled={isLastPage}
-                class="slds-m-left_xx-small"
-              ></lightning-button>
-              <lightning-button
-                label="Last"
-                icon-name="utility:jump_to_right"
-                icon-position="right"
-                onclick={handleLast}
-                disabled={isLastPage}
-                class="slds-m-left_xx-small"
-              ></lightning-button>
-            </div>
-          </template>
+          <c-custom-datatable-pagination
+            lwc:if={showPagination}
+            pagination-label={paginationLabel}
+            is-first-page={isFirstPage}
+            is-last-page={isLastPage}
+            onfirst={handleFirst}
+            onprevious={handlePrevious}
+            onnext={handleNext}
+            onlast={handleLast}
+          ></c-custom-datatable-pagination>
         </div>
       </div>
     </div>
@@ -141,41 +116,16 @@
         onsave={handleSave}
       >
       </c-custom-datatable-extension>
-      <template lwc:if={showPagination}>
-        <div class="slds-grid slds-grid_align-center slds-m-top_small">
-          <lightning-button
-            label="First"
-            icon-name="utility:jump_to_left"
-            onclick={handleFirst}
-            disabled={isFirstPage}
-            class="slds-m-right_xx-small"
-          ></lightning-button>
-          <lightning-button
-            label="Previous"
-            icon-name="utility:chevronleft"
-            onclick={handlePrevious}
-            disabled={isFirstPage}
-            class="slds-m-right_xx-small"
-          ></lightning-button>
-          <span class="slds-align-middle slds-p-horizontal_small slds-text-body_small"> {paginationLabel} </span>
-          <lightning-button
-            label="Next"
-            icon-name="utility:chevronright"
-            icon-position="right"
-            onclick={handleNext}
-            disabled={isLastPage}
-            class="slds-m-left_xx-small"
-          ></lightning-button>
-          <lightning-button
-            label="Last"
-            icon-name="utility:jump_to_right"
-            icon-position="right"
-            onclick={handleLast}
-            disabled={isLastPage}
-            class="slds-m-left_xx-small"
-          ></lightning-button>
-        </div>
-      </template>
+      <c-custom-datatable-pagination
+        lwc:if={showPagination}
+        pagination-label={paginationLabel}
+        is-first-page={isFirstPage}
+        is-last-page={isLastPage}
+        onfirst={handleFirst}
+        onprevious={handlePrevious}
+        onnext={handleNext}
+        onlast={handleLast}
+      ></c-custom-datatable-pagination>
     </lightning-card>
   </template>
   <template lwc:else>
@@ -203,40 +153,15 @@
       onsave={handleSave}
     >
     </c-custom-datatable-extension>
-    <template lwc:if={showPagination}>
-      <div class="slds-grid slds-grid_align-center slds-m-top_small">
-        <lightning-button
-          label="First"
-          icon-name="utility:jump_to_left"
-          onclick={handleFirst}
-          disabled={isFirstPage}
-          class="slds-m-right_xx-small"
-        ></lightning-button>
-        <lightning-button
-          label="Previous"
-          icon-name="utility:chevronleft"
-          onclick={handlePrevious}
-          disabled={isFirstPage}
-          class="slds-m-right_xx-small"
-        ></lightning-button>
-        <span class="slds-align-middle slds-p-horizontal_small slds-text-body_small"> {paginationLabel} </span>
-        <lightning-button
-          label="Next"
-          icon-name="utility:chevronright"
-          icon-position="right"
-          onclick={handleNext}
-          disabled={isLastPage}
-          class="slds-m-left_xx-small"
-        ></lightning-button>
-        <lightning-button
-          label="Last"
-          icon-name="utility:jump_to_right"
-          icon-position="right"
-          onclick={handleLast}
-          disabled={isLastPage}
-          class="slds-m-left_xx-small"
-        ></lightning-button>
-      </div>
-    </template>
+    <c-custom-datatable-pagination
+      lwc:if={showPagination}
+      pagination-label={paginationLabel}
+      is-first-page={isFirstPage}
+      is-last-page={isLastPage}
+      onfirst={handleFirst}
+      onprevious={handlePrevious}
+      onnext={handleNext}
+      onlast={handleLast}
+    ></c-custom-datatable-pagination>
   </template>
 </template>
