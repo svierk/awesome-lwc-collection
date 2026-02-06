@@ -1,14 +1,29 @@
 public with sharing class CustomDatatableUtil {
   @AuraEnabled(cacheable=true)
-  public static List<SObject> getRecordsWithFieldSet(String objectName, String fieldSetName, String whereConditions) {
+  public static List<SObject> getRecordsWithFieldSet(
+    String objectName,
+    String fieldSetName,
+    String whereConditions,
+    Integer pageSize,
+    Integer pageNumber
+  ) {
     String fieldList = '';
     for (Schema.FieldSetMember f : readFieldSet(objectName, fieldSetName)) {
       fieldList += f.getFieldPath() + ', ';
     }
     fieldList += 'Id';
 
-    List<SObject> records = getRecords(objectName, fieldList, whereConditions);
+    List<SObject> records = getRecords(objectName, fieldList, whereConditions, pageSize, pageNumber);
     return records;
+  }
+
+  @AuraEnabled(cacheable=true)
+  public static Integer getRecordCount(String objectName, String fieldSetName, String whereConditions) {
+    String query = 'SELECT COUNT() FROM ' + String.escapeSingleQuotes(objectName);
+    if (String.isNotBlank(whereConditions)) {
+      query = query + ' WHERE ' + whereConditions;
+    }
+    return Database.countQuery(query);
   }
 
   private static List<Schema.FieldSetMember> readFieldSet(String objectName, String fieldSetName) {
@@ -20,10 +35,21 @@ public with sharing class CustomDatatableUtil {
     return fieldSetObj.getFields();
   }
 
-  private static List<SObject> getRecords(String objectName, String fieldList, String whereConditions) {
+  private static List<SObject> getRecords(
+    String objectName,
+    String fieldList,
+    String whereConditions,
+    Integer pageSize,
+    Integer pageNumber
+  ) {
     String query = 'SELECT ' + String.escapeSingleQuotes(fieldList) + ' FROM ' + String.escapeSingleQuotes(objectName);
     if (String.isNotBlank(whereConditions)) {
       query = query + ' WHERE ' + whereConditions;
+    }
+
+    if (pageSize != null && pageSize > 0) {
+      Integer offset = (pageNumber != null && pageNumber > 1) ? (pageNumber - 1) * pageSize : 0;
+      query = query + ' LIMIT ' + pageSize + ' OFFSET ' + offset;
     }
 
     return Database.query(query);

@@ -34,12 +34,60 @@ public with sharing class CustomDatatableUtilTest {
       List<SObject> records = CustomDatatableUtil.getRecordsWithFieldSet(
         'Account',
         'Test_Field_Set',
-        'Name LIKE \'Test Account %\''
+        'Name LIKE \'Test Account %\'',
+        null,
+        null
       );
       Test.stopTest();
 
       Assert.areNotEqual(null, records, 'Returned records list is empty.');
       Assert.areEqual(100, records.size(), 'Number of returned records is not correct.');
+    }
+  }
+
+  @IsTest
+  static void getRecordsWithFieldSetPaginatedTest() {
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
+
+    System.runAs(u) {
+      Test.startTest();
+      List<SObject> records = CustomDatatableUtil.getRecordsWithFieldSet(
+        'Account',
+        'Test_Field_Set',
+        'Name LIKE \'Test Account %\'',
+        10,
+        2
+      );
+      Test.stopTest();
+
+      Assert.areNotEqual(null, records, 'Returned records list is empty.');
+      Assert.areEqual(10, records.size(), 'Paginated query should return exactly pageSize records.');
+    }
+  }
+
+  @IsTest
+  static void getRecordCountTest() {
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
+
+    System.runAs(u) {
+      Test.startTest();
+      Integer count = CustomDatatableUtil.getRecordCount('Account', 'Test_Field_Set', 'Name LIKE \'Test Account %\'');
+      Test.stopTest();
+
+      Assert.areEqual(100, count, 'Record count should match the number of inserted accounts.');
+    }
+  }
+
+  @IsTest
+  static void getRecordCountWithoutWhereTest() {
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
+
+    System.runAs(u) {
+      Test.startTest();
+      Integer count = CustomDatatableUtil.getRecordCount('Account', 'Test_Field_Set', null);
+      Test.stopTest();
+
+      Assert.isTrue(count >= 100, 'Record count should include at least the inserted accounts.');
     }
   }
 
