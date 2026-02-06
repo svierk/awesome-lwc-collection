@@ -1,0 +1,64 @@
+<template>
+  <lightning-card title="QR Code Generator" icon-name="utility:scan">
+    <div class="slds-var-p-horizontal_medium slds-var-p-bottom_medium">
+      <lightning-input
+        type="url"
+        label="Target URL"
+        placeholder="https://example.com"
+        value={url}
+        onchange={handleUrlChange}
+        class="slds-var-m-bottom_small"
+      ></lightning-input>
+
+      <lightning-input
+        data-id="file-input"
+        type="file"
+        label="Logo (optional)"
+        onchange={handleFileUpload}
+        class="slds-var-m-bottom_small"
+      ></lightning-input>
+
+      <template lwc:if={hasLogo}>
+        <div class="logo-preview slds-var-m-bottom_medium">
+          <img src={logoDataUrl} alt="Logo preview" class="logo-preview-image" />
+          <lightning-button-icon
+            icon-name="utility:close"
+            alternative-text="Remove logo"
+            variant="bare"
+            size="small"
+            onclick={handleRemoveLogo}
+            class="remove-logo-btn"
+          ></lightning-button-icon>
+        </div>
+      </template>
+
+      <div>
+        <lightning-button
+          variant="brand"
+          label="Generate QR Code"
+          onclick={generateCode}
+          disabled={isGenerateDisabled}
+          class="slds-var-m-bottom_medium"
+        ></lightning-button>
+      </div>
+
+      <template lwc:if={isLoading}>
+        <div class="spinner-container">
+          <lightning-spinner alternative-text="Generating..." size="medium"></lightning-spinner>
+        </div>
+      </template>
+
+      <template lwc:if={error}>
+        <div class="slds-box slds-theme_error slds-var-m-top_small">
+          <p>{error}</p>
+        </div>
+      </template>
+
+      <template lwc:if={hasQRCode}>
+        <div class="qr-code-container slds-var-m-top_medium">
+          <img src={qrCodeDataUrl} alt="Generated QR Code" class="qr-code-image" />
+        </div>
+      </template>
+    </div>
+  </lightning-card>
+</template>
