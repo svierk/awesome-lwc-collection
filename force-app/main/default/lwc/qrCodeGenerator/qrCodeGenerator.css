@@ -1,0 +1,36 @@
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 0;
+}
+
+.logo-preview {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.25rem;
+  padding: 0.5rem;
+  border: 1px solid #d8dde6;
+  border-radius: 0.25rem;
+  background-color: #f3f3f3;
+}
+
+.logo-preview-image {
+  max-width: 80px;
+  max-height: 80px;
+  object-fit: contain;
+}
+
+.qr-code-container {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  background-color: #ffffff;
+  border-radius: 0.5rem;
+  border: 1px solid #d8dde6;
+}
+
+.qr-code-image {
+  width: 256px;
+  height: 256px;
+  image-rendering: crisp-edges;
+}
