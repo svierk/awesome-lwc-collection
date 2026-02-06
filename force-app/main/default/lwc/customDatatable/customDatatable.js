@@ -1,5 +1,6 @@
 import { refreshApex } from '@salesforce/apex';
 import getColumns from '@salesforce/apex/CustomDatatableUtil.convertFieldSetToColumns';
+import getRecordCount from '@salesforce/apex/CustomDatatableUtil.getRecordCount';
 import getRecords from '@salesforce/apex/CustomDatatableUtil.getRecordsWithFieldSet';
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
@@ -19,6 +20,8 @@ import { LightningElement, api, track, wire } from 'lwc';
  *   where-conditions="Status = 'New'"
  *   hide-checkbox-column
  *   show-row-number-column
+ *   enable-pagination
+ *   page-size="25"
  * ></c-custom-datatable>
  */
 export default class CustomDatatable extends NavigationMixin(LightningElement) {
@@ -53,6 +56,13 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
    * @default 'asc'
    */
   @api defaultSortDirection = 'asc';
+
+  /**
+   * If present, enables server-side pagination with page navigation controls.
+   * @type {boolean}
+   * @default false
+   */
+  @api enablePagination = false;
 
   /**
    * API name of the field set that specifies which fields are displayed in the table.
@@ -115,6 +125,13 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
    * @type {string}
    */
   @api objectApiName = '';
+
+  /**
+   * The number of records displayed per page when pagination is enabled.
+   * @type {number}
+   * @default 10
+   */
+  @api pageSize = 10;
 
   /**
    * If present, then all datatable fields are not editable.
@@ -204,6 +221,8 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
 
   isLoading = true;
   hasSelectedRecords = false;
+  _currentPage = 1;
+  _totalRecordCount = 0;
 
   @wire(getColumns, { objectName: '$objectApiName', fieldSetName: '$fieldSetApiName', readOnly: '$readOnly' })
   wiredGetColumns({ data }) {
@@ -214,16 +233,90 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
     }
   }
 
-  @wire(getRecords, {
+  @wire(getRecordCount, {
     objectName: '$objectApiName',
     fieldSetName: '$fieldSetApiName',
     whereConditions: '$whereConditions'
+  })
+  wiredGetRecordCount({ data }) {
+    if (data !== undefined) {
+      this._totalRecordCount = data;
+    }
+  }
+
+  @wire(getRecords, {
+    objectName: '$objectApiName',
+    fieldSetName: '$fieldSetApiName',
+    whereConditions: '$whereConditions',
+    pageSize: '$currentPageSize',
+    pageNumber: '$currentPageNumber'
   })
   wiredGetRecords(result) {
     this.wiredRecords = result;
     if (result.data) {
       this.records = result.data;
     }
+  }
+
+  get currentPageSize() {
+    return this.enablePagination ? this.pageSize : null;
+  }
+
+  get currentPageNumber() {
+    return this.enablePagination ? this._currentPage : null;
+  }
+
+  get totalPages() {
+    return Math.ceil(this._totalRecordCount / this.pageSize) || 1;
+  }
+
+  get isFirstPage() {
+    return this._currentPage <= 1;
+  }
+
+  get isLastPage() {
+    return this._currentPage >= this.totalPages;
+  }
+
+  get showPagination() {
+    return this.enablePagination && this.totalPages > 1;
+  }
+
+  get paginationLabel() {
+    return `Page ${this._currentPage} of ${this.totalPages}`;
+  }
+
+  get recordCountLabel() {
+    const start = (this._currentPage - 1) * this.pageSize + 1;
+    const end = Math.min(this._currentPage * this.pageSize, this._totalRecordCount);
+    return `Showing ${start}\u2013${end} of ${this._totalRecordCount} records`;
+  }
+
+  get computedRowNumberOffset() {
+    if (this.enablePagination) {
+      return (this._currentPage - 1) * this.pageSize;
+    }
+    return this.rowNumberOffset;
+  }
+
+  handleFirst() {
+    this._currentPage = 1;
+  }
+
+  handlePrevious() {
+    if (this._currentPage > 1) {
+      this._currentPage--;
+    }
+  }
+
+  handleNext() {
+    if (this._currentPage < this.totalPages) {
+      this._currentPage++;
+    }
+  }
+
+  handleLast() {
+    this._currentPage = this.totalPages;
   }
 
   addRowActions() {
