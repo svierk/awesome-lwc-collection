@@ -25,6 +25,7 @@ The following list of components is part of this repo. All components contain co
 - [iFrame](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/iFrame)
 - [Multi Select Combobox](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/multiSelectCombobox)
 - [Open Record Page Flow Action](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/openRecordPageFlowAction)
+- [QR Code Generator (QRCode.js)](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/qrCodeGenerator)
 - [Render 3D Elements (Three.js)](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/render3DElementsThreeJS)
 - [Take User Profile Picture (Webcam)](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/takeUserProfilePicture)
 - [Visualforce To PDF](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/visualforceToPdf)
