@@ -1,4 +1,11 @@
-import { api, LightningElement } from 'lwc';
+import { gql, graphql } from 'lightning/graphql';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { api, LightningElement, track, wire } from 'lwc';
+
+const ICONS = {
+  Account: 'standard:account',
+  Asset: 'standard:asset_object'
+};
 
 /**
  * Configurable map component for displaying locations via Google Maps API.
@@ -90,22 +97,85 @@ export default class GraphqlMapView extends LightningElement {
    */
   @api streetField;
 
-  connectedCallback() {
-    globalThis.mapConfig = {
-      id: this.recordId,
-      object: this.objectApiName,
-      height: this.height,
-      width: this.width,
-      view: this.listView,
-      zoom: this.zoomLevel,
-      fields: {
-        title: this.titleField,
-        city: this.cityField,
-        country: this.countryField,
-        code: this.postalCodeField,
-        state: this.stateField,
-        street: this.streetField
+  @track mapMarkers;
+
+  get graphqlQuery() {
+    if (!this.objectApiName) return undefined;
+
+    const fieldEntries = [
+      this.titleField,
+      this.cityField,
+      this.countryField,
+      this.postalCodeField,
+      this.stateField,
+      this.streetField
+    ];
+    const fieldNodes = fieldEntries
+      .filter((f) => f)
+      .map((f) => `${f} { value }`)
+      .join('\n');
+
+    return gql`
+      query getLocation($recordId: ID!) {
+        uiapi {
+          query {
+            ${this.objectApiName}(where: { Id: { eq: $recordId } }) {
+              edges {
+                node {
+                  Id
+                  ${fieldNodes}
+                }
+              }
+              pageInfo {
+                endCursor
+                hasNextPage
+                hasPreviousPage
+              }
+            }
+          }
+        }
       }
+    `;
+  }
+
+  @wire(graphql, {
+    query: '$graphqlQuery',
+    variables: '$variables'
+  })
+  location({ data, errors }) {
+    if (data?.uiapi?.query[this.objectApiName]?.edges?.length > 0) {
+      const fields = data.uiapi.query[this.objectApiName].edges[0].node;
+      this.mapMarkers = [
+        {
+          location: {
+            City: fields[this.cityField]?.value,
+            Country: fields[this.countryField]?.value,
+            PostalCode: fields[this.postalCodeField]?.value,
+            State: fields[this.stateField]?.value,
+            Street: fields[this.streetField]?.value
+          },
+          icon: ICONS[this.objectApiName],
+          title: fields[this.titleField]?.value
+        }
+      ];
+    } else if (errors) {
+      this.dispatchEvent(
+        new ShowToastEvent({
+          title: 'Error loading location data',
+          message: errors[0].message,
+          variant: 'error'
+        })
+      );
+    }
+  }
+
+  get variables() {
+    return {
+      recordId: this.recordId
     };
+  }
+
+  get styles() {
+    return `height:${this.height}; width:${this.width}`;
   }
 }

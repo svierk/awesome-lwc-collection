@@ -20,9 +20,3 @@ Configurable map component for displaying locations via Google Maps API using LW
 | postal-code-field | string |         | API name of the field that contains the postal code.                                                                              |
 | state-field       | string |         | API name of the field that contains the state.                                                                                    |
 | street-field      | string |         | API name of the field that contains the street.                                                                                   |
-
-## Component Dependencies
-
-| Name                    | Type | Description                                                                      |
-| ----------------------- | ---- | -------------------------------------------------------------------------------- |
-| graphqlMapViewExtension | LWC  | Custom extension to support dynamically constructing GraphQL queries at runtime. |
