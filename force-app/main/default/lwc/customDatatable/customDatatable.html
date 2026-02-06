@@ -45,21 +45,7 @@
           </template>
           <ul class="slds-page-header__detail-row slds-p-around_none page-header-detail">
             <c-custom-datatable-extension
-              key-field={keyField}
-              data={records}
-              columns={columns}
-              column-widths-mode={columnWidthsMode}
-              default-sort-direction={defaultSortDirection}
-              draft-values={draftValues}
-              hide-checkbox-column={hideCheckboxColumn}
-              hide-table-header={hideTableHeader}
-              max-column-width={maxColumnWidth}
-              max-row-selection={maxRowSelection}
-              min-column-width={minColumnWidth}
-              row-number-offset={computedRowNumberOffset}
-              resize-column-disabled={resizeColumnDisabled}
-              show-row-number-column={showRowNumberColumn}
-              suppress-bottom-bar={suppressBottomBar}
+              lwc:spread={datatableProperties}
               onrowaction={handleRowAction}
               onrowselection={getSelectedRecords}
               onsave={handleSave}
@@ -96,21 +82,7 @@
         </p>
       </template>
       <c-custom-datatable-extension
-        key-field={keyField}
-        data={records}
-        columns={columns}
-        column-widths-mode={columnWidthsMode}
-        default-sort-direction={defaultSortDirection}
-        draft-values={draftValues}
-        hide-checkbox-column={hideCheckboxColumn}
-        hide-table-header={hideTableHeader}
-        max-column-width={maxColumnWidth}
-        max-row-selection={maxRowSelection}
-        min-column-width={minColumnWidth}
-        row-number-offset={computedRowNumberOffset}
-        resize-column-disabled={resizeColumnDisabled}
-        show-row-number-column={showRowNumberColumn}
-        suppress-bottom-bar={suppressBottomBar}
+        lwc:spread={datatableProperties}
         onrowaction={handleRowAction}
         onrowselection={getSelectedRecords}
         onsave={handleSave}
@@ -133,21 +105,7 @@
       <p class="slds-text-body_small slds-m-bottom_xx-small record-count-text">{recordCountLabel}</p>
     </template>
     <c-custom-datatable-extension
-      key-field={keyField}
-      data={records}
-      columns={columns}
-      column-widths-mode={columnWidthsMode}
-      default-sort-direction={defaultSortDirection}
-      draft-values={draftValues}
-      hide-checkbox-column={hideCheckboxColumn}
-      hide-table-header={hideTableHeader}
-      max-column-width={maxColumnWidth}
-      max-row-selection={maxRowSelection}
-      min-column-width={minColumnWidth}
-      row-number-offset={computedRowNumberOffset}
-      resize-column-disabled={resizeColumnDisabled}
-      show-row-number-column={showRowNumberColumn}
-      suppress-bottom-bar={suppressBottomBar}
+      lwc:spread={datatableProperties}
       onrowaction={handleRowAction}
       onrowselection={getSelectedRecords}
       onsave={handleSave}

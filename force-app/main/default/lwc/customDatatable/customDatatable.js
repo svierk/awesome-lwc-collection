@@ -299,6 +299,26 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
     return this.rowNumberOffset;
   }
 
+  get datatableProperties() {
+    return {
+      keyField: this.keyField,
+      data: this.records,
+      columns: this.columns,
+      columnWidthsMode: this.columnWidthsMode,
+      defaultSortDirection: this.defaultSortDirection,
+      draftValues: this.draftValues,
+      hideCheckboxColumn: this.hideCheckboxColumn,
+      hideTableHeader: this.hideTableHeader,
+      maxColumnWidth: this.maxColumnWidth,
+      maxRowSelection: this.maxRowSelection,
+      minColumnWidth: this.minColumnWidth,
+      rowNumberOffset: this.computedRowNumberOffset,
+      resizeColumnDisabled: this.resizeColumnDisabled,
+      showRowNumberColumn: this.showRowNumberColumn,
+      suppressBottomBar: this.suppressBottomBar
+    };
+  }
+
   handleFirst() {
     this._currentPage = 1;
   }
