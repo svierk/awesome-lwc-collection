@@ -1,4 +1,5 @@
 import getColumns from '@salesforce/apex/CustomDatatableUtil.convertFieldSetToColumns';
+import getRecordCount from '@salesforce/apex/CustomDatatableUtil.getRecordCount';
 import getRecords from '@salesforce/apex/CustomDatatableUtil.getRecordsWithFieldSet';
 import CustomDatatable from 'c/customDatatable';
 import { getNavigateCalledWith } from 'lightning/navigation';
@@ -24,6 +25,17 @@ jest.mock(
 
 jest.mock(
   '@salesforce/apex/CustomDatatableUtil.getRecordsWithFieldSet',
+  () => {
+    const { createApexTestWireAdapter } = require('@salesforce/sfdx-lwc-jest');
+    return {
+      default: createApexTestWireAdapter(jest.fn())
+    };
+  },
+  { virtual: true }
+);
+
+jest.mock(
+  '@salesforce/apex/CustomDatatableUtil.getRecordCount',
   () => {
     const { createApexTestWireAdapter } = require('@salesforce/sfdx-lwc-jest');
     return {
@@ -336,5 +348,107 @@ describe('c-custom-datatable', () => {
     return Promise.resolve().then(() => {
       expect(deleteRecord).toHaveBeenCalledTimes(3);
     });
+  });
+
+  it('should show pagination controls when enable pagination is true and data exists', async () => {
+    // given
+    element.objectApiName = mockData.objectApiName;
+    element.fieldSetApiName = mockData.fieldSetApiName;
+    element.enablePagination = true;
+    element.pageSize = 2;
+
+    // when
+    document.body.appendChild(element);
+    getColumns.emit(mockGetColumns);
+    getRecords.emit(mockGetRecords);
+    getRecordCount.emit(mockGetRecords.length);
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    // then
+    const buttons = element.shadowRoot.querySelectorAll('lightning-button');
+    const buttonLabels = [...buttons].map((b) => b.label);
+    expect(buttonLabels).toContain('First');
+    expect(buttonLabels).toContain('Previous');
+    expect(buttonLabels).toContain('Next');
+    expect(buttonLabels).toContain('Last');
+
+    const paginationText = element.shadowRoot.querySelector('.slds-align-middle');
+    expect(paginationText).not.toBeNull();
+    expect(paginationText.textContent).toContain('Page 1 of');
+  });
+
+  it('should not show pagination controls when enable pagination is false', async () => {
+    // given
+    element.objectApiName = mockData.objectApiName;
+    element.fieldSetApiName = mockData.fieldSetApiName;
+    element.enablePagination = false;
+
+    // when
+    document.body.appendChild(element);
+    getColumns.emit(mockGetColumns);
+    getRecords.emit(mockGetRecords);
+    getRecordCount.emit(mockGetRecords.length);
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    // then
+    const paginationText = element.shadowRoot.querySelector('.slds-align-middle');
+    expect(paginationText).toBeNull();
+  });
+
+  it('should update current page when navigation handlers are called', async () => {
+    // given
+    element.objectApiName = mockData.objectApiName;
+    element.fieldSetApiName = mockData.fieldSetApiName;
+    element.enablePagination = true;
+    element.pageSize = 1;
+
+    // when
+    document.body.appendChild(element);
+    getColumns.emit(mockGetColumns);
+    getRecords.emit(mockGetRecords);
+    getRecordCount.emit(mockGetRecords.length);
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    const nextButton = [...element.shadowRoot.querySelectorAll('lightning-button')].find((b) => b.label === 'Next');
+    nextButton.click();
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    // then
+    const paginationText = element.shadowRoot.querySelector('.slds-align-middle');
+    expect(paginationText.textContent).toContain('Page 2 of');
+
+    // when
+    const lastButton = [...element.shadowRoot.querySelectorAll('lightning-button')].find((b) => b.label === 'Last');
+    lastButton.click();
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    // then
+    const paginationTextAfterLast = element.shadowRoot.querySelector('.slds-align-middle');
+    expect(paginationTextAfterLast.textContent).toContain(`Page ${mockGetRecords.length} of`);
+
+    // when
+    const prevButton = [...element.shadowRoot.querySelectorAll('lightning-button')].find((b) => b.label === 'Previous');
+    prevButton.click();
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    // then
+    const paginationTextAfterPrev = element.shadowRoot.querySelector('.slds-align-middle');
+    expect(paginationTextAfterPrev.textContent).toContain(`Page ${mockGetRecords.length - 1} of`);
+
+    // when
+    const firstButton = [...element.shadowRoot.querySelectorAll('lightning-button')].find((b) => b.label === 'First');
+    firstButton.click();
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    // then
+    const paginationTextAfterFirst = element.shadowRoot.querySelector('.slds-align-middle');
+    expect(paginationTextAfterFirst.textContent).toContain('Page 1 of');
   });
 });
