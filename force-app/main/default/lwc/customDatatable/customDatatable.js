@@ -65,6 +65,13 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   @api enablePagination = false;
 
   /**
+   * If present, enables a server-side fuzzy search input that filters records across all text fields.
+   * @type {boolean}
+   * @default false
+   */
+  @api enableSearch = false;
+
+  /**
    * API name of the field set that specifies which fields are displayed in the table.
    * @type {string}
    */
@@ -223,6 +230,7 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   hasSelectedRecords = false;
   _currentPage = 1;
   _totalRecordCount = 0;
+  _searchTerm = '';
 
   @wire(getColumns, { objectName: '$objectApiName', fieldSetName: '$fieldSetApiName', readOnly: '$readOnly' })
   wiredGetColumns({ data }) {
@@ -236,7 +244,8 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   @wire(getRecordCount, {
     objectName: '$objectApiName',
     fieldSetName: '$fieldSetApiName',
-    whereConditions: '$whereConditions'
+    whereConditions: '$whereConditions',
+    searchTerm: '$currentSearchTerm'
   })
   wiredGetRecordCount({ data }) {
     if (data !== undefined) {
@@ -249,13 +258,24 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
     fieldSetName: '$fieldSetApiName',
     whereConditions: '$whereConditions',
     pageSize: '$currentPageSize',
-    pageNumber: '$currentPageNumber'
+    pageNumber: '$currentPageNumber',
+    searchTerm: '$currentSearchTerm'
   })
   wiredGetRecords(result) {
     this.wiredRecords = result;
     if (result.data) {
       this.records = result.data;
+    } else if (result.error) {
+      this.showToast('Error loading records', result.error.body?.message || 'Unknown error', 'error');
     }
+  }
+
+  get currentSearchTerm() {
+    return this.enableSearch && this._searchTerm ? this._searchTerm : null;
+  }
+
+  get showSearch() {
+    return this.enableSearch;
   }
 
   get currentPageSize() {
@@ -337,6 +357,11 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
 
   handleLast() {
     this._currentPage = this.totalPages;
+  }
+
+  handleSearchChange(event) {
+    this._searchTerm = event.target.value;
+    this._currentPage = 1;
   }
 
   addRowActions() {

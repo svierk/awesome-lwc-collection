@@ -40,6 +40,16 @@
 
       <div class="slds-page-header__row slds-page-header__row_gutters">
         <div class="slds-page-header__col-details">
+          <lightning-input
+            lwc:if={showSearch}
+            type="search"
+            label="Search"
+            variant="label-hidden"
+            placeholder="Search all fields..."
+            value={_searchTerm}
+            onchange={handleSearchChange}
+            class="search-input"
+          ></lightning-input>
           <template lwc:if={showPagination}>
             <p class="slds-text-body_small slds-m-bottom_xx-small record-count-text">{recordCountLabel}</p>
           </template>
@@ -76,6 +86,16 @@
           onclick={deleteSelectedRecords}
         ></lightning-button>
       </template>
+      <lightning-input
+        lwc:if={showSearch}
+        type="search"
+        label="Search"
+        variant="label-hidden"
+        placeholder="Search all fields..."
+        value={_searchTerm}
+        onchange={handleSearchChange}
+        class="search-input slds-p-horizontal_medium"
+      ></lightning-input>
       <template lwc:if={showPagination}>
         <p class="slds-text-body_small slds-m-bottom_xx-small slds-p-horizontal_medium record-count-text">
           {recordCountLabel}
@@ -101,6 +121,16 @@
     </lightning-card>
   </template>
   <template lwc:else>
+    <lightning-input
+      lwc:if={showSearch}
+      type="search"
+      label="Search"
+      variant="label-hidden"
+      placeholder="Search all fields..."
+      value={_searchTerm}
+      onchange={handleSearchChange}
+      class="search-input"
+    ></lightning-input>
     <template lwc:if={showPagination}>
       <p class="slds-text-body_small slds-m-bottom_xx-small record-count-text">{recordCountLabel}</p>
     </template>
