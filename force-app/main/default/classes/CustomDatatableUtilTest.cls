@@ -36,6 +36,7 @@ public with sharing class CustomDatatableUtilTest {
         'Test_Field_Set',
         'Name LIKE \'Test Account %\'',
         null,
+        null,
         null
       );
       Test.stopTest();
@@ -56,7 +57,8 @@ public with sharing class CustomDatatableUtilTest {
         'Test_Field_Set',
         'Name LIKE \'Test Account %\'',
         10,
-        2
+        2,
+        null
       );
       Test.stopTest();
 
@@ -71,7 +73,12 @@ public with sharing class CustomDatatableUtilTest {
 
     System.runAs(u) {
       Test.startTest();
-      Integer count = CustomDatatableUtil.getRecordCount('Account', 'Test_Field_Set', 'Name LIKE \'Test Account %\'');
+      Integer count = CustomDatatableUtil.getRecordCount(
+        'Account',
+        'Test_Field_Set',
+        'Name LIKE \'Test Account %\'',
+        null
+      );
       Test.stopTest();
 
       Assert.areEqual(100, count, 'Record count should match the number of inserted accounts.');
@@ -84,7 +91,7 @@ public with sharing class CustomDatatableUtilTest {
 
     System.runAs(u) {
       Test.startTest();
-      Integer count = CustomDatatableUtil.getRecordCount('Account', 'Test_Field_Set', null);
+      Integer count = CustomDatatableUtil.getRecordCount('Account', 'Test_Field_Set', null, null);
       Test.stopTest();
 
       Assert.isTrue(count >= 100, 'Record count should include at least the inserted accounts.');
@@ -106,6 +113,64 @@ public with sharing class CustomDatatableUtilTest {
 
       Assert.areNotEqual(null, columnList, 'Returned column list is empty.');
       Assert.areNotEqual(0, columnList.size(), 'Returned column list is empty.');
+    }
+  }
+
+  @IsTest
+  static void getRecordsWithFieldSetSearchTest() {
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
+
+    System.runAs(u) {
+      Test.startTest();
+      List<SObject> records = CustomDatatableUtil.getRecordsWithFieldSet(
+        'Account',
+        'Test_Field_Set',
+        null,
+        null,
+        null,
+        'Test Account 1'
+      );
+      Test.stopTest();
+
+      Assert.areNotEqual(null, records, 'Returned records list should not be null.');
+      Assert.isTrue(records.size() > 0, 'Search should return matching records.');
+      Assert.isTrue(records.size() < 100, 'Search should filter results to fewer than all records.');
+    }
+  }
+
+  @IsTest
+  static void getRecordCountWithSearchTest() {
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
+
+    System.runAs(u) {
+      Test.startTest();
+      Integer count = CustomDatatableUtil.getRecordCount('Account', 'Test_Field_Set', null, 'Test Account 1');
+      Test.stopTest();
+
+      Assert.isTrue(count > 0, 'Search count should return matching records.');
+      Assert.isTrue(count < 100, 'Search count should be fewer than all records.');
+    }
+  }
+
+  @IsTest
+  static void getSearchableFieldsTest() {
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
+
+    System.runAs(u) {
+      Test.startTest();
+      List<String> fields = CustomDatatableUtil.getSearchableFields('Account');
+      Test.stopTest();
+
+      Assert.areNotEqual(null, fields, 'Searchable fields list should not be null.');
+      Assert.isTrue(fields.size() > 0, 'Account should have at least one searchable text field.');
+      Assert.isTrue(fields.contains('Name'), 'Account Name should be a searchable field.');
+
+      Map<String, Schema.SObjectField> fieldMap = Schema.SObjectType.Account.fields.getMap();
+      for (String fieldName : fields) {
+        Schema.DescribeFieldResult fieldDescribe = fieldMap.get(fieldName).getDescribe();
+        Assert.isTrue(fieldDescribe.isFilterable(), 'Field ' + fieldName + ' should be filterable.');
+        Assert.isTrue(fieldDescribe.isAccessible(), 'Field ' + fieldName + ' should be accessible.');
+      }
     }
   }
 

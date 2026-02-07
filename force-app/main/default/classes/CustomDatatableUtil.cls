@@ -5,7 +5,8 @@ public with sharing class CustomDatatableUtil {
     String fieldSetName,
     String whereConditions,
     Integer pageSize,
-    Integer pageNumber
+    Integer pageNumber,
+    String searchTerm
   ) {
     String fieldList = '';
     for (Schema.FieldSetMember f : readFieldSet(objectName, fieldSetName)) {
@@ -13,17 +14,75 @@ public with sharing class CustomDatatableUtil {
     }
     fieldList += 'Id';
 
-    List<SObject> records = getRecords(objectName, fieldList, whereConditions, pageSize, pageNumber);
+    List<SObject> records = getRecords(objectName, fieldList, whereConditions, pageSize, pageNumber, searchTerm);
     return records;
   }
 
   @AuraEnabled(cacheable=true)
-  public static Integer getRecordCount(String objectName, String fieldSetName, String whereConditions) {
+  public static Integer getRecordCount(
+    String objectName,
+    String fieldSetName,
+    String whereConditions,
+    String searchTerm
+  ) {
     String query = 'SELECT COUNT() FROM ' + String.escapeSingleQuotes(objectName);
+    String searchCondition = buildSearchCondition(objectName, searchTerm);
+    List<String> conditions = new List<String>();
     if (String.isNotBlank(whereConditions)) {
-      query = query + ' WHERE ' + whereConditions;
+      conditions.add(whereConditions);
+    }
+    if (String.isNotBlank(searchCondition)) {
+      conditions.add(searchCondition);
+    }
+    if (!conditions.isEmpty()) {
+      query = query + ' WHERE ' + String.join(conditions, ' AND ');
     }
     return Database.countQuery(query);
+  }
+
+  @TestVisible
+  private static List<String> getSearchableFields(String objectName) {
+    List<String> searchableFields = new List<String>();
+    Set<Schema.DisplayType> searchableTypes = new Set<Schema.DisplayType>{
+      Schema.DisplayType.STRING,
+      Schema.DisplayType.PHONE,
+      Schema.DisplayType.EMAIL,
+      Schema.DisplayType.URL,
+      Schema.DisplayType.PICKLIST,
+      Schema.DisplayType.MULTIPICKLIST
+    };
+
+    Map<String, Schema.SObjectField> fieldMap = Schema.getGlobalDescribe()
+      .get(objectName)
+      .getDescribe()
+      .fields.getMap();
+
+    for (String fieldName : fieldMap.keySet()) {
+      Schema.DescribeFieldResult fieldDescribe = fieldMap.get(fieldName).getDescribe();
+      if (
+        fieldDescribe.isAccessible() &&
+        fieldDescribe.isFilterable() &&
+        searchableTypes.contains(fieldDescribe.getType())
+      ) {
+        searchableFields.add(fieldDescribe.getName());
+      }
+    }
+    return searchableFields;
+  }
+
+  private static String buildSearchCondition(String objectName, String searchTerm) {
+    if (String.isBlank(searchTerm)) {
+      return '';
+    }
+    String escapedTerm = String.escapeSingleQuotes(searchTerm.trim());
+    List<String> fieldConditions = new List<String>();
+    for (String fieldName : getSearchableFields(objectName)) {
+      fieldConditions.add(fieldName + ' LIKE \'%' + escapedTerm + '%\'');
+    }
+    if (fieldConditions.isEmpty()) {
+      return '';
+    }
+    return '(' + String.join(fieldConditions, ' OR ') + ')';
   }
 
   private static List<Schema.FieldSetMember> readFieldSet(String objectName, String fieldSetName) {
@@ -40,11 +99,20 @@ public with sharing class CustomDatatableUtil {
     String fieldList,
     String whereConditions,
     Integer pageSize,
-    Integer pageNumber
+    Integer pageNumber,
+    String searchTerm
   ) {
     String query = 'SELECT ' + String.escapeSingleQuotes(fieldList) + ' FROM ' + String.escapeSingleQuotes(objectName);
+    String searchCondition = buildSearchCondition(objectName, searchTerm);
+    List<String> conditions = new List<String>();
     if (String.isNotBlank(whereConditions)) {
-      query = query + ' WHERE ' + whereConditions;
+      conditions.add(whereConditions);
+    }
+    if (String.isNotBlank(searchCondition)) {
+      conditions.add(searchCondition);
+    }
+    if (!conditions.isEmpty()) {
+      query = query + ' WHERE ' + String.join(conditions, ' AND ');
     }
 
     if (pageSize != null && pageSize > 0) {
