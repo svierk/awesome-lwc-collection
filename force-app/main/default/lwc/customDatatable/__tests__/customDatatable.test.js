@@ -1,4 +1,5 @@
 import getColumns from '@salesforce/apex/CustomDatatableUtil.convertFieldSetToColumns';
+import getRecordCount from '@salesforce/apex/CustomDatatableUtil.getRecordCount';
 import getRecords from '@salesforce/apex/CustomDatatableUtil.getRecordsWithFieldSet';
 import CustomDatatable from 'c/customDatatable';
 import { getNavigateCalledWith } from 'lightning/navigation';
@@ -24,6 +25,17 @@ jest.mock(
 
 jest.mock(
   '@salesforce/apex/CustomDatatableUtil.getRecordsWithFieldSet',
+  () => {
+    const { createApexTestWireAdapter } = require('@salesforce/sfdx-lwc-jest');
+    return {
+      default: createApexTestWireAdapter(jest.fn())
+    };
+  },
+  { virtual: true }
+);
+
+jest.mock(
+  '@salesforce/apex/CustomDatatableUtil.getRecordCount',
   () => {
     const { createApexTestWireAdapter } = require('@salesforce/sfdx-lwc-jest');
     return {
@@ -336,5 +348,128 @@ describe('c-custom-datatable', () => {
     return Promise.resolve().then(() => {
       expect(deleteRecord).toHaveBeenCalledTimes(3);
     });
+  });
+
+  it('should show pagination controls when enable pagination is true and data exists', async () => {
+    // given
+    element.objectApiName = mockData.objectApiName;
+    element.fieldSetApiName = mockData.fieldSetApiName;
+    element.enablePagination = true;
+    element.pageSize = 2;
+
+    // when
+    document.body.appendChild(element);
+    getColumns.emit(mockGetColumns);
+    getRecords.emit(mockGetRecords);
+    getRecordCount.emit(mockGetRecords.length);
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    // then
+    const pagination = element.shadowRoot.querySelector('c-custom-datatable-pagination');
+    expect(pagination).not.toBeNull();
+    expect(pagination.paginationLabel).toContain('Page 1 of');
+    expect(pagination.isFirstPage).toBe(true);
+    expect(pagination.isLastPage).toBe(false);
+  });
+
+  it('should show error toast when wired get records fails', async () => {
+    // given
+    element.objectApiName = mockData.objectApiName;
+    element.fieldSetApiName = mockData.fieldSetApiName;
+    element.enableSearch = true;
+
+    // when
+    document.body.appendChild(element);
+    getColumns.emit(mockGetColumns);
+    getRecords.emitError({ body: { message: "field 'xyz' can not be filtered in a query call" } });
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    // then
+    const datatable = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    expect(datatable.data).toEqual([]);
+  });
+
+  it('should reset page to 1 when search term changes', async () => {
+    // given
+    element.objectApiName = mockData.objectApiName;
+    element.fieldSetApiName = mockData.fieldSetApiName;
+    element.enableSearch = true;
+    element.enablePagination = true;
+    element.pageSize = 1;
+
+    // when
+    document.body.appendChild(element);
+    getColumns.emit(mockGetColumns);
+    getRecords.emit(mockGetRecords);
+    getRecordCount.emit(mockGetRecords.length);
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    const pagination = element.shadowRoot.querySelector('c-custom-datatable-pagination');
+    pagination.dispatchEvent(new CustomEvent('next'));
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    // then
+    expect(pagination.paginationLabel).toContain('Page 2 of');
+
+    // when
+    const searchInput = element.shadowRoot.querySelector('lightning-input.search-input');
+    searchInput.value = 'test';
+    searchInput.dispatchEvent(new CustomEvent('change', { detail: { value: 'test' } }));
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    // then
+    expect(pagination.paginationLabel).toContain('Page 1 of');
+  });
+
+  it('should update current page when navigation events are dispatched', async () => {
+    // given
+    element.objectApiName = mockData.objectApiName;
+    element.fieldSetApiName = mockData.fieldSetApiName;
+    element.enablePagination = true;
+    element.pageSize = 1;
+
+    // when
+    document.body.appendChild(element);
+    getColumns.emit(mockGetColumns);
+    getRecords.emit(mockGetRecords);
+    getRecordCount.emit(mockGetRecords.length);
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    const pagination = element.shadowRoot.querySelector('c-custom-datatable-pagination');
+    pagination.dispatchEvent(new CustomEvent('next'));
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    // then
+    expect(pagination.paginationLabel).toContain('Page 2 of');
+
+    // when
+    pagination.dispatchEvent(new CustomEvent('last'));
+    await new Promise((r) => setTimeout(r, 0));
+
+    // then
+    expect(pagination.paginationLabel).toContain(`Page ${mockGetRecords.length} of`);
+    expect(pagination.isLastPage).toBe(true);
+
+    // when
+    pagination.dispatchEvent(new CustomEvent('previous'));
+    await new Promise((r) => setTimeout(r, 0));
+
+    // then
+    expect(pagination.paginationLabel).toContain(`Page ${mockGetRecords.length - 1} of`);
+
+    // when
+    pagination.dispatchEvent(new CustomEvent('first'));
+    await new Promise((r) => setTimeout(r, 0));
+
+    // then
+    expect(pagination.paginationLabel).toContain('Page 1 of');
+    expect(pagination.isFirstPage).toBe(true);
   });
 });

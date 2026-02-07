@@ -5,3 +5,7 @@ div.page-header {
 ul.page-header-detail {
   border-top: var(--lwc-borderWidthThin, 1px) solid rgb(201, 201, 201);
 }
+
+.record-count-text {
+  color: var(--lwc-colorTextWeak, #706e6b);
+}
