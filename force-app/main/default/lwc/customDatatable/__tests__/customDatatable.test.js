@@ -373,11 +373,31 @@ describe('c-custom-datatable', () => {
     expect(pagination.isLastPage).toBe(false);
   });
 
-  it('should not show pagination controls when enable pagination is false', async () => {
+  it('should show error toast when wired get records fails', async () => {
     // given
     element.objectApiName = mockData.objectApiName;
     element.fieldSetApiName = mockData.fieldSetApiName;
-    element.enablePagination = false;
+    element.enableSearch = true;
+
+    // when
+    document.body.appendChild(element);
+    getColumns.emit(mockGetColumns);
+    getRecords.emitError({ body: { message: "field 'xyz' can not be filtered in a query call" } });
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    // then
+    const datatable = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    expect(datatable.data).toEqual([]);
+  });
+
+  it('should reset page to 1 when search term changes', async () => {
+    // given
+    element.objectApiName = mockData.objectApiName;
+    element.fieldSetApiName = mockData.fieldSetApiName;
+    element.enableSearch = true;
+    element.enablePagination = true;
+    element.pageSize = 1;
 
     // when
     document.body.appendChild(element);
@@ -387,9 +407,23 @@ describe('c-custom-datatable', () => {
 
     await new Promise((r) => setTimeout(r, 0));
 
-    // then
     const pagination = element.shadowRoot.querySelector('c-custom-datatable-pagination');
-    expect(pagination).toBeNull();
+    pagination.dispatchEvent(new CustomEvent('next'));
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    // then
+    expect(pagination.paginationLabel).toContain('Page 2 of');
+
+    // when
+    const searchInput = element.shadowRoot.querySelector('lightning-input.search-input');
+    searchInput.value = 'test';
+    searchInput.dispatchEvent(new CustomEvent('change', { detail: { value: 'test' } }));
+
+    await new Promise((r) => setTimeout(r, 0));
+
+    // then
+    expect(pagination.paginationLabel).toContain('Page 1 of');
   });
 
   it('should update current page when navigation events are dispatched', async () => {
