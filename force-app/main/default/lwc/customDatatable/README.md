@@ -2,7 +2,7 @@
 
 A basic custom datatable with different configuration options.
 
-<img src="../../../../../images/custom-datatable.png" alt="custom-datatable" width="500"/>
+<img src="../../../../../images/custom-datatable.png" alt="custom-datatable" width="800"/>
 
 ## Attributes
 
