@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>JSDoc: Source: base64ToPdf/base64ToPdf.js</title>
+    <title>JSDoc: Source: customDatatablePagination/customDatatablePagination.js</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -15,28 +15,44 @@
 
   <body>
     <div id="main">
-      <h1 class="page-title">Source: base64ToPdf/base64ToPdf.js</h1>
+      <h1 class="page-title">Source: customDatatablePagination/customDatatablePagination.js</h1>
 
       <section>
         <article>
-          <pre class="prettyprint source linenums"><code>import { LightningElement } from 'lwc';
-import { base64 } from './example.js';
+          <pre class="prettyprint source linenums"><code>import { LightningElement, api } from 'lwc';
 
 /**
- * A simple utility for Base64 encoded strings to decode and download them as PDF file.
- * @alias Base64ToPdf
+ * Reusable pagination navigation bar with first, previous, next, and last buttons.
+ * @alias CustomDatatablePagination
  * @extends LightningElement
  * @hideconstructor
  *
  * @example
- * &lt;c-base64-to-pdf>&lt;/c-base64-to-pdf>
+ * &lt;c-custom-datatable-pagination
+ *   pagination-label={paginationLabel}
+ *   is-first-page={isFirstPage}
+ *   is-last-page={isLastPage}
+ * >&lt;/c-custom-datatable-pagination>
  */
-export default class Base64ToPdf extends LightningElement {
-  pdf = `data:application/pdf;base64,${base64}`;
-  fileName = 'example.pdf';
+export default class CustomDatatablePagination extends LightningElement {
+  @api paginationLabel = '';
+  @api isFirstPage = false;
+  @api isLastPage = false;
 
-  get pdfSrc() {
-    return this.pdf;
+  handleFirst() {
+    this.dispatchEvent(new CustomEvent('first'));
+  }
+
+  handlePrevious() {
+    this.dispatchEvent(new CustomEvent('previous'));
+  }
+
+  handleNext() {
+    this.dispatchEvent(new CustomEvent('next'));
+  }
+
+  handleLast() {
+    this.dispatchEvent(new CustomEvent('last'));
   }
 }
 </code></pre>

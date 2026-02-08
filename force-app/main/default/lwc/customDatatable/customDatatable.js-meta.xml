@@ -175,6 +175,27 @@
         default="false"
         description="If present, the footer that displays the Save and Cancel buttons is hidden during inline editing"
       />
+      <property
+        name="enableSearch"
+        label="Enable Search"
+        type="Boolean"
+        default="false"
+        description="If present, enables a server-side fuzzy search input that filters records across all text fields."
+      />
+      <property
+        name="enablePagination"
+        label="Enable Pagination"
+        type="Boolean"
+        default="false"
+        description="If present, enables server-side pagination with page navigation controls."
+      />
+      <property
+        name="pageSize"
+        label="Page Size"
+        type="Integer"
+        default="10"
+        description="The number of records displayed per page when pagination is enabled."
+      />
       </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

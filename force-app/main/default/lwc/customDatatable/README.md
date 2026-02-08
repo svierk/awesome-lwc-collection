@@ -12,6 +12,8 @@ A basic custom datatable with different configuration options.
 | card-title                      | string  | ''      | If show card option is active, the card title can include text and is displayed in the header above the table.                                                                                                                                                 |
 | column-widths-mode              | string  | 'fixed' | Specifies how column widths are calculated. Set to 'fixed' for columns with equal widths. Set to 'auto' for column widths that are based on the width of the column content and the table width.                                                               |
 | default-sort-direction          | string  | 'asc'   | Specifies the default sorting direction on an unsorted column. Valid options include 'asc' and 'desc'.                                                                                                                                                         |
+| enable-pagination               | boolean | false   | If present, server-side pagination is enabled with page controls to navigate through records.                                                                                                                                                                  |
+| enable-search                   | boolean | false   | If present, a server-side fuzzy search input is displayed to filter records across all text fields.                                                                                                                                                            |
 | field-set-api-name              | string  | ''      | API name of the field set that specifies which fields are displayed in the table.                                                                                                                                                                              |
 | hide-checkbox-column            | boolean | false   | If present, the checkbox column for row selection is hidden.                                                                                                                                                                                                   |
 | hide-table-header               | boolean | false   | If present, the table header is hidden.                                                                                                                                                                                                                        |
@@ -21,6 +23,7 @@ A basic custom datatable with different configuration options.
 | max-row-selection               | number  | 50      | The maximum number of rows that can be selected. Checkboxes are used for selection by default, and radio buttons are used when maxRowSelection is 1.                                                                                                           |
 | min-column-width                | number  | 50      | The minimum width for all columns. The default is 50px.                                                                                                                                                                                                        |
 | object-api-name                 | string  | ''      | API name of the object that will be displayed in the table.                                                                                                                                                                                                    |
+| page-size                       | number  | 10      | The number of records displayed per page when pagination is enabled. The default is 10.                                                                                                                                                                        |
 | read-only                       | boolean | false   | If present, then all datatable fields are not editable.                                                                                                                                                                                                        |
 | resize-column-disabled          | boolean | false   | If present, column resizing is disabled.                                                                                                                                                                                                                       |
 | row-number-offset               | number  | 0       | Determines where to start counting the row number.                                                                                                                                                                                                             |
@@ -35,9 +38,10 @@ A basic custom datatable with different configuration options.
 
 ## Component Dependencies
 
-| Name                     | Type | Description                                                                            |
-| ------------------------ | ---- | -------------------------------------------------------------------------------------- |
-| customDatatableExtension | LWC  | Custom extension of the standard LWC datatable to support individual table cell types. |
-| customDatatableLookup    | LWC  | Custom datatable cell type to display lookup fields that are not supported by default. |
-| CustomDatatableUtil      | Apex | Controller class for handling the columns configuration and data provisioning.         |
-| CustomDatatableUtilTest  | Apex | Test class for CustomDatatableUtil.                                                    |
+| Name                      | Type | Description                                                                            |
+| ------------------------- | ---- | -------------------------------------------------------------------------------------- |
+| customDatatableExtension  | LWC  | Custom extension of the standard LWC datatable to support individual table cell types. |
+| customDatatableLookup     | LWC  | Custom datatable cell type to display lookup fields that are not supported by default. |
+| customDatatablePagination | LWC  | Reusable pagination navigation bar with First, Previous, Next, and Last buttons.       |
+| CustomDatatableUtil       | Apex | Controller class for handling the columns configuration and data provisioning.         |
+| CustomDatatableUtilTest   | Apex | Test class for CustomDatatableUtil.                                                    |
