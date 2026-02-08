@@ -3,8 +3,8 @@
     <lightning-spinner alternative-text="Loading" variant="brand"></lightning-spinner>
   </template>
   <template lwc:if={isUsedAsRelatedList}>
-    <div class="slds-page-header slds-page-header_record-home page-header">
-      <div class="slds-page-header__row">
+    <div class="slds-page-header slds-page-header_record-home page-header slds-p-bottom_none">
+      <div class="slds-page-header__row slds-m-bottom_small">
         <div class="slds-page-header__col-title">
           <div class="slds-media">
             <div class="slds-media__figure">
@@ -62,16 +62,17 @@
             >
             </c-custom-datatable-extension>
           </ul>
-          <c-custom-datatable-pagination
-            lwc:if={showPagination}
-            pagination-label={paginationLabel}
-            is-first-page={isFirstPage}
-            is-last-page={isLastPage}
-            onfirst={handleFirst}
-            onprevious={handlePrevious}
-            onnext={handleNext}
-            onlast={handleLast}
-          ></c-custom-datatable-pagination>
+          <div lwc:if={showPagination} class="slds-p-top_medium slds-m-bottom_small">
+            <c-custom-datatable-pagination
+              pagination-label={paginationLabel}
+              is-first-page={isFirstPage}
+              is-last-page={isLastPage}
+              onfirst={handleFirst}
+              onprevious={handlePrevious}
+              onnext={handleNext}
+              onlast={handleLast}
+            ></c-custom-datatable-pagination>
+          </div>
         </div>
       </div>
     </div>
@@ -101,13 +102,15 @@
           {recordCountLabel}
         </p>
       </template>
-      <c-custom-datatable-extension
-        lwc:spread={datatableProperties}
-        onrowaction={handleRowAction}
-        onrowselection={getSelectedRecords}
-        onsave={handleSave}
-      >
-      </c-custom-datatable-extension>
+      <div class="slds-m-top_small">
+        <c-custom-datatable-extension
+          lwc:spread={datatableProperties}
+          onrowaction={handleRowAction}
+          onrowselection={getSelectedRecords}
+          onsave={handleSave}
+        >
+        </c-custom-datatable-extension>
+      </div>
       <c-custom-datatable-pagination
         lwc:if={showPagination}
         pagination-label={paginationLabel}
