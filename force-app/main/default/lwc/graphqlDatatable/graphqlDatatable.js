@@ -23,6 +23,7 @@ const DATA_TYPE_MAP = {
 };
 
 const SEARCHABLE_DATA_TYPES = new Set(['String', 'Email', 'Phone', 'Url', 'Picklist', 'TextArea']);
+const RAW_VALUE_DATA_TYPES = new Set(['Date', 'DateTime', 'Currency', 'Percent', 'Int', 'Double', 'Long', 'Boolean']);
 
 /**
  * A custom datatable powered by GraphQL instead of Apex.
@@ -82,6 +83,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   _objectInfo;
   _graphqlResult;
   _navigatingToLast = false;
+  _fieldDataTypes = {};
 
   get fieldList() {
     return this.fields
@@ -103,11 +105,13 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   buildColumns() {
     if (!this._objectInfo || !this.fieldList.length) return;
     const objectFields = this._objectInfo.fields;
+    this._fieldDataTypes = {};
     const cols = this.fieldList.map((fieldName) => {
       const fieldInfo = objectFields[fieldName];
       if (!fieldInfo) {
         return { fieldName, label: fieldName, type: 'text', sortable: false, editable: false };
       }
+      this._fieldDataTypes[fieldName] = fieldInfo.dataType;
       const columnType = DATA_TYPE_MAP[fieldInfo.dataType] || 'text';
       const isEditable = !this.readOnly && fieldInfo.updateable;
       const column = { fieldName, label: fieldInfo.label, type: columnType, sortable: false, editable: isEditable };
@@ -170,7 +174,8 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
       this.records = queryResult.edges.map(({ node }) => {
         const record = { Id: node.Id };
         this.fieldList.forEach((field) => {
-          record[field] = node[field]?.displayValue ?? node[field]?.value;
+          const useRawValue = RAW_VALUE_DATA_TYPES.has(this._fieldDataTypes[field]);
+          record[field] = useRawValue ? node[field]?.value : (node[field]?.displayValue ?? node[field]?.value);
         });
         return record;
       });
