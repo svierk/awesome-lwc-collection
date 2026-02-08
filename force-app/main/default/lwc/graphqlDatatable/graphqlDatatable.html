@@ -1,0 +1,158 @@
+<template>
+  <template lwc:if={isLoading}>
+    <lightning-spinner alternative-text="Loading" variant="brand"></lightning-spinner>
+  </template>
+  <template lwc:if={isUsedAsRelatedList}>
+    <div class="slds-page-header slds-page-header_record-home page-header slds-p-bottom_none">
+      <div class="slds-page-header__row slds-m-bottom_small">
+        <div class="slds-page-header__col-title">
+          <div class="slds-media">
+            <div class="slds-media__figure">
+              <span class="slds-icon_container">
+                <lightning-icon
+                  icon-name={cardIcon}
+                  alternative-text={cardTitle}
+                  title={cardTitle}
+                  size="small"
+                ></lightning-icon>
+              </span>
+            </div>
+            <div class="slds-media__body">
+              <h2 class="slds-card__header-title">{cardTitle}</h2>
+            </div>
+          </div>
+        </div>
+
+        <div class="slds-page-header__col-actions">
+          <div class="slds-page-header__controls">
+            <div class="slds-page-header__control">
+              <template lwc:if={showMultipleRowDeleteAction}>
+                <lightning-button
+                  lwc:if={hasSelectedRecords}
+                  label="Delete"
+                  onclick={deleteSelectedRecords}
+                ></lightning-button>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slds-page-header__row slds-page-header__row_gutters">
+        <div class="slds-page-header__col-details">
+          <lightning-input
+            lwc:if={showSearch}
+            type="search"
+            label="Search"
+            variant="label-hidden"
+            placeholder="Search all fields..."
+            value={_searchTerm}
+            onchange={handleSearchChange}
+            class="search-input"
+          ></lightning-input>
+          <template lwc:if={showPagination}>
+            <p class="slds-text-body_small slds-m-bottom_xx-small record-count-text">{recordCountLabel}</p>
+          </template>
+          <ul class="slds-page-header__detail-row slds-p-around_none page-header-detail">
+            <c-custom-datatable-extension
+              lwc:spread={datatableProperties}
+              onrowaction={handleRowAction}
+              onrowselection={getSelectedRecords}
+              onsave={handleSave}
+            >
+            </c-custom-datatable-extension>
+          </ul>
+          <div lwc:if={showPagination} class="slds-p-top_medium slds-m-bottom_small">
+            <c-custom-datatable-pagination
+              pagination-label={paginationLabel}
+              is-first-page={isFirstPage}
+              is-last-page={isLastPage}
+              onfirst={handleFirst}
+              onprevious={handlePrevious}
+              onnext={handleNext}
+              onlast={handleLast}
+            ></c-custom-datatable-pagination>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+  <template lwc:elseif={showCard}>
+    <lightning-card title={cardTitle} icon-name={cardIcon}>
+      <template lwc:if={showMultipleRowDeleteAction}>
+        <lightning-button
+          lwc:if={hasSelectedRecords}
+          label="Delete"
+          slot="actions"
+          onclick={deleteSelectedRecords}
+        ></lightning-button>
+      </template>
+      <lightning-input
+        lwc:if={showSearch}
+        type="search"
+        label="Search"
+        variant="label-hidden"
+        placeholder="Search all fields..."
+        value={_searchTerm}
+        onchange={handleSearchChange}
+        class="search-input slds-p-horizontal_medium"
+      ></lightning-input>
+      <template lwc:if={showPagination}>
+        <p class="slds-text-body_small slds-m-bottom_xx-small slds-p-horizontal_medium record-count-text">
+          {recordCountLabel}
+        </p>
+      </template>
+      <div class="slds-m-top_small">
+        <c-custom-datatable-extension
+          lwc:spread={datatableProperties}
+          onrowaction={handleRowAction}
+          onrowselection={getSelectedRecords}
+          onsave={handleSave}
+        >
+        </c-custom-datatable-extension>
+      </div>
+      <c-custom-datatable-pagination
+        lwc:if={showPagination}
+        pagination-label={paginationLabel}
+        is-first-page={isFirstPage}
+        is-last-page={isLastPage}
+        onfirst={handleFirst}
+        onprevious={handlePrevious}
+        onnext={handleNext}
+        onlast={handleLast}
+      ></c-custom-datatable-pagination>
+    </lightning-card>
+  </template>
+  <template lwc:else>
+    <lightning-input
+      lwc:if={showSearch}
+      type="search"
+      label="Search"
+      variant="label-hidden"
+      placeholder="Search all fields..."
+      value={_searchTerm}
+      onchange={handleSearchChange}
+      class="search-input"
+    ></lightning-input>
+    <template lwc:if={showPagination}>
+      <p class="slds-text-body_small slds-m-bottom_xx-small record-count-text">{recordCountLabel}</p>
+    </template>
+    <c-custom-datatable-extension
+      lwc:spread={datatableProperties}
+      onrowaction={handleRowAction}
+      onrowselection={getSelectedRecords}
+      onsave={handleSave}
+    >
+    </c-custom-datatable-extension>
+    <c-custom-datatable-pagination
+      lwc:if={showPagination}
+      pagination-label={paginationLabel}
+      is-first-page={isFirstPage}
+      is-last-page={isLastPage}
+      onfirst={handleFirst}
+      onprevious={handlePrevious}
+      onnext={handleNext}
+      onlast={handleLast}
+    ></c-custom-datatable-pagination>
+  </template>
+</template>
