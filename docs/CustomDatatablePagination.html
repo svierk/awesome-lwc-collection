@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>JSDoc: Source: base64ToPdf/base64ToPdf.js</title>
+    <title>JSDoc: Class: CustomDatatablePagination</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -15,31 +15,48 @@
 
   <body>
     <div id="main">
-      <h1 class="page-title">Source: base64ToPdf/base64ToPdf.js</h1>
+      <h1 class="page-title">Class: CustomDatatablePagination</h1>
 
       <section>
+        <header>
+          <h2>
+            <span class="attribs"><span class="type-signature"></span></span>CustomDatatablePagination
+          </h2>
+
+          <div class="class-description">
+            Reusable pagination navigation bar with first, previous, next, and last buttons.
+          </div>
+        </header>
+
         <article>
-          <pre class="prettyprint source linenums"><code>import { LightningElement } from 'lwc';
-import { base64 } from './example.js';
+          <div class="container-overview">
+            <dl class="details">
+              <dt class="tag-source">Source:</dt>
+              <dd class="tag-source">
+                <ul class="dummy">
+                  <li>
+                    <a href="customDatatablePagination_customDatatablePagination.js.html"
+                      >customDatatablePagination/customDatatablePagination.js</a
+                    >, <a href="customDatatablePagination_customDatatablePagination.js.html#line16">line 16</a>
+                  </li>
+                </ul>
+              </dd>
+            </dl>
 
-/**
- * A simple utility for Base64 encoded strings to decode and download them as PDF file.
- * @alias Base64ToPdf
- * @extends LightningElement
- * @hideconstructor
- *
- * @example
- * &lt;c-base64-to-pdf>&lt;/c-base64-to-pdf>
- */
-export default class Base64ToPdf extends LightningElement {
-  pdf = `data:application/pdf;base64,${base64}`;
-  fileName = 'example.pdf';
+            <h5>Example</h5>
 
-  get pdfSrc() {
-    return this.pdf;
-  }
-}
-</code></pre>
+            <pre class="prettyprint"><code>&lt;c-custom-datatable-pagination
+  pagination-label={paginationLabel}
+  is-first-page={isFirstPage}
+  is-last-page={isLastPage}
+>&lt;/c-custom-datatable-pagination></code></pre>
+          </div>
+
+          <h3 class="subsection-title">Extends</h3>
+
+          <ul>
+            <li>LightningElement</li>
+          </ul>
         </article>
       </section>
     </div>
