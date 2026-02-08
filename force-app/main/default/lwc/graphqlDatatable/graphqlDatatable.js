@@ -81,6 +81,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   _cursorCache = [null];
   _objectInfo;
   _graphqlResult;
+  _navigatingToLast = false;
 
   get fieldList() {
     return this.fields
@@ -163,7 +164,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     this._graphqlResult = result;
     const { data, errors } = result;
     if (data) {
-      this.isLoading = false;
+      if (!this._navigatingToLast) this.isLoading = false;
       const queryResult = data.uiapi.query[this.objectApiName];
       this._totalRecordCount = queryResult.totalCount;
       this.records = queryResult.edges.map(({ node }) => {
@@ -176,6 +177,14 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
       const { hasNextPage, endCursor } = queryResult.pageInfo;
       if (hasNextPage && this._cursorCache.length <= this._currentPage) {
         this._cursorCache.push(endCursor);
+      }
+      if (this._navigatingToLast) {
+        if (hasNextPage && this._currentPage < this.totalPages) {
+          this._currentPage++;
+        } else {
+          this._navigatingToLast = false;
+          this.isLoading = false;
+        }
       }
     } else if (errors) {
       this.isLoading = false;
@@ -272,7 +281,15 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   }
 
   handleLast() {
-    if (this._cursorCache.length > this.totalPages) this._currentPage = this.totalPages;
+    const lastPage = this.totalPages;
+    if (this._currentPage >= lastPage) return;
+    if (this._cursorCache.length > lastPage) {
+      this._currentPage = lastPage;
+    } else {
+      this.isLoading = true;
+      this._navigatingToLast = true;
+      this._currentPage++;
+    }
   }
 
   handleSearchChange(event) {
