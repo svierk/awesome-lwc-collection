@@ -111,7 +111,7 @@ export default class GraphqlMapView extends LightningElement {
       this.streetField
     ];
     const fieldNodes = fieldEntries
-      .filter((f) => f)
+      .filter(Boolean)
       .map((f) => `${f} { value }`)
       .join('\n');
 
