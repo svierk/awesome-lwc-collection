@@ -381,10 +381,6 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     return value.replace(/[%_\\]/g, '\\$&');
   }
 
-  get currentSearchTerm() {
-    return this.enableSearch && this._searchTerm ? this._searchTerm : null;
-  }
-
   get showSearch() {
     return this.enableSearch;
   }

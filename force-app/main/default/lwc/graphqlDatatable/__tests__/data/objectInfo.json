@@ -1,0 +1,35 @@
+{
+  "apiName": "Contact",
+  "fields": {
+    "Name": {
+      "apiName": "Name",
+      "label": "Full Name",
+      "dataType": "String",
+      "updateable": true
+    },
+    "Email": {
+      "apiName": "Email",
+      "label": "Email",
+      "dataType": "Email",
+      "updateable": true
+    },
+    "Phone": {
+      "apiName": "Phone",
+      "label": "Phone",
+      "dataType": "Phone",
+      "updateable": true
+    },
+    "CreatedDate": {
+      "apiName": "CreatedDate",
+      "label": "Created Date",
+      "dataType": "DateTime",
+      "updateable": false
+    },
+    "AccountId": {
+      "apiName": "AccountId",
+      "label": "Account",
+      "dataType": "Reference",
+      "updateable": true
+    }
+  }
+}
