@@ -43,5 +43,6 @@ A basic custom datatable with different configuration options.
 | datatableExtension      | LWC  | Custom extension of the standard LWC datatable to support individual table cell types. |
 | datatableLookup         | LWC  | Custom datatable cell type to display lookup fields that are not supported by default. |
 | datatablePagination     | LWC  | Reusable pagination navigation bar with First, Previous, Next, and Last buttons.       |
+| datatableUtils          | LWC  | Shared utility functions for row actions, CRUD operations, and datatable properties.   |
 | CustomDatatableUtil     | Apex | Controller class for handling the columns configuration and data provisioning.         |
 | CustomDatatableUtilTest | Apex | Test class for CustomDatatableUtil.                                                    |
