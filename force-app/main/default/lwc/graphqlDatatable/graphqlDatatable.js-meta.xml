@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>65.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>GraphQL Datatable</masterLabel>
+    <description>A custom datatable powered by GraphQL instead of Apex.</description>
+    <targets>
+      <target>lightning__AppPage</target>
+      <target>lightning__FlowScreen</target>
+      <target>lightning__HomePage</target>
+      <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+      <targetConfig targets="lightning__AppPage, lightning__FlowScreen, lightning__HomePage, lightning__RecordPage">
+      <property
+        name="objectApiName"
+        label="Object API Name"
+        type="String"
+        description="API name of the object that will be displayed in the table."
+      />
+      <property
+        name="fields"
+        label="Fields"
+        type="String"
+        description="Comma-separated list of field API names to display in the table. Example: Name,Email,Phone"
+      />
+      <property
+        name="whereConditions"
+        label="GraphQL Where Conditions"
+        type="String"
+        description="Optional GraphQL where clause conditions for loaded data records. Example format: { Status: { eq: 'New' } }"
+      />
+      <property
+        name="keyField"
+        label="Key Field"
+        type="String"
+        default="Id"
+        description="Required field for better table performance. Associates each row with a unique Id."
+      />
+      <property
+        name="readOnly"
+        label="Read-Only Table"
+        type="Boolean"
+        default="false"
+        description="If present, then all datatable fields are not editable."
+      />
+      <property
+        name="hideCheckboxColumn"
+        label="Hide Checkbox Column"
+        type="Boolean"
+        default="false"
+        description="If present, the checkbox column for row selection is hidden."
+      />
+      <property
+        name="hideTableHeader"
+        label="Hide Table Header"
+        type="Boolean"
+        default="false"
+        description="If present, the table header is hidden."
+      />
+      <property
+        name="isUsedAsRelatedList"
+        label="Is Used As Related List"
+        type="Boolean"
+        default="false"
+        description="If present, the table is wrapped with the correct page header to fit better into the related list layout."
+      />
+      <property
+        name="showCard"
+        label="Show Lightning Card"
+        type="Boolean"
+        default="false"
+        description="If present, the table is wrapped in a lightning card to fit better into the overall page layout."
+      />
+      <property
+        name="cardIcon"
+        label="Card Icon"
+        type="String"
+        description="If show card option is active, the card icon is displayed in the header before the card title. It should contain the SLDS name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category and 'down' the icon to be displayed."
+      />
+      <property
+        name="cardTitle"
+        label="Card Title"
+        type="String"
+        description="If show card option is active, the card title can include text and is displayed in the header above the table."
+      />
+      <property
+        name="showMultipleRowDeleteAction"
+        label="Show Multiple Row Delete Action"
+        type="Boolean"
+        default="false"
+        description="If present, a delete action button is available when multiple records are selected. This is only available if the checkbox column is visible and the table is either displayed with a Lightning Card or as a Related List."
+      />
+      <property
+        name="showRowNumberColumn"
+        label="Show Row Number Column"
+        type="Boolean"
+        default="false"
+        description="If present, the row numbers are shown in the first column."
+      />
+      <property
+        name="rowNumberOffset"
+        label="Row Number Offset"
+        type="Integer"
+        default="0"
+        description="Determines where to start counting the row number."
+      />
+      <property
+        name="maxRowSelection"
+        label="Maximum Row Selection"
+        type="Integer"
+        default="50"
+        description="The maximum number of rows that can be selected."
+      />
+      <property
+        name="showViewRowAction"
+        label="Show View Row Action"
+        type="Boolean"
+        default="false"
+        description="If present, the last column contains a view record action."
+      />
+      <property
+        name="showEditRowAction"
+        label="Show Edit Row Action"
+        type="Boolean"
+        default="false"
+        description="If present, the last column contains a edit record action."
+      />
+      <property
+        name="showDeleteRowAction"
+        label="Show Delete Row Action"
+        type="Boolean"
+        default="false"
+        description="If present, the last column contains a delete record action."
+      />
+      <property
+        name="columnWidthsMode"
+        label="Column Width Mode"
+        type="String"
+        default="fixed"
+        description="Specifies how column widths are calculated. Set to 'fixed' for columns with equal widths. Set to 'auto' for column widths that are based on the width of the column content and the table width."
+      />
+      <property
+        name="minColumnWidth"
+        label="Minimum Column Width"
+        type="Integer"
+        default="50"
+        description="The minimum width for all columns. The default is 50px."
+      />
+      <property
+        name="maxColumnWidth"
+        label="Maximum Column Width"
+        type="Integer"
+        default="1000"
+        description="The maximum width for all columns. The default is 1000px."
+      />
+      <property
+        name="resizeColumnDisabled"
+        label="Disable Column Resizing"
+        type="Boolean"
+        default="false"
+        description="If present, column resizing is disabled."
+      />
+      <property
+        name="defaultSortDirection"
+        label="Default Sort Direction"
+        type="String"
+        default="asc"
+        description="Specifies the default sorting direction on an unsorted column. Valid options include 'asc' and 'desc'."
+      />
+      <property
+        name="suppressBottomBar"
+        label="Suppress Bottom Bar"
+        type="Boolean"
+        default="false"
+        description="If present, the footer that displays the Save and Cancel buttons is hidden during inline editing"
+      />
+      <property
+        name="enableSearch"
+        label="Enable Search"
+        type="Boolean"
+        default="false"
+        description="If present, enables a GraphQL-based search input that filters records across all text fields using the like operator."
+      />
+      <property
+        name="enablePagination"
+        label="Enable Pagination"
+        type="Boolean"
+        default="false"
+        description="If present, enables cursor-based pagination with page navigation controls."
+      />
+      <property
+        name="pageSize"
+        label="Page Size"
+        type="Integer"
+        default="10"
+        description="The number of records displayed per page when pagination is enabled."
+      />
+      </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

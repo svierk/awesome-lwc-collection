@@ -2,18 +2,18 @@ import { LightningElement, api } from 'lwc';
 
 /**
  * Reusable pagination navigation bar with first, previous, next, and last buttons.
- * @alias CustomDatatablePagination
+ * @alias DatatablePagination
  * @extends LightningElement
  * @hideconstructor
  *
  * @example
- * <c-custom-datatable-pagination
+ * <c-datatable-pagination
  *   pagination-label={paginationLabel}
  *   is-first-page={isFirstPage}
  *   is-last-page={isLastPage}
- * ></c-custom-datatable-pagination>
+ * ></c-datatable-pagination>
  */
-export default class CustomDatatablePagination extends LightningElement {
+export default class DatatablePagination extends LightningElement {
   @api paginationLabel = '';
   @api isFirstPage = false;
   @api isLastPage = false;

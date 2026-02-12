@@ -1,12 +1,12 @@
-import CustomDatatablePagination from 'c/customDatatablePagination';
+import DatatablePagination from 'c/datatablePagination';
 import { createElement } from 'lwc';
 
 let element;
 
-describe('c-custom-datatable-pagination', () => {
+describe('c-datatable-pagination', () => {
   beforeEach(() => {
-    element = createElement('c-custom-datatable-pagination', {
-      is: CustomDatatablePagination
+    element = createElement('c-datatable-pagination', {
+      is: DatatablePagination
     });
   });
 

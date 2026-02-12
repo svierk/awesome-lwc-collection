@@ -2,9 +2,16 @@ import { refreshApex } from '@salesforce/apex';
 import getColumns from '@salesforce/apex/CustomDatatableUtil.convertFieldSetToColumns';
 import getRecordCount from '@salesforce/apex/CustomDatatableUtil.getRecordCount';
 import getRecords from '@salesforce/apex/CustomDatatableUtil.getRecordsWithFieldSet';
+import {
+  addRowActions,
+  buildDatatableProperties,
+  deleteSelectedRecords,
+  getSelectedRecords,
+  handleRowAction,
+  handleSave,
+  showToast
+} from 'c/datatableUtils';
 import { NavigationMixin } from 'lightning/navigation';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { deleteRecord, updateRecord } from 'lightning/uiRecordApi';
 import { LightningElement, api, track, wire } from 'lwc';
 
 /**
@@ -320,23 +327,7 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   }
 
   get datatableProperties() {
-    return {
-      keyField: this.keyField,
-      data: this.records,
-      columns: this.columns,
-      columnWidthsMode: this.columnWidthsMode,
-      defaultSortDirection: this.defaultSortDirection,
-      draftValues: this.draftValues,
-      hideCheckboxColumn: this.hideCheckboxColumn,
-      hideTableHeader: this.hideTableHeader,
-      maxColumnWidth: this.maxColumnWidth,
-      maxRowSelection: this.maxRowSelection,
-      minColumnWidth: this.minColumnWidth,
-      rowNumberOffset: this.computedRowNumberOffset,
-      resizeColumnDisabled: this.resizeColumnDisabled,
-      showRowNumberColumn: this.showRowNumberColumn,
-      suppressBottomBar: this.suppressBottomBar
-    };
+    return buildDatatableProperties(this);
   }
 
   handleFirst() {
@@ -365,107 +356,26 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   }
 
   addRowActions() {
-    const actions = [];
-    if (this.showViewRowAction) actions.push({ label: 'View', name: 'view' });
-    if (this.showEditRowAction) actions.push({ label: 'Edit', name: 'edit' });
-    if (this.showDeleteRowAction) actions.push({ label: 'Delete', name: 'delete' });
-    if (actions.length) {
-      this.columns.push({ type: 'action', typeAttributes: { rowActions: actions, menuAlignment: 'right' } });
-    }
+    addRowActions(this.columns, this.showViewRowAction, this.showEditRowAction, this.showDeleteRowAction);
   }
 
   handleRowAction(event) {
-    const actionName = event.detail.action.name;
-    const row = event.detail.row;
-    switch (actionName) {
-      case 'view':
-        this.viewCurrentRecord(row);
-        break;
-      case 'edit':
-        this.editCurrentRecord(row);
-        break;
-      case 'delete':
-        this.deleteCurrentRecord(row);
-        break;
-      default:
-    }
-  }
-
-  viewCurrentRecord(row) {
-    this[NavigationMixin.Navigate]({
-      type: 'standard__recordPage',
-      attributes: {
-        recordId: row.Id,
-        actionName: 'view'
-      }
-    });
-  }
-
-  editCurrentRecord(row) {
-    this[NavigationMixin.Navigate]({
-      type: 'standard__recordPage',
-      attributes: {
-        recordId: row.Id,
-        actionName: 'edit'
-      }
-    });
-  }
-
-  deleteCurrentRecord(row) {
-    this.isLoading = true;
-    deleteRecord(row.Id)
-      .then(() => {
-        this.showToast('Success', 'Record deleted', 'success');
-        return refreshApex(this.wiredRecords).then(() => {
-          this.isLoading = false;
-        });
-      })
-      .catch((error) => {
-        this.showToast('Error deleting record', error.body.message, 'error');
-      });
+    handleRowAction(this, event, () => refreshApex(this.wiredRecords));
   }
 
   handleSave(event) {
-    const recordInputs = event.detail.draftValues.slice().map((draft) => {
-      const fields = { ...draft };
-      return { fields };
-    });
-
-    const promises = recordInputs.map((recordInput) => updateRecord(recordInput));
-    Promise.all(promises)
-      .then(() => {
-        this.showToast('Success', 'Records updated', 'success');
-        return refreshApex(this.wiredRecords).then(() => {
-          this.draftValues = [];
-        });
-      })
-      .catch((error) => {
-        this.showToast('Error updating records', error.body.message, 'error');
-      });
+    handleSave(this, event.detail.draftValues, () => refreshApex(this.wiredRecords));
   }
 
   getSelectedRecords(event) {
-    this.selectedRecords = event.detail.selectedRows;
-    this.hasSelectedRecords = this.selectedRecords.length > 0;
+    getSelectedRecords(this, event);
   }
 
   deleteSelectedRecords() {
-    this.isLoading = true;
-    const records = this.selectedRecords;
-    const promises = records.map((record) => deleteRecord(record.Id));
-    Promise.all(promises)
-      .then(() => {
-        this.showToast('Success', 'Records deleted', 'success');
-        return refreshApex(this.wiredRecords).then(() => {
-          this.isLoading = false;
-        });
-      })
-      .catch((error) => {
-        this.showToast('Error deleting records', error.body.message, 'error');
-      });
+    deleteSelectedRecords(this, this.selectedRecords, () => refreshApex(this.wiredRecords));
   }
 
   showToast(title, message, variant) {
-    this.dispatchEvent(new ShowToastEvent({ title: title, message: message, variant: variant }));
+    showToast(this, title, message, variant);
   }
 }

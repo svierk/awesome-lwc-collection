@@ -1,0 +1,48 @@
+{
+  "uiapi": {
+    "query": {
+      "Contact": {
+        "edges": [
+          {
+            "node": {
+              "Id": "0037Q000007dN20QAE",
+              "Name": { "value": "John Doe", "displayValue": null },
+              "Email": { "value": "john@example.com", "displayValue": null },
+              "Phone": { "value": "555-0100", "displayValue": "(555) 0100" },
+              "CreatedDate": { "value": "2022-03-27T23:59:35.000Z", "displayValue": "3/27/2022, 11:59 PM" },
+              "AccountId": { "value": "0017Q000007abc1QAA", "displayValue": "Acme Corp" },
+              "UnknownField": { "value": "test", "displayValue": null }
+            }
+          },
+          {
+            "node": {
+              "Id": "0037Q000007dN29QAE",
+              "Name": { "value": "Jane Smith", "displayValue": null },
+              "Email": { "value": "jane@example.com", "displayValue": null },
+              "Phone": { "value": "555-0200", "displayValue": "(555) 0200" },
+              "CreatedDate": { "value": "2022-04-15T10:30:00.000Z", "displayValue": "4/15/2022, 10:30 AM" },
+              "AccountId": { "value": "0017Q000007abc2QAA", "displayValue": "Globex Inc" },
+              "UnknownField": { "value": "test2", "displayValue": null }
+            }
+          },
+          {
+            "node": {
+              "Id": "0037Q000007dN21QAE",
+              "Name": { "value": "Bob Johnson", "displayValue": null },
+              "Email": { "value": "bob@example.com", "displayValue": null },
+              "Phone": { "value": "555-0300", "displayValue": "(555) 0300" },
+              "CreatedDate": { "value": "2022-05-01T08:00:00.000Z", "displayValue": "5/1/2022, 8:00 AM" },
+              "AccountId": { "value": "0017Q000007abc3QAA", "displayValue": "Wayne Enterprises" },
+              "UnknownField": { "value": "test3", "displayValue": null }
+            }
+          }
+        ],
+        "totalCount": 3,
+        "pageInfo": {
+          "hasNextPage": false,
+          "endCursor": "eyJsYXN0SWQiOiIwMDM3UTAwMDAwN2ROMjFRQUUifQ=="
+        }
+      }
+    }
+  }
+}

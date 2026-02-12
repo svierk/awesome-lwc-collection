@@ -1,7 +1,7 @@
-import CustomDatatableLookup from 'c/customDatatableLookup';
+import DatatableLookup from 'c/datatableLookup';
 import { createElement } from 'lwc';
 
-describe('c-custom-datatable-lookup', () => {
+describe('c-datatable-lookup', () => {
   afterEach(() => {
     while (document.body.firstChild) {
       document.body.removeChild(document.body.firstChild);
@@ -10,8 +10,8 @@ describe('c-custom-datatable-lookup', () => {
 
   it('should create and be accessible', async () => {
     // given
-    const element = createElement('c-custom-datatable-lookup', {
-      is: CustomDatatableLookup
+    const element = createElement('c-datatable-lookup', {
+      is: DatatableLookup
     });
 
     // when

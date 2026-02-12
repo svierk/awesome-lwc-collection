@@ -1,7 +1,7 @@
-import CustomDatatableExtension from 'c/customDatatableExtension';
+import DatatableExtension from 'c/datatableExtension';
 import { createElement } from 'lwc';
 
-describe('c-custom-datatable-extension', () => {
+describe('c-datatable-extension', () => {
   afterEach(() => {
     while (document.body.firstChild) {
       document.body.removeChild(document.body.firstChild);
@@ -10,8 +10,8 @@ describe('c-custom-datatable-extension', () => {
 
   it('should create and be accessible', async () => {
     // given
-    const element = createElement('c-custom-datatable-extension', {
-      is: CustomDatatableExtension
+    const element = createElement('c-datatable-extension', {
+      is: DatatableExtension
     });
 
     // when

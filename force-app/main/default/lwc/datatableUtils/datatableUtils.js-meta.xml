@@ -2,6 +2,5 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>65.0</apiVersion>
     <isExposed>false</isExposed>
-    <masterLabel>Custom Datatable Pagination</masterLabel>
-    <description>Reusable pagination navigation bar with First, Previous, Next, and Last buttons.</description>
+    <description>Shared utility functions for datatable components.</description>
 </LightningComponentBundle>

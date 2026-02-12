@@ -94,7 +94,7 @@ describe('c-custom-datatable', () => {
     getColumns.emit(mockGetColumns);
     getRecords.emit(mockGetRecords);
 
-    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const childElement = element.shadowRoot.querySelector('c-datatable-extension');
     childElement.dispatchEvent(
       new CustomEvent('rowaction', {
         detail: {
@@ -123,7 +123,7 @@ describe('c-custom-datatable', () => {
     getColumns.emit(mockGetColumns);
     getRecords.emit(mockGetRecords);
 
-    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const childElement = element.shadowRoot.querySelector('c-datatable-extension');
     childElement.dispatchEvent(
       new CustomEvent('rowaction', {
         detail: {
@@ -152,7 +152,7 @@ describe('c-custom-datatable', () => {
     getColumns.emit(mockGetColumns);
     getRecords.emit(mockGetRecords);
 
-    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const childElement = element.shadowRoot.querySelector('c-datatable-extension');
     childElement.dispatchEvent(
       new CustomEvent('rowaction', {
         detail: {
@@ -180,7 +180,7 @@ describe('c-custom-datatable', () => {
     getColumns.emit(mockGetColumns);
     getRecords.emit(mockGetRecords);
 
-    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const childElement = element.shadowRoot.querySelector('c-datatable-extension');
     childElement.dispatchEvent(
       new CustomEvent('rowaction', {
         detail: {
@@ -208,7 +208,7 @@ describe('c-custom-datatable', () => {
     getColumns.emit(mockGetColumns);
     getRecords.emit(mockGetRecords);
 
-    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const childElement = element.shadowRoot.querySelector('c-datatable-extension');
     childElement.addEventListener('rowaction', mockRowActionHandler);
     childElement.dispatchEvent(
       new CustomEvent('rowaction', {
@@ -235,7 +235,7 @@ describe('c-custom-datatable', () => {
     getColumns.emit(mockGetColumns);
     getRecords.emit(mockGetRecords);
 
-    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const childElement = element.shadowRoot.querySelector('c-datatable-extension');
     childElement.dispatchEvent(
       new CustomEvent('save', {
         detail: {
@@ -262,7 +262,7 @@ describe('c-custom-datatable', () => {
     getColumns.emit(mockGetColumns);
     getRecords.emit(mockGetRecords);
 
-    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const childElement = element.shadowRoot.querySelector('c-datatable-extension');
     childElement.dispatchEvent(
       new CustomEvent('save', {
         detail: {
@@ -294,7 +294,7 @@ describe('c-custom-datatable', () => {
     getColumns.emit(mockGetColumns);
     getRecords.emit(mockGetRecords);
 
-    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const childElement = element.shadowRoot.querySelector('c-datatable-extension');
     childElement.dispatchEvent(
       new CustomEvent('rowselection', {
         detail: {
@@ -330,7 +330,7 @@ describe('c-custom-datatable', () => {
     getColumns.emit(mockGetColumns);
     getRecords.emit(mockGetRecords);
 
-    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const childElement = element.shadowRoot.querySelector('c-datatable-extension');
     childElement.dispatchEvent(
       new CustomEvent('rowselection', {
         detail: {
@@ -366,7 +366,7 @@ describe('c-custom-datatable', () => {
     await new Promise((r) => setTimeout(r, 0));
 
     // then
-    const pagination = element.shadowRoot.querySelector('c-custom-datatable-pagination');
+    const pagination = element.shadowRoot.querySelector('c-datatable-pagination');
     expect(pagination).not.toBeNull();
     expect(pagination.paginationLabel).toContain('Page 1 of');
     expect(pagination.isFirstPage).toBe(true);
@@ -387,7 +387,7 @@ describe('c-custom-datatable', () => {
     await new Promise((r) => setTimeout(r, 0));
 
     // then
-    const datatable = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const datatable = element.shadowRoot.querySelector('c-datatable-extension');
     expect(datatable.data).toEqual([]);
   });
 
@@ -407,7 +407,7 @@ describe('c-custom-datatable', () => {
 
     await new Promise((r) => setTimeout(r, 0));
 
-    const pagination = element.shadowRoot.querySelector('c-custom-datatable-pagination');
+    const pagination = element.shadowRoot.querySelector('c-datatable-pagination');
     pagination.dispatchEvent(new CustomEvent('next'));
 
     await new Promise((r) => setTimeout(r, 0));
@@ -441,7 +441,7 @@ describe('c-custom-datatable', () => {
 
     await new Promise((r) => setTimeout(r, 0));
 
-    const pagination = element.shadowRoot.querySelector('c-custom-datatable-pagination');
+    const pagination = element.shadowRoot.querySelector('c-datatable-pagination');
     pagination.dispatchEvent(new CustomEvent('next'));
 
     await new Promise((r) => setTimeout(r, 0));
