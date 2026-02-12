@@ -9,6 +9,7 @@ Combobox with different configuration options that also supports multi select. H
 | Name          | Type    | Default            | Description                                                                                                    |
 | ------------- | ------- | ------------------ | -------------------------------------------------------------------------------------------------------------- |
 | disabled      | boolean | false              | If present, the combobox is disabled and users cannot interact with it.                                        |
+| enable-search | boolean | false              | If present, a search input is shown inside the dropdown to filter options by label.                            |
 | label         | string  | ''                 | Text label for the combobox.                                                                                   |
 | name          | string  |                    | Specifies the name of the combobox.                                                                            |
 | options       | Array   | []                 | A list of options that are available for selection. Each option has the following attributes: label and value. |

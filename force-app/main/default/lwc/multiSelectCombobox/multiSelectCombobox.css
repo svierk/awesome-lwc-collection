@@ -29,3 +29,12 @@
 .multi-select-combobox__listbox {
   width: 100%;
 }
+
+.multi-select-combobox__search {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-bottom: var(--lwc-borderWidthThin, 1px) solid #dddbda;
+  outline: none;
+  font-size: inherit;
+}

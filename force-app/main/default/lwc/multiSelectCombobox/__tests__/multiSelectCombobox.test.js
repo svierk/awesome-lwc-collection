@@ -114,6 +114,65 @@ describe('c-multi-select-combobox', () => {
     });
   });
 
+  it('should filter visible options when typing in search', async () => {
+    // given
+    element.label = mockData.label;
+    element.name = mockData.name;
+    element.options = mockData.options;
+    element.enableSearch = true;
+
+    // when
+    document.body.appendChild(element);
+    const input = element.shadowRoot.querySelector('.multi-select-combobox__input');
+    input.click();
+
+    return Promise.resolve().then(() => {
+      const searchInput = element.shadowRoot.querySelector('.multi-select-combobox__search');
+      searchInput.value = mockData.options[0].label;
+      searchInput.dispatchEvent(new CustomEvent('input'));
+
+      return Promise.resolve().then(() => {
+        const items = element.shadowRoot.querySelectorAll('c-multi-select-combobox-item');
+        expect(items.length).toBeLessThan(mockData.options.length);
+        expect(items.length).toBeGreaterThan(0);
+      });
+    });
+  });
+
+  it('should clear search term when dropdown closes', async () => {
+    // given
+    element.label = mockData.label;
+    element.name = mockData.name;
+    element.options = mockData.options;
+    element.enableSearch = true;
+
+    // when
+    document.body.appendChild(element);
+    const input = element.shadowRoot.querySelector('.multi-select-combobox__input');
+    input.click();
+
+    return Promise.resolve().then(() => {
+      // type a search term
+      const searchInput = element.shadowRoot.querySelector('.multi-select-combobox__search');
+      searchInput.value = 'test';
+      searchInput.dispatchEvent(new CustomEvent('input'));
+
+      // close dropdown by clicking input again
+      input.click();
+
+      return Promise.resolve().then(() => {
+        // reopen dropdown
+        input.click();
+
+        // then
+        return Promise.resolve().then(() => {
+          const items = element.shadowRoot.querySelectorAll('c-multi-select-combobox-item');
+          expect(items.length).toBe(mockData.options.length);
+        });
+      });
+    });
+  });
+
   it('should close the dropdown when option is selected while using single select configuration', async () => {
     // given
     const mockCloseHandler = jest.fn();

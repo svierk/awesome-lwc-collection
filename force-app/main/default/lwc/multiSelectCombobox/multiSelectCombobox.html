@@ -39,8 +39,17 @@
             aria-label="Multi Select Combobox Dropdown"
             role="listbox"
           >
+            <input
+              lwc:if={enableSearch}
+              class="multi-select-combobox__search"
+              type="text"
+              placeholder="Search..."
+              value={_searchTerm}
+              oninput={handleSearch}
+              onclick={handleSearchClick}
+            />
             <ul class="slds-listbox slds-listbox_vertical" role="presentation">
-              <template for:each={currentOptions} for:item="item">
+              <template for:each={filteredOptions} for:item="item">
                 <c-multi-select-combobox-item key={item.value} item={item} onchange={handleChange}>
                 </c-multi-select-combobox-item>
               </template>

@@ -18,6 +18,13 @@ export default class MultiSelectCombobox extends LightningElement {
   @api disabled = false;
 
   /**
+   * If present, a search input is shown inside the dropdown to filter options.
+   * @type {boolean}
+   * @default false
+   */
+  @api enableSearch = false;
+
+  /**
    * Text label for the combobox.
    * @type {string}
    * @default ''
@@ -84,6 +91,7 @@ export default class MultiSelectCombobox extends LightningElement {
   @api showPills = false;
 
   @track currentOptions = [];
+  _searchTerm = '';
   selectedItems = [];
   selectedOptions = [];
   isInitialized = false;
@@ -112,6 +120,22 @@ export default class MultiSelectCombobox extends LightningElement {
       this.isInitialized = true;
       this.setSelection();
     }
+  }
+
+  get filteredOptions() {
+    if (!this._searchTerm) {
+      return this.currentOptions;
+    }
+    const term = this._searchTerm.toLowerCase();
+    return this.currentOptions.filter((option) => option.label.toLowerCase().includes(term));
+  }
+
+  handleSearch(event) {
+    this._searchTerm = event.target.value;
+  }
+
+  handleSearchClick(event) {
+    event.stopPropagation();
   }
 
   handleChange(event) {
@@ -160,6 +184,7 @@ export default class MultiSelectCombobox extends LightningElement {
   }
 
   close() {
+    this._searchTerm = '';
     this.template.querySelectorAll('.multi-select-combobox__dropdown').forEach((node) => {
       node.classList.remove('slds-is-open');
     });
