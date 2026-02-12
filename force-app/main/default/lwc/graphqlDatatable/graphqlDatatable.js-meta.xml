@@ -3,8 +3,7 @@
     <apiVersion>65.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>GraphQL Datatable</masterLabel>
-    <description
-  >A custom datatable powered by GraphQL. Uses a comma-separated list of field API names instead of a FieldSet.</description>
+    <description>A custom datatable powered by GraphQL instead of Apex.</description>
     <targets>
       <target>lightning__AppPage</target>
       <target>lightning__FlowScreen</target>

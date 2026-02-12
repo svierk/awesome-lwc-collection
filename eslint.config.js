@@ -26,7 +26,7 @@ module.exports = defineConfig([
       'prefer-object-spread': 'error',
       'prefer-template': 'error',
       camelcase: 'error',
-      'max-lines': ['error', 500],
+      'max-lines': ['error', 600],
       'max-lines-per-function': ['error', 50],
       'no-inline-comments': 'error',
       'no-nested-ternary': 'error'

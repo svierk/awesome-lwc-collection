@@ -1,8 +1,8 @@
-# Custom Datatable
+# GraphQL Datatable
 
-A basic custom datatable with different configuration options.
+A custom datatable powered by the GraphQL wire adapter (`lightning/graphql`) instead of Apex.
 
-<img src="../../../../../images/custom-datatable.png" alt="custom-datatable" width="800"/>
+<img src="../../../../../images/custom-datatable.png" alt="graphql-datatable" width="500"/>
 
 ## Attributes
 
@@ -12,9 +12,9 @@ A basic custom datatable with different configuration options.
 | card-title                      | string  | ''      | If show card option is active, the card title can include text and is displayed in the header above the table.                                                                                                                                                 |
 | column-widths-mode              | string  | 'fixed' | Specifies how column widths are calculated. Set to 'fixed' for columns with equal widths. Set to 'auto' for column widths that are based on the width of the column content and the table width.                                                               |
 | default-sort-direction          | string  | 'asc'   | Specifies the default sorting direction on an unsorted column. Valid options include 'asc' and 'desc'.                                                                                                                                                         |
-| enable-pagination               | boolean | false   | If present, server-side pagination is enabled with page controls to navigate through records.                                                                                                                                                                  |
-| enable-search                   | boolean | false   | If present, a server-side fuzzy search input is displayed to filter records across all text fields.                                                                                                                                                            |
-| field-set-api-name              | string  | ''      | API name of the field set that specifies which fields are displayed in the table.                                                                                                                                                                              |
+| enable-pagination               | boolean | false   | If present, cursor-based pagination is enabled with page controls to navigate through records.                                                                                                                                                                 |
+| enable-search                   | boolean | false   | If present, a GraphQL-based search input is displayed to filter records across all text fields using the `like` operator.                                                                                                                                      |
+| fields                          | string  | ''      | Comma-separated list of field API names to display in the table. Example: `Name,Email,Phone`.                                                                                                                                                                  |
 | hide-checkbox-column            | boolean | false   | If present, the checkbox column for row selection is hidden.                                                                                                                                                                                                   |
 | hide-table-header               | boolean | false   | If present, the table header is hidden.                                                                                                                                                                                                                        |
 | is-used-as-related-list         | boolean | false   | If present, the table is wrapped with the correct page header to fit better into the related list layout.                                                                                                                                                      |
@@ -34,7 +34,7 @@ A basic custom datatable with different configuration options.
 | show-row-number-column          | boolean | false   | If present, the row numbers are shown in the first column.                                                                                                                                                                                                     |
 | show-view-row-action            | boolean | false   | If present, the last column contains a view record action.                                                                                                                                                                                                     |
 | suppress-bottom-bar             | boolean | false   | If present, the footer that displays the Save and Cancel buttons is hidden during inline editing.                                                                                                                                                              |
-| where-conditions                | string  | ''      | Optional where clause conditions for loaded data records. Example: `Status = 'New'`                                                                                                                                                                            |
+| where-conditions                | string  | ''      | Optional GraphQL where clause conditions for loaded data records. Example: `{ Status: { eq: "New" } }`.                                                                                                                                                        |
 
 ## Component Dependencies
 
@@ -43,5 +43,3 @@ A basic custom datatable with different configuration options.
 | customDatatableExtension  | LWC  | Custom extension of the standard LWC datatable to support individual table cell types. |
 | customDatatableLookup     | LWC  | Custom datatable cell type to display lookup fields that are not supported by default. |
 | customDatatablePagination | LWC  | Reusable pagination navigation bar with First, Previous, Next, and Last buttons.       |
-| CustomDatatableUtil       | Apex | Controller class for handling the columns configuration and data provisioning.         |
-| CustomDatatableUtilTest   | Apex | Test class for CustomDatatableUtil.                                                    |
