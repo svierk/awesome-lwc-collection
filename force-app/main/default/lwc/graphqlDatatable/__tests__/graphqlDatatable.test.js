@@ -52,7 +52,7 @@ describe('c-graphql-datatable', () => {
     await new Promise((r) => setTimeout(r, 0));
 
     const card = element.shadowRoot.querySelector('lightning-card');
-    const datatable = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const datatable = element.shadowRoot.querySelector('c-datatable-extension');
 
     // then
     expect(card.iconName).toBe('standard:contact');
@@ -81,7 +81,7 @@ describe('c-graphql-datatable', () => {
 
     await new Promise((r) => setTimeout(r, 0));
 
-    const datatable = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const datatable = element.shadowRoot.querySelector('c-datatable-extension');
 
     // then
     expect(datatable.data).toHaveLength(3);
@@ -106,7 +106,7 @@ describe('c-graphql-datatable', () => {
 
     await new Promise((r) => setTimeout(r, 0));
 
-    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const childElement = element.shadowRoot.querySelector('c-datatable-extension');
 
     childElement.dispatchEvent(
       new CustomEvent('rowaction', { detail: { action: { name: 'view' }, row: { Id: RECORD_ID } } })
@@ -159,7 +159,7 @@ describe('c-graphql-datatable', () => {
 
     await new Promise((r) => setTimeout(r, 0));
 
-    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const childElement = element.shadowRoot.querySelector('c-datatable-extension');
     childElement.dispatchEvent(
       new CustomEvent('rowaction', { detail: { action: { name: 'delete' }, row: { Id: RECORD_ID } } })
     );
@@ -182,7 +182,7 @@ describe('c-graphql-datatable', () => {
 
     await new Promise((r) => setTimeout(r, 0));
 
-    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const childElement = element.shadowRoot.querySelector('c-datatable-extension');
     const draftRecord = { Id: RECORD_ID, Name: 'Updated Name' };
     childElement.dispatchEvent(new CustomEvent('save', { detail: { draftValues: [draftRecord] } }));
 
@@ -205,7 +205,7 @@ describe('c-graphql-datatable', () => {
 
     await new Promise((r) => setTimeout(r, 0));
 
-    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const childElement = element.shadowRoot.querySelector('c-datatable-extension');
     const draftRecord = { Id: RECORD_ID, Name: 'Updated Name' };
     childElement.dispatchEvent(new CustomEvent('save', { detail: { draftValues: [draftRecord] } }));
 
@@ -232,7 +232,7 @@ describe('c-graphql-datatable', () => {
     await new Promise((r) => setTimeout(r, 0));
 
     const selectedRows = [{ Id: RECORD_ID }, { Id: '0037Q000007dN29QAE' }];
-    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const childElement = element.shadowRoot.querySelector('c-datatable-extension');
     childElement.dispatchEvent(new CustomEvent('rowselection', { detail: { selectedRows } }));
 
     await new Promise((r) => setTimeout(r, 0));
@@ -263,7 +263,7 @@ describe('c-graphql-datatable', () => {
     await new Promise((r) => setTimeout(r, 0));
 
     const selectedRows = [{ Id: RECORD_ID }, { Id: '0037Q000007dN29QAE' }];
-    const childElement = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const childElement = element.shadowRoot.querySelector('c-datatable-extension');
     childElement.dispatchEvent(new CustomEvent('rowselection', { detail: { selectedRows } }));
 
     await new Promise((r) => setTimeout(r, 0));
@@ -291,7 +291,7 @@ describe('c-graphql-datatable', () => {
 
     await new Promise((r) => setTimeout(r, 0));
 
-    const pagination = element.shadowRoot.querySelector('c-custom-datatable-pagination');
+    const pagination = element.shadowRoot.querySelector('c-datatable-pagination');
 
     // then
     expect(pagination.paginationLabel).toContain('Page 1 of 2');
@@ -349,7 +349,7 @@ describe('c-graphql-datatable', () => {
 
     await new Promise((r) => setTimeout(r, 0));
 
-    const pagination = element.shadowRoot.querySelector('c-custom-datatable-pagination');
+    const pagination = element.shadowRoot.querySelector('c-datatable-pagination');
     pagination.dispatchEvent(new CustomEvent('last'));
 
     await new Promise((r) => setTimeout(r, 0));
@@ -380,7 +380,7 @@ describe('c-graphql-datatable', () => {
 
     await new Promise((r) => setTimeout(r, 0));
 
-    const pagination = element.shadowRoot.querySelector('c-custom-datatable-pagination');
+    const pagination = element.shadowRoot.querySelector('c-datatable-pagination');
     pagination.dispatchEvent(new CustomEvent('next'));
 
     await new Promise((r) => setTimeout(r, 0));
@@ -412,7 +412,7 @@ describe('c-graphql-datatable', () => {
     await new Promise((r) => setTimeout(r, 0));
 
     // then
-    const datatable = element.shadowRoot.querySelector('c-custom-datatable-extension');
+    const datatable = element.shadowRoot.querySelector('c-datatable-extension');
     expect(datatable.data).toEqual([]);
   });
 });

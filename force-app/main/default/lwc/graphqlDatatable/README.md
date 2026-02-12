@@ -38,8 +38,8 @@ A custom datatable powered by the GraphQL wire adapter (`lightning/graphql`) ins
 
 ## Component Dependencies
 
-| Name                      | Type | Description                                                                            |
-| ------------------------- | ---- | -------------------------------------------------------------------------------------- |
-| customDatatableExtension  | LWC  | Custom extension of the standard LWC datatable to support individual table cell types. |
-| customDatatableLookup     | LWC  | Custom datatable cell type to display lookup fields that are not supported by default. |
-| customDatatablePagination | LWC  | Reusable pagination navigation bar with First, Previous, Next, and Last buttons.       |
+| Name                | Type | Description                                                                            |
+| ------------------- | ---- | -------------------------------------------------------------------------------------- |
+| datatableExtension  | LWC  | Custom extension of the standard LWC datatable to support individual table cell types. |
+| datatableLookup     | LWC  | Custom datatable cell type to display lookup fields that are not supported by default. |
+| datatablePagination | LWC  | Reusable pagination navigation bar with First, Previous, Next, and Last buttons.       |

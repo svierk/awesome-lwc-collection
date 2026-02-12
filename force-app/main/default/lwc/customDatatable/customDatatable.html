@@ -54,16 +54,16 @@
             <p class="slds-text-body_small slds-m-bottom_xx-small record-count-text">{recordCountLabel}</p>
           </template>
           <ul class="slds-page-header__detail-row slds-p-around_none page-header-detail">
-            <c-custom-datatable-extension
+            <c-datatable-extension
               lwc:spread={datatableProperties}
               onrowaction={handleRowAction}
               onrowselection={getSelectedRecords}
               onsave={handleSave}
             >
-            </c-custom-datatable-extension>
+            </c-datatable-extension>
           </ul>
           <div lwc:if={showPagination} class="slds-p-top_medium slds-m-bottom_small">
-            <c-custom-datatable-pagination
+            <c-datatable-pagination
               pagination-label={paginationLabel}
               is-first-page={isFirstPage}
               is-last-page={isLastPage}
@@ -71,7 +71,7 @@
               onprevious={handlePrevious}
               onnext={handleNext}
               onlast={handleLast}
-            ></c-custom-datatable-pagination>
+            ></c-datatable-pagination>
           </div>
         </div>
       </div>
@@ -103,15 +103,15 @@
         </p>
       </template>
       <div class="slds-m-top_small">
-        <c-custom-datatable-extension
+        <c-datatable-extension
           lwc:spread={datatableProperties}
           onrowaction={handleRowAction}
           onrowselection={getSelectedRecords}
           onsave={handleSave}
         >
-        </c-custom-datatable-extension>
+        </c-datatable-extension>
       </div>
-      <c-custom-datatable-pagination
+      <c-datatable-pagination
         lwc:if={showPagination}
         pagination-label={paginationLabel}
         is-first-page={isFirstPage}
@@ -120,7 +120,7 @@
         onprevious={handlePrevious}
         onnext={handleNext}
         onlast={handleLast}
-      ></c-custom-datatable-pagination>
+      ></c-datatable-pagination>
     </lightning-card>
   </template>
   <template lwc:else>
@@ -137,14 +137,14 @@
     <template lwc:if={showPagination}>
       <p class="slds-text-body_small slds-m-bottom_xx-small record-count-text">{recordCountLabel}</p>
     </template>
-    <c-custom-datatable-extension
+    <c-datatable-extension
       lwc:spread={datatableProperties}
       onrowaction={handleRowAction}
       onrowselection={getSelectedRecords}
       onsave={handleSave}
     >
-    </c-custom-datatable-extension>
-    <c-custom-datatable-pagination
+    </c-datatable-extension>
+    <c-datatable-pagination
       lwc:if={showPagination}
       pagination-label={paginationLabel}
       is-first-page={isFirstPage}
@@ -153,6 +153,6 @@
       onprevious={handlePrevious}
       onnext={handleNext}
       onlast={handleLast}
-    ></c-custom-datatable-pagination>
+    ></c-datatable-pagination>
   </template>
 </template>

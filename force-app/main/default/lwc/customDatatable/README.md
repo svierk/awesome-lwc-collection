@@ -38,10 +38,10 @@ A basic custom datatable with different configuration options.
 
 ## Component Dependencies
 
-| Name                      | Type | Description                                                                            |
-| ------------------------- | ---- | -------------------------------------------------------------------------------------- |
-| customDatatableExtension  | LWC  | Custom extension of the standard LWC datatable to support individual table cell types. |
-| customDatatableLookup     | LWC  | Custom datatable cell type to display lookup fields that are not supported by default. |
-| customDatatablePagination | LWC  | Reusable pagination navigation bar with First, Previous, Next, and Last buttons.       |
-| CustomDatatableUtil       | Apex | Controller class for handling the columns configuration and data provisioning.         |
-| CustomDatatableUtilTest   | Apex | Test class for CustomDatatableUtil.                                                    |
+| Name                    | Type | Description                                                                            |
+| ----------------------- | ---- | -------------------------------------------------------------------------------------- |
+| datatableExtension      | LWC  | Custom extension of the standard LWC datatable to support individual table cell types. |
+| datatableLookup         | LWC  | Custom datatable cell type to display lookup fields that are not supported by default. |
+| datatablePagination     | LWC  | Reusable pagination navigation bar with First, Previous, Next, and Last buttons.       |
+| CustomDatatableUtil     | Apex | Controller class for handling the columns configuration and data provisioning.         |
+| CustomDatatableUtilTest | Apex | Test class for CustomDatatableUtil.                                                    |
