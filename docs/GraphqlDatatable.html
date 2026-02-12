@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>JSDoc: Class: QrCodeGenerator</title>
+    <title>JSDoc: Class: GraphqlDatatable</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -15,17 +15,15 @@
 
   <body>
     <div id="main">
-      <h1 class="page-title">Class: QrCodeGenerator</h1>
+      <h1 class="page-title">Class: GraphqlDatatable</h1>
 
       <section>
         <header>
           <h2>
-            <span class="attribs"><span class="type-signature"></span></span>QrCodeGenerator
+            <span class="attribs"><span class="type-signature"></span></span>GraphqlDatatable
           </h2>
 
-          <div class="class-description">
-            A basic QR Code Generator with optional logo overlay using the QRCode.js library.
-          </div>
+          <div class="class-description">A custom datatable powered by GraphQL instead of Apex.</div>
         </header>
 
         <article>
@@ -35,8 +33,8 @@
               <dd class="tag-source">
                 <ul class="dummy">
                   <li>
-                    <a href="qrCodeGenerator_qrCodeGenerator.js.html">qrCodeGenerator/qrCodeGenerator.js</a>,
-                    <a href="qrCodeGenerator_qrCodeGenerator.js.html#line14">line 14</a>
+                    <a href="graphqlDatatable_graphqlDatatable.js.html">graphqlDatatable/graphqlDatatable.js</a>,
+                    <a href="graphqlDatatable_graphqlDatatable.js.html#line49">line 49</a>
                   </li>
                 </ul>
               </dd>
@@ -44,7 +42,12 @@
 
             <h5>Example</h5>
 
-            <pre class="prettyprint"><code>&lt;c-qr-code-generator>&lt;/c-qr-code-generator></code></pre>
+            <pre class="prettyprint"><code>&lt;c-graphql-datatable
+  object-api-name="Contact"
+  fields="Name,Email,Phone"
+  enable-pagination
+  page-size="25"
+>&lt;/c-graphql-datatable></code></pre>
           </div>
 
           <h3 class="subsection-title">Extends</h3>

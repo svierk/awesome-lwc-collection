@@ -71,6 +71,601 @@
     "description": "Some description for slide 2"
   }
 ]</code></pre>
+
+          <h3 class="subsection-title">Methods</h3>
+
+          <h4 class="name" id="addRowActions">
+            <span class="type-signature"></span>addRowActions<span class="signature"
+              >(columns, showView, showEdit, showDelete)</span
+            ><span class="type-signature"></span>
+          </h4>
+
+          <div class="description">Appends row action columns to the columns array.</div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>columns</code></td>
+
+                <td class="type">
+                  <span class="param-type">Array</span>
+                </td>
+
+                <td class="description last">The columns array to modify</td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>showView</code></td>
+
+                <td class="type">
+                  <span class="param-type">boolean</span>
+                </td>
+
+                <td class="description last">Whether to show the View action</td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>showEdit</code></td>
+
+                <td class="type">
+                  <span class="param-type">boolean</span>
+                </td>
+
+                <td class="description last">Whether to show the Edit action</td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>showDelete</code></td>
+
+                <td class="type">
+                  <span class="param-type">boolean</span>
+                </td>
+
+                <td class="description last">Whether to show the Delete action</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="datatableUtils_datatableUtils.js.html">datatableUtils/datatableUtils.js</a>,
+                  <a href="datatableUtils_datatableUtils.js.html#line59">line 59</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="buildDatatableProperties">
+            <span class="type-signature"></span>buildDatatableProperties<span class="signature">(component)</span
+            ><span class="type-signature"> &rarr; {Object}</span>
+          </h4>
+
+          <div class="description">Builds the properties object passed to the datatable extension component.</div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>component</code></td>
+
+                <td class="type">
+                  <span class="param-type">LightningElement</span>
+                </td>
+
+                <td class="description last">The component instance</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="datatableUtils_datatableUtils.js.html">datatableUtils/datatableUtils.js</a>,
+                  <a href="datatableUtils_datatableUtils.js.html#line84">line 84</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h5>Returns:</h5>
+
+          <div class="param-desc">The datatable properties</div>
+
+          <dl>
+            <dt>Type</dt>
+            <dd>
+              <span class="param-type">Object</span>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="deleteCurrentRecord">
+            <span class="type-signature"></span>deleteCurrentRecord<span class="signature"
+              >(component, recordId, refreshFn)</span
+            ><span class="type-signature"></span>
+          </h4>
+
+          <div class="description">Deletes a single record and refreshes data.</div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>component</code></td>
+
+                <td class="type">
+                  <span class="param-type">LightningElement</span>
+                </td>
+
+                <td class="description last">The component instance</td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>recordId</code></td>
+
+                <td class="type">
+                  <span class="param-type">string</span>
+                </td>
+
+                <td class="description last">The record Id to delete</td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>refreshFn</code></td>
+
+                <td class="type">
+                  <span class="param-type">function</span>
+                </td>
+
+                <td class="description last">Function to refresh data after deletion</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="datatableUtils_datatableUtils.js.html">datatableUtils/datatableUtils.js</a>,
+                  <a href="datatableUtils_datatableUtils.js.html#line110">line 110</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="deleteSelectedRecords">
+            <span class="type-signature"></span>deleteSelectedRecords<span class="signature"
+              >(component, selectedRecords, refreshFn)</span
+            ><span class="type-signature"></span>
+          </h4>
+
+          <div class="description">Deletes multiple selected records and refreshes data.</div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>component</code></td>
+
+                <td class="type">
+                  <span class="param-type">LightningElement</span>
+                </td>
+
+                <td class="description last">The component instance</td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>selectedRecords</code></td>
+
+                <td class="type">
+                  <span class="param-type">Array</span>
+                </td>
+
+                <td class="description last">The records to delete</td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>refreshFn</code></td>
+
+                <td class="type">
+                  <span class="param-type">function</span>
+                </td>
+
+                <td class="description last">Function to refresh data after deletion</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="datatableUtils_datatableUtils.js.html">datatableUtils/datatableUtils.js</a>,
+                  <a href="datatableUtils_datatableUtils.js.html#line151">line 151</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="getSelectedRecords">
+            <span class="type-signature"></span>getSelectedRecords<span class="signature">(component, event)</span
+            ><span class="type-signature"></span>
+          </h4>
+
+          <div class="description">Handles row selection events from lightning-datatable.</div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>component</code></td>
+
+                <td class="type">
+                  <span class="param-type">LightningElement</span>
+                </td>
+
+                <td class="description last">The component instance</td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>event</code></td>
+
+                <td class="type">
+                  <span class="param-type">Event</span>
+                </td>
+
+                <td class="description last">The rowselection event</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="datatableUtils_datatableUtils.js.html">datatableUtils/datatableUtils.js</a>,
+                  <a href="datatableUtils_datatableUtils.js.html#line74">line 74</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="handleRowAction">
+            <span class="type-signature"></span>handleRowAction<span class="signature"
+              >(component, event, refreshFn)</span
+            ><span class="type-signature"></span>
+          </h4>
+
+          <div class="description">Handles row action events from lightning-datatable.</div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>component</code></td>
+
+                <td class="type">
+                  <span class="param-type">LightningElement</span>
+                </td>
+
+                <td class="description last">The component instance</td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>event</code></td>
+
+                <td class="type">
+                  <span class="param-type">Event</span>
+                </td>
+
+                <td class="description last">The rowaction event</td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>refreshFn</code></td>
+
+                <td class="type">
+                  <span class="param-type">function</span>
+                </td>
+
+                <td class="description last">Function to refresh data after delete</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="datatableUtils_datatableUtils.js.html">datatableUtils/datatableUtils.js</a>,
+                  <a href="datatableUtils_datatableUtils.js.html#line35">line 35</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="handleSave">
+            <span class="type-signature"></span>handleSave<span class="signature"
+              >(component, draftValues, refreshFn)</span
+            ><span class="type-signature"></span>
+          </h4>
+
+          <div class="description">Handles inline edit save by updating all draft records.</div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>component</code></td>
+
+                <td class="type">
+                  <span class="param-type">LightningElement</span>
+                </td>
+
+                <td class="description last">The component instance</td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>draftValues</code></td>
+
+                <td class="type">
+                  <span class="param-type">Array</span>
+                </td>
+
+                <td class="description last">The draft values from the save event</td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>refreshFn</code></td>
+
+                <td class="type">
+                  <span class="param-type">function</span>
+                </td>
+
+                <td class="description last">Function to refresh data after save</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="datatableUtils_datatableUtils.js.html">datatableUtils/datatableUtils.js</a>,
+                  <a href="datatableUtils_datatableUtils.js.html#line130">line 130</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="navigateToRecord">
+            <span class="type-signature"></span>navigateToRecord<span class="signature"
+              >(component, recordId, actionName)</span
+            ><span class="type-signature"></span>
+          </h4>
+
+          <div class="description">Navigates to a record page using the NavigationMixin.</div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>component</code></td>
+
+                <td class="type">
+                  <span class="param-type">LightningElement</span>
+                </td>
+
+                <td class="description last">The component instance (must extend NavigationMixin)</td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>recordId</code></td>
+
+                <td class="type">
+                  <span class="param-type">string</span>
+                </td>
+
+                <td class="description last">The record Id to navigate to</td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>actionName</code></td>
+
+                <td class="type">
+                  <span class="param-type">string</span>
+                </td>
+
+                <td class="description last">The navigation action ('view' or 'edit')</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="datatableUtils_datatableUtils.js.html">datatableUtils/datatableUtils.js</a>,
+                  <a href="datatableUtils_datatableUtils.js.html#line22">line 22</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
+
+          <h4 class="name" id="showToast">
+            <span class="type-signature"></span>showToast<span class="signature"
+              >(component, title, message, variant)</span
+            ><span class="type-signature"></span>
+          </h4>
+
+          <div class="description">Dispatches a toast event on the given component.</div>
+
+          <h5>Parameters:</h5>
+
+          <table class="params">
+            <thead>
+              <tr>
+                <th>Name</th>
+
+                <th>Type</th>
+
+                <th class="last">Description</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="name"><code>component</code></td>
+
+                <td class="type">
+                  <span class="param-type">LightningElement</span>
+                </td>
+
+                <td class="description last">The component instance</td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>title</code></td>
+
+                <td class="type">
+                  <span class="param-type">string</span>
+                </td>
+
+                <td class="description last">Toast title</td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>message</code></td>
+
+                <td class="type">
+                  <span class="param-type">string</span>
+                </td>
+
+                <td class="description last">Toast message</td>
+              </tr>
+
+              <tr>
+                <td class="name"><code>variant</code></td>
+
+                <td class="type">
+                  <span class="param-type">string</span>
+                </td>
+
+                <td class="description last">Toast variant (success, error, warning, info)</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <dl class="details">
+            <dt class="tag-source">Source:</dt>
+            <dd class="tag-source">
+              <ul class="dummy">
+                <li>
+                  <a href="datatableUtils_datatableUtils.js.html">datatableUtils/datatableUtils.js</a>,
+                  <a href="datatableUtils_datatableUtils.js.html#line12">line 12</a>
+                </li>
+              </ul>
+            </dd>
+          </dl>
         </article>
       </section>
     </div>
@@ -83,10 +678,11 @@
         <li><a href="ContentDocumentTable.html">ContentDocumentTable</a></li>
         <li><a href="CsvToDatatable.html">CsvToDatatable</a></li>
         <li><a href="CustomDatatable.html">CustomDatatable</a></li>
-        <li><a href="CustomDatatablePagination.html">CustomDatatablePagination</a></li>
         <li><a href="CustomMapView.html">CustomMapView</a></li>
         <li><a href="CustomSlider.html">CustomSlider</a></li>
+        <li><a href="DatatablePagination.html">DatatablePagination</a></li>
         <li><a href="DragAndDrop.html">DragAndDrop</a></li>
+        <li><a href="GraphqlDatatable.html">GraphqlDatatable</a></li>
         <li><a href="GraphqlMapView.html">GraphqlMapView</a></li>
         <li><a href="HelloWorld.html">HelloWorld</a></li>
         <li><a href="IFrame.html">IFrame</a></li>
@@ -100,6 +696,15 @@
       </ul>
       <h3>Global</h3>
       <ul>
+        <li><a href="global.html#addRowActions">addRowActions</a></li>
+        <li><a href="global.html#buildDatatableProperties">buildDatatableProperties</a></li>
+        <li><a href="global.html#deleteCurrentRecord">deleteCurrentRecord</a></li>
+        <li><a href="global.html#deleteSelectedRecords">deleteSelectedRecords</a></li>
+        <li><a href="global.html#getSelectedRecords">getSelectedRecords</a></li>
+        <li><a href="global.html#handleRowAction">handleRowAction</a></li>
+        <li><a href="global.html#handleSave">handleSave</a></li>
+        <li><a href="global.html#navigateToRecord">navigateToRecord</a></li>
+        <li><a href="global.html#showToast">showToast</a></li>
         <li><a href="global.html#slidesData">slidesData</a></li>
       </ul>
     </nav>
@@ -107,7 +712,7 @@
     <br class="clear" />
 
     <footer>
-      Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Sun Feb 08 2026 15:51:19
+      Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 12 2026 08:29:37
       GMT+0100 (Central European Standard Time)
     </footer>
 
