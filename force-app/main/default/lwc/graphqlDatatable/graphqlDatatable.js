@@ -378,7 +378,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   }
 
   _escapeLike(value) {
-    return value.replace(/[%_\\]/g, '\\$&');
+    return value.replaceAll(/[%_\\]/g, String.raw`\$&`);
   }
 
   get showSearch() {
