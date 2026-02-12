@@ -1,9 +1,16 @@
 import { refreshApex } from '@salesforce/apex';
+import {
+  addRowActions,
+  buildDatatableProperties,
+  deleteSelectedRecords,
+  getSelectedRecords,
+  handleRowAction,
+  handleSave,
+  showToast
+} from 'c/datatableUtils';
 import { gql, graphql } from 'lightning/graphql';
 import { NavigationMixin } from 'lightning/navigation';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
-import { deleteRecord, updateRecord } from 'lightning/uiRecordApi';
 import { LightningElement, api, track, wire } from 'lwc';
 
 const DATA_TYPE_MAP = {
@@ -417,23 +424,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   }
 
   get datatableProperties() {
-    return {
-      keyField: this.keyField,
-      data: this.records,
-      columns: this.columns,
-      columnWidthsMode: this.columnWidthsMode,
-      defaultSortDirection: this.defaultSortDirection,
-      draftValues: this.draftValues,
-      hideCheckboxColumn: this.hideCheckboxColumn,
-      hideTableHeader: this.hideTableHeader,
-      maxColumnWidth: this.maxColumnWidth,
-      maxRowSelection: this.maxRowSelection,
-      minColumnWidth: this.minColumnWidth,
-      rowNumberOffset: this.computedRowNumberOffset,
-      resizeColumnDisabled: this.resizeColumnDisabled,
-      showRowNumberColumn: this.showRowNumberColumn,
-      suppressBottomBar: this.suppressBottomBar
-    };
+    return buildDatatableProperties(this);
   }
 
   handleFirst() {
@@ -467,96 +458,26 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   }
 
   addRowActions() {
-    const actions = [];
-    if (this.showViewRowAction) actions.push({ label: 'View', name: 'view' });
-    if (this.showEditRowAction) actions.push({ label: 'Edit', name: 'edit' });
-    if (this.showDeleteRowAction) actions.push({ label: 'Delete', name: 'delete' });
-    if (actions.length) {
-      this.columns.push({ type: 'action', typeAttributes: { rowActions: actions, menuAlignment: 'right' } });
-    }
+    addRowActions(this.columns, this.showViewRowAction, this.showEditRowAction, this.showDeleteRowAction);
   }
 
   handleRowAction(event) {
-    const actionName = event.detail.action.name;
-    const row = event.detail.row;
-    switch (actionName) {
-      case 'view':
-        this.viewCurrentRecord(row);
-        break;
-      case 'edit':
-        this.editCurrentRecord(row);
-        break;
-      case 'delete':
-        this.deleteCurrentRecord(row);
-        break;
-      default:
-    }
-  }
-
-  viewCurrentRecord(row) {
-    this[NavigationMixin.Navigate]({
-      type: 'standard__recordPage',
-      attributes: { recordId: row.Id, actionName: 'view' }
-    });
-  }
-
-  editCurrentRecord(row) {
-    this[NavigationMixin.Navigate]({
-      type: 'standard__recordPage',
-      attributes: { recordId: row.Id, actionName: 'edit' }
-    });
-  }
-
-  deleteCurrentRecord(row) {
-    this.isLoading = true;
-    deleteRecord(row.Id)
-      .then(() => {
-        this.showToast('Success', 'Record deleted', 'success');
-        return this._refreshData().then(() => {
-          this.isLoading = false;
-        });
-      })
-      .catch((error) => {
-        this.showToast('Error deleting record', error.body.message, 'error');
-      });
+    handleRowAction(this, event, () => this._refreshData());
   }
 
   handleSave(event) {
-    const recordInputs = event.detail.draftValues.slice().map((draft) => ({ fields: { ...draft } }));
-    const promises = recordInputs.map((recordInput) => updateRecord(recordInput));
-    Promise.all(promises)
-      .then(() => {
-        this.showToast('Success', 'Records updated', 'success');
-        return this._refreshData().then(() => {
-          this.draftValues = [];
-        });
-      })
-      .catch((error) => {
-        this.showToast('Error updating records', error.body.message, 'error');
-      });
+    handleSave(this, event.detail.draftValues, () => this._refreshData());
   }
 
   getSelectedRecords(event) {
-    this.selectedRecords = event.detail.selectedRows;
-    this.hasSelectedRecords = this.selectedRecords.length > 0;
+    getSelectedRecords(this, event);
   }
 
   deleteSelectedRecords() {
-    this.isLoading = true;
-    const promises = this.selectedRecords.map((record) => deleteRecord(record.Id));
-    Promise.all(promises)
-      .then(() => {
-        this.showToast('Success', 'Records deleted', 'success');
-        return this._refreshData().then(() => {
-          this.isLoading = false;
-        });
-      })
-      .catch((error) => {
-        this.showToast('Error deleting records', error.body.message, 'error');
-      });
+    deleteSelectedRecords(this, this.selectedRecords, () => this._refreshData());
   }
 
   showToast(title, message, variant) {
-    this.dispatchEvent(new ShowToastEvent({ title, message, variant }));
+    showToast(this, title, message, variant);
   }
 }
