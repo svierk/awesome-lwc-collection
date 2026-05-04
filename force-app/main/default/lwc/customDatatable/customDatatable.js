@@ -5,13 +5,12 @@ import getRecords from '@salesforce/apex/CustomDatatableUtil.getRecordsWithField
 import {
   addRowActions,
   buildDatatableProperties,
-  deleteSelectedRecords,
   getSelectedRecords,
-  handleRowAction,
-  handleSave,
+  navigateToRecord,
   showToast
 } from 'c/datatableUtils';
 import { NavigationMixin } from 'lightning/navigation';
+import { deleteRecord, updateRecord } from 'lightning/uiRecordApi';
 import { LightningElement, api, track, wire } from 'lwc';
 
 /**
@@ -360,11 +359,35 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   }
 
   handleRowAction(event) {
-    handleRowAction(this, event, () => refreshApex(this.wiredRecords));
+    const actionName = event.detail.action.name;
+    const row = event.detail.row;
+    switch (actionName) {
+      case 'view':
+        navigateToRecord(this, row.Id, 'view');
+        break;
+      case 'edit':
+        navigateToRecord(this, row.Id, 'edit');
+        break;
+      case 'delete':
+        this._deleteRecord(row.Id);
+        break;
+      default:
+    }
   }
 
   handleSave(event) {
-    handleSave(this, event.detail.draftValues, () => refreshApex(this.wiredRecords));
+    const recordInputs = event.detail.draftValues.slice().map((draft) => ({ fields: { ...draft } }));
+    const promises = recordInputs.map((recordInput) => updateRecord(recordInput));
+    Promise.all(promises)
+      .then(() => {
+        this.showToast('Success', 'Records updated', 'success');
+        return refreshApex(this.wiredRecords).then(() => {
+          this.draftValues = [];
+        });
+      })
+      .catch((error) => {
+        this.showToast('Error updating records', error.body.message, 'error');
+      });
   }
 
   getSelectedRecords(event) {
@@ -372,7 +395,32 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   }
 
   deleteSelectedRecords() {
-    deleteSelectedRecords(this, this.selectedRecords, () => refreshApex(this.wiredRecords));
+    this.isLoading = true;
+    const promises = this.selectedRecords.map((record) => deleteRecord(record.Id));
+    Promise.all(promises)
+      .then(() => {
+        this.showToast('Success', 'Records deleted', 'success');
+        return refreshApex(this.wiredRecords).then(() => {
+          this.isLoading = false;
+        });
+      })
+      .catch((error) => {
+        this.showToast('Error deleting records', error.body.message, 'error');
+      });
+  }
+
+  _deleteRecord(recordId) {
+    this.isLoading = true;
+    deleteRecord(recordId)
+      .then(() => {
+        this.showToast('Success', 'Record deleted', 'success');
+        return refreshApex(this.wiredRecords).then(() => {
+          this.isLoading = false;
+        });
+      })
+      .catch((error) => {
+        this.showToast('Error deleting record', error.body.message, 'error');
+      });
   }
 
   showToast(title, message, variant) {
