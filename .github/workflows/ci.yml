@@ -1,4 +1,4 @@
-name: validation
+name: Validation
 
 on:
   push:
@@ -37,7 +37,8 @@ jobs:
       - name: Deploy Metadata
         run: sf project deploy start
       - name: Apex Unit Tests
-        run: sf apex run test --test-level=RunLocalTests --code-coverage --result-format=human -w 30 -d ./tests/apex --detailed-coverage
+        run: sf apex run test --test-level=RunLocalTests --code-coverage
+          --result-format=human -w 30 -d ./tests/apex --detailed-coverage
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@master
         env:
