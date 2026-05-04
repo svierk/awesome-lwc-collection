@@ -1,6 +1,6 @@
 import { createTestWireAdapter } from '@salesforce/wire-service-jest-util';
 
-class Graphql extends createTestWireAdapter() {
+class GraphqlWireAdapter extends createTestWireAdapter() {
   static emit(value, filterFn, refreshFn) {
     super.emit(
       {
@@ -25,11 +25,21 @@ class Graphql extends createTestWireAdapter() {
 
   constructor(dataCallback) {
     super(dataCallback);
-    Graphql.emit(undefined);
+    GraphqlWireAdapter.emit(undefined);
   }
 }
 
-export { Graphql as graphql };
+// Spy used for all imperative mutation calls. Exposed as graphql.mutate so
+// tests only need to import the canonical `graphql` identifier.
+GraphqlWireAdapter.mutate = jest.fn().mockResolvedValue({ data: {} });
+
+// Proxy makes graphql callable as a regular function (for mutations) while
+// keeping the wire adapter class behaviour intact for @wire(graphql, ...) usage.
+export const graphql = new Proxy(GraphqlWireAdapter, {
+  apply(_target, _thisArg, args) {
+    return GraphqlWireAdapter.mutate(...args);
+  }
+});
 
 export const gql = jest.fn((strings, ...values) => {
   return strings.reduce((result, str, i) => result + str + (values[i] || ''), '');

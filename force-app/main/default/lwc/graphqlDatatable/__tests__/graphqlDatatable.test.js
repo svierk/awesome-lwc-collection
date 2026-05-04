@@ -2,7 +2,6 @@ import GraphqlDatatable from 'c/graphqlDatatable';
 import { graphql } from 'lightning/graphql';
 import { getNavigateCalledWith } from 'lightning/navigation';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
-import { deleteRecord, updateRecord } from 'lightning/uiRecordApi';
 import { createElement } from 'lwc';
 
 const mockObjectInfo = require('./data/objectInfo.json');
@@ -24,6 +23,7 @@ describe('c-graphql-datatable', () => {
     element = createElement('c-graphql-datatable', {
       is: GraphqlDatatable
     });
+    graphql.mutate.mockResolvedValue({ data: {} });
   });
 
   afterEach(() => {
@@ -135,7 +135,7 @@ describe('c-graphql-datatable', () => {
     );
 
     // then
-    expect(deleteRecord).toHaveBeenCalledWith(RECORD_ID);
+    expect(graphql.mutate).toHaveBeenCalledWith(expect.objectContaining({ variables: { input: { id: RECORD_ID } } }));
 
     // when
     childElement.dispatchEvent(
@@ -143,7 +143,7 @@ describe('c-graphql-datatable', () => {
     );
 
     // then
-    expect(deleteRecord).toHaveBeenCalledTimes(1);
+    expect(graphql.mutate).toHaveBeenCalledTimes(1);
   });
 
   it('should handle error when delete record operation fails', async () => {
@@ -152,7 +152,7 @@ describe('c-graphql-datatable', () => {
     element.fields = 'Name,Email,Phone,CreatedDate,AccountId,UnknownField';
 
     // when
-    deleteRecord.mockRejectedValue(MOCK_ERROR);
+    graphql.mutate.mockRejectedValue(MOCK_ERROR);
     document.body.appendChild(element);
     getObjectInfo.emit(mockObjectInfo);
     graphql.emit(mockGraphqlResponse);
@@ -167,7 +167,7 @@ describe('c-graphql-datatable', () => {
     await new Promise((r) => setTimeout(r, 0));
 
     // then
-    expect(deleteRecord).toHaveBeenCalledWith(RECORD_ID);
+    expect(graphql.mutate).toHaveBeenCalledWith(expect.objectContaining({ variables: { input: { id: RECORD_ID } } }));
   });
 
   it('should execute update record operation when save event is fired after inline editing', async () => {
@@ -188,7 +188,16 @@ describe('c-graphql-datatable', () => {
 
     // then
     return Promise.resolve().then(() => {
-      expect(updateRecord).toHaveBeenCalledWith({ fields: draftRecord });
+      expect(graphql.mutate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          variables: {
+            input: {
+              id: RECORD_ID,
+              Contact: { Name: { value: 'Updated Name' } }
+            }
+          }
+        })
+      );
     });
   });
 
@@ -198,7 +207,7 @@ describe('c-graphql-datatable', () => {
     element.fields = 'Name,Email,Phone,CreatedDate,AccountId,UnknownField';
 
     // when
-    updateRecord.mockRejectedValue(MOCK_ERROR);
+    graphql.mutate.mockRejectedValue(MOCK_ERROR);
     document.body.appendChild(element);
     getObjectInfo.emit(mockObjectInfo);
     graphql.emit(mockGraphqlResponse);
@@ -211,7 +220,16 @@ describe('c-graphql-datatable', () => {
 
     // then
     return Promise.resolve().then(() => {
-      expect(updateRecord).toHaveBeenCalledWith({ fields: draftRecord });
+      expect(graphql.mutate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          variables: {
+            input: {
+              id: RECORD_ID,
+              Contact: { Name: { value: 'Updated Name' } }
+            }
+          }
+        })
+      );
     });
   });
 
@@ -224,7 +242,6 @@ describe('c-graphql-datatable', () => {
     element.showMultipleRowDeleteAction = true;
 
     // when
-    deleteRecord.mockResolvedValue();
     document.body.appendChild(element);
     getObjectInfo.emit(mockObjectInfo);
     graphql.emit(mockGraphqlResponse);
@@ -242,7 +259,11 @@ describe('c-graphql-datatable', () => {
 
     // then
     return Promise.resolve().then(() => {
-      expect(deleteRecord).toHaveBeenCalledTimes(2);
+      expect(graphql.mutate).toHaveBeenCalledTimes(2);
+      expect(graphql.mutate).toHaveBeenCalledWith(expect.objectContaining({ variables: { input: { id: RECORD_ID } } }));
+      expect(graphql.mutate).toHaveBeenCalledWith(
+        expect.objectContaining({ variables: { input: { id: '0037Q000007dN29QAE' } } })
+      );
     });
   });
 
@@ -255,7 +276,7 @@ describe('c-graphql-datatable', () => {
     element.showMultipleRowDeleteAction = true;
 
     // when
-    deleteRecord.mockRejectedValue(MOCK_ERROR);
+    graphql.mutate.mockRejectedValue(MOCK_ERROR);
     document.body.appendChild(element);
     getObjectInfo.emit(mockObjectInfo);
     graphql.emit(mockGraphqlResponse);
@@ -273,7 +294,7 @@ describe('c-graphql-datatable', () => {
 
     // then
     return Promise.resolve().then(() => {
-      expect(deleteRecord).toHaveBeenCalledTimes(2);
+      expect(graphql.mutate).toHaveBeenCalledTimes(2);
     });
   });
 

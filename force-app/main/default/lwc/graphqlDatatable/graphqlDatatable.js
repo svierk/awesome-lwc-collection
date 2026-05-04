@@ -2,10 +2,8 @@ import { refreshApex } from '@salesforce/apex';
 import {
   addRowActions,
   buildDatatableProperties,
-  deleteSelectedRecords,
   getSelectedRecords,
-  handleRowAction,
-  handleSave,
+  navigateToRecord,
   showToast
 } from 'c/datatableUtils';
 import { gql, graphql } from 'lightning/graphql';
@@ -31,6 +29,16 @@ const DATA_TYPE_MAP = {
 
 const SEARCHABLE_DATA_TYPES = new Set(['String', 'Email', 'Phone', 'Url', 'Picklist', 'TextArea']);
 const RAW_VALUE_DATA_TYPES = new Set(['Date', 'DateTime', 'Currency', 'Percent', 'Int', 'Double', 'Long', 'Boolean']);
+
+const DELETE_RECORD_MUTATION = gql`
+  mutation deleteRecord($input: DeleteRecordInput!) {
+    uiapi {
+      deleteRecord(input: $input) {
+        Id
+      }
+    }
+  }
+`;
 
 /**
  * A custom datatable powered by GraphQL instead of Apex.
@@ -294,11 +302,58 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   }
 
   handleRowAction(event) {
-    handleRowAction(this, event, () => this._refreshData());
+    const actionName = event.detail.action.name;
+    const row = event.detail.row;
+    switch (actionName) {
+      case 'view':
+        navigateToRecord(this, row.Id, 'view');
+        break;
+      case 'edit':
+        navigateToRecord(this, row.Id, 'edit');
+        break;
+      case 'delete':
+        this._deleteRecord(row.Id);
+        break;
+      default:
+    }
   }
 
   handleSave(event) {
-    handleSave(this, event.detail.draftValues, () => this._refreshData());
+    const draftValues = event.detail.draftValues;
+    const mutName = `update${this.objectApiName}`;
+    const mutType = `Update${this.objectApiName}Input`;
+    const mutationString = `
+      mutation ${mutName}($input: ${mutType}!) {
+        uiapi {
+          ${mutName}(input: $input) {
+            Record {
+              Id { value }
+            }
+          }
+        }
+      }
+    `;
+    const UPDATE_MUTATION = gql`
+      ${mutationString}
+    `;
+    const promises = draftValues.map((draft) => {
+      const { Id, ...fields } = draft;
+      const fieldValues = Object.fromEntries(Object.entries(fields).map(([key, val]) => [key, { value: val }]));
+      return graphql({
+        query: UPDATE_MUTATION,
+        variables: { input: { id: Id, [this.objectApiName]: fieldValues } }
+      });
+    });
+    Promise.all(promises)
+      .then(() => {
+        this.showToast('Success', 'Records updated', 'success');
+        return this._refreshData().then(() => {
+          this.draftValues = [];
+        });
+      })
+      .catch((error) => {
+        this.showToast('Error updating records', error?.body?.message ?? error?.message ?? 'Unknown error', 'error');
+      });
   }
 
   getSelectedRecords(event) {
@@ -306,7 +361,40 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   }
 
   deleteSelectedRecords() {
-    deleteSelectedRecords(this, this.selectedRecords, () => this._refreshData());
+    this.isLoading = true;
+    const promises = this.selectedRecords.map((record) =>
+      graphql({
+        query: DELETE_RECORD_MUTATION,
+        variables: { input: { id: record.Id } }
+      })
+    );
+    Promise.all(promises)
+      .then(() => {
+        this.showToast('Success', 'Records deleted', 'success');
+        return this._refreshData().then(() => {
+          this.isLoading = false;
+        });
+      })
+      .catch((error) => {
+        this.showToast('Error deleting records', error?.body?.message ?? error?.message ?? 'Unknown error', 'error');
+      });
+  }
+
+  _deleteRecord(recordId) {
+    this.isLoading = true;
+    graphql({
+      query: DELETE_RECORD_MUTATION,
+      variables: { input: { id: recordId } }
+    })
+      .then(() => {
+        this.showToast('Success', 'Record deleted', 'success');
+        return this._refreshData().then(() => {
+          this.isLoading = false;
+        });
+      })
+      .catch((error) => {
+        this.showToast('Error deleting record', error?.body?.message ?? error?.message ?? 'Unknown error', 'error');
+      });
   }
 
   showToast(title, message, variant) {
