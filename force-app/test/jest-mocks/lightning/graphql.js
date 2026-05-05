@@ -1,6 +1,6 @@
 import { createTestWireAdapter } from '@salesforce/wire-service-jest-util';
 
-class Graphql extends createTestWireAdapter() {
+class GraphqlWireAdapter extends createTestWireAdapter() {
   static emit(value, filterFn, refreshFn) {
     super.emit(
       {
@@ -25,11 +25,13 @@ class Graphql extends createTestWireAdapter() {
 
   constructor(dataCallback) {
     super(dataCallback);
-    Graphql.emit(undefined);
+    GraphqlWireAdapter.emit(undefined);
   }
 }
 
-export { Graphql as graphql };
+export const graphql = GraphqlWireAdapter;
+
+export const executeMutation = jest.fn().mockResolvedValue({ data: {} });
 
 export const gql = jest.fn((strings, ...values) => {
   return strings.reduce((result, str, i) => result + str + (values[i] || ''), '');

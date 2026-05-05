@@ -19,17 +19,14 @@
 
       <section>
         <article>
-          <pre class="prettyprint source linenums"><code>import { refreshApex } from '@salesforce/apex';
-import {
+          <pre class="prettyprint source linenums"><code>import {
   addRowActions,
   buildDatatableProperties,
-  deleteSelectedRecords,
   getSelectedRecords,
-  handleRowAction,
-  handleSave,
+  navigateToRecord,
   showToast
 } from 'c/datatableUtils';
-import { gql, graphql } from 'lightning/graphql';
+import { executeMutation, gql, graphql } from 'lightning/graphql';
 import { NavigationMixin } from 'lightning/navigation';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { LightningElement, api, track, wire } from 'lwc';
@@ -108,7 +105,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   _searchTerm = '';
   _cursorCache = [null];
   _objectInfo;
-  _graphqlResult;
+  _graphqlRefresh;
   _navigatingToLast = false;
   _fieldDataTypes = {};
 
@@ -191,9 +188,8 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   }
 
   @wire(graphql, { query: '$graphqlQuery' })
-  wiredGraphQL(result) {
-    this._graphqlResult = result;
-    const { data, errors } = result;
+  wiredGraphQL({ data, errors, refresh }) {
+    this._graphqlRefresh = refresh;
     if (data) {
       if (!this._navigatingToLast) this.isLoading = false;
       const queryResult = data.uiapi.query[this.objectApiName];
@@ -225,7 +221,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   }
 
   _refreshData() {
-    return refreshApex(this._graphqlResult);
+    return this._graphqlRefresh?.() ?? Promise.resolve();
   }
 
   _getSearchableFields() {
@@ -315,11 +311,78 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   }
 
   handleRowAction(event) {
-    handleRowAction(this, event, () => this._refreshData());
+    const actionName = event.detail.action.name;
+    const row = event.detail.row;
+    switch (actionName) {
+      case 'view':
+        navigateToRecord(this, row.Id, 'view');
+        break;
+      case 'edit':
+        navigateToRecord(this, row.Id, 'edit');
+        break;
+      case 'delete':
+        this._deleteRecord(row.Id);
+        break;
+      default:
+    }
+  }
+
+  _getDeleteQuery(recordId) {
+    return gql`
+      mutation DeleteRecord {
+        uiapi {
+          ${this.objectApiName}Delete(input: { Id: "${recordId}" }) {
+            Id
+          }
+        }
+      }
+    `;
+  }
+
+  _getUpdateQuery(draft) {
+    const { Id, ...fields } = draft;
+    const fieldStr = Object.entries(fields)
+      .map(([key, val]) => `${key}: ${this._serializeGqlValue(val)}`)
+      .join(', ');
+    return gql`
+      mutation UpdateRecord {
+        uiapi {
+          ${this.objectApiName}Update(input: {
+            Id: "${Id}",
+            ${this.objectApiName}: { ${fieldStr} }
+          }) {
+            Record {
+              Id
+            }
+          }
+        }
+      }
+    `;
+  }
+
+  _serializeGqlValue(val) {
+    if (val === null || val === undefined) return 'null';
+    if (typeof val === 'boolean' || typeof val === 'number') return String(val);
+    return `"${String(val).replaceAll('\\', '\\\\').replaceAll('"', '\\"')}"`;
   }
 
   handleSave(event) {
-    handleSave(this, event.detail.draftValues, () => this._refreshData());
+    const promises = event.detail.draftValues.map((draft) => executeMutation({ query: this._getUpdateQuery(draft) }));
+    Promise.all(promises)
+      .then((results) => {
+        const errors = results.flatMap((r) => r?.errors ?? []);
+        if (errors.length) {
+          this.showToast('Error updating records', errors[0]?.message ?? 'Unknown error', 'error');
+          return;
+        }
+        this.showToast('Success', 'Records updated', 'success');
+        this._refreshData().then(() => {
+          this.draftValues = [];
+        });
+      })
+      .catch((error) => {
+        this.showToast('Error updating records', error?.body?.message ?? error?.message ?? 'Unknown error', 'error');
+      });
   }
 
   getSelectedRecords(event) {
@@ -327,7 +390,43 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   }
 
   deleteSelectedRecords() {
-    deleteSelectedRecords(this, this.selectedRecords, () => this._refreshData());
+    this.isLoading = true;
+    const promises = this.selectedRecords.map((record) => executeMutation({ query: this._getDeleteQuery(record.Id) }));
+    Promise.all(promises)
+      .then((results) => {
+        const errors = results.flatMap((r) => r?.errors ?? []);
+        if (errors.length) {
+          this.isLoading = false;
+          this.showToast('Error deleting records', errors[0]?.message ?? 'Unknown error', 'error');
+          return;
+        }
+        this.showToast('Success', 'Records deleted', 'success');
+        this._refreshData().then(() => {
+          this.isLoading = false;
+        });
+      })
+      .catch((error) => {
+        this.showToast('Error deleting records', error?.body?.message ?? error?.message ?? 'Unknown error', 'error');
+      });
+  }
+
+  _deleteRecord(recordId) {
+    this.isLoading = true;
+    executeMutation({ query: this._getDeleteQuery(recordId) })
+      .then((result) => {
+        if (result?.errors?.length) {
+          this.isLoading = false;
+          this.showToast('Error deleting record', result.errors[0]?.message ?? 'Unknown error', 'error');
+          return;
+        }
+        this.showToast('Success', 'Record deleted', 'success');
+        this._refreshData().then(() => {
+          this.isLoading = false;
+        });
+      })
+      .catch((error) => {
+        this.showToast('Error deleting record', error?.body?.message ?? error?.message ?? 'Unknown error', 'error');
+      });
   }
 
   showToast(title, message, variant) {
@@ -367,11 +466,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
       <ul>
         <li><a href="global.html#addRowActions">addRowActions</a></li>
         <li><a href="global.html#buildDatatableProperties">buildDatatableProperties</a></li>
-        <li><a href="global.html#deleteCurrentRecord">deleteCurrentRecord</a></li>
-        <li><a href="global.html#deleteSelectedRecords">deleteSelectedRecords</a></li>
         <li><a href="global.html#getSelectedRecords">getSelectedRecords</a></li>
-        <li><a href="global.html#handleRowAction">handleRowAction</a></li>
-        <li><a href="global.html#handleSave">handleSave</a></li>
         <li><a href="global.html#navigateToRecord">navigateToRecord</a></li>
         <li><a href="global.html#showToast">showToast</a></li>
         <li><a href="global.html#slidesData">slidesData</a></li>
@@ -381,8 +476,8 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     <br class="clear" />
 
     <footer>
-      Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Feb 12 2026 08:29:37
-      GMT+0100 (Central European Standard Time)
+      Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Tue May 05 2026 09:30:44
+      GMT+0200 (Central European Summer Time)
     </footer>
 
     <script>
