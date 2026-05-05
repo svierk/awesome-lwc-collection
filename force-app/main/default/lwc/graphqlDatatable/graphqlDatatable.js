@@ -307,8 +307,9 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   }
 
   handleSort(event) {
-    this._sortedBy = event.detail.fieldName;
-    this._sortDirection = event.detail.sortDirection;
+    const { fieldName, sortDirection } = event.detail;
+    this._sortedBy = fieldName;
+    this._sortDirection = sortDirection;
     this._currentPage = 1;
     this._cursorCache = [null];
   }
