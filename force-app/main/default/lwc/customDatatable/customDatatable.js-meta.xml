@@ -183,6 +183,13 @@
         description="If present, enables a server-side fuzzy search input that filters records across all text fields."
       />
       <property
+        name="enableSorting"
+        label="Enable Sorting"
+        type="Boolean"
+        default="false"
+        description="If present, enables column-based sorting. Clicking a column header sorts records via an Apex ORDER BY clause."
+      />
+      <property
         name="enablePagination"
         label="Enable Pagination"
         type="Boolean"

@@ -45,13 +45,15 @@ jest.mock(
   { virtual: true }
 );
 
+const flushPromises = () => new Promise((r) => setTimeout(r, 0));
+
 let element;
 
 describe('c-custom-datatable', () => {
   beforeEach(() => {
-    element = createElement('c-custom-datatable', {
-      is: CustomDatatable
-    });
+    element = createElement('c-custom-datatable', { is: CustomDatatable });
+    element.objectApiName = mockData.objectApiName;
+    element.fieldSetApiName = mockData.fieldSetApiName;
   });
 
   afterEach(() => {
@@ -61,21 +63,27 @@ describe('c-custom-datatable', () => {
     jest.clearAllMocks();
   });
 
+  function mountWithDefaults() {
+    document.body.appendChild(element);
+    getColumns.emit(mockGetColumns);
+    getRecords.emit(mockGetRecords);
+  }
+
+  function dispatchRowAction(childElement, name) {
+    childElement.dispatchEvent(new CustomEvent('rowaction', { detail: { action: { name }, row: mockGetRecords[0] } }));
+  }
+
   it('should be accessible and show card icon and title when show card option is selected', async () => {
     // given
     element.cardIcon = mockData.cardIcon;
     element.cardTitle = mockData.cardTitle;
-    element.fieldSetApiName = mockData.fieldSetApiName;
-    element.objectApiName = mockData.objectApiName;
     element.showCard = mockData.showCard;
     element.showDeleteRowAction = mockData.showDeleteRowAction;
     element.showEditRowAction = mockData.showEditRowAction;
     element.showViewRowAction = mockData.showViewRowAction;
 
     // when
-    document.body.appendChild(element);
-    getColumns.emit(mockGetColumns);
-    getRecords.emit(mockGetRecords);
+    mountWithDefaults();
     const card = element.shadowRoot.querySelector('lightning-card');
 
     // then
@@ -85,26 +93,10 @@ describe('c-custom-datatable', () => {
   });
 
   it('should execute view record navigation when view row action event is fired', async () => {
-    // given
-    element.objectApiName = mockData.objectApiName;
-    element.fieldSetApiName = mockData.fieldSetApiName;
-
     // when
-    document.body.appendChild(element);
-    getColumns.emit(mockGetColumns);
-    getRecords.emit(mockGetRecords);
-
+    mountWithDefaults();
     const childElement = element.shadowRoot.querySelector('c-datatable-extension');
-    childElement.dispatchEvent(
-      new CustomEvent('rowaction', {
-        detail: {
-          action: {
-            name: 'view'
-          },
-          row: mockGetRecords[0]
-        }
-      })
-    );
+    dispatchRowAction(childElement, 'view');
     const { pageReference } = getNavigateCalledWith();
 
     // then
@@ -114,26 +106,10 @@ describe('c-custom-datatable', () => {
   });
 
   it('should execute edit record navigation when edit row action event is fired', async () => {
-    // given
-    element.objectApiName = mockData.objectApiName;
-    element.fieldSetApiName = mockData.fieldSetApiName;
-
     // when
-    document.body.appendChild(element);
-    getColumns.emit(mockGetColumns);
-    getRecords.emit(mockGetRecords);
-
+    mountWithDefaults();
     const childElement = element.shadowRoot.querySelector('c-datatable-extension');
-    childElement.dispatchEvent(
-      new CustomEvent('rowaction', {
-        detail: {
-          action: {
-            name: 'edit'
-          },
-          row: mockGetRecords[0]
-        }
-      })
-    );
+    dispatchRowAction(childElement, 'edit');
     const { pageReference } = getNavigateCalledWith();
 
     // then
@@ -143,26 +119,10 @@ describe('c-custom-datatable', () => {
   });
 
   it('should execute delete record operation when delete row action event is fired', async () => {
-    // given
-    element.objectApiName = mockData.objectApiName;
-    element.fieldSetApiName = mockData.fieldSetApiName;
-
     // when
-    document.body.appendChild(element);
-    getColumns.emit(mockGetColumns);
-    getRecords.emit(mockGetRecords);
-
+    mountWithDefaults();
     const childElement = element.shadowRoot.querySelector('c-datatable-extension');
-    childElement.dispatchEvent(
-      new CustomEvent('rowaction', {
-        detail: {
-          action: {
-            name: 'delete'
-          },
-          row: mockGetRecords[0]
-        }
-      })
-    );
+    dispatchRowAction(childElement, 'delete');
 
     // then
     expect(deleteRecord).toHaveBeenCalledTimes(1);
@@ -171,26 +131,12 @@ describe('c-custom-datatable', () => {
 
   it('should handle error when delete record operation fails', async () => {
     // given
-    element.objectApiName = mockData.objectApiName;
-    element.fieldSetApiName = mockData.fieldSetApiName;
+    deleteRecord.mockRejectedValue(mockDeleteRecordError);
 
     // when
-    deleteRecord.mockRejectedValue(mockDeleteRecordError);
-    document.body.appendChild(element);
-    getColumns.emit(mockGetColumns);
-    getRecords.emit(mockGetRecords);
-
+    mountWithDefaults();
     const childElement = element.shadowRoot.querySelector('c-datatable-extension');
-    childElement.dispatchEvent(
-      new CustomEvent('rowaction', {
-        detail: {
-          action: {
-            name: 'delete'
-          },
-          row: mockGetRecords[0]
-        }
-      })
-    );
+    dispatchRowAction(childElement, 'delete');
 
     // then
     expect(deleteRecord).toHaveBeenCalledTimes(1);
@@ -200,49 +146,22 @@ describe('c-custom-datatable', () => {
   it('should execute nothing when invalid row action event is fired', async () => {
     // given
     const mockRowActionHandler = jest.fn();
-    element.objectApiName = mockData.objectApiName;
-    element.fieldSetApiName = mockData.fieldSetApiName;
 
     // when
-    document.body.appendChild(element);
-    getColumns.emit(mockGetColumns);
-    getRecords.emit(mockGetRecords);
-
+    mountWithDefaults();
     const childElement = element.shadowRoot.querySelector('c-datatable-extension');
     childElement.addEventListener('rowaction', mockRowActionHandler);
-    childElement.dispatchEvent(
-      new CustomEvent('rowaction', {
-        detail: {
-          action: {
-            name: 'invalid'
-          },
-          row: mockGetRecords[0]
-        }
-      })
-    );
+    dispatchRowAction(childElement, 'invalid');
 
     // then
     expect(mockRowActionHandler).toHaveBeenCalledTimes(1);
   });
 
   it('should execute update record operation when save event is fired after inline editing', async () => {
-    // given
-    element.objectApiName = mockData.objectApiName;
-    element.fieldSetApiName = mockData.fieldSetApiName;
-
     // when
-    document.body.appendChild(element);
-    getColumns.emit(mockGetColumns);
-    getRecords.emit(mockGetRecords);
-
+    mountWithDefaults();
     const childElement = element.shadowRoot.querySelector('c-datatable-extension');
-    childElement.dispatchEvent(
-      new CustomEvent('save', {
-        detail: {
-          draftValues: [mockGetRecords[0]]
-        }
-      })
-    );
+    childElement.dispatchEvent(new CustomEvent('save', { detail: { draftValues: [mockGetRecords[0]] } }));
 
     // then
     return Promise.resolve().then(() => {
@@ -253,23 +172,12 @@ describe('c-custom-datatable', () => {
 
   it('should handle error when update record operation fails', async () => {
     // given
-    element.objectApiName = mockData.objectApiName;
-    element.fieldSetApiName = mockData.fieldSetApiName;
+    updateRecord.mockRejectedValue(mockUpdateRecordError);
 
     // when
-    updateRecord.mockRejectedValue(mockUpdateRecordError);
-    document.body.appendChild(element);
-    getColumns.emit(mockGetColumns);
-    getRecords.emit(mockGetRecords);
-
+    mountWithDefaults();
     const childElement = element.shadowRoot.querySelector('c-datatable-extension');
-    childElement.dispatchEvent(
-      new CustomEvent('save', {
-        detail: {
-          draftValues: [mockGetRecords[0]]
-        }
-      })
-    );
+    childElement.dispatchEvent(new CustomEvent('save', { detail: { draftValues: [mockGetRecords[0]] } }));
 
     // then
     return Promise.resolve().then(() => {
@@ -282,31 +190,18 @@ describe('c-custom-datatable', () => {
     // given
     element.cardIcon = mockData.cardIcon;
     element.cardTitle = mockData.cardTitle;
-    element.fieldSetApiName = mockData.fieldSetApiName;
     element.isUsedAsRelatedList = mockData.isUsedAsRelatedList;
-    element.objectApiName = mockData.objectApiName;
     element.showCard = mockData.showCard;
     element.showMultipleRowDeleteAction = mockData.showMultipleRowDeleteAction;
+    deleteRecord.mockResolvedValue();
 
     // when
-    deleteRecord.mockResolvedValue();
-    document.body.appendChild(element);
-    getColumns.emit(mockGetColumns);
-    getRecords.emit(mockGetRecords);
-
+    mountWithDefaults();
     const childElement = element.shadowRoot.querySelector('c-datatable-extension');
-    childElement.dispatchEvent(
-      new CustomEvent('rowselection', {
-        detail: {
-          selectedRows: mockGetRecords
-        }
-      })
-    );
+    childElement.dispatchEvent(new CustomEvent('rowselection', { detail: { selectedRows: mockGetRecords } }));
 
-    await new Promise((r) => setTimeout(r, 0));
-
-    const deleteButton = element.shadowRoot.querySelector('lightning-button');
-    deleteButton.click();
+    await flushPromises();
+    element.shadowRoot.querySelector('lightning-button').click();
 
     // then
     return Promise.resolve().then(() => {
@@ -318,31 +213,18 @@ describe('c-custom-datatable', () => {
     // given
     element.cardIcon = mockData.cardIcon;
     element.cardTitle = mockData.cardTitle;
-    element.fieldSetApiName = mockData.fieldSetApiName;
     element.isUsedAsRelatedList = mockData.isUsedAsRelatedList;
-    element.objectApiName = mockData.objectApiName;
     element.showCard = mockData.showCard;
     element.showMultipleRowDeleteAction = mockData.showMultipleRowDeleteAction;
+    deleteRecord.mockRejectedValue(mockDeleteRecordError);
 
     // when
-    deleteRecord.mockRejectedValue(mockDeleteRecordError);
-    document.body.appendChild(element);
-    getColumns.emit(mockGetColumns);
-    getRecords.emit(mockGetRecords);
-
+    mountWithDefaults();
     const childElement = element.shadowRoot.querySelector('c-datatable-extension');
-    childElement.dispatchEvent(
-      new CustomEvent('rowselection', {
-        detail: {
-          selectedRows: mockGetRecords
-        }
-      })
-    );
+    childElement.dispatchEvent(new CustomEvent('rowselection', { detail: { selectedRows: mockGetRecords } }));
 
-    await new Promise((r) => setTimeout(r, 0));
-
-    const deleteButton = element.shadowRoot.querySelector('lightning-button');
-    deleteButton.click();
+    await flushPromises();
+    element.shadowRoot.querySelector('lightning-button').click();
 
     // then
     return Promise.resolve().then(() => {
@@ -352,18 +234,14 @@ describe('c-custom-datatable', () => {
 
   it('should show pagination controls when enable pagination is true and data exists', async () => {
     // given
-    element.objectApiName = mockData.objectApiName;
-    element.fieldSetApiName = mockData.fieldSetApiName;
     element.enablePagination = true;
     element.pageSize = 2;
 
     // when
-    document.body.appendChild(element);
-    getColumns.emit(mockGetColumns);
-    getRecords.emit(mockGetRecords);
+    mountWithDefaults();
     getRecordCount.emit(mockGetRecords.length);
 
-    await new Promise((r) => setTimeout(r, 0));
+    await flushPromises();
 
     // then
     const pagination = element.shadowRoot.querySelector('c-datatable-pagination');
@@ -375,8 +253,6 @@ describe('c-custom-datatable', () => {
 
   it('should show error toast when wired get records fails', async () => {
     // given
-    element.objectApiName = mockData.objectApiName;
-    element.fieldSetApiName = mockData.fieldSetApiName;
     element.enableSearch = true;
 
     // when
@@ -384,7 +260,7 @@ describe('c-custom-datatable', () => {
     getColumns.emit(mockGetColumns);
     getRecords.emitError({ body: { message: "field 'xyz' can not be filtered in a query call" } });
 
-    await new Promise((r) => setTimeout(r, 0));
+    await flushPromises();
 
     // then
     const datatable = element.shadowRoot.querySelector('c-datatable-extension');
@@ -393,24 +269,20 @@ describe('c-custom-datatable', () => {
 
   it('should reset page to 1 when search term changes', async () => {
     // given
-    element.objectApiName = mockData.objectApiName;
-    element.fieldSetApiName = mockData.fieldSetApiName;
     element.enableSearch = true;
     element.enablePagination = true;
     element.pageSize = 1;
 
     // when
-    document.body.appendChild(element);
-    getColumns.emit(mockGetColumns);
-    getRecords.emit(mockGetRecords);
+    mountWithDefaults();
     getRecordCount.emit(mockGetRecords.length);
 
-    await new Promise((r) => setTimeout(r, 0));
+    await flushPromises();
 
     const pagination = element.shadowRoot.querySelector('c-datatable-pagination');
     pagination.dispatchEvent(new CustomEvent('next'));
 
-    await new Promise((r) => setTimeout(r, 0));
+    await flushPromises();
 
     // then
     expect(pagination.paginationLabel).toContain('Page 2 of');
@@ -420,38 +292,66 @@ describe('c-custom-datatable', () => {
     searchInput.value = 'test';
     searchInput.dispatchEvent(new CustomEvent('change', { detail: { value: 'test' } }));
 
-    await new Promise((r) => setTimeout(r, 0));
+    await flushPromises();
 
     // then
     expect(pagination.paginationLabel).toContain('Page 1 of');
   });
 
-  it('should update current page when navigation events are dispatched', async () => {
+  it('should reset page to 1 and update sort state when sort event is fired', async () => {
     // given
-    element.objectApiName = mockData.objectApiName;
-    element.fieldSetApiName = mockData.fieldSetApiName;
+    element.enableSorting = true;
     element.enablePagination = true;
     element.pageSize = 1;
 
     // when
-    document.body.appendChild(element);
-    getColumns.emit(mockGetColumns);
-    getRecords.emit(mockGetRecords);
+    mountWithDefaults();
     getRecordCount.emit(mockGetRecords.length);
 
-    await new Promise((r) => setTimeout(r, 0));
+    await flushPromises();
 
     const pagination = element.shadowRoot.querySelector('c-datatable-pagination');
     pagination.dispatchEvent(new CustomEvent('next'));
 
-    await new Promise((r) => setTimeout(r, 0));
+    await flushPromises();
+
+    // then — currently on page 2
+    expect(pagination.paginationLabel).toContain('Page 2 of');
+
+    // when — sort event fired by datatable
+    const datatable = element.shadowRoot.querySelector('c-datatable-extension');
+    datatable.dispatchEvent(new CustomEvent('sort', { detail: { fieldName: 'CaseNumber', sortDirection: 'asc' } }));
+
+    await flushPromises();
+
+    // then — page resets to 1 and sort indicator state is updated
+    expect(pagination.paginationLabel).toContain('Page 1 of');
+    expect(datatable.sortedBy).toBe('CaseNumber');
+    expect(datatable.sortedDirection).toBe('asc');
+  });
+
+  it('should update current page when navigation events are dispatched', async () => {
+    // given
+    element.enablePagination = true;
+    element.pageSize = 1;
+
+    // when
+    mountWithDefaults();
+    getRecordCount.emit(mockGetRecords.length);
+
+    await flushPromises();
+
+    const pagination = element.shadowRoot.querySelector('c-datatable-pagination');
+    pagination.dispatchEvent(new CustomEvent('next'));
+
+    await flushPromises();
 
     // then
     expect(pagination.paginationLabel).toContain('Page 2 of');
 
     // when
     pagination.dispatchEvent(new CustomEvent('last'));
-    await new Promise((r) => setTimeout(r, 0));
+    await flushPromises();
 
     // then
     expect(pagination.paginationLabel).toContain(`Page ${mockGetRecords.length} of`);
@@ -459,14 +359,14 @@ describe('c-custom-datatable', () => {
 
     // when
     pagination.dispatchEvent(new CustomEvent('previous'));
-    await new Promise((r) => setTimeout(r, 0));
+    await flushPromises();
 
     // then
     expect(pagination.paginationLabel).toContain(`Page ${mockGetRecords.length - 1} of`);
 
     // when
     pagination.dispatchEvent(new CustomEvent('first'));
-    await new Promise((r) => setTimeout(r, 0));
+    await flushPromises();
 
     // then
     expect(pagination.paginationLabel).toContain('Page 1 of');
