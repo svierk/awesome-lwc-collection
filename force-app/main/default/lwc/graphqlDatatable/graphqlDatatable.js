@@ -331,7 +331,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
             ${this.objectApiName}: { ${fieldStr} }
           }) {
             Record {
-              Id { value }
+              Id
             }
           }
         }
@@ -348,9 +348,14 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   handleSave(event) {
     const promises = event.detail.draftValues.map((draft) => executeMutation({ query: this._getUpdateQuery(draft) }));
     Promise.all(promises)
-      .then(() => {
+      .then((results) => {
+        const errors = results.flatMap((r) => r?.errors ?? []);
+        if (errors.length) {
+          this.showToast('Error updating records', errors[0]?.message ?? 'Unknown error', 'error');
+          return;
+        }
         this.showToast('Success', 'Records updated', 'success');
-        return this._refreshData().then(() => {
+        this._refreshData().then(() => {
           this.draftValues = [];
         });
       })
@@ -367,9 +372,15 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     this.isLoading = true;
     const promises = this.selectedRecords.map((record) => executeMutation({ query: this._getDeleteQuery(record.Id) }));
     Promise.all(promises)
-      .then(() => {
+      .then((results) => {
+        const errors = results.flatMap((r) => r?.errors ?? []);
+        if (errors.length) {
+          this.isLoading = false;
+          this.showToast('Error deleting records', errors[0]?.message ?? 'Unknown error', 'error');
+          return;
+        }
         this.showToast('Success', 'Records deleted', 'success');
-        return this._refreshData().then(() => {
+        this._refreshData().then(() => {
           this.isLoading = false;
         });
       })
@@ -381,9 +392,14 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   _deleteRecord(recordId) {
     this.isLoading = true;
     executeMutation({ query: this._getDeleteQuery(recordId) })
-      .then(() => {
+      .then((result) => {
+        if (result?.errors?.length) {
+          this.isLoading = false;
+          this.showToast('Error deleting record', result.errors[0]?.message ?? 'Unknown error', 'error');
+          return;
+        }
         this.showToast('Success', 'Record deleted', 'success');
-        return this._refreshData().then(() => {
+        this._refreshData().then(() => {
           this.isLoading = false;
         });
       })
