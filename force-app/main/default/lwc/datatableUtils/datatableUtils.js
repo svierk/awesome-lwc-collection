@@ -1,6 +1,5 @@
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { deleteRecord, updateRecord } from 'lightning/uiRecordApi';
 
 /**
  * Dispatches a toast event on the given component.
@@ -24,29 +23,6 @@ export function navigateToRecord(component, recordId, actionName) {
     type: 'standard__recordPage',
     attributes: { recordId, actionName }
   });
-}
-
-/**
- * Handles row action events from lightning-datatable.
- * @param {LightningElement} component - The component instance
- * @param {Event} event - The rowaction event
- * @param {Function} refreshFn - Function to refresh data after delete
- */
-export function handleRowAction(component, event, refreshFn) {
-  const actionName = event.detail.action.name;
-  const row = event.detail.row;
-  switch (actionName) {
-    case 'view':
-      navigateToRecord(component, row.Id, 'view');
-      break;
-    case 'edit':
-      navigateToRecord(component, row.Id, 'edit');
-      break;
-    case 'delete':
-      deleteCurrentRecord(component, row.Id, refreshFn);
-      break;
-    default:
-  }
 }
 
 /**
@@ -99,66 +75,4 @@ export function buildDatatableProperties(component) {
     showRowNumberColumn: component.showRowNumberColumn,
     suppressBottomBar: component.suppressBottomBar
   };
-}
-
-/**
- * Deletes a single record and refreshes data.
- * @param {LightningElement} component - The component instance
- * @param {string} recordId - The record Id to delete
- * @param {Function} refreshFn - Function to refresh data after deletion
- */
-export function deleteCurrentRecord(component, recordId, refreshFn) {
-  component.isLoading = true;
-  deleteRecord(recordId)
-    .then(() => {
-      showToast(component, 'Success', 'Record deleted', 'success');
-      return refreshFn().then(() => {
-        component.isLoading = false;
-      });
-    })
-    .catch((error) => {
-      showToast(component, 'Error deleting record', error.body.message, 'error');
-    });
-}
-
-/**
- * Handles inline edit save by updating all draft records.
- * @param {LightningElement} component - The component instance
- * @param {Array} draftValues - The draft values from the save event
- * @param {Function} refreshFn - Function to refresh data after save
- */
-export function handleSave(component, draftValues, refreshFn) {
-  const recordInputs = draftValues.slice().map((draft) => ({ fields: { ...draft } }));
-  const promises = recordInputs.map((recordInput) => updateRecord(recordInput));
-  Promise.all(promises)
-    .then(() => {
-      showToast(component, 'Success', 'Records updated', 'success');
-      return refreshFn().then(() => {
-        component.draftValues = [];
-      });
-    })
-    .catch((error) => {
-      showToast(component, 'Error updating records', error.body.message, 'error');
-    });
-}
-
-/**
- * Deletes multiple selected records and refreshes data.
- * @param {LightningElement} component - The component instance
- * @param {Array} selectedRecords - The records to delete
- * @param {Function} refreshFn - Function to refresh data after deletion
- */
-export function deleteSelectedRecords(component, selectedRecords, refreshFn) {
-  component.isLoading = true;
-  const promises = selectedRecords.map((record) => deleteRecord(record.Id));
-  Promise.all(promises)
-    .then(() => {
-      showToast(component, 'Success', 'Records deleted', 'success');
-      return refreshFn().then(() => {
-        component.isLoading = false;
-      });
-    })
-    .catch((error) => {
-      showToast(component, 'Error deleting records', error.body.message, 'error');
-    });
 }
