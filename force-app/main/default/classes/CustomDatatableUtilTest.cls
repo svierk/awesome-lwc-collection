@@ -37,6 +37,8 @@ public with sharing class CustomDatatableUtilTest {
         'Name LIKE \'Test Account %\'',
         null,
         null,
+        null,
+        null,
         null
       );
       Test.stopTest();
@@ -58,6 +60,8 @@ public with sharing class CustomDatatableUtilTest {
         'Name LIKE \'Test Account %\'',
         10,
         2,
+        null,
+        null,
         null
       );
       Test.stopTest();
@@ -107,7 +111,8 @@ public with sharing class CustomDatatableUtilTest {
       List<CustomDatatableUtil.TableColumn> columnList = CustomDatatableUtil.convertFieldSetToColumns(
         'Account',
         'Test_Field_Set',
-        true
+        true,
+        false
       );
       Test.stopTest();
 
@@ -128,7 +133,9 @@ public with sharing class CustomDatatableUtilTest {
         null,
         null,
         null,
-        'Test Account 1'
+        'Test Account 1',
+        null,
+        null
       );
       Test.stopTest();
 
@@ -170,6 +177,52 @@ public with sharing class CustomDatatableUtilTest {
         Schema.DescribeFieldResult fieldDescribe = fieldMap.get(fieldName).getDescribe();
         Assert.isTrue(fieldDescribe.isFilterable(), 'Field ' + fieldName + ' should be filterable.');
         Assert.isTrue(fieldDescribe.isAccessible(), 'Field ' + fieldName + ' should be accessible.');
+      }
+    }
+  }
+
+  @IsTest
+  static void getRecordsWithFieldSetSortedTest() {
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
+
+    System.runAs(u) {
+      Test.startTest();
+      List<SObject> records = CustomDatatableUtil.getRecordsWithFieldSet(
+        'Account',
+        'Test_Field_Set',
+        null,
+        null,
+        null,
+        null,
+        'Name',
+        'asc'
+      );
+      Test.stopTest();
+
+      Assert.areNotEqual(null, records, 'Returned records list should not be null.');
+      Assert.isTrue(records.size() > 0, 'Sorted query should return records.');
+    }
+  }
+
+  @IsTest
+  static void convertFieldSetToColumnsWithSortingTest() {
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
+
+    System.runAs(u) {
+      Test.startTest();
+      List<CustomDatatableUtil.TableColumn> columnList = CustomDatatableUtil.convertFieldSetToColumns(
+        'Account',
+        'Test_Field_Set',
+        false,
+        true
+      );
+      Test.stopTest();
+
+      Assert.areNotEqual(null, columnList, 'Returned column list should not be null.');
+      for (CustomDatatableUtil.TableColumn col : columnList) {
+        if (col.type != 'datatableLookup') {
+          Assert.isTrue(col.sortable, 'Non-lookup column should be sortable when enableSorting is true.');
+        }
       }
     }
   }

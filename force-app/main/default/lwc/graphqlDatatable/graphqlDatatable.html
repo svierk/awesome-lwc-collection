@@ -56,9 +56,12 @@
           <ul class="slds-page-header__detail-row slds-p-around_none page-header-detail">
             <c-datatable-extension
               lwc:spread={datatableProperties}
+              sorted-by={sortedBy}
+              sorted-direction={sortDirection}
               onrowaction={handleRowAction}
               onrowselection={getSelectedRecords}
               onsave={handleSave}
+              onsort={handleSort}
             >
             </c-datatable-extension>
           </ul>
@@ -105,9 +108,12 @@
       <div class="slds-m-top_small">
         <c-datatable-extension
           lwc:spread={datatableProperties}
+          sorted-by={sortedBy}
+          sorted-direction={sortDirection}
           onrowaction={handleRowAction}
           onrowselection={getSelectedRecords}
           onsave={handleSave}
+          onsort={handleSort}
         >
         </c-datatable-extension>
       </div>
@@ -139,9 +145,12 @@
     </template>
     <c-datatable-extension
       lwc:spread={datatableProperties}
+      sorted-by={sortedBy}
+      sorted-direction={sortDirection}
       onrowaction={handleRowAction}
       onrowselection={getSelectedRecords}
       onsave={handleSave}
+      onsort={handleSort}
     >
     </c-datatable-extension>
     <c-datatable-pagination
