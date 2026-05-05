@@ -29,17 +29,9 @@ class GraphqlWireAdapter extends createTestWireAdapter() {
   }
 }
 
-// Spy used for all imperative mutation calls. Exposed as graphql.mutate so
-// tests only need to import the canonical `graphql` identifier.
-GraphqlWireAdapter.mutate = jest.fn().mockResolvedValue({ data: {} });
+export const graphql = GraphqlWireAdapter;
 
-// Proxy makes graphql callable as a regular function (for mutations) while
-// keeping the wire adapter class behaviour intact for @wire(graphql, ...) usage.
-export const graphql = new Proxy(GraphqlWireAdapter, {
-  apply(_target, _thisArg, args) {
-    return GraphqlWireAdapter.mutate(...args);
-  }
-});
+export const executeMutation = jest.fn().mockResolvedValue({ data: {} });
 
 export const gql = jest.fn((strings, ...values) => {
   return strings.reduce((result, str, i) => result + str + (values[i] || ''), '');

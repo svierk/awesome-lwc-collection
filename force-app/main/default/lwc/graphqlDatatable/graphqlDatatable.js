@@ -1,4 +1,3 @@
-import { refreshApex } from '@salesforce/apex';
 import {
   addRowActions,
   buildDatatableProperties,
@@ -6,7 +5,7 @@ import {
   navigateToRecord,
   showToast
 } from 'c/datatableUtils';
-import { gql, graphql } from 'lightning/graphql';
+import { executeMutation, gql, graphql } from 'lightning/graphql';
 import { NavigationMixin } from 'lightning/navigation';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { LightningElement, api, track, wire } from 'lwc';
@@ -29,16 +28,6 @@ const DATA_TYPE_MAP = {
 
 const SEARCHABLE_DATA_TYPES = new Set(['String', 'Email', 'Phone', 'Url', 'Picklist', 'TextArea']);
 const RAW_VALUE_DATA_TYPES = new Set(['Date', 'DateTime', 'Currency', 'Percent', 'Int', 'Double', 'Long', 'Boolean']);
-
-const DELETE_RECORD_MUTATION = gql`
-  mutation deleteRecord($input: DeleteRecordInput!) {
-    uiapi {
-      deleteRecord(input: $input) {
-        Id
-      }
-    }
-  }
-`;
 
 /**
  * A custom datatable powered by GraphQL instead of Apex.
@@ -95,7 +84,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   _searchTerm = '';
   _cursorCache = [null];
   _objectInfo;
-  _graphqlResult;
+  _graphqlRefresh;
   _navigatingToLast = false;
   _fieldDataTypes = {};
 
@@ -178,9 +167,8 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   }
 
   @wire(graphql, { query: '$graphqlQuery' })
-  wiredGraphQL(result) {
-    this._graphqlResult = result;
-    const { data, errors } = result;
+  wiredGraphQL({ data, errors, refresh }) {
+    this._graphqlRefresh = refresh;
     if (data) {
       if (!this._navigatingToLast) this.isLoading = false;
       const queryResult = data.uiapi.query[this.objectApiName];
@@ -212,7 +200,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   }
 
   _refreshData() {
-    return refreshApex(this._graphqlResult);
+    return this._graphqlRefresh?.() ?? Promise.resolve();
   }
 
   _getSearchableFields() {
@@ -318,14 +306,30 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     }
   }
 
-  handleSave(event) {
-    const draftValues = event.detail.draftValues;
-    const mutName = `update${this.objectApiName}`;
-    const mutType = `Update${this.objectApiName}Input`;
-    const mutationString = `
-      mutation ${mutName}($input: ${mutType}!) {
+  _getDeleteQuery(recordId) {
+    return gql`
+      mutation DeleteRecord {
         uiapi {
-          ${mutName}(input: $input) {
+          ${this.objectApiName}Delete(input: { Id: "${recordId}" }) {
+            Id
+          }
+        }
+      }
+    `;
+  }
+
+  _getUpdateQuery(draft) {
+    const { Id, ...fields } = draft;
+    const fieldStr = Object.entries(fields)
+      .map(([key, val]) => `${key}: ${this._serializeGqlValue(val)}`)
+      .join(', ');
+    return gql`
+      mutation UpdateRecord {
+        uiapi {
+          ${this.objectApiName}Update(input: {
+            Id: "${Id}",
+            ${this.objectApiName}: { ${fieldStr} }
+          }) {
             Record {
               Id { value }
             }
@@ -333,17 +337,16 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
         }
       }
     `;
-    const UPDATE_MUTATION = gql`
-      ${mutationString}
-    `;
-    const promises = draftValues.map((draft) => {
-      const { Id, ...fields } = draft;
-      const fieldValues = Object.fromEntries(Object.entries(fields).map(([key, val]) => [key, { value: val }]));
-      return graphql({
-        query: UPDATE_MUTATION,
-        variables: { input: { id: Id, [this.objectApiName]: fieldValues } }
-      });
-    });
+  }
+
+  _serializeGqlValue(val) {
+    if (val === null || val === undefined) return 'null';
+    if (typeof val === 'boolean' || typeof val === 'number') return String(val);
+    return `"${String(val).replaceAll('\\', '\\\\').replaceAll('"', '\\"')}"`;
+  }
+
+  handleSave(event) {
+    const promises = event.detail.draftValues.map((draft) => executeMutation({ query: this._getUpdateQuery(draft) }));
     Promise.all(promises)
       .then(() => {
         this.showToast('Success', 'Records updated', 'success');
@@ -362,12 +365,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
 
   deleteSelectedRecords() {
     this.isLoading = true;
-    const promises = this.selectedRecords.map((record) =>
-      graphql({
-        query: DELETE_RECORD_MUTATION,
-        variables: { input: { id: record.Id } }
-      })
-    );
+    const promises = this.selectedRecords.map((record) => executeMutation({ query: this._getDeleteQuery(record.Id) }));
     Promise.all(promises)
       .then(() => {
         this.showToast('Success', 'Records deleted', 'success');
@@ -382,10 +380,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
 
   _deleteRecord(recordId) {
     this.isLoading = true;
-    graphql({
-      query: DELETE_RECORD_MUTATION,
-      variables: { input: { id: recordId } }
-    })
+    executeMutation({ query: this._getDeleteQuery(recordId) })
       .then(() => {
         this.showToast('Success', 'Record deleted', 'success');
         return this._refreshData().then(() => {
