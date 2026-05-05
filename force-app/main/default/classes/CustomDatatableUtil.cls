@@ -6,7 +6,9 @@ public with sharing class CustomDatatableUtil {
     String whereConditions,
     Integer pageSize,
     Integer pageNumber,
-    String searchTerm
+    String searchTerm,
+    String sortedBy,
+    String sortDirection
   ) {
     String fieldList = '';
     for (Schema.FieldSetMember f : readFieldSet(objectName, fieldSetName)) {
@@ -14,7 +16,16 @@ public with sharing class CustomDatatableUtil {
     }
     fieldList += 'Id';
 
-    List<SObject> records = getRecords(objectName, fieldList, whereConditions, pageSize, pageNumber, searchTerm);
+    List<SObject> records = getRecords(
+      objectName,
+      fieldList,
+      whereConditions,
+      pageSize,
+      pageNumber,
+      searchTerm,
+      sortedBy,
+      sortDirection
+    );
     return records;
   }
 
@@ -100,7 +111,9 @@ public with sharing class CustomDatatableUtil {
     String whereConditions,
     Integer pageSize,
     Integer pageNumber,
-    String searchTerm
+    String searchTerm,
+    String sortedBy,
+    String sortDirection
   ) {
     String query = 'SELECT ' + String.escapeSingleQuotes(fieldList) + ' FROM ' + String.escapeSingleQuotes(objectName);
     String searchCondition = buildSearchCondition(objectName, searchTerm);
@@ -115,6 +128,11 @@ public with sharing class CustomDatatableUtil {
       query = query + ' WHERE ' + String.join(conditions, ' AND ');
     }
 
+    if (String.isNotBlank(sortedBy)) {
+      String safeDirection = (sortDirection != null && sortDirection.toLowerCase() == 'desc') ? 'DESC' : 'ASC';
+      query = query + ' ORDER BY ' + String.escapeSingleQuotes(sortedBy) + ' ' + safeDirection + ' NULLS LAST';
+    }
+
     if (pageSize != null && pageSize > 0) {
       Integer offset = (pageNumber != null && pageNumber > 1) ? (pageNumber - 1) * pageSize : 0;
       query = query + ' LIMIT ' + pageSize + ' OFFSET ' + offset;
@@ -124,7 +142,12 @@ public with sharing class CustomDatatableUtil {
   }
 
   @AuraEnabled(cacheable=true)
-  public static List<TableColumn> convertFieldSetToColumns(String objectName, String fieldSetName, Boolean readOnly) {
+  public static List<TableColumn> convertFieldSetToColumns(
+    String objectName,
+    String fieldSetName,
+    Boolean readOnly,
+    Boolean enableSorting
+  ) {
     List<TableColumn> columns = new List<TableColumn>();
 
     for (Schema.FieldSetMember f : readFieldSet(objectName, fieldSetName)) {
@@ -132,7 +155,7 @@ public with sharing class CustomDatatableUtil {
       column.label = f.getLabel();
       column.fieldName = f.getFieldPath();
       column.type = getColumnType(f.getType());
-      column.sortable = false;
+      column.sortable = enableSorting == true && column.type != 'datatableLookup';
       column.editable = !readOnly && f.getSObjectField().getDescribe().isUpdateable();
 
       if (column.type == 'datatableLookup') {

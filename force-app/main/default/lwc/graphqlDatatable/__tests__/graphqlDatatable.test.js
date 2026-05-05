@@ -409,4 +409,63 @@ describe('c-graphql-datatable', () => {
     const datatable = element.shadowRoot.querySelector('c-datatable-extension');
     expect(datatable.data).toEqual([]);
   });
+
+  it('should mark sortable columns and pass sort information when enable sorting is on', async () => {
+    // given
+    element.enableSorting = true;
+
+    // when
+    await mountWithDefaults();
+    const datatable = element.shadowRoot.querySelector('c-datatable-extension');
+
+    // then
+    expect(datatable.columns[0]).toMatchObject({ fieldName: 'Name', sortable: true });
+    expect(datatable.columns[4]).toMatchObject({ fieldName: 'AccountId', sortable: false });
+    expect(datatable.columns[5]).toMatchObject({ fieldName: 'UnknownField', sortable: false });
+    expect(datatable.sortedBy).toBeFalsy();
+  });
+
+  it('should include order by clause in query, reset pagination, and toggle direction on same column', async () => {
+    // given
+    element.enableSorting = true;
+    element.enablePagination = true;
+    element.pageSize = 1;
+
+    // when
+    document.body.appendChild(element);
+    getObjectInfo.emit(mockObjectInfo);
+    graphql.emit(cloneResponse({ totalCount: 3, pageInfo: { hasNextPage: true, endCursor: 'c1' } }));
+    await flushPromises();
+
+    const pagination = element.shadowRoot.querySelector('c-datatable-pagination');
+    pagination.dispatchEvent(new CustomEvent('next'));
+    await flushPromises();
+
+    // then — currently on page 2
+    expect(pagination.paginationLabel).toContain('Page 2 of');
+
+    // when — sort by name (first click → asc, datatable fires defaultSortDirection)
+    const datatable = element.shadowRoot.querySelector('c-datatable-extension');
+    datatable.dispatchEvent(new CustomEvent('sort', { detail: { fieldName: 'Name', sortDirection: 'asc' } }));
+    await flushPromises();
+
+    // then — page resets to 1 and direction is asc
+    expect(pagination.paginationLabel).toContain('Page 1 of');
+    expect(datatable.sortedDirection).toBe('asc');
+
+    // when — datatable fires toggled direction when same column is clicked again
+    datatable.dispatchEvent(new CustomEvent('sort', { detail: { fieldName: 'Name', sortDirection: 'desc' } }));
+    await flushPromises();
+
+    // then
+    expect(datatable.sortedDirection).toBe('desc');
+
+    // when — click different column → datatable fires defaultSortDirection for new column
+    datatable.dispatchEvent(new CustomEvent('sort', { detail: { fieldName: 'Email', sortDirection: 'asc' } }));
+    await flushPromises();
+
+    // then
+    expect(datatable.sortedBy).toBe('Email');
+    expect(datatable.sortedDirection).toBe('asc');
+  });
 });

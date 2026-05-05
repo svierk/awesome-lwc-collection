@@ -78,6 +78,13 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   @api enableSearch = false;
 
   /**
+   * If present, enables column-based sorting. Clicking a column header sorts records via an Apex ORDER BY clause.
+   * @type {boolean}
+   * @default false
+   */
+  @api enableSorting = false;
+
+  /**
    * API name of the field set that specifies which fields are displayed in the table.
    * @type {string}
    */
@@ -237,8 +244,15 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   _currentPage = 1;
   _totalRecordCount = 0;
   _searchTerm = '';
+  _sortedBy = '';
+  _sortDirection = 'asc';
 
-  @wire(getColumns, { objectName: '$objectApiName', fieldSetName: '$fieldSetApiName', readOnly: '$readOnly' })
+  @wire(getColumns, {
+    objectName: '$objectApiName',
+    fieldSetName: '$fieldSetApiName',
+    readOnly: '$readOnly',
+    enableSorting: '$enableSorting'
+  })
   wiredGetColumns({ data }) {
     if (data) {
       this.isLoading = false;
@@ -265,7 +279,9 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
     whereConditions: '$whereConditions',
     pageSize: '$currentPageSize',
     pageNumber: '$currentPageNumber',
-    searchTerm: '$currentSearchTerm'
+    searchTerm: '$currentSearchTerm',
+    sortedBy: '$currentSortedBy',
+    sortDirection: '$currentSortDirection'
   })
   wiredGetRecords(result) {
     this.wiredRecords = result;
@@ -278,6 +294,22 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
 
   get currentSearchTerm() {
     return this.enableSearch && this._searchTerm ? this._searchTerm : null;
+  }
+
+  get currentSortedBy() {
+    return this.enableSorting && this._sortedBy ? this._sortedBy : null;
+  }
+
+  get currentSortDirection() {
+    return this.enableSorting && this._sortedBy ? this._sortDirection : null;
+  }
+
+  get sortedBy() {
+    return this._sortedBy;
+  }
+
+  get sortDirection() {
+    return this._sortDirection;
   }
 
   get showSearch() {
@@ -351,6 +383,13 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
 
   handleSearchChange(event) {
     this._searchTerm = event.target.value;
+    this._currentPage = 1;
+  }
+
+  handleSort(event) {
+    const { fieldName, sortDirection } = event.detail;
+    this._sortedBy = fieldName;
+    this._sortDirection = sortDirection;
     this._currentPage = 1;
   }
 
