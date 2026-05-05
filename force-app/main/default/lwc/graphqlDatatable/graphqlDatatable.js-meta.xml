@@ -183,6 +183,13 @@
         description="If present, enables a GraphQL-based search input that filters records across all text fields using the like operator."
       />
       <property
+        name="enableSorting"
+        label="Enable Sorting"
+        type="Boolean"
+        default="false"
+        description="If present, enables column-based sorting. Clicking a column header sorts records via GraphQL orderBy."
+      />
+      <property
         name="enablePagination"
         label="Enable Pagination"
         type="Boolean"

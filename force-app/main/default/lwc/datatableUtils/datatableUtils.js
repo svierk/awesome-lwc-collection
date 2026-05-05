@@ -73,6 +73,8 @@ export function buildDatatableProperties(component) {
     rowNumberOffset: component.computedRowNumberOffset,
     resizeColumnDisabled: component.resizeColumnDisabled,
     showRowNumberColumn: component.showRowNumberColumn,
+    sortedBy: component.sortedBy,
+    sortDirection: component.sortDirection,
     suppressBottomBar: component.suppressBottomBar
   };
 }

@@ -50,6 +50,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   @api defaultSortDirection = 'asc';
   @api enablePagination = false;
   @api enableSearch = false;
+  @api enableSorting = false;
   @api fields = '';
   @api hideCheckboxColumn = false;
   @api hideTableHeader = false;
@@ -82,6 +83,8 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   _currentPage = 1;
   _totalRecordCount = 0;
   _searchTerm = '';
+  _sortedBy = '';
+  _sortDirection = 'asc';
   _cursorCache = [null];
   _objectInfo;
   _graphqlRefresh;
@@ -117,7 +120,14 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
       this._fieldDataTypes[fieldName] = fieldInfo.dataType;
       const columnType = DATA_TYPE_MAP[fieldInfo.dataType] || 'text';
       const isEditable = !this.readOnly && fieldInfo.updateable;
-      const column = { fieldName, label: fieldInfo.label, type: columnType, sortable: false, editable: isEditable };
+      const isSortable = this.enableSorting && columnType !== 'datatableLookup';
+      const column = {
+        fieldName,
+        label: fieldInfo.label,
+        type: columnType,
+        sortable: isSortable,
+        editable: isEditable
+      };
       if (columnType === 'datatableLookup') {
         column.initialWidth = 180;
         column.typeAttributes = {
@@ -154,8 +164,11 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     const afterVal = this._cursorCache[this._currentPage - 1] || null;
     const afterParam = afterVal ? `, after: "${afterVal}"` : '';
     const whereClause = this._buildWhereClause();
+    const orderByClause = this._sortedBy
+      ? `, orderBy: { ${this._sortedBy}: { order: ${this._sortDirection.toUpperCase()} } }`
+      : '';
     const queryString = `query { uiapi { query {
-      ${this.objectApiName}(first: ${firstVal}${afterParam}${whereClause}) {
+      ${this.objectApiName}(first: ${firstVal}${afterParam}${whereClause}${orderByClause}) {
         edges { node { Id ${fieldNodes} } }
         totalCount
         pageInfo { hasNextPage endCursor }
@@ -281,6 +294,21 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
 
   handleSearchChange(event) {
     this._searchTerm = event.target.value;
+    this._currentPage = 1;
+    this._cursorCache = [null];
+  }
+
+  get sortedBy() {
+    return this._sortedBy;
+  }
+
+  get sortDirection() {
+    return this._sortDirection;
+  }
+
+  handleSort(event) {
+    this._sortedBy = event.detail.fieldName;
+    this._sortDirection = event.detail.sortDirection;
     this._currentPage = 1;
     this._cursorCache = [null];
   }
