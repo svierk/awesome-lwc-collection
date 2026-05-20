@@ -39,6 +39,15 @@ To use this library and try out the components in one of your orgs or locally, t
 
 ## Getting started
 
+### Deploy
+
+Click Button to deploy source in Developer/Sandbox
+
+<a href="https://githubsfdeploy.herokuapp.com">
+  <img alt="Deploy to Salesforce"
+       src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
+</a>
+
 ### Install all dependencies
 
 To get everything up and runnning, you need to open the repository with VS Code, install all the recommended extensions and run the following command to install all required dependencies:
