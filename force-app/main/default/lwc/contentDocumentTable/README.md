@@ -1,8 +1,16 @@
 # Content Document Table
 
-A generic table to show shared documents from a Salesforce Files library. How the component was built and works in detail is explained in the following Medium post: [How to build a Content Document Datatable with Apex & LWC](https://medium.com/capgemini-salesforce-architects/how-to-build-a-content-document-datatable-with-apex-lwc-f68d5367932c)
+A generic table to show shared documents from a Salesforce Files library.
 
 <img src="../../../../../images/content-document-table.png" alt="custom-datatable" width="400"/>
+
+## Read on Medium
+
+<a href="https://medium.com/capgemini-salesforce-architects/how-to-build-a-content-document-datatable-with-apex-lwc-f68d5367932c">
+  <img src="https://miro.medium.com/v2/da:true/resize:fit:1200/0*9UfF0TN57tOqEfWi" alt="How to build a Content Document Datatable with Apex & LWC" width="350"/>
+</a>
+
+**[How to build a Content Document Datatable with Apex & LWC](https://medium.com/capgemini-salesforce-architects/how-to-build-a-content-document-datatable-with-apex-lwc-f68d5367932c)**
 
 ## Attributes
 
