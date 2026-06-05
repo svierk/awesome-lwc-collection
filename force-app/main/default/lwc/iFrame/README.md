@@ -1,8 +1,16 @@
 # iFrame
 
-A custom iFrame component with different configuration options. How the component was built and works in detail is explained in the following Medium post: [How to Build a Reusable iFrame with Lightning Web Components](https://medium.com/javascript-in-plain-english/how-to-build-a-reusable-iframe-with-lightning-web-components-76a2ad27286)
+A custom iFrame component with different configuration options.
 
 <img src="../../../../../images/iframe.png" alt="iframe" width="500"/>
+
+## Read on Medium
+
+<a href="https://medium.com/javascript-in-plain-english/how-to-build-a-reusable-iframe-with-lightning-web-components-76a2ad27286">
+  <img src="https://miro.medium.com/v2/da:true/resize:fit:1200/0*qEng2ic2td5efl1F" alt="How to Build a Reusable iFrame with Lightning Web Components" width="350"/>
+</a>
+
+**[How to Build a Reusable iFrame with Lightning Web Components](https://medium.com/javascript-in-plain-english/how-to-build-a-reusable-iframe-with-lightning-web-components-76a2ad27286)**
 
 ## Attributes
 
