@@ -4,6 +4,14 @@ Configurable map component for displaying locations via Google Maps API using LW
 
 <img src="../../../../../images/graphql-map-view.png" alt="graphql-map-view" width="800"/>
 
+## Read on Medium
+
+<a href="https://medium.com/capgemini-salesforce-architects/replace-apex-with-graphql-in-your-salesforce-ui-architecture-62693ff40f5b">
+  <img src="https://miro.medium.com/v2/resize:fit:1200/1*gGvnVcO_0N9jwLeUQV3HPg.png" alt="Replace Apex with GraphQL in Your Salesforce UI Architecture" width="350"/>
+</a>
+
+**[Replace Apex with GraphQL in Your Salesforce UI Architecture](https://medium.com/capgemini-salesforce-architects/replace-apex-with-graphql-in-your-salesforce-ui-architecture-62693ff40f5b)**
+
 ## Attributes
 
 | Name              | Type   | Default | Description                                                                                                                       |
