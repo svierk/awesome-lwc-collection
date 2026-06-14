@@ -1,14 +1,14 @@
-import CustomSlider from 'c/customSlider';
+import CustomCarousel from 'c/customCarousel';
 import { createElement } from 'lwc';
 
-const mockData = require('./data/customSlider.json');
+const mockData = require('./data/customCarousel.json');
 
 let element;
 
-describe('c-custom-slider', () => {
+describe('c-custom-carousel', () => {
   beforeEach(() => {
-    element = createElement('c-custom-slider', {
-      is: CustomSlider
+    element = createElement('c-custom-carousel', {
+      is: CustomCarousel
     });
     jest.useFakeTimers();
   });

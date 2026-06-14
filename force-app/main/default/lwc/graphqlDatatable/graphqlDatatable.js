@@ -44,7 +44,7 @@ const RAW_VALUE_DATA_TYPES = new Set(['Date', 'DateTime', 'Currency', 'Percent',
  * ></c-graphql-datatable>
  */
 export default class GraphqlDatatable extends NavigationMixin(LightningElement) {
-  @api cardIcon = '';
+  @api cardIcon = 'utility:table';
   @api cardTitle = '';
   @api columnWidthsMode = 'fixed';
   @api defaultSortDirection = 'asc';

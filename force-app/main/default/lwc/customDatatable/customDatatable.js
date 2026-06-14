@@ -36,10 +36,10 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
    * It should contain the SLDS name of the icon.
    * Specify the name in the format 'utility:down' where 'utility' is the category and 'down' the icon to be displayed.
    * @type {string}
-   * @default ''
+   * @default 'utility:table'
    * @example 'standard:case'
    */
-  @api cardIcon = '';
+  @api cardIcon = 'utility:table';
 
   /**
    * If show card option is active, the card title can include text and is displayed in the header above the table.

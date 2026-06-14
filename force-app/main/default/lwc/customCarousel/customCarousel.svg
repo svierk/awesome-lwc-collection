@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Peeking side slides -->
+  <rect x="10" y="30" width="14" height="40" rx="3" fill="#0D1B3E" opacity="0.25"/>
+  <rect x="76" y="30" width="14" height="40" rx="3" fill="#0D1B3E" opacity="0.25"/>
+  <!-- Main slide frame -->
+  <rect x="28" y="22" width="44" height="48" rx="5" fill="none" stroke="#0D1B3E" stroke-width="5"/>
+  <!-- Image content: sun + mountains -->
+  <circle cx="40" cy="37" r="5" fill="#00A1E0"/>
+  <path d="M32,62 L44,46 L51,55 L60,43 L68,62 Z" fill="#00A1E0"/>
+  <!-- Navigation chevrons -->
+  <polyline points="16,50 20,46 20,54 16,50" fill="#0D1B3E" stroke="none"/>
+  <polyline points="84,50 80,46 80,54 84,50" fill="#0D1B3E" stroke="none"/>
+  <!-- Navigation dots -->
+  <circle cx="40" cy="84" r="3.5" fill="#00A1E0"/>
+  <circle cx="50" cy="84" r="3.5" fill="#0D1B3E" opacity="0.3"/>
+  <circle cx="60" cy="84" r="3.5" fill="#0D1B3E" opacity="0.3"/>
+</svg>
