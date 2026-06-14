@@ -2,8 +2,8 @@
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>66.0</apiVersion>
     <isExposed>true</isExposed>
-    <masterLabel>Custom Slider</masterLabel>
-    <description>A simple custom slider with different configuration options.</description>
+    <masterLabel>Custom Carousel</masterLabel>
+    <description>A simple custom carousel with different configuration options.</description>
     <targets>
         <target>lightning__AppPage</target>
         <target>lightning__HomePage</target>
@@ -22,14 +22,14 @@
         name="customHeight"
         type="String"
         label="Custom Height"
-        description="Maximum height of the slider (e.g., '500px', '80vh')"
+        description="Maximum height of the carousel (e.g., '500px', '80vh')"
         default=""
       />
       <property
         name="customWidth"
         type="String"
         label="Custom Width"
-        description="Maximum width of the slider (e.g., '600px', '100%')"
+        description="Maximum width of the carousel (e.g., '600px', '100%')"
         default="600px"
       />
       <property
@@ -57,7 +57,7 @@
         name="hideNavigationDots"
         type="Boolean"
         label="Hide Navigation Dots"
-        description="Hide the navigation dots below the slider"
+        description="Hide the navigation dots below the carousel"
         default="false"
       />
       <property

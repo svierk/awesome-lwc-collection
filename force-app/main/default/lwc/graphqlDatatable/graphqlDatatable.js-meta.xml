@@ -76,6 +76,7 @@
         name="cardIcon"
         label="Card Icon"
         type="String"
+        default="utility:table"
         description="If show card option is active, the card icon is displayed in the header before the card title. It should contain the SLDS name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category and 'down' the icon to be displayed."
       />
       <property

@@ -1,13 +1,13 @@
 import { api, LightningElement } from 'lwc';
 
 /**
- * A simple custom slider with different configuration options.
- * @alias CustomSlider
+ * A simple custom carousel with different configuration options.
+ * @alias CustomCarousel
  * @extends LightningElement
  * @hideconstructor
  *
  * @example
- * <c-custom-slider
+ * <c-custom-carousel
  *   slides-data={slides}
  *   custom-height="500px"
  *   custom-width="100%"
@@ -15,9 +15,9 @@ import { api, LightningElement } from 'lwc';
  *   hide-navigation-buttons
  *   hide-slide-text
  *   hide-slide-number
- * ></c-custom-slider>
+ * ></c-custom-carousel>
  */
-export default class CustomSlider extends LightningElement {
+export default class CustomCarousel extends LightningElement {
   /**
    * If present, automatic slide scrolling will be enabled.
    * @type {boolean}
@@ -26,14 +26,14 @@ export default class CustomSlider extends LightningElement {
   @api autoScroll = false;
 
   /**
-   * Set maximum height of the slider in percent or pixels.
+   * Set maximum height of the carousel in percent or pixels.
    * @type {string}
    * @default ''
    */
   @api customHeight = '';
 
   /**
-   * Set maximum width of the slider in percent or pixels.
+   * Set maximum width of the carousel in percent or pixels.
    * @type {string}
    * @default '600px'
    */
@@ -47,7 +47,7 @@ export default class CustomSlider extends LightningElement {
   @api hideNavigationButtons = false;
 
   /**
-   * If present, the navigation dots below the slider will be hidden.
+   * If present, the navigation dots below the carousel will be hidden.
    * @type {boolean}
    * @default false
    */
@@ -87,7 +87,7 @@ export default class CustomSlider extends LightningElement {
   }
 
   /**
-   * A list of slides that are displayed in the custom slider.
+   * A list of slides that are displayed in the custom carousel.
    * Each slide has the following attributes: image, heading and description.
    * @type {Array}
    * @example
