@@ -1,17 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" rx="12" fill="#FFFFFF" />
   <!-- Location pin -->
-  <path d="M46,10 C32,10 22,20 22,34 C22,52 46,78 46,78 C46,78 70,52 70,34 C70,20 60,10 46,10 Z" fill="#0D1B3E"/>
-  <circle cx="46" cy="34" r="11" fill="#00A1E0"/>
+  <path d="M46,10 C32,10 22,20 22,34 C22,52 46,78 46,78 C46,78 70,52 70,34 C70,20 60,10 46,10 Z" fill="#0D1B3E" />
+  <circle cx="46" cy="34" r="11" fill="#00A1E0" />
   <!-- GraphQL badge: 3 connected nodes -->
-  <circle cx="78" cy="76" r="16" fill="#00A1E0" stroke="#FFFFFF" stroke-width="3"/>
+  <circle cx="78" cy="76" r="16" fill="#00A1E0" stroke="#FFFFFF" stroke-width="3" />
   <g stroke="#FFFFFF" stroke-width="2.2">
-    <line x1="78" y1="68" x2="71" y2="84"/>
-    <line x1="78" y1="68" x2="85" y2="84"/>
-    <line x1="71" y1="84" x2="85" y2="84"/>
+    <line x1="78" y1="68" x2="71" y2="84" />
+    <line x1="78" y1="68" x2="85" y2="84" />
+    <line x1="71" y1="84" x2="85" y2="84" />
   </g>
   <g fill="#FFFFFF">
-    <circle cx="78" cy="68" r="3"/>
-    <circle cx="71" cy="84" r="3"/>
-    <circle cx="85" cy="84" r="3"/>
+    <circle cx="78" cy="68" r="3" />
+    <circle cx="71" cy="84" r="3" />
+    <circle cx="85" cy="84" r="3" />
   </g>
 </svg>

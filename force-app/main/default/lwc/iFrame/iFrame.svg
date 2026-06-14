@@ -1,13 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" rx="12" fill="#FFFFFF" />
   <!-- Browser window -->
-  <rect x="12" y="20" width="76" height="60" fill="none" stroke="#0D1B3E" stroke-width="5"/>
+  <rect x="12" y="20" width="76" height="60" fill="none" stroke="#0D1B3E" stroke-width="5" />
   <!-- Title bar -->
-  <rect x="12" y="20" width="76" height="14" fill="#0D1B3E"/>
+  <rect x="12" y="20" width="76" height="14" fill="#0D1B3E" />
   <g fill="#FFFFFF">
-    <circle cx="21" cy="27" r="2.5"/>
-    <circle cx="30" cy="27" r="2.5"/>
-    <circle cx="39" cy="27" r="2.5"/>
+    <circle cx="21" cy="27" r="2.5" />
+    <circle cx="30" cy="27" r="2.5" />
+    <circle cx="39" cy="27" r="2.5" />
   </g>
   <!-- Embedded iframe -->
-  <rect x="26" y="44" width="48" height="28" fill="none" stroke="#00A1E0" stroke-width="5"/>
+  <rect x="26" y="44" width="48" height="28" fill="none" stroke="#00A1E0" stroke-width="5" />
 </svg>

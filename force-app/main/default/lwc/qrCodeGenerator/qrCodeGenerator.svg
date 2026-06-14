@@ -1,22 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" rx="12" fill="#FFFFFF" />
   <!-- Finder patterns -->
   <g fill="none" stroke="#0D1B3E" stroke-width="5">
-    <rect x="12" y="12" width="26" height="26"/>
-    <rect x="62" y="12" width="26" height="26"/>
-    <rect x="12" y="62" width="26" height="26"/>
+    <rect x="12" y="12" width="26" height="26" />
+    <rect x="62" y="12" width="26" height="26" />
+    <rect x="12" y="62" width="26" height="26" />
   </g>
   <g fill="#00A1E0">
-    <rect x="20" y="20" width="10" height="10"/>
-    <rect x="70" y="20" width="10" height="10"/>
-    <rect x="20" y="70" width="10" height="10"/>
+    <rect x="20" y="20" width="10" height="10" />
+    <rect x="70" y="20" width="10" height="10" />
+    <rect x="20" y="70" width="10" height="10" />
   </g>
   <!-- Data modules -->
   <g fill="#0D1B3E">
-    <rect x="50" y="50" width="9" height="9"/>
-    <rect x="68" y="50" width="9" height="9"/>
-    <rect x="50" y="68" width="9" height="9"/>
-    <rect x="79" y="61" width="9" height="9"/>
-    <rect x="61" y="79" width="9" height="9"/>
-    <rect x="79" y="79" width="9" height="9"/>
+    <rect x="50" y="50" width="9" height="9" />
+    <rect x="68" y="50" width="9" height="9" />
+    <rect x="50" y="68" width="9" height="9" />
+    <rect x="79" y="61" width="9" height="9" />
+    <rect x="61" y="79" width="9" height="9" />
+    <rect x="79" y="79" width="9" height="9" />
   </g>
 </svg>
