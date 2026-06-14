@@ -1,13 +1,30 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" rx="12" fill="#FFFFFF" />
   <!-- PDF document -->
-  <path d="M26,14 H60 L78,32 V86 H26 Z" fill="#0D1B3E"/>
-  <path d="M60,14 V32 H78 Z" fill="#00A1E0"/>
-  <rect x="34" y="42" width="30" height="4.5" rx="2.25" fill="#FFFFFF" opacity="0.85"/>
-  <rect x="34" y="52" width="36" height="4.5" rx="2.25" fill="#FFFFFF" opacity="0.45"/>
+  <path d="M26,14 H60 L78,32 V86 H26 Z" fill="#0D1B3E" />
+  <path d="M60,14 V32 H78 Z" fill="#00A1E0" />
+  <rect x="34" y="42" width="30" height="4.5" rx="2.25" fill="#FFFFFF" opacity="0.85" />
+  <rect x="34" y="52" width="36" height="4.5" rx="2.25" fill="#FFFFFF" opacity="0.45" />
   <!-- PDF label band -->
-  <rect x="26" y="64" width="52" height="22" fill="#00A1E0"/>
-  <text x="52" y="80" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="15" fill="#FFFFFF">PDF</text>
+  <rect x="26" y="64" width="52" height="22" fill="#00A1E0" />
+  <text
+    x="52"
+    y="80"
+    text-anchor="middle"
+    font-family="Arial, Helvetica, sans-serif"
+    font-weight="700"
+    font-size="15"
+    fill="#FFFFFF"
+  >PDF</text>
   <!-- Visualforce source badge -->
-  <circle cx="22" cy="22" r="15" fill="#00A1E0" stroke="#FFFFFF" stroke-width="3"/>
-  <text x="22" y="27" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="13" fill="#FFFFFF">VF</text>
+  <circle cx="22" cy="22" r="15" fill="#00A1E0" stroke="#FFFFFF" stroke-width="3" />
+  <text
+    x="22"
+    y="27"
+    text-anchor="middle"
+    font-family="Arial, Helvetica, sans-serif"
+    font-weight="700"
+    font-size="13"
+    fill="#FFFFFF"
+  >VF</text>
 </svg>

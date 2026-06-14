@@ -1,13 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" rx="12" fill="#FFFFFF" />
   <!-- Viewfinder bump -->
-  <path d="M36,32 V26 a3,3 0 0 1 3,-3 H61 a3,3 0 0 1 3,3 V32 Z" fill="#0D1B3E"/>
+  <path d="M36,32 V26 a3,3 0 0 1 3,-3 H61 a3,3 0 0 1 3,3 V32 Z" fill="#0D1B3E" />
   <!-- Camera body -->
-  <rect x="12" y="30" width="76" height="54" rx="8" fill="#0D1B3E"/>
+  <rect x="12" y="30" width="76" height="54" rx="8" fill="#0D1B3E" />
   <!-- Lens -->
-  <circle cx="50" cy="57" r="19" fill="#00A1E0"/>
+  <circle cx="50" cy="57" r="19" fill="#00A1E0" />
   <!-- User silhouette inside lens -->
-  <circle cx="50" cy="51" r="6.5" fill="#FFFFFF"/>
-  <path d="M38,69 a12,12 0 0 1 24,0 Z" fill="#FFFFFF"/>
+  <circle cx="50" cy="51" r="6.5" fill="#FFFFFF" />
+  <path d="M38,69 a12,12 0 0 1 24,0 Z" fill="#FFFFFF" />
   <!-- Flash -->
-  <circle cx="77" cy="40" r="3.5" fill="#FFFFFF"/>
+  <circle cx="77" cy="40" r="3.5" fill="#FFFFFF" />
 </svg>

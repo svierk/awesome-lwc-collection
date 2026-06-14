@@ -1,9 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" rx="12" fill="#FFFFFF" />
   <!-- Isometric cube -->
   <!-- Top face -->
-  <polygon points="50,14 82,31 50,48 18,31" fill="#00A1E0"/>
+  <polygon points="50,14 82,31 50,48 18,31" fill="#00A1E0" />
   <!-- Left face -->
-  <polygon points="18,31 50,48 50,84 18,67" fill="#0D1B3E"/>
+  <polygon points="18,31 50,48 50,84 18,67" fill="#0D1B3E" />
   <!-- Right face -->
-  <polygon points="82,31 50,48 50,84 82,67" fill="#0D1B3E" opacity="0.7"/>
+  <polygon points="82,31 50,48 50,84 82,67" fill="#0D1B3E" opacity="0.7" />
 </svg>

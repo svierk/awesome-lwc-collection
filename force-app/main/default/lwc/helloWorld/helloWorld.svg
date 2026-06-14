@@ -1,8 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" rx="12" fill="#FFFFFF" />
   <!-- Left bracket -->
-  <polyline points="32,26 14,50 32,74" fill="none" stroke="#0D1B3E" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline
+    points="32,26 14,50 32,74"
+    fill="none"
+    stroke="#0D1B3E"
+    stroke-width="8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
   <!-- Slash -->
-  <line x1="59" y1="22" x2="41" y2="78" stroke="#00A1E0" stroke-width="8" stroke-linecap="round"/>
+  <line x1="59" y1="22" x2="41" y2="78" stroke="#00A1E0" stroke-width="8" stroke-linecap="round" />
   <!-- Right bracket -->
-  <polyline points="68,26 86,50 68,74" fill="none" stroke="#0D1B3E" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <polyline
+    points="68,26 86,50 68,74"
+    fill="none"
+    stroke="#0D1B3E"
+    stroke-width="8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
 </svg>
