@@ -15,25 +15,98 @@ The repository should provide a collection of ready-to-use Lightning Web Compone
 
 The following list of components is part of this repo. All components contain corresponding unit tests and docs.
 
-|                                                                                                                                                           | Component                                                                                                                                          | Description                                                                                |
-| --------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| <img src="force-app/main/default/lwc/base64ToPdf/base64ToPdf.svg" alt="Base64 To PDF" width="36" height="36"/>                                            | [Base64 To PDF](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/base64ToPdf)                                 | A simple utility for Base64 encoded strings to decode and download them as PDF file.       |
-| <img src="force-app/main/default/lwc/contentDocumentTable/contentDocumentTable.svg" alt="Content Document Table" width="36" height="36"/>                 | [Content Document Table](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/contentDocumentTable)               | A generic table to show shared documents from a Salesforce Files library.                  |
-| <img src="force-app/main/default/lwc/csvToDatatable/csvToDatatable.svg" alt="CSV To Datatable" width="36" height="36"/>                                   | [CSV To Datatable](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/csvToDatatable)                           | A simple parser for UTF-8 encoded, comma separated .csv files.                             |
-| <img src="force-app/main/default/lwc/customCarousel/customCarousel.svg" alt="Custom Carousel" width="36" height="36"/>                                    | [Custom Carousel](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/customCarousel)                            | A simple custom carousel with different configuration options.                             |
-| <img src="force-app/main/default/lwc/customDatatable/customDatatable.svg" alt="Custom Datatable (Apex)" width="36" height="36"/>                          | [Custom Datatable (Apex)](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/customDatatable)                   | A basic custom datatable with different configuration options.                             |
-| <img src="force-app/main/default/lwc/graphqlDatatable/graphqlDatatable.svg" alt="Custom Datatable (GraphQL Adapter)" width="36" height="36"/>             | [Custom Datatable (GraphQL Adapter)](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/graphqlDatatable)       | A custom datatable powered by the GraphQL wire adapter instead of Apex.                    |
-| <img src="force-app/main/default/lwc/customMapView/customMapView.svg" alt="Custom Map View (UI Record API)" width="36" height="36"/>                      | [Custom Map View (UI Record API)](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/customMapView)             | Configurable map component for displaying locations via Google Maps API.                   |
-| <img src="force-app/main/default/lwc/graphqlMapView/graphqlMapView.svg" alt="Custom Map View (GraphQL Adapter)" width="36" height="36"/>                  | [Custom Map View (GraphQL Adapter)](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/graphqlMapView)          | Configurable map component for displaying locations via the GraphQL wire adapter.          |
-| <img src="force-app/main/default/lwc/dragAndDrop/dragAndDrop.svg" alt="Drag & Drop Example" width="36" height="36"/>                                      | [Drag & Drop Example](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/dragAndDrop)                           | An example showing the use of the HTML Drag and Drop API with LWC.                         |
-| <img src="force-app/main/default/lwc/helloWorld/helloWorld.svg" alt="Hello World" width="36" height="36"/>                                                | [Hello World](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/helloWorld)                                    | An example LWC that adds a classic greeting to any page.                                   |
-| <img src="force-app/main/default/lwc/iFrame/iFrame.svg" alt="iFrame" width="36" height="36"/>                                                             | [iFrame](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/iFrame)                                             | A custom iFrame component with different configuration options.                            |
-| <img src="force-app/main/default/lwc/multiSelectCombobox/multiSelectCombobox.svg" alt="Multi Select Combobox" width="36" height="36"/>                    | [Multi Select Combobox](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/multiSelectCombobox)                 | Combobox with different configuration options that also supports multi select.             |
-| <img src="force-app/main/default/lwc/openRecordPageFlowAction/openRecordPageFlowAction.svg" alt="Open Record Page Flow Action" width="36" height="36"/>   | [Open Record Page Flow Action](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/openRecordPageFlowAction)     | Component to forward to a record page from flow.                                           |
-| <img src="force-app/main/default/lwc/qrCodeGenerator/qrCodeGenerator.svg" alt="QR Code Generator (QRCode.js)" width="36" height="36"/>                    | [QR Code Generator (QRCode.js)](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/qrCodeGenerator)             | A basic QR Code Generator with optional logo overlay using the external QRCode.js library. |
-| <img src="force-app/main/default/lwc/render3DElementsThreeJS/render3DElementsThreeJS.svg" alt="Render 3D Elements (Three.js)" width="36" height="36"/>    | [Render 3D Elements (Three.js)](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/render3DElementsThreeJS)     | A simple demo component for rendering 3D elements using Three.js.                          |
-| <img src="force-app/main/default/lwc/takeUserProfilePicture/takeUserProfilePicture.svg" alt="Take User Profile Picture (Webcam)" width="36" height="36"/> | [Take User Profile Picture (Webcam)](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/takeUserProfilePicture) | Lets Salesforce users take a new profile photo with their device's camera.                 |
-| <img src="force-app/main/default/lwc/visualforceToPdf/visualforceToPdf.svg" alt="Visualforce To PDF" width="36" height="36"/>                             | [Visualforce To PDF](https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/visualforceToPdf)                       | A simple utility for displaying Visualforce based PDF documents.                           |
+<table>
+  <tr>
+    <th width="60"></th>
+    <th align="left">Component</th>
+    <th align="left">Description</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/base64ToPdf/base64ToPdf.svg" alt="Base64 To PDF" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/base64ToPdf">Base64 To PDF</a></td>
+    <td>A simple utility for Base64 encoded strings to decode and download them as PDF file.</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/contentDocumentTable/contentDocumentTable.svg" alt="Content Document Table" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/contentDocumentTable">Content Document Table</a></td>
+    <td>A generic table to show shared documents from a Salesforce Files library.</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/csvToDatatable/csvToDatatable.svg" alt="CSV To Datatable" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/csvToDatatable">CSV To Datatable</a></td>
+    <td>A simple parser for UTF-8 encoded, comma separated .csv files.</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/customCarousel/customCarousel.svg" alt="Custom Carousel" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/customCarousel">Custom Carousel</a></td>
+    <td>A simple custom carousel with different configuration options.</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/customDatatable/customDatatable.svg" alt="Custom Datatable (Apex)" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/customDatatable">Custom Datatable (Apex)</a></td>
+    <td>A basic custom datatable with different configuration options.</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/graphqlDatatable/graphqlDatatable.svg" alt="Custom Datatable (GraphQL Adapter)" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/graphqlDatatable">Custom Datatable (GraphQL Adapter)</a></td>
+    <td>A custom datatable powered by the GraphQL wire adapter instead of Apex.</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/customMapView/customMapView.svg" alt="Custom Map View (UI Record API)" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/customMapView">Custom Map View (UI Record API)</a></td>
+    <td>Configurable map component for displaying locations via Google Maps API.</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/graphqlMapView/graphqlMapView.svg" alt="Custom Map View (GraphQL Adapter)" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/graphqlMapView">Custom Map View (GraphQL Adapter)</a></td>
+    <td>Configurable map component for displaying locations via the GraphQL wire adapter.</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/dragAndDrop/dragAndDrop.svg" alt="Drag &amp; Drop Example" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/dragAndDrop">Drag &amp; Drop Example</a></td>
+    <td>An example showing the use of the HTML Drag and Drop API with LWC.</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/helloWorld/helloWorld.svg" alt="Hello World" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/helloWorld">Hello World</a></td>
+    <td>An example LWC that adds a classic greeting to any page.</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/iFrame/iFrame.svg" alt="iFrame" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/iFrame">iFrame</a></td>
+    <td>A custom iFrame component with different configuration options.</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/multiSelectCombobox/multiSelectCombobox.svg" alt="Multi Select Combobox" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/multiSelectCombobox">Multi Select Combobox</a></td>
+    <td>Combobox with different configuration options that also supports multi select.</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/openRecordPageFlowAction/openRecordPageFlowAction.svg" alt="Open Record Page Flow Action" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/openRecordPageFlowAction">Open Record Page Flow Action</a></td>
+    <td>Component to forward to a record page from flow.</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/qrCodeGenerator/qrCodeGenerator.svg" alt="QR Code Generator (QRCode.js)" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/qrCodeGenerator">QR Code Generator (QRCode.js)</a></td>
+    <td>A basic QR Code Generator with optional logo overlay using the external QRCode.js library.</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/render3DElementsThreeJS/render3DElementsThreeJS.svg" alt="Render 3D Elements (Three.js)" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/render3DElementsThreeJS">Render 3D Elements (Three.js)</a></td>
+    <td>A simple demo component for rendering 3D elements using Three.js.</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/takeUserProfilePicture/takeUserProfilePicture.svg" alt="Take User Profile Picture (Webcam)" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/takeUserProfilePicture">Take User Profile Picture (Webcam)</a></td>
+    <td>Lets Salesforce users take a new profile photo with their device's camera.</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/visualforceToPdf/visualforceToPdf.svg" alt="Visualforce To PDF" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/visualforceToPdf">Visualforce To PDF</a></td>
+    <td>A simple utility for displaying Visualforce based PDF documents.</td>
+  </tr>
+</table>
 
 You can also find many more useful and reusable Lightning Web Components in the official [lwc-recipes](https://github.com/trailheadapps/lwc-recipes).
 
