@@ -28,7 +28,7 @@
     "server:lwc": "sf force lightning lwc start"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.5",
+    "@babel/core": "^7.29.6",
     "@babel/eslint-parser": "^7.28.5",
     "@lwc/eslint-plugin-lwc": "^3.5.0",
     "@prettier/plugin-xml": "^3.4.2",
