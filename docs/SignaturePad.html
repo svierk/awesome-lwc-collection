@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>JSDoc: Source: helloWorld/helloWorld.js</title>
+    <title>JSDoc: Class: SignaturePad</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -15,30 +15,43 @@
 
   <body>
     <div id="main">
-      <h1 class="page-title">Source: helloWorld/helloWorld.js</h1>
+      <h1 class="page-title">Class: SignaturePad</h1>
 
       <section>
-        <article>
-          <pre class="prettyprint source linenums"><code>import { api, LightningElement } from 'lwc';
+        <header>
+          <h2>
+            <span class="attribs"><span class="type-signature"></span></span>SignaturePad
+          </h2>
 
-/**
- * An example LWC that adds a classic greeting to any page.
- * @alias HelloWorld
- * @extends LightningElement
- * @hideconstructor
- *
- * @example
- * &lt;c-hello-world name="World">&lt;/c-hello-world>
- */
-export default class HelloWorld extends LightningElement {
-  /**
-   * Enter the name of the person to greet.
-   * @type {string}
-   * @default 'World'
-   */
-  @api name = 'World';
-}
-</code></pre>
+          <div class="class-description">A canvas-based signature capture component with mouse and touch support.</div>
+        </header>
+
+        <article>
+          <div class="container-overview">
+            <dl class="details">
+              <dt class="tag-source">Source:</dt>
+              <dd class="tag-source">
+                <ul class="dummy">
+                  <li>
+                    <a href="signaturePad_signaturePad.js.html">signaturePad/signaturePad.js</a>,
+                    <a href="signaturePad_signaturePad.js.html#line12">line 12</a>
+                  </li>
+                </ul>
+              </dd>
+            </dl>
+
+            <h5>Example</h5>
+
+            <pre
+              class="prettyprint"
+            ><code>&lt;c-signature-pad onsignaturechange={handleSignatureChange}>&lt;/c-signature-pad></code></pre>
+          </div>
+
+          <h3 class="subsection-title">Extends</h3>
+
+          <ul>
+            <li>LightningElement</li>
+          </ul>
         </article>
       </section>
     </div>
