@@ -1,0 +1,69 @@
+<template>
+  <lightning-card title="Signature Pad" icon-name="utility:edit">
+    <div class="slds-var-p-horizontal_medium slds-var-p-bottom_medium">
+      <div class="canvas-wrapper slds-var-m-bottom_small">
+        <canvas
+          class="signature-canvas"
+          onmousedown={handleMouseDown}
+          onmousemove={handleMouseMove}
+          onmouseup={handleMouseUp}
+          onmouseleave={handleMouseLeave}
+          ontouchstart={handleTouchStart}
+          ontouchmove={handleTouchMove}
+          ontouchend={handleTouchEnd}
+        ></canvas>
+        <template lwc:if={isEmpty}>
+          <span class="placeholder">Draw your signature here</span>
+        </template>
+      </div>
+
+      <div class="slds-grid slds-gutters slds-wrap slds-grid_vertical-align-start">
+        <div class="slds-col slds-size_1-of-2 slds-medium-size_3-of-12">
+          <lightning-input
+            type="color"
+            label="Pen Color"
+            value={penColor}
+            onchange={handleColorChange}
+          ></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2 slds-medium-size_4-of-12">
+          <lightning-input
+            type="range"
+            label={strokeWidthLabel}
+            min="1"
+            max="10"
+            step="1"
+            value={strokeWidth}
+            onchange={handleStrokeWidthChange}
+          ></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_5-of-12">
+          <div class="slds-grid slds-wrap slds-var-p-bottom_x-small action-buttons">
+            <lightning-button
+              data-id="undo"
+              label="Undo"
+              icon-name="utility:undo"
+              onclick={handleUndo}
+              disabled={isUndoDisabled}
+            ></lightning-button>
+            <lightning-button
+              data-id="clear"
+              label="Clear"
+              icon-name="utility:clear"
+              onclick={handleClear}
+              disabled={isEmpty}
+            ></lightning-button>
+            <lightning-button
+              data-id="download"
+              variant="brand"
+              label="Download"
+              icon-name="utility:download"
+              onclick={handleDownload}
+              disabled={isEmpty}
+            ></lightning-button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </lightning-card>
+</template>
