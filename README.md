@@ -97,6 +97,11 @@ The following list of components is part of this repo. All components contain co
     <td>A simple demo component for rendering 3D elements using Three.js.</td>
   </tr>
   <tr>
+    <td align="center"><img src="force-app/main/default/lwc/signaturePad/signaturePad.svg" alt="Signature Pad" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/signaturePad">Signature Pad</a></td>
+    <td>A canvas-based signature capture component with mouse and touch support.</td>
+  </tr>
+  <tr>
     <td align="center"><img src="force-app/main/default/lwc/takeUserProfilePicture/takeUserProfilePicture.svg" alt="Take User Profile Picture (Webcam)" width="36" height="36" /></td>
     <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/takeUserProfilePicture">Take User Profile Picture (Webcam)</a></td>
     <td>Lets Salesforce users take a new profile photo with their device's camera.</td>

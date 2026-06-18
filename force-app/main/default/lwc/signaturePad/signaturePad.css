@@ -1,0 +1,48 @@
+.canvas-wrapper {
+  position: relative;
+  height: 240px;
+  border: 1px solid #d8dde6;
+  border-radius: 0.25rem;
+  background-color: #ffffff;
+  overflow: hidden;
+}
+
+.signature-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #b0adab;
+  font-size: 0.875rem;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.action-buttons {
+  gap: 0.5rem;
+}
+
+@media (min-width: 768px) {
+  .action-buttons {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 767px) {
+  .canvas-wrapper {
+    height: 180px;
+  }
+
+  .action-buttons {
+    margin-top: 0.5rem;
+  }
+}
