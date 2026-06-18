@@ -163,7 +163,7 @@ export default class SignaturePad extends LightningElement {
   }
 
   handleStrokeWidthChange(event) {
-    this.strokeWidth = parseInt(event.target.value, 10);
+    this.strokeWidth = Number.parseInt(event.target.value, 10);
   }
 
   handleUndo() {
