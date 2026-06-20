@@ -39,8 +39,10 @@
             aria-label="Multi Select Combobox Dropdown"
             role="listbox"
           >
+            <label lwc:if={enableSearch} class="slds-assistive-text" for="multi-select-combobox-search">Search</label>
             <input
               lwc:if={enableSearch}
+              id="multi-select-combobox-search"
               class="multi-select-combobox__search"
               type="text"
               placeholder="Search..."
