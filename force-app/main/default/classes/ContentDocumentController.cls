@@ -2,7 +2,9 @@ public with sharing class ContentDocumentController {
   @AuraEnabled(cacheable=true)
   public static String getDocuments(String library, String folder, Id recordId) {
     try {
-      String folderName = folder != null ? folder : recordId.getSObjectType().getDescribe().getName();
+      String folderName = folder != null
+        ? folder
+        : recordId.getSObjectType().getDescribe(SObjectDescribeOptions.DEFERRED).getName();
 
       // get workspace library
       List<ContentWorkspace> cwList = [
@@ -58,7 +60,7 @@ public with sharing class ContentDocumentController {
     }
   }
 
-  @AuraEnabled
+  @AuraEnabled(cacheable=true)
   public static String getLatestVersion(Id recordId) {
     List<ContentVersion> versionList = [
       SELECT Id, IsLatest, Title, ContentDocumentId

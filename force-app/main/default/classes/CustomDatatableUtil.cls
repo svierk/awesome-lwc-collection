@@ -99,7 +99,7 @@ public with sharing class CustomDatatableUtil {
   private static List<Schema.FieldSetMember> readFieldSet(String objectName, String fieldSetName) {
     Map<String, Schema.SObjectType> globalDescribeMap = Schema.getGlobalDescribe();
     Schema.SObjectType sObjectTypeObj = globalDescribeMap.get(objectName);
-    Schema.DescribeSObjectResult describeSObjectResultObj = sObjectTypeObj.getDescribe();
+    Schema.DescribeSObjectResult describeSObjectResultObj = sObjectTypeObj.getDescribe(SObjectDescribeOptions.FULL);
     Schema.FieldSet fieldSetObj = describeSObjectResultObj.FieldSets.getMap().get(fieldSetName);
 
     return fieldSetObj.getFields();

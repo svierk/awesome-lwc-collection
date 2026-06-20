@@ -371,7 +371,9 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   _serializeGqlValue(val) {
     if (val === null || val === undefined) return 'null';
     if (typeof val === 'boolean' || typeof val === 'number') return String(val);
-    return `"${String(val).replaceAll('\\', '\\\\').replaceAll('"', '\\"')}"`;
+    return `"${String(val)
+      .replaceAll('\\', String.raw`\\`)
+      .replaceAll('"', String.raw`\"`)}"`;
   }
 
   handleSave(event) {
