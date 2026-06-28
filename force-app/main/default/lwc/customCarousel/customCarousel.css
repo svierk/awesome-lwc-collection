@@ -3,12 +3,9 @@
 }
 
 .text-section {
-  position: absolute;
   color: #f2f2f2;
   font-size: 15px;
   bottom: 0;
-  width: 100%;
-  text-align: center;
   background-color: rgba(0, 0, 0, 0.7);
 }
 
@@ -18,7 +15,6 @@ a {
 
 .prev,
 .next {
-  position: absolute;
   top: 50%;
   width: auto;
   padding: 16px;
@@ -40,7 +36,6 @@ a {
 
 .slideNumbers {
   font-size: 12px;
-  position: absolute;
   padding: 8px 12px;
   top: 0;
   color: #f2f2f2;
