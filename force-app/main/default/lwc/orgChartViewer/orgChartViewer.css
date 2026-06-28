@@ -1,0 +1,14 @@
+.chart-wrapper {
+  height: 480px;
+  border: 1px solid #d8dde6;
+  border-radius: 0.25rem;
+  background-color: #fafafa;
+}
+
+.chart-container {
+  height: 100%;
+}
+
+.loading-overlay {
+  inset: 0;
+}

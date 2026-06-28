@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <rect width="100" height="100" rx="12" fill="#FFFFFF" />
+  <!-- Connectors -->
+  <path d="M50,34 L50,44 M50,44 L26,44 L26,54 M50,44 L74,44 L74,54" fill="none" stroke="#0D1B3E" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.35" />
+  <!-- Top node -->
+  <rect x="34" y="16" width="32" height="18" rx="4" fill="#0D1B3E" />
+  <!-- Bottom left node -->
+  <rect x="10" y="54" width="32" height="18" rx="4" fill="#00A1E0" />
+  <!-- Bottom right node -->
+  <rect x="58" y="54" width="32" height="18" rx="4" fill="#00A1E0" />
+</svg>
