@@ -56,7 +56,7 @@
     ],
     "**/lwc/**/*.{css,html,js}": [
       "eslint",
-      "sfdx-lwc-jest --skipApiVersionCheck -- --passWithNoTests "
+      "sfdx-lwc-jest -- --passWithNoTests "
     ]
   }
 }
