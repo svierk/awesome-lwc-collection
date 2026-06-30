@@ -7,7 +7,7 @@ import { api, LightningElement } from 'lwc';
  * @hideconstructor
  *
  * @example
- * <c-multi-select-combobox-item key={item.key} item={item} onchange={handleChange}></c-multi-select-combobox-item>
+ * <c-multi-select-combobox-item key={item.value} item={item} onchange={handleChange}></c-multi-select-combobox-item>
  */
 export default class MultiSelectComboboxItem extends LightningElement {
   /**

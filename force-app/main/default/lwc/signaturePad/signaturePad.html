@@ -1,9 +1,9 @@
 <template>
   <lightning-card title="Signature Pad" icon-name="utility:edit">
     <div class="slds-var-p-horizontal_medium slds-var-p-bottom_medium">
-      <div class="canvas-wrapper slds-var-m-bottom_small">
+      <div class="canvas-wrapper slds-is-relative slds-scrollable_none slds-var-m-bottom_small">
         <canvas
-          class="signature-canvas"
+          class="signature-canvas slds-size_full"
           onmousedown={handleMouseDown}
           onmousemove={handleMouseMove}
           onmouseup={handleMouseUp}
@@ -13,7 +13,7 @@
           ontouchend={handleTouchEnd}
         ></canvas>
         <template lwc:if={isEmpty}>
-          <span class="placeholder">Draw your signature here</span>
+          <span class="placeholder slds-is-absolute">Draw your signature here</span>
         </template>
       </div>
 

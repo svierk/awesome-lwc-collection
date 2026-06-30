@@ -51,7 +51,7 @@
             class="search-input"
           ></lightning-input>
           <template lwc:if={showPagination}>
-            <p class="slds-text-body_small slds-m-bottom_xx-small record-count-text">{recordCountLabel}</p>
+            <p class="slds-text-body_small slds-m-bottom_xx-small slds-text-color_weak">{recordCountLabel}</p>
           </template>
           <ul class="slds-page-header__detail-row slds-p-around_none page-header-detail">
             <c-datatable-extension
@@ -101,7 +101,7 @@
         class="search-input slds-p-horizontal_medium"
       ></lightning-input>
       <template lwc:if={showPagination}>
-        <p class="slds-text-body_small slds-m-bottom_xx-small slds-p-horizontal_medium record-count-text">
+        <p class="slds-text-body_small slds-m-bottom_xx-small slds-p-horizontal_medium slds-text-color_weak">
           {recordCountLabel}
         </p>
       </template>
@@ -141,7 +141,7 @@
       class="search-input"
     ></lightning-input>
     <template lwc:if={showPagination}>
-      <p class="slds-text-body_small slds-m-bottom_xx-small record-count-text">{recordCountLabel}</p>
+      <p class="slds-text-body_small slds-m-bottom_xx-small slds-text-color_weak">{recordCountLabel}</p>
     </template>
     <c-datatable-extension
       lwc:spread={datatableProperties}

@@ -1,0 +1,74 @@
+<template>
+  <lightning-card title="Org Chart Viewer" icon-name="utility:org_chart">
+    <lightning-button
+      slot="actions"
+      data-id="expand-all"
+      label="Expand All"
+      icon-name="utility:expand_all"
+      onclick={handleExpandAll}
+      disabled={isToolbarDisabled}
+    ></lightning-button>
+    <lightning-button
+      slot="actions"
+      data-id="collapse-all"
+      label="Collapse All"
+      icon-name="utility:collapse_all"
+      onclick={handleCollapseAll}
+      disabled={isToolbarDisabled}
+    ></lightning-button>
+    <lightning-button
+      slot="actions"
+      data-id="fit"
+      label="Fit to Screen"
+      icon-name="utility:full_width_view"
+      onclick={handleFit}
+      disabled={isToolbarDisabled}
+    ></lightning-button>
+    <lightning-button
+      slot="actions"
+      data-id="export-png"
+      variant="brand"
+      label="Export PNG"
+      icon-name="utility:download"
+      onclick={handleExportPng}
+      disabled={isToolbarDisabled}
+    ></lightning-button>
+
+    <lightning-input
+      data-id="search-input"
+      type="search"
+      label="Search"
+      variant="label-hidden"
+      placeholder="Search by name..."
+      value={searchTerm}
+      onchange={handleSearchChange}
+      disabled={isToolbarDisabled}
+      class="search-input slds-var-p-horizontal_medium"
+    ></lightning-input>
+
+    <template lwc:if={isLibraryLoaded}>
+      <p class="slds-text-body_small slds-text-color_weak slds-var-m-top_xx-small slds-var-p-horizontal_medium">
+        {nodeCountLabel}
+      </p>
+    </template>
+
+    <template lwc:if={error}>
+      <div class="slds-box slds-theme_error slds-var-p-horizontal_medium slds-var-m-top_small">
+        <p>{error}</p>
+      </div>
+    </template>
+
+    <div class="slds-var-m-top_small">
+      <div class="chart-wrapper slds-is-relative slds-scrollable_none">
+        <div class="chart-container slds-size_full" data-id="chart-container" lwc:dom="manual"></div>
+        <template lwc:if={isToolbarDisabled}>
+          <div
+            class="loading-overlay slds-is-absolute slds-grid slds-grid_align-center slds-grid_vertical-align-center"
+          >
+            <lightning-spinner alternative-text="Loading chart library..." size="medium"></lightning-spinner>
+          </div>
+        </template>
+      </div>
+    </div>
+  </lightning-card>
+</template>

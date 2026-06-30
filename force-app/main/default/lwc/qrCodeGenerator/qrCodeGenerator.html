@@ -19,7 +19,7 @@
       ></lightning-input>
 
       <template lwc:if={hasLogo}>
-        <div class="logo-preview slds-var-m-bottom_medium">
+        <div class="logo-preview slds-theme_shade slds-var-p-around_x-small slds-var-m-bottom_medium">
           <img src={logoDataUrl} alt="Logo preview" class="logo-preview-image" />
           <lightning-button-icon
             icon-name="utility:close"
@@ -43,7 +43,7 @@
       </div>
 
       <template lwc:if={isLoading}>
-        <div class="spinner-container">
+        <div class="slds-grid slds-grid_align-center slds-var-p-vertical_x-large">
           <lightning-spinner alternative-text="Generating..." size="medium"></lightning-spinner>
         </div>
       </template>
@@ -55,7 +55,7 @@
       </template>
 
       <template lwc:if={hasQRCode}>
-        <div class="qr-code-container slds-var-m-top_medium">
+        <div class="qr-code-container slds-grid slds-grid_align-center slds-var-p-around_medium slds-var-m-top_medium">
           <img src={qrCodeDataUrl} alt="Generated QR Code" class="qr-code-image" />
         </div>
       </template>
