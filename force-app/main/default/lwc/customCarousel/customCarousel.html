@@ -13,8 +13,26 @@
         </div>
       </div>
     </template>
-    <a if:false={hideNavigationButtons} class="prev slds-is-absolute" onclick={slideBackward}>&#10094;</a>
-    <a if:false={hideNavigationButtons} class="next slds-is-absolute" onclick={slideForward}>&#10095;</a>
+    <button
+      if:false={hideNavigationButtons}
+      type="button"
+      class="prev slds-is-absolute"
+      title="Previous slide"
+      aria-label="Previous slide"
+      onclick={slideBackward}
+    >
+      &#10094;
+    </button>
+    <button
+      if:false={hideNavigationButtons}
+      type="button"
+      class="next slds-is-absolute"
+      title="Next slide"
+      aria-label="Next slide"
+      onclick={slideForward}
+    >
+      &#10095;
+    </button>
   </div>
   <div if:false={hideNavigationDots} class="slds-text-align_center slds-var-p-around_medium">
     <template for:each={slidesData} for:item="slide">

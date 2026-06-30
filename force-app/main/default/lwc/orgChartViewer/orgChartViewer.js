@@ -126,7 +126,9 @@ export default class OrgChartViewer extends LightningElement {
       return;
     }
 
-    if (!this._chart) {
+    if (this._chart) {
+      this._chart.svgWidth(width).svgHeight(height).render();
+    } else {
       this._chart = new globalThis.d3.OrgChart()
         .container(container)
         .svgWidth(width)
@@ -145,8 +147,6 @@ export default class OrgChartViewer extends LightningElement {
         .onNodeClick((node) => this.handleNodeClick(node))
         .onExpandOrCollapse(() => this.updateNodeCount())
         .render();
-    } else {
-      this._chart.svgWidth(width).svgHeight(height).render();
     }
 
     this._chart.fit();
@@ -190,7 +190,7 @@ export default class OrgChartViewer extends LightningElement {
   }
 
   handleNodeClick(node) {
-    const record = node && node.data ? node.data : node;
+    const record = node?.data ? node.data : node;
     this.dispatchEvent(new CustomEvent('nodeselect', { detail: { record } }));
   }
 

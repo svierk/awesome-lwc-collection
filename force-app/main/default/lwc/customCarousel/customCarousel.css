@@ -9,18 +9,17 @@
   background-color: rgba(0, 0, 0, 0.7);
 }
 
-a {
-  text-decoration: none;
-}
-
 .prev,
 .next {
   top: 50%;
   width: auto;
   padding: 16px;
   color: #fff;
+  font: inherit;
   font-weight: 700;
   cursor: pointer;
+  border: none;
+  background: transparent;
   border-radius: 0 3px 3px 0;
 }
 
