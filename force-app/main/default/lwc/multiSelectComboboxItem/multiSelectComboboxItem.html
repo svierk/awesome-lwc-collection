@@ -1,12 +1,5 @@
 <template>
-  <li
-    role="presentation"
-    key={item.key}
-    class={itemClass}
-    data-id={item.key}
-    data-name={item.value}
-    onclick={handleClick}
-  >
+  <li role="presentation" class={itemClass} data-id={item.value} data-name={item.value} onclick={handleClick}>
     <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
       <span class="slds-media__figure">
         <lightning-icon

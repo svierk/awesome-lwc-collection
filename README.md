@@ -47,18 +47,18 @@ The following list of components is part of this repo. All components contain co
     <td>A basic custom datatable with different configuration options.</td>
   </tr>
   <tr>
-    <td align="center"><img src="force-app/main/default/lwc/graphqlDatatable/graphqlDatatable.svg" alt="Custom Datatable (GraphQL Adapter)" width="36" height="36" /></td>
-    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/graphqlDatatable">Custom Datatable (GraphQL Adapter)</a></td>
+    <td align="center"><img src="force-app/main/default/lwc/graphqlDatatable/graphqlDatatable.svg" alt="Custom Datatable (GraphQL)" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/graphqlDatatable">Custom Datatable (GraphQL)</a></td>
     <td>A custom datatable powered by the GraphQL wire adapter instead of Apex.</td>
   </tr>
   <tr>
-    <td align="center"><img src="force-app/main/default/lwc/customMapView/customMapView.svg" alt="Custom Map View (UI Record API)" width="36" height="36" /></td>
-    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/customMapView">Custom Map View (UI Record API)</a></td>
+    <td align="center"><img src="force-app/main/default/lwc/customMapView/customMapView.svg" alt="Custom Map View (UI API)" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/customMapView">Custom Map View (UI API)</a></td>
     <td>Configurable map component for displaying locations via Google Maps API.</td>
   </tr>
   <tr>
-    <td align="center"><img src="force-app/main/default/lwc/graphqlMapView/graphqlMapView.svg" alt="Custom Map View (GraphQL Adapter)" width="36" height="36" /></td>
-    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/graphqlMapView">Custom Map View (GraphQL Adapter)</a></td>
+    <td align="center"><img src="force-app/main/default/lwc/graphqlMapView/graphqlMapView.svg" alt="Custom Map View (GraphQL)" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/graphqlMapView">Custom Map View (GraphQL)</a></td>
     <td>Configurable map component for displaying locations via the GraphQL wire adapter.</td>
   </tr>
   <tr>
@@ -87,13 +87,18 @@ The following list of components is part of this repo. All components contain co
     <td>Component to forward to a record page from flow.</td>
   </tr>
   <tr>
-    <td align="center"><img src="force-app/main/default/lwc/qrCodeGenerator/qrCodeGenerator.svg" alt="QR Code Generator (QRCode.js)" width="36" height="36" /></td>
-    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/qrCodeGenerator">QR Code Generator (QRCode.js)</a></td>
+    <td align="center"><img src="force-app/main/default/lwc/orgChartViewer/orgChartViewer.svg" alt="Org Chart Viewer" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/orgChartViewer">Org Chart Viewer</a></td>
+    <td>An interactive organization chart with search, expand/collapse and PNG export, powered by d3-org-chart.</td>
+  </tr>
+  <tr>
+    <td align="center"><img src="force-app/main/default/lwc/qrCodeGenerator/qrCodeGenerator.svg" alt="QR Code Generator" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/qrCodeGenerator">QR Code Generator</a></td>
     <td>A basic QR Code Generator with optional logo overlay using the external QRCode.js library.</td>
   </tr>
   <tr>
-    <td align="center"><img src="force-app/main/default/lwc/render3DElementsThreeJS/render3DElementsThreeJS.svg" alt="Render 3D Elements (Three.js)" width="36" height="36" /></td>
-    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/render3DElementsThreeJS">Render 3D Elements (Three.js)</a></td>
+    <td align="center"><img src="force-app/main/default/lwc/render3DElementsThreeJS/render3DElementsThreeJS.svg" alt="Render 3D Elements" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/render3DElementsThreeJS">Render 3D Elements</a></td>
     <td>A simple demo component for rendering 3D elements using Three.js.</td>
   </tr>
   <tr>
@@ -103,7 +108,7 @@ The following list of components is part of this repo. All components contain co
   </tr>
   <tr>
     <td align="center"><img src="force-app/main/default/lwc/takeUserProfilePicture/takeUserProfilePicture.svg" alt="Take User Profile Picture (Webcam)" width="36" height="36" /></td>
-    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/takeUserProfilePicture">Take User Profile Picture (Webcam)</a></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/takeUserProfilePicture">Take User Profile Picture</a></td>
     <td>Lets Salesforce users take a new profile photo with their device's camera.</td>
   </tr>
   <tr>
