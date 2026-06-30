@@ -33,7 +33,9 @@ public class ContentDocumentControllerTest {
       String jsonString = ContentDocumentController.getDocuments('Test Documents', null, accountId);
       Test.stopTest();
 
-      Assert.areNotEqual('', jsonString, 'Returned documents list is empty.');
+      Assert.isNotNull(jsonString, 'Library/folder lookup failed; no documents were returned.');
+      List<Object> documents = (List<Object>) JSON.deserializeUntyped(jsonString);
+      Assert.areEqual(1, documents.size(), 'Expected the file in the Account folder to be returned.');
     }
   }
 
@@ -163,11 +165,11 @@ public class ContentDocumentControllerTest {
 
   private static ContentFolderMember getContentFolderMember(Id fileId, Id parentId, Id childId) {
     ContentFolderMember cfm = [
-      SELECT Id, ChildRecordId, ParentContentFolderId
+      SELECT Id
       FROM ContentFolderMember
       WHERE ChildRecordId = :fileId AND ParentContentFolderId = :parentId
     ];
-    cfm.ParentContentFolderId = childId;
-    return cfm;
+
+    return new ContentFolderMember(Id = cfm.Id, ParentContentFolderId = childId);
   }
 }
