@@ -28,14 +28,12 @@ jobs:
         run: npm run test:unit:coverage
       - name: Install SF CLI
         uses: svierk/sfdx-cli-setup@main
-        with:
-          version: 2.142.5
       - name: Salesforce Org Login
         uses: svierk/sfdx-login@main
         with:
           client-id: ${{ secrets.SFDX_CONSUMER_KEY }}
           jwt-secret-key: ${{ secrets.SFDX_JWT_SECRET_KEY }}
-          username: ${{ secrets.SFDX_USERNAME }}
+          username: ${{ vars.SFDX_USERNAME }}
       - name: Deploy Metadata
         run: sf project deploy start
       - name: Apex Unit Tests
