@@ -24,8 +24,6 @@ jobs:
         run: npm run prettier
       - name: Check ESLint
         run: npm run lint:sonar
-      - name: LWC Unit Tests
-        run: npm run test:unit:coverage
       - name: Install SF CLI
         uses: svierk/sfdx-cli-setup@main
       - name: Salesforce Org Login
@@ -35,10 +33,13 @@ jobs:
           jwt-secret-key: ${{ secrets.SFDX_JWT_SECRET_KEY }}
           username: ${{ vars.SFDX_USERNAME }}
       - name: Deploy Metadata
-        run: sf project deploy start
-      - name: Apex Unit Tests
-        run: sf apex run test --test-level=RunLocalTests --code-coverage
-          --result-format=human -w 30 -d ./tests/apex --detailed-coverage
+        uses: svierk/sfdx-deploy@main
+      - name: Run Tests
+        uses: svierk/sfdx-run-tests@main
+        with:
+          apex: true
+          lwc: true
+          flow: false # enable once Flow tests exist in the project
       - name: SonarCloud Scan
         uses: SonarSource/sonarqube-scan-action@master
         env:
