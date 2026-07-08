@@ -5,7 +5,7 @@
 [![codecov](https://codecov.io/gh/svierk/awesome-lwc-collection/branch/main/graph/badge.svg?token=UFE3TWMECQ)](https://codecov.io/gh/svierk/awesome-lwc-collection)
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsvierk%2Fawesome-lwc-collection.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsvierk%2Fawesome-lwc-collection?ref=badge_shield)
 
-<img src="./images/awesome-lwc-collection.png" alt="awesome-lwc-collection" width="900"/>
+<img src="./images/awesome-lwc-collection-banner.png" alt="awesome-lwc-collection" width="900"/>
 
 ## About the project
 
@@ -198,10 +198,18 @@ To execute all unit tests with generated code coverage run:
 npm run test:unit:coverage
 ```
 
-### Documentation with JSDoc
+### Documentation with VitePress
 
-To generate code documentation with _JSDoc_ in HTML format run:
+The [component documentation site](https://svierk.github.io/awesome-lwc-collection/) is built with [VitePress](https://vitepress.dev/) directly from the individual component READMEs, so it stays in sync automatically and is redeployed to GitHub Pages on every change to `main`.
+
+To preview the docs site locally with hot reload run:
 
 ```
-npm run docs
+npm run docs:dev
+```
+
+To build the static site (as it is published) run:
+
+```
+npm run docs:build
 ```

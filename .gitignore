@@ -15,6 +15,14 @@ deploy-options.json
 coverage/
 tests/
 
+# VitePress docs (generated from component READMEs on every build)
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+docs/.vitepress/generated.json
+docs/components/
+docs/public/
+docs/index.md
+
 # Logs
 logs
 *.log

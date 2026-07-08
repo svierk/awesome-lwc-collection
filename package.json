@@ -13,7 +13,10 @@
     "npm": "11.x.x"
   },
   "scripts": {
-    "docs": "jsdoc -c jsdoc.config.json",
+    "docs:generate": "node scripts/docs/generate.mjs",
+    "docs:dev": "npm run docs:generate && vitepress dev docs",
+    "docs:build": "npm run docs:generate && vitepress build docs",
+    "docs:preview": "vitepress preview docs",
     "lint": "eslint **/lwc/**/*.js",
     "lint:sonar": "eslint -f json -o eslint-report.json **/lwc/**/*.js",
     "test": "npm run test:unit",
@@ -44,11 +47,11 @@
     "husky": "^9.1.7",
     "jest-canvas-mock": "^2.5.2",
     "jest-junit": "^17.0.0",
-    "jsdoc": "^4.0.5",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.3",
     "prettier-plugin-apex": "^2.2.6",
-    "typescript": "~6.0.3"
+    "typescript": "~6.0.3",
+    "vitepress": "^1.6.4"
   },
   "lint-staged": {
     "**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}": [

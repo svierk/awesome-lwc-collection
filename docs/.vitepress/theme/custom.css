@@ -1,0 +1,50 @@
+/**
+ * Enlarge the hero showcase image on the landing page.
+ *
+ * The default theme caps the hero image at 320px and frames it with a circular
+ * glow that suits a logo, not a wide screenshot. We render the image as a plain,
+ * responsive block so it scales up to a comfortable size on every breakpoint.
+ * Tweak --hero-image-max-width to make it larger or smaller.
+ */
+:root {
+  --hero-image-max-width: 370px;
+}
+
+.VPHero .image {
+  margin: 0 0 2.5rem;
+}
+
+.VPHero .image-bg {
+  display: none;
+}
+
+.VPHero .image-container {
+  position: relative;
+  width: 100%;
+  max-width: var(--hero-image-max-width);
+  height: auto;
+  margin: 0 auto;
+  padding: 0;
+  transform: none;
+}
+
+.VPHero .image-src {
+  position: static;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+  max-height: none;
+  transform: none;
+  border-radius: 12px;
+  box-shadow: var(--vp-shadow-3);
+}
+
+@media (min-width: 960px) {
+  :root {
+    --hero-image-max-width: 450px;
+  }
+
+  .VPHero .image {
+    margin: 0;
+  }
+}

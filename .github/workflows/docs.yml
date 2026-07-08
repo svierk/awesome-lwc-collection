@@ -1,0 +1,52 @@
+name: Docs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'force-app/main/default/lwc/**/README.md'
+      - 'images/**'
+      - 'docs/**'
+      - 'scripts/docs/**'
+      - '.github/workflows/docs.yml'
+  workflow_dispatch:
+
+# allow only one concurrent deployment, without cancelling an in-progress run.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+        with:
+          fetch-depth: 0 # required for last updated timestamps
+      - name: Select Node Version
+        uses: svierk/get-node-version@main
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts
+      - name: Build Docs
+        run: npm run docs:build
+      - name: Upload Pages Artifact
+        uses: actions/upload-pages-artifact@main
+        with:
+          path: docs/.vitepress/dist
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write # to deploy to pages
+      id-token: write # to verify the deployment originates from an appropriate source
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@main

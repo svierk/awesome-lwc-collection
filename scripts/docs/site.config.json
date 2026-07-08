@@ -1,0 +1,34 @@
+{
+  "hero": {
+    "name": "Awesome LWC Collection",
+    "text": "Ready-to-use Lightning Web Components",
+    "tagline": "A curated, battle-tested set of Lightning Web Components to drop into your SFDX project — each with unit tests, accessibility checks and docs.",
+    "image": "/images/awesome-lwc-collection-hero.png",
+    "actions": [
+      { "theme": "brand", "text": "Browse components", "link": "/components/customDatatable" },
+      { "theme": "alt", "text": "View on GitHub", "link": "https://github.com/svierk/awesome-lwc-collection" }
+    ]
+  },
+  "categories": [
+    {
+      "text": "Data & Tables",
+      "components": ["customDatatable", "graphqlDatatable", "csvToDatatable", "multiSelectCombobox"]
+    },
+    {
+      "text": "Files & Documents",
+      "components": ["base64ToPdf", "contentDocumentTable", "visualforceToPdf"]
+    },
+    {
+      "text": "Maps & Charts",
+      "components": ["customMapView", "graphqlMapView", "orgChartViewer", "render3DElementsThreeJS"]
+    },
+    {
+      "text": "Media & Input",
+      "components": ["signaturePad", "takeUserProfilePicture", "qrCodeGenerator", "customCarousel", "dragAndDrop"]
+    },
+    {
+      "text": "Fundamentals & Integration",
+      "components": ["helloWorld", "iFrame", "openRecordPageFlowAction"]
+    }
+  ]
+}
