@@ -10,3 +10,11 @@
 
 coverage/
 tests/
+
+# Generated VitePress docs
+docs/.vitepress/dist
+docs/.vitepress/cache
+docs/.vitepress/generated.json
+docs/components/
+docs/public/
+docs/index.md
