@@ -1,4 +1,4 @@
-# QR Code Generator (QRCode.js)
+# QR Code Generator
 
 A basic QR Code Generator with optional logo overlay using the external QRCode.js library.
 
