@@ -69,3 +69,23 @@
     margin: 0;
   }
 }
+
+/**
+ * Even out the component grid on the landing page.
+ *
+ * Descriptions come from the component READMEs and vary in length, so a single
+ * long one would inflate its whole row and leave large gaps in the shorter
+ * cards. Cap the visible description to a fixed number of lines (the full text
+ * stays on each component's page). Tune --feature-details-lines to taste.
+ */
+:root {
+  --feature-details-lines: 4;
+}
+
+.VPFeatures .VPFeature .details {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--feature-details-lines);
+  line-clamp: var(--feature-details-lines);
+  overflow: hidden;
+}
