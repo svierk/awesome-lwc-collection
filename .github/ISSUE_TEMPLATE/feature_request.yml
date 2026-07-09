@@ -1,0 +1,36 @@
+name: 💡 Feature request
+description: Suggest an improvement to an existing component or the tooling.
+title: '[Feature]: '
+labels: ['enhancement']
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for the suggestion! Use this for enhancements to existing components, docs or CI. For a brand-new component, please use the "New component proposal" template instead.
+  - type: input
+    id: area
+    attributes:
+      label: Related component or area
+      placeholder: e.g. Custom Datatable, docs catalog, CI
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or motivation
+      description: What problem would this solve? Is it related to a frustration?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: Describe what you would like to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any alternative solutions or workarounds you have considered.
+    validations:
+      required: false

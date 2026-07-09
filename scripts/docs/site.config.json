@@ -2,7 +2,7 @@
   "hero": {
     "name": "Awesome LWC Collection",
     "text": "Ready-to-use Lightning Web Components",
-    "tagline": "A curated, battle-tested set of Lightning Web Components to drop into your SFDX project — each with unit tests, accessibility checks and docs.",
+    "tagline": "A curated, battle-tested set of Lightning Web Components to drop into your SFDX project - each with unit tests, accessibility checks and docs.",
     "image": "/images/awesome-lwc-collection-hero.png",
     "actions": [
       { "theme": "brand", "text": "Browse components", "link": "/components/customDatatable" },
