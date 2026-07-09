@@ -166,7 +166,7 @@ describe('c-signature-pad', () => {
     await flushPromises();
 
     // then
-    // one stroke remains — still not empty
+    // one stroke remains - still not empty
     expect(element.shadowRoot.querySelector('.placeholder')).toBeNull();
 
     // when

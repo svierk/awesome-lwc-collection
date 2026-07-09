@@ -315,16 +315,16 @@ describe('c-custom-datatable', () => {
 
     await flushPromises();
 
-    // then — currently on page 2
+    // then - currently on page 2
     expect(pagination.paginationLabel).toContain('Page 2 of');
 
-    // when — sort event fired by datatable
+    // when - sort event fired by datatable
     const datatable = element.shadowRoot.querySelector('c-datatable-extension');
     datatable.dispatchEvent(new CustomEvent('sort', { detail: { fieldName: 'CaseNumber', sortDirection: 'asc' } }));
 
     await flushPromises();
 
-    // then — page resets to 1 and sort indicator state is updated
+    // then - page resets to 1 and sort indicator state is updated
     expect(pagination.paginationLabel).toContain('Page 1 of');
     expect(datatable.sortedBy).toBe('CaseNumber');
     expect(datatable.sortedDirection).toBe('asc');

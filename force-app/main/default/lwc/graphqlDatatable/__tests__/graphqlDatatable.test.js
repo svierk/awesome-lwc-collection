@@ -441,26 +441,26 @@ describe('c-graphql-datatable', () => {
     pagination.dispatchEvent(new CustomEvent('next'));
     await flushPromises();
 
-    // then — currently on page 2
+    // then - currently on page 2
     expect(pagination.paginationLabel).toContain('Page 2 of');
 
-    // when — sort by name (first click → asc, datatable fires defaultSortDirection)
+    // when - sort by name (first click → asc, datatable fires defaultSortDirection)
     const datatable = element.shadowRoot.querySelector('c-datatable-extension');
     datatable.dispatchEvent(new CustomEvent('sort', { detail: { fieldName: 'Name', sortDirection: 'asc' } }));
     await flushPromises();
 
-    // then — page resets to 1 and direction is asc
+    // then - page resets to 1 and direction is asc
     expect(pagination.paginationLabel).toContain('Page 1 of');
     expect(datatable.sortedDirection).toBe('asc');
 
-    // when — datatable fires toggled direction when same column is clicked again
+    // when - datatable fires toggled direction when same column is clicked again
     datatable.dispatchEvent(new CustomEvent('sort', { detail: { fieldName: 'Name', sortDirection: 'desc' } }));
     await flushPromises();
 
     // then
     expect(datatable.sortedDirection).toBe('desc');
 
-    // when — click different column → datatable fires defaultSortDirection for new column
+    // when - click different column → datatable fires defaultSortDirection for new column
     datatable.dispatchEvent(new CustomEvent('sort', { detail: { fieldName: 'Email', sortDirection: 'asc' } }));
     await flushPromises();
 

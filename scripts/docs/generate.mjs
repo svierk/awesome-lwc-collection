@@ -3,11 +3,11 @@
  * Generates the VitePress documentation from the per-component READMEs.
  *
  * Single source of truth: force-app/main/default/lwc/<component>/README.md
- * Only components that ship a README are treated as public components — every
+ * Only components that ship a README are treated as public components - every
  * other LWC in the project is a child/supporting component and stays out of the
  * catalog. Running this on every build keeps the site in sync automatically.
  */
-import { readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, existsSync, readdirSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -116,7 +116,7 @@ function buildSidebar(components, meta) {
     const items = [];
     for (const name of category.components) {
       if (!meta[name]) {
-        console.warn(`[docs] categorized component "${name}" has no README — skipped`);
+        console.warn(`[docs] categorized component "${name}" has no README - skipped`);
         continue;
       }
       assigned.add(name);

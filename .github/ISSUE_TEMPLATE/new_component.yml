@@ -1,0 +1,47 @@
+name: ✨ New component proposal
+description: Propose a new Lightning Web Component for the collection.
+title: '[Component]: '
+labels: ['enhancement', 'new component']
+body:
+  - type: markdown
+    attributes:
+      value: Have an idea for a reusable component? Great! Please describe it so we can align before any implementation.
+  - type: input
+    id: name
+    attributes:
+      label: Proposed component name
+      placeholder: e.g. Rich Text Editor
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What should it do?
+      description: Describe the functionality and the main use case.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why is it broadly useful?
+      description: Explain why this belongs in a general-purpose collection rather than a single project.
+    validations:
+      required: true
+  - type: input
+    id: dependencies
+    attributes:
+      label: External dependencies
+      description: Any third-party libraries or Salesforce features required (leave empty if none).
+      placeholder: e.g. Three.js as a static resource
+    validations:
+      required: false
+  - type: dropdown
+    id: contribute
+    attributes:
+      label: Would you like to contribute it?
+      options:
+        - 'Yes, I would like to implement it'
+        - 'Maybe, with some guidance'
+        - 'No, just suggesting the idea'
+    validations:
+      required: true

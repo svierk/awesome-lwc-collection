@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 📖 Component Catalog
+    url: https://svierk.github.io/awesome-lwc-collection/
+    about: Browse the documented components before filing an issue.
+  - name: 💡 More LWC examples
+    url: https://github.com/trailheadapps/lwc-recipes
+    about: Looking for more reusable components? Check the official lwc-recipes.

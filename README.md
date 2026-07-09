@@ -13,7 +13,7 @@ The repository should provide a collection of ready-to-use Lightning Web Compone
 
 ## Components available
 
-Each component has a dedicated page — with a screenshot, a full attribute reference and usage examples — in the **component catalog**, built automatically from the component READMEs and grouped into the same categories used below. Every listed component ships with corresponding unit tests and docs.
+Each component has a dedicated page - with a screenshot, a full attribute reference and usage examples - in the **component catalog**, built automatically from the component READMEs and grouped into the same categories used below. Every listed component ships with corresponding unit tests and docs.
 
 <a href="https://svierk.github.io/awesome-lwc-collection/"><img src="https://img.shields.io/badge/Component_Catalog-Explore_the_docs-0969dd?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Explore the component catalog" /></a>
 
@@ -257,3 +257,7 @@ To build the static site (as it is published) run:
 ```
 npm run docs:build
 ```
+
+## Contributing
+
+Contributions are welcome - whether it's a bug fix, an improvement or a brand-new component. Please read the [contributing guide](CONTRIBUTING.md) to get started and note the [code of conduct](https://github.com/svierk/awesome-lwc-collection?tab=coc-ov-file). Security issues should be reported privately as described in the [security policy](SECURITY.md).
