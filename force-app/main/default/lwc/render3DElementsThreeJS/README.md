@@ -1,4 +1,4 @@
-# Render 3D Elements (Three.js)
+# Render 3D Elements
 
 A simple demo component for rendering 3D elements using Three.js.
 

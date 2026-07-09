@@ -1,4 +1,25 @@
 /**
+ * Brand color.
+ *
+ * Align the theme accent with the blue Salesforce and component icons used
+ * across the repo instead of the default indigo. Dark mode uses a lighter blue
+ * for sufficient contrast on dark backgrounds.
+ */
+:root {
+  --vp-c-brand-1: #0969dd;
+  --vp-c-brand-2: #0a63cc;
+  --vp-c-brand-3: #0969dd;
+  --vp-c-brand-soft: rgba(9, 105, 221, 0.14);
+}
+
+.dark {
+  --vp-c-brand-1: #4493f8;
+  --vp-c-brand-2: #58a6ff;
+  --vp-c-brand-3: #1f6feb;
+  --vp-c-brand-soft: rgba(56, 139, 253, 0.16);
+}
+
+/**
  * Enlarge the hero showcase image on the landing page.
  *
  * The default theme caps the hero image at 320px and frames it with a circular
