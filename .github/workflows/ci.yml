@@ -8,8 +8,40 @@ on:
   workflow_dispatch:
 
 jobs:
+  # External pull requests from forks have no access to secrets, so they run a
+  # secret-free, static-only pipeline. This job runs *only* in that context.
+  static:
+    name: Static Checks
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name != github.repository
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+      - name: Select Node Version
+        uses: svierk/get-node-version@main
+      - name: Install Dependencies
+        run: npm install --ignore-scripts
+      - name: Code Review
+        uses: svierk/sfdx-code-review@main
+        with:
+          code-analyzer: 'false'
+          prettier: 'true'
+          eslint: 'true'
+          prettier-command: npm run prettier:verify
+          eslint-command: npm run lint
+      - name: Run Tests
+        uses: svierk/sfdx-run-tests@main
+        with:
+          apex: false
+          lwc: true
+          flow: false
+
+  # Pushes, manual runs and internal pull requests (including Dependabot) have
+  # access to secrets and run the full validation. This job runs in every
+  # context except pull requests from forks.
   validation:
-    name: Validation
+    name: Org Validation
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -20,10 +52,14 @@ jobs:
         uses: svierk/get-node-version@main
       - name: Install Dependencies
         run: npm install --ignore-scripts
-      - name: Check Prettier
-        run: npm run prettier
-      - name: Check ESLint
-        run: npm run lint:sonar
+      - name: Code Review
+        uses: svierk/sfdx-code-review@main
+        with:
+          code-analyzer: 'false'
+          prettier: 'true'
+          eslint: 'true'
+          prettier-command: npm run prettier:verify
+          eslint-command: npm run lint:sonar
       - name: Install SF CLI
         uses: svierk/sfdx-cli-setup@main
       - name: Salesforce Org Login
