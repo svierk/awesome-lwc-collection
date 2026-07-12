@@ -2,6 +2,8 @@
 
 A simple custom carousel with different configuration options.
 
+**Available in:** App Page · Home Page · Record Page
+
 <img src="../../../../../images/custom-carousel.png" alt="custom-carousel" width="500"/>
 
 ## Attributes
@@ -39,3 +41,11 @@ A simple custom carousel with different configuration options.
   }
 ]
 ```
+
+## Usage
+
+```html
+<c-custom-carousel slides-data={slides} custom-width="800px" auto-scroll scroll-duration="7000"></c-custom-carousel>
+```
+
+When adding the component to a page in the Lightning App Builder, paste a slides JSON array like the example above into the slides-data property.

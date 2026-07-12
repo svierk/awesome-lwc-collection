@@ -9,6 +9,10 @@
     {
       "files": "*.{cmp,page,component}",
       "options": { "parser": "html" }
+    },
+    {
+      "files": "*.md",
+      "options": { "embeddedLanguageFormatting": "off" }
     }
   ],
   "singleQuote": true,

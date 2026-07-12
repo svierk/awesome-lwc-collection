@@ -2,6 +2,8 @@
 
 A generic table to show shared documents from a Salesforce Files library.
 
+**Available in:** App Page · Home Page · Record Page · Flow Screen
+
 <img src="../../../../../images/content-document-table.png" alt="custom-datatable" width="400"/>
 
 ## Read on Medium
@@ -25,6 +27,20 @@ A generic table to show shared documents from a Salesforce Files library.
 | show-delete-action   | boolean | false            | If present, the last column contains a delete file action.                                                                                                                                                                                                       |
 | show-download-action | boolean | false            | If present, the last column contains a download file action.                                                                                                                                                                                                     |
 | show-view-action     | boolean | false            | If present, the last column contains a view file action.                                                                                                                                                                                                         |
+
+## Usage
+
+```html
+<c-content-document-table
+  library="Documents"
+  folder="Invoices"
+  show-card
+  show-view-action
+  show-download-action
+></c-content-document-table>
+```
+
+All attributes are also configurable in the Lightning App Builder, so no code is required to use the component.
 
 ## Component Dependencies
 

@@ -38,8 +38,15 @@ New components are welcome when they cover a distinct, reusable need. A componen
 - **A `README.md`** in the component folder with:
   - an `# H1` title (this becomes the catalog page title and the display name - keep it consistent with the README overview),
   - a one-line description as the first paragraph,
+  - an `**Available in:**` line matching the targets in the `.js-meta.xml`,
   - a screenshot (add the image to `images/` and reference it),
-  - an attributes table, a usage snippet, and any component/Apex dependencies.
+  - a `## Usage` section with an ` ```html ` snippet embedding the component tag,
+  - a `## Attributes` table covering all `@api` properties (if the component has any),
+  - a `## Events` table covering all dispatched custom events (if the component fires any),
+  - any component/Apex dependencies.
+
+  `npm run lint:readme` verifies these conventions against the component source and also runs in CI.
+
 - **Unit tests** in a `__tests__/` folder using [sfdx-lwc-jest](https://github.com/salesforce/sfdx-lwc-jest), including an accessibility assertion via `await expect(element).toBeAccessible()`.
 - **A category** entry for the component in [`scripts/docs/site.config.json`](scripts/docs/site.config.json) so it is grouped correctly in the catalog sidebar (uncategorized components fall back to an "Other" group).
 - **A row** in the `Components available` table of the root [`README.md`](README.md) within the matching category.
@@ -53,6 +60,7 @@ Client-side git hooks ([husky](https://github.com/typicode/husky) + [lint-staged
 ```
 npm run prettier      # format and check all files
 npm run lint          # ESLint on all components
+npm run lint:readme   # check component READMEs against the component source
 npm run test:unit     # run all Jest unit tests
 ```
 
