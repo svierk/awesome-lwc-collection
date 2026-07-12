@@ -2,6 +2,8 @@
 
 An interactive organization chart with search, expand/collapse and PNG export, powered by the [d3-org-chart](https://github.com/bumbeishvili/org-chart) library. Ships with a small demo dataset so it works out of the box, or pass your own hierarchy via the `records` attribute.
 
+**Available in:** App Page · Home Page · Record Page
+
 <img src="../../../../../images/org-chart-viewer.png" alt="org-chart-viewer" width="800"/>
 
 ## Attributes
@@ -13,10 +15,14 @@ An interactive organization chart with search, expand/collapse and PNG export, p
 ## Usage
 
 ```html
-<c-org-chart-viewer records="{employees}" onnodeselect="{handleNodeSelect}"></c-org-chart-viewer>
+<c-org-chart-viewer records={employees} onnodeselect={handleNodeSelect}></c-org-chart-viewer>
 ```
 
-`onnodeselect` fires with `event.detail.record` whenever a node is clicked, so a parent component (or Flow) can react to the selection.
+## Events
+
+| Name       | Detail                                        | Description                                                                                      |
+| ---------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| nodeselect | `{ record }` - the record of the clicked node | Fired whenever a node in the chart is clicked, so a parent component can react to the selection. |
 
 ## Component Dependencies
 

@@ -2,6 +2,8 @@
 
 A basic custom datatable with different configuration options.
 
+**Available in:** App Page · Home Page · Record Page · Flow Screen
+
 <img src="../../../../../images/custom-datatable.png" alt="custom-datatable" width="800"/>
 
 ## Attributes
@@ -36,6 +38,23 @@ A basic custom datatable with different configuration options.
 | show-view-row-action            | boolean | false   | If present, the last column contains a view record action.                                                                                                                                                                                                     |
 | suppress-bottom-bar             | boolean | false   | If present, the footer that displays the Save and Cancel buttons is hidden during inline editing.                                                                                                                                                              |
 | where-conditions                | string  | ''      | Optional where clause conditions for loaded data records. Example: `Status = 'New'`                                                                                                                                                                            |
+
+## Usage
+
+```html
+<c-custom-datatable
+  object-api-name="Case"
+  field-set-api-name="CaseFieldSet"
+  where-conditions="Status = 'New'"
+  show-card
+  card-title="Open Cases"
+  enable-search
+  enable-sorting
+  enable-pagination
+></c-custom-datatable>
+```
+
+The displayed columns are driven by a field set on the object, so the table can be reconfigured without code changes. All attributes are also configurable in the Lightning App Builder, so no code is required to use the component.
 
 ## Component Dependencies
 

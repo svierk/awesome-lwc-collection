@@ -2,6 +2,8 @@
 
 A basic QR Code Generator with optional logo overlay using the external QRCode.js library.
 
+**Available in:** App Page · Home Page · Record Page · Flow Screen
+
 <img src="../../../../../images/qr-code-generator.png" alt="qr-code-generator" width="400"/>
 
 ## Read on Medium
@@ -11,6 +13,14 @@ A basic QR Code Generator with optional logo overlay using the external QRCode.j
 </a>
 
 **[How to Generate QR Codes with Lightning Web Components](https://medium.com/capgemini-salesforce-architects/how-to-generate-qr-codes-with-lightning-web-components-4d41dd09f3c1)**
+
+## Usage
+
+```html
+<c-qr-code-generator></c-qr-code-generator>
+```
+
+The component is self-contained: enter a target URL, optionally upload a logo for the overlay and generate the QR code.
 
 ## Component Dependencies
 

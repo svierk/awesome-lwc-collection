@@ -2,6 +2,8 @@
 
 A simple utility for Base64 encoded strings to decode and download them as PDF file.
 
+**Available in:** App Page · Home Page · Record Page · Flow Screen
+
 <img src="../../../../../images/base64-to-pdf.png" alt="base64-to-pdf" width="400"/>
 
 ## Read on Medium
@@ -11,3 +13,11 @@ A simple utility for Base64 encoded strings to decode and download them as PDF f
 </a>
 
 **[How to display and download Base64 encoded PDF documents with Lightning Web Components](https://javascript.plainenglish.io/how-to-display-and-download-base64-encoded-pdf-documents-with-lightning-web-components-d4a10c7fa4c3)**
+
+## Usage
+
+```html
+<c-base64-to-pdf></c-base64-to-pdf>
+```
+
+The component ships with an example Base64 string (see `example.js`) that is decoded and offered as a PDF download. Replace the import or set the `pdf` and `fileName` properties to plug in your own data source.

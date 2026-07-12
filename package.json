@@ -19,6 +19,7 @@
     "docs:preview": "vitepress preview docs",
     "lint": "eslint **/lwc/**/*.js",
     "lint:sonar": "eslint -f json -o eslint-report.json **/lwc/**/*.js",
+    "lint:readme": "node scripts/check-readmes.mjs",
     "test": "npm run test:unit",
     "test:unit": "sfdx-lwc-jest",
     "test:unit:watch": "sfdx-lwc-jest --watch",

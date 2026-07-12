@@ -21,6 +21,8 @@ jobs:
         uses: svierk/get-node-version@main
       - name: Install Dependencies
         run: npm install --ignore-scripts
+      - name: Check Component READMEs
+        run: npm run lint:readme
       - name: Code Review
         uses: svierk/sfdx-code-review@main
         with:
@@ -52,6 +54,8 @@ jobs:
         uses: svierk/get-node-version@main
       - name: Install Dependencies
         run: npm install --ignore-scripts
+      - name: Check Component READMEs
+        run: npm run lint:readme
       - name: Code Review
         uses: svierk/sfdx-code-review@main
         with:

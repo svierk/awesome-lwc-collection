@@ -2,6 +2,8 @@
 
 A custom datatable powered by the GraphQL wire adapter (`lightning/graphql`) instead of Apex.
 
+**Available in:** App Page · Home Page · Record Page · Flow Screen
+
 <img src="../../../../../images/custom-datatable.png" alt="graphql-datatable" width="500"/>
 
 ## Read on Medium
@@ -44,6 +46,22 @@ A custom datatable powered by the GraphQL wire adapter (`lightning/graphql`) ins
 | show-view-row-action            | boolean | false   | If present, the last column contains a view record action.                                                                                                                                                                                                     |
 | suppress-bottom-bar             | boolean | false   | If present, the footer that displays the Save and Cancel buttons is hidden during inline editing.                                                                                                                                                              |
 | where-conditions                | string  | ''      | Optional GraphQL where clause conditions for loaded data records. Example: `{ Status: { eq: "New" } }`.                                                                                                                                                        |
+
+## Usage
+
+```html
+<c-graphql-datatable
+  object-api-name="Contact"
+  fields="Name,Email,Phone"
+  show-card
+  card-title="Contacts"
+  enable-search
+  enable-sorting
+  enable-pagination
+></c-graphql-datatable>
+```
+
+All attributes are also configurable in the Lightning App Builder, so no code is required to use the component.
 
 ## Component Dependencies
 

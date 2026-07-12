@@ -2,6 +2,8 @@
 
 Configurable map component for displaying locations via Google Maps API.
 
+**Available in:** Record Page
+
 <img src="../../../../../images/custom-map-view.png" alt="custom-map-view" width="800"/>
 
 ## Read on Medium
@@ -28,3 +30,19 @@ Configurable map component for displaying locations via Google Maps API.
 | postal-code-field | string |         | API name of the field that contains the postal code.                                                                              |
 | state-field       | string |         | API name of the field that contains the state.                                                                                    |
 | street-field      | string |         | API name of the field that contains the street.                                                                                   |
+
+## Usage
+
+```html
+<c-custom-map-view
+  record-id={recordId}
+  object-api-name="Account"
+  title-field="Name"
+  street-field="BillingStreet"
+  city-field="BillingCity"
+  postal-code-field="BillingPostalCode"
+  country-field="BillingCountry"
+></c-custom-map-view>
+```
+
+The component is designed for Lightning record pages: drop it onto the page in the Lightning App Builder and map the address fields of the current object. The record-id and object-api-name attributes are set automatically by the record page.
