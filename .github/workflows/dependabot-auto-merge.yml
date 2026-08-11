@@ -1,15 +1,38 @@
 name: Dependabot Auto-Merge
+
+# Approves and auto-merges Dependabot pull requests so dependency updates - both
+# the npm dependencies and the GitHub Actions pinned in the workflows of this
+# repository - land without manual work. Every update type is handled this way,
+# major bumps included, so the required status checks on `main` are the only
+# quality gate: `--auto` holds the merge until they are green.
+
 on: pull_request
 
-permissions:
-  contents: write
-  pull-requests: write
+# No permissions by default; the job below grants only what it needs.
+permissions: {}
 
 jobs:
   auto-merge:
+    name: Auto-Merge
     runs-on: ubuntu-latest
-    if: github.actor == 'dependabot[bot]'
+    # Act only on pull requests actually authored by Dependabot in this
+    # repository - not on branches pushed by anyone else, and not in forks.
+    if: github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'svierk/awesome-lwc-collection'
+    permissions:
+      contents: write # to enable auto-merge on the pull request
+      pull-requests: write # to approve the pull request
     steps:
+      # Verifies that the commits of this pull request really come from
+      # Dependabot (signature and author are checked) before anything is
+      # approved, and exposes the update metadata in the job log.
+      - name: Fetch Dependabot Metadata
+        id: metadata
+        uses: dependabot/fetch-metadata@v3.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      # --auto queues the merge: GitHub only carries it out once every required
+      # status check of the branch protection rule has passed.
       - name: Approve and Enable Auto-Merge
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
