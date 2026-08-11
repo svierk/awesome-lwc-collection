@@ -1,5 +1,9 @@
 name: Validation
 
+# Validates changes to this repository: runs the static quality gate (Prettier,
+# ESLint, component READMEs) and, wherever secrets are available, deploys the
+# metadata to the target org and runs the Apex and LWC tests against it.
+
 on:
   push:
     branches: [main]
@@ -7,6 +11,7 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Least-privilege token: this workflow only reads the repository.
 permissions:
   contents: read
 
@@ -19,23 +24,35 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false # the GITHUB_TOKEN is not needed after the checkout - don't leave it in .git/config
+
+      # NODE_VERSION_OVERRIDE is a repository variable; unset it to fall back
+      # to engines.node from package.json, populate it to pin a version
+      # without touching this workflow file.
       - name: Select Node Version
-        uses: svierk/get-node-version@main
+        uses: svierk/get-node-version@v1.5.1
+        with:
+          node-version: ${{ vars.NODE_VERSION_OVERRIDE }}
+
       - name: Install Dependencies
-        run: npm install --ignore-scripts
+        run: npm ci --ignore-scripts
+
       - name: Check Component READMEs
         run: npm run lint:readme
+
       - name: Code Review
-        uses: svierk/sfdx-code-review@main
+        uses: svierk/sfdx-code-review@v1.0.0
         with:
           code-analyzer: 'false'
           prettier: 'true'
           eslint: 'true'
           prettier-command: npm run prettier:verify
           eslint-command: npm run lint
+
       - name: Run Tests
-        uses: svierk/sfdx-run-tests@main
+        uses: svierk/sfdx-run-tests@v1.1.0
         with:
           apex: false
           lwc: true
@@ -50,45 +67,60 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v7.0.1
         with:
-          fetch-depth: 0
+          fetch-depth: 0 # required for the delta detection and the Sonar analysis
+          persist-credentials: false # the GITHUB_TOKEN is not needed after the checkout - don't leave it in .git/config
+
+      # NODE_VERSION_OVERRIDE is a repository variable; unset it to fall back
+      # to engines.node from package.json, populate it to pin a version
+      # without touching this workflow file.
       - name: Select Node Version
-        uses: svierk/get-node-version@main
+        uses: svierk/get-node-version@v1.5.1
+        with:
+          node-version: ${{ vars.NODE_VERSION_OVERRIDE }}
+
       - name: Install Dependencies
-        run: npm install --ignore-scripts
+        run: npm ci --ignore-scripts
+
       - name: Check Component READMEs
         run: npm run lint:readme
+
       - name: Code Review
-        uses: svierk/sfdx-code-review@main
+        uses: svierk/sfdx-code-review@v1.0.0
         with:
           code-analyzer: 'false'
           prettier: 'true'
           eslint: 'true'
           prettier-command: npm run prettier:verify
           eslint-command: npm run lint:sonar
+
       - name: Install SF CLI
-        uses: svierk/sfdx-cli-setup@main
+        uses: svierk/sfdx-cli-setup@v1.1.2
+
       - name: Salesforce Org Login
-        uses: svierk/sfdx-login@main
+        uses: svierk/sfdx-login@v1.4.2
         with:
           client-id: ${{ secrets.SFDX_CONSUMER_KEY }}
           jwt-secret-key: ${{ secrets.SFDX_JWT_SECRET_KEY }}
           username: ${{ vars.SFDX_USERNAME }}
+
       - name: Deploy Metadata
-        uses: svierk/sfdx-deploy@main
+        uses: svierk/sfdx-deploy@v1.2.1
+
       - name: Run Tests
-        uses: svierk/sfdx-run-tests@main
+        uses: svierk/sfdx-run-tests@v1.1.0
         with:
           apex: true
           lwc: true
           flow: false # enable once Flow tests exist in the project
+
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@master
+        uses: SonarSource/sonarqube-scan-action@v8.2.1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
       - name: Codecov Coverage Upload
-        uses: codecov/codecov-action@main
+        uses: codecov/codecov-action@v7.0.0
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

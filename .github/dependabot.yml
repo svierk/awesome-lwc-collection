@@ -1,15 +1,62 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+# Dependabot keeps this repository's dependencies current on its own:
+#
+#   * npm            - the project and documentation site dependencies
+#   * github-actions - every action pinned in .github/workflows (each `uses:`
+#                      reference is pinned to an exact release tag, so an update
+#                      is always an explicit, reviewable change of that pin)
+#
+# All updates - patch, minor and major alike - are grouped into a single pull
+# request per ecosystem and merged autonomously by
+# .github/workflows/dependabot-auto-merge.yml once the required checks pass.
+# The quality gate is therefore the CI of this repository, not a human: keep the
+# required status checks on `main` in sync with what the pipelines actually need
+# to be safe.
+#
+# Note: for the github-actions ecosystem Dependabot only scans .github/workflows.
+#
+# Options reference:
+# https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference
 
 version: 2
 updates:
-  - package-ecosystem: 'npm' # See documentation for possible values
-    directory: '/' # Location of package manifests
+  # Project and documentation site dependencies (LWC tooling, Jest, VitePress, ...).
+  - package-ecosystem: 'npm'
+    directory: '/' # location of package.json / package-lock.json
     schedule:
       interval: 'monthly'
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: 'chore(deps)'
+      prefix-development: 'chore(deps-dev)'
+    cooldown:
+      # Let a release settle before adopting it - a compromised or broken
+      # version is usually pulled within a few days. Security updates are not
+      # affected by this.
+      default-days: 7
+      semver-major-days: 14
     groups:
       dependencies:
+        applies-to: version-updates
+        patterns:
+          - '*'
+
+  # GitHub Actions used by the workflows in .github/workflows. Checked weekly so
+  # that a fix in one of the building blocks or in a third-party action reaches
+  # the pipelines within days instead of weeks.
+  - package-ecosystem: 'github-actions'
+    directory: '/' # for this ecosystem "/" means .github/workflows
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '05:00'
+      timezone: 'Europe/Berlin'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: 'chore(deps)'
+    cooldown:
+      default-days: 3
+    groups:
+      actions:
+        applies-to: version-updates
         patterns:
           - '*'
