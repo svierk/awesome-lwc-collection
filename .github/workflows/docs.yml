@@ -40,7 +40,7 @@ jobs:
       # to engines.node from package.json, populate it to pin a version
       # without touching this workflow file.
       - name: Select Node Version
-        uses: svierk/get-node-version@v1.5.1
+        uses: svierk/get-node-version@v1.5.2
         with:
           node-version: ${{ vars.NODE_VERSION_OVERRIDE }}
 
@@ -68,4 +68,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5.0.0
+        uses: actions/deploy-pages@v5.0.1
