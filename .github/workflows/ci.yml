@@ -32,7 +32,7 @@ jobs:
       # to engines.node from package.json, populate it to pin a version
       # without touching this workflow file.
       - name: Select Node Version
-        uses: svierk/get-node-version@v1.5.1
+        uses: svierk/get-node-version@v1.5.2
         with:
           node-version: ${{ vars.NODE_VERSION_OVERRIDE }}
 
@@ -43,7 +43,7 @@ jobs:
         run: npm run lint:readme
 
       - name: Code Review
-        uses: svierk/sfdx-code-review@v1.0.0
+        uses: svierk/sfdx-code-review@v1.0.1
         with:
           code-analyzer: 'false'
           prettier: 'true'
@@ -52,7 +52,7 @@ jobs:
           eslint-command: npm run lint
 
       - name: Run Tests
-        uses: svierk/sfdx-run-tests@v1.1.0
+        uses: svierk/sfdx-run-tests@v1.1.1
         with:
           apex: false
           lwc: true
@@ -76,7 +76,7 @@ jobs:
       # to engines.node from package.json, populate it to pin a version
       # without touching this workflow file.
       - name: Select Node Version
-        uses: svierk/get-node-version@v1.5.1
+        uses: svierk/get-node-version@v1.5.2
         with:
           node-version: ${{ vars.NODE_VERSION_OVERRIDE }}
 
@@ -87,7 +87,7 @@ jobs:
         run: npm run lint:readme
 
       - name: Code Review
-        uses: svierk/sfdx-code-review@v1.0.0
+        uses: svierk/sfdx-code-review@v1.0.1
         with:
           code-analyzer: 'false'
           prettier: 'true'
@@ -96,20 +96,20 @@ jobs:
           eslint-command: npm run lint:sonar
 
       - name: Install SF CLI
-        uses: svierk/sfdx-cli-setup@v1.1.2
+        uses: svierk/sfdx-cli-setup@v1.1.3
 
       - name: Salesforce Org Login
-        uses: svierk/sfdx-login@v1.4.2
+        uses: svierk/sfdx-login@v1.4.3
         with:
           client-id: ${{ secrets.SFDX_CONSUMER_KEY }}
           jwt-secret-key: ${{ secrets.SFDX_JWT_SECRET_KEY }}
           username: ${{ vars.SFDX_USERNAME }}
 
       - name: Deploy Metadata
-        uses: svierk/sfdx-deploy@v1.2.1
+        uses: svierk/sfdx-deploy@v1.2.2
 
       - name: Run Tests
-        uses: svierk/sfdx-run-tests@v1.1.0
+        uses: svierk/sfdx-run-tests@v1.1.1
         with:
           apex: true
           lwc: true
