@@ -397,7 +397,7 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
     addRowActions(this.columns, this.showViewRowAction, this.showEditRowAction, this.showDeleteRowAction);
   }
 
-  handleRowAction(event) {
+  async handleRowAction(event) {
     const actionName = event.detail.action.name;
     const row = event.detail.row;
     switch (actionName) {
@@ -408,7 +408,7 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
         navigateToRecord(this, row.Id, 'edit');
         break;
       case 'delete':
-        this._deleteRecord(row.Id);
+        await this._deleteRecord(row.Id);
         break;
       default:
     }

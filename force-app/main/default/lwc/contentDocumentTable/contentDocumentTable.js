@@ -173,7 +173,7 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
     }
   }
 
-  handleRowAction(event) {
+  async handleRowAction(event) {
     const actionName = event.detail.action.name;
     const row = event.detail.row;
     switch (actionName) {
@@ -184,7 +184,7 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
         this.view(row);
         break;
       case 'delete':
-        this.delete(row);
+        await this.delete(row);
         break;
       default:
         break;
@@ -212,18 +212,17 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
     });
   }
 
-  delete(row) {
+  async delete(row) {
     this.isLoading = true;
-    deleteRecord(row.Id)
-      .then(() => {
-        this.showToast('Success', 'File deleted', 'success');
-        return refreshApex(this.wiredRecords).then(() => {
-          this.isLoading = false;
-        });
-      })
-      .catch((error) => {
-        this.showToast('Error deleting file', error?.body?.message, 'error');
-      });
+    try {
+      await deleteRecord(row.Id);
+      this.showToast('Success', 'File deleted', 'success');
+      await refreshApex(this.wiredRecords);
+    } catch (error) {
+      this.showToast('Error deleting file', error?.body?.message, 'error');
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   showToast(title, message, variant) {
