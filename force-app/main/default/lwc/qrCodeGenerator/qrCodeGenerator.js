@@ -20,8 +20,8 @@ export default class QrCodeGenerator extends LightningElement {
   error;
   qrLibLoaded = false;
 
-  connectedCallback() {
-    this.loadQRCodeLibrary();
+  async connectedCallback() {
+    await this.loadQRCodeLibrary();
   }
 
   async loadQRCodeLibrary() {
