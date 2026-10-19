@@ -24,16 +24,17 @@ export default class QrCodeGenerator extends LightningElement {
     this.loadQRCodeLibrary();
   }
 
-  async loadQRCodeLibrary() {
+  loadQRCodeLibrary() {
     if (this.qrLibLoaded) {
       return;
     }
-    try {
-      await loadScript(this, qrcodejs);
-      this.qrLibLoaded = true;
-    } catch (err) {
-      this.error = `Failed to load QR code library: ${err.message || String(err)}`;
-    }
+    loadScript(this, qrcodejs)
+      .then(() => {
+        this.qrLibLoaded = true;
+      })
+      .catch((err) => {
+        this.error = `Failed to load QR code library: ${err.message || String(err)}`;
+      });
   }
 
   handleUrlChange(event) {

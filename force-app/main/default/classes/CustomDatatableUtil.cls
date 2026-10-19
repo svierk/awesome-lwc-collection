@@ -155,7 +155,7 @@ public with sharing class CustomDatatableUtil {
       column.label = f.getLabel();
       column.fieldName = f.getFieldPath();
       column.type = getColumnType(f.getType());
-      column.sortable = enableSorting == true && column.type != 'datatableLookup';
+      column.sortable = enableSorting != null && enableSorting && column.type != 'datatableLookup';
       column.editable = !readOnly && f.getSObjectField().getDescribe().isUpdateable();
 
       if (column.type == 'datatableLookup') {

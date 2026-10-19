@@ -318,7 +318,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     addRowActions(this.columns, this.showViewRowAction, this.showEditRowAction, this.showDeleteRowAction);
   }
 
-  handleRowAction(event) {
+  async handleRowAction(event) {
     const actionName = event.detail.action.name;
     const row = event.detail.row;
     switch (actionName) {
@@ -329,7 +329,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
         navigateToRecord(this, row.Id, 'edit');
         break;
       case 'delete':
-        this._deleteRecord(row.Id);
+        await this._deleteRecord(row.Id);
         break;
       default:
     }
@@ -377,67 +377,63 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     return `"${escaped}"`;
   }
 
-  handleSave(event) {
-    const promises = event.detail.draftValues.map((draft) => executeMutation({ query: this._getUpdateQuery(draft) }));
-    Promise.all(promises)
-      .then((results) => {
-        const errors = results.flatMap((r) => r?.errors ?? []);
-        if (errors.length) {
-          this.showToast('Error updating records', errors[0]?.message ?? 'Unknown error', 'error');
-          return;
-        }
-        this.showToast('Success', 'Records updated', 'success');
-        this._refreshData().then(() => {
-          this.draftValues = [];
-        });
-      })
-      .catch((error) => {
-        this.showToast('Error updating records', error?.body?.message ?? error?.message ?? 'Unknown error', 'error');
-      });
+  async handleSave(event) {
+    try {
+      const results = await Promise.all(
+        event.detail.draftValues.map((draft) => executeMutation({ query: this._getUpdateQuery(draft) }))
+      );
+      const errors = results.flatMap((r) => r?.errors ?? []);
+      if (errors.length) {
+        this.showToast('Error updating records', errors[0]?.message ?? 'Unknown error', 'error');
+        return;
+      }
+      this.showToast('Success', 'Records updated', 'success');
+      await this._refreshData();
+      this.draftValues = [];
+    } catch (error) {
+      this.showToast('Error updating records', error?.body?.message ?? error?.message ?? 'Unknown error', 'error');
+    }
   }
 
   getSelectedRecords(event) {
     getSelectedRecords(this, event);
   }
 
-  deleteSelectedRecords() {
+  async deleteSelectedRecords() {
     this.isLoading = true;
-    const promises = this.selectedRecords.map((record) => executeMutation({ query: this._getDeleteQuery(record.Id) }));
-    Promise.all(promises)
-      .then((results) => {
-        const errors = results.flatMap((r) => r?.errors ?? []);
-        if (errors.length) {
-          this.isLoading = false;
-          this.showToast('Error deleting records', errors[0]?.message ?? 'Unknown error', 'error');
-          return;
-        }
-        this.showToast('Success', 'Records deleted', 'success');
-        this._refreshData().then(() => {
-          this.isLoading = false;
-        });
-      })
-      .catch((error) => {
-        this.showToast('Error deleting records', error?.body?.message ?? error?.message ?? 'Unknown error', 'error');
-      });
+    try {
+      const results = await Promise.all(
+        this.selectedRecords.map((record) => executeMutation({ query: this._getDeleteQuery(record.Id) }))
+      );
+      const errors = results.flatMap((r) => r?.errors ?? []);
+      if (errors.length) {
+        this.showToast('Error deleting records', errors[0]?.message ?? 'Unknown error', 'error');
+        return;
+      }
+      this.showToast('Success', 'Records deleted', 'success');
+      await this._refreshData();
+    } catch (error) {
+      this.showToast('Error deleting records', error?.body?.message ?? error?.message ?? 'Unknown error', 'error');
+    } finally {
+      this.isLoading = false;
+    }
   }
 
-  _deleteRecord(recordId) {
+  async _deleteRecord(recordId) {
     this.isLoading = true;
-    executeMutation({ query: this._getDeleteQuery(recordId) })
-      .then((result) => {
-        if (result?.errors?.length) {
-          this.isLoading = false;
-          this.showToast('Error deleting record', result.errors[0]?.message ?? 'Unknown error', 'error');
-          return;
-        }
-        this.showToast('Success', 'Record deleted', 'success');
-        this._refreshData().then(() => {
-          this.isLoading = false;
-        });
-      })
-      .catch((error) => {
-        this.showToast('Error deleting record', error?.body?.message ?? error?.message ?? 'Unknown error', 'error');
-      });
+    try {
+      const result = await executeMutation({ query: this._getDeleteQuery(recordId) });
+      if (result?.errors?.length) {
+        this.showToast('Error deleting record', result.errors[0]?.message ?? 'Unknown error', 'error');
+        return;
+      }
+      this.showToast('Success', 'Record deleted', 'success');
+      await this._refreshData();
+    } catch (error) {
+      this.showToast('Error deleting record', error?.body?.message ?? error?.message ?? 'Unknown error', 'error');
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   showToast(title, message, variant) {

@@ -47,7 +47,7 @@ body:
       placeholder: |
         - Org type: Developer Edition / Scratch / Sandbox / Production
         - Browser: Chrome 125
-        - API version: 61.0
+        - API version: 68.0
     validations:
       required: false
   - type: checkboxes
