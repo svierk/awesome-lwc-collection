@@ -47,7 +47,7 @@ jobs:
         run: npm run test:docs
 
       - name: Code Review
-        uses: svierk/sfdx-code-review@v1.1.0
+        uses: svierk/sfdx-code-review@v1.1.1
         with:
           code-analyzer: 'false'
           prettier: 'true'
@@ -107,7 +107,7 @@ jobs:
       # of Moderate severity or higher. All findings, including the Low and
       # Info ones below the threshold, are reported in the Security tab.
       - name: Code Review
-        uses: svierk/sfdx-code-review@v1.1.0
+        uses: svierk/sfdx-code-review@v1.1.1
         with:
           code-analyzer: 'true'
           prettier: 'true'
@@ -118,19 +118,6 @@ jobs:
           severity-threshold: '3'
           prettier-command: npm run prettier:verify
           eslint-command: npm run lint:sonar
-
-      # The Code Analyzer only writes a run for engines with violations, and
-      # the upload rejects a report without any run. An empty run per engine
-      # keeps the upload valid and closes the alerts of engines that no longer
-      # report violations.
-      - name: Complete SARIF
-        if: ${{ !cancelled() && hashFiles('results.sarif') != '' }}
-        run: |
-          jq '([.runs[].tool.driver.name]) as $present
-            | .runs += [("pmd", "regex", "retire-js")
-              | select(. as $engine | $present | index($engine) | not)
-              | {tool: {driver: {name: .}}, results: []}]' results.sarif > results.tmp.sarif
-          mv results.tmp.sarif results.sarif
 
       # Also runs when Prettier or ESLint failed the Code Review, as long as the
       # Code Analyzer wrote its report.
