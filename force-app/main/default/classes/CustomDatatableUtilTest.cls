@@ -77,12 +77,7 @@ public with sharing class CustomDatatableUtilTest {
 
     System.runAs(u) {
       Test.startTest();
-      Integer count = CustomDatatableUtil.getRecordCount(
-        'Account',
-        'Test_Field_Set',
-        'Name LIKE \'Test Account %\'',
-        null
-      );
+      Integer count = CustomDatatableUtil.getRecordCount('Account', 'Name LIKE \'Test Account %\'', null);
       Test.stopTest();
 
       Assert.areEqual(100, count, 'Record count should match the number of inserted accounts.');
@@ -95,7 +90,7 @@ public with sharing class CustomDatatableUtilTest {
 
     System.runAs(u) {
       Test.startTest();
-      Integer count = CustomDatatableUtil.getRecordCount('Account', 'Test_Field_Set', null, null);
+      Integer count = CustomDatatableUtil.getRecordCount('Account', null, null);
       Test.stopTest();
 
       Assert.isTrue(count >= 100, 'Record count should include at least the inserted accounts.');
@@ -151,11 +146,41 @@ public with sharing class CustomDatatableUtilTest {
 
     System.runAs(u) {
       Test.startTest();
-      Integer count = CustomDatatableUtil.getRecordCount('Account', 'Test_Field_Set', null, 'Test Account 1');
+      Integer count = CustomDatatableUtil.getRecordCount('Account', null, 'Test Account 1');
       Test.stopTest();
 
       Assert.isTrue(count > 0, 'Search count should return matching records.');
       Assert.isTrue(count < 100, 'Search count should be fewer than all records.');
+    }
+  }
+
+  @IsTest
+  static void getRecordCountWithQuoteInSearchTermTest() {
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
+
+    System.runAs(u) {
+      Test.startTest();
+      Integer count = CustomDatatableUtil.getRecordCount('Account', null, 'Test\' OR Name != \'');
+      Test.stopTest();
+
+      Assert.areEqual(0, count, 'Search term should be matched literally, not be part of the query.');
+    }
+  }
+
+  @IsTest
+  static void getRecordCountWithOrConditionAndSearchTest() {
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
+
+    System.runAs(u) {
+      Test.startTest();
+      Integer count = CustomDatatableUtil.getRecordCount(
+        'Account',
+        'Name = \'Test Account 1\' OR Name = \'Test Account 2\'',
+        'Test Account 1'
+      );
+      Test.stopTest();
+
+      Assert.areEqual(1, count, 'Search should apply to all records matched by the OR condition.');
     }
   }
 
@@ -165,7 +190,9 @@ public with sharing class CustomDatatableUtilTest {
 
     System.runAs(u) {
       Test.startTest();
-      List<String> fields = CustomDatatableUtil.getSearchableFields('Account');
+      List<String> fields = CustomDatatableUtil.getSearchableFields(
+        Account.SObjectType.getDescribe(SObjectDescribeOptions.DEFERRED)
+      );
       Test.stopTest();
 
       Assert.areNotEqual(null, fields, 'Searchable fields list should not be null.');
@@ -201,6 +228,50 @@ public with sharing class CustomDatatableUtilTest {
 
       Assert.areNotEqual(null, records, 'Returned records list should not be null.');
       Assert.isTrue(records.size() > 0, 'Sorted query should return records.');
+    }
+  }
+
+  @IsTest
+  static void getRecordsWithFieldSetSortedDescendingTest() {
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
+
+    System.runAs(u) {
+      Test.startTest();
+      List<SObject> records = CustomDatatableUtil.getRecordsWithFieldSet(
+        'Account',
+        'Test_Field_Set',
+        'Name LIKE \'Test Account %\'',
+        null,
+        null,
+        null,
+        'Name',
+        'desc'
+      );
+      Test.stopTest();
+
+      Assert.areEqual('Test Account 99', records[0].get('Name'), 'Records should be sorted descending by name.');
+    }
+  }
+
+  @IsTest
+  static void getRecordsWithFieldSetUnknownSortFieldTest() {
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
+
+    System.runAs(u) {
+      Test.startTest();
+      List<SObject> records = CustomDatatableUtil.getRecordsWithFieldSet(
+        'Account',
+        'Test_Field_Set',
+        'Name LIKE \'Test Account %\'',
+        null,
+        null,
+        null,
+        'Name LIMIT 1',
+        'asc'
+      );
+      Test.stopTest();
+
+      Assert.areEqual(100, records.size(), 'Sort fields outside of the field set should be ignored.');
     }
   }
 
