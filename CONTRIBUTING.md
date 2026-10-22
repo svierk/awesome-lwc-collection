@@ -62,6 +62,7 @@ npm run prettier      # format and check all files
 npm run lint          # ESLint on all components
 npm run lint:readme   # check component READMEs against the component source
 npm run test:unit     # run all Jest unit tests
+npm run test:docs     # run the tests of the docs build scripts
 ```
 
 Please make sure Prettier, ESLint and the unit tests are green before opening a pull request.

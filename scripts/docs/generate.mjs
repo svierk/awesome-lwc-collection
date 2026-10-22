@@ -102,9 +102,18 @@ function writeComponentPages(components) {
     const source = readFileSync(join(lwcDir, name, 'README.md'), 'utf-8');
     const { title, description } = parseReadme(source);
     meta[name] = { title, description, hasIcon: existsSync(join(lwcDir, name, `${name}.svg`)) };
-    writeFileSync(join(componentsOutDir, `${name}.md`), rewriteImages(source));
+    writeFileSync(join(componentsOutDir, `${name}.md`), `${frontmatter(description)}${rewriteImages(source)}`);
   }
   return meta;
+}
+
+/**
+ * Front matter carrying the page's description - VitePress turns it into the
+ * meta description, and vitepress-plugin-llms into the summary next to the
+ * page in llms.txt.
+ */
+function frontmatter(description) {
+  return description ? `---\n${toYaml({ description })}---\n\n` : '';
 }
 
 /** Build the VitePress sidebar from the configured categories, plus an "Other"

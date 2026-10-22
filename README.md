@@ -246,6 +246,10 @@ npm run test:unit:coverage
 
 The [component documentation site](https://svierk.github.io/awesome-lwc-collection/) is built with [VitePress](https://vitepress.dev/) directly from the individual component READMEs, so it stays in sync automatically and is redeployed to GitHub Pages on every change to `main`.
 
+The site is also AI-friendly, for agents that read the docs while they work: [llms.txt](https://svierk.github.io/awesome-lwc-collection/llms.txt) as an index of all components, [llms-full.txt](https://svierk.github.io/awesome-lwc-collection/llms-full.txt) with every component page in one file, and a Markdown copy of each page next to its HTML (append `.md` to the page URL).
+
+For AI coding agents, [svierk/salesforce-skills](https://github.com/svierk/salesforce-skills) packages Salesforce know-how as agent skills that support everyday development work on Salesforce projects.
+
 To preview the docs site locally with hot reload run:
 
 ```
