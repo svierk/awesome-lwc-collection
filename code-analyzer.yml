@@ -1,0 +1,19 @@
+# Configuration of the Salesforce Code Analyzer, run by the Code Review step of
+# the Org Validation job in .github/workflows/ci.yml. Its results are uploaded
+# as a SARIF report and show up as code scanning alerts in the Security tab.
+#
+# Options reference:
+# https://developer.salesforce.com/docs/platform/salesforce-code-analyzer/guide/config-custom.html
+
+engines:
+  # ESLint already runs with the project's own configuration (eslint.config.js)
+  # in the same step. The analyzer's built-in ESLint base config does not know
+  # that setup - e.g. it flags every `globalThis` and every Jest global as
+  # `no-undef` - so running it a second time would only add false positives.
+  eslint:
+    disable_engine: true
+
+  # Duplicated code is already reported by SonarCloud. The copy-paste detector
+  # mostly flags the bundled third-party libraries in staticresources.
+  cpd:
+    disable_engine: true
