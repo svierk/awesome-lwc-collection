@@ -72,12 +72,16 @@ public class ContentDocumentControllerTest {
   }
 
   @IsTest
-  public static void getDocumentsNullPointerTest() {
-    Test.startTest();
-    String jsonString = ContentDocumentController.getDocuments('Test', null, null);
-    Test.stopTest();
+  public static void getDocumentsWithoutFolderAndRecordTest() {
+    User u = [SELECT Id FROM User WHERE Username = '4e42b089-3bc6-496c-a86f-2e6e1e639547@example.com'];
 
-    Assert.isNull(jsonString, 'Should return null on NullPointerException.');
+    System.runAs(u) {
+      Test.startTest();
+      String jsonString = ContentDocumentController.getDocuments('Test', null, null);
+      Test.stopTest();
+
+      Assert.isNull(jsonString, 'Should return null when neither a folder nor a record id is given.');
+    }
   }
 
   @IsTest
