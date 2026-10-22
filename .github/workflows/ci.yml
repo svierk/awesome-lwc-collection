@@ -47,7 +47,7 @@ jobs:
         run: npm run test:docs
 
       - name: Code Review
-        uses: svierk/sfdx-code-review@v1.0.1
+        uses: svierk/sfdx-code-review@v1.1.0
         with:
           code-analyzer: 'false'
           prettier: 'true'
@@ -103,11 +103,11 @@ jobs:
       - name: Install SF CLI
         uses: svierk/sfdx-cli-setup@v1.1.3
 
-      # Prettier and ESLint fail the job. The Code Analyzer runs without a
-      # severity threshold: its findings are reported in the Security tab, but
-      # do not block a merge.
+      # Prettier and ESLint fail the job, and so does any Code Analyzer finding
+      # of Moderate severity or higher. All findings, including the Low and
+      # Info ones below the threshold, are reported in the Security tab.
       - name: Code Review
-        uses: svierk/sfdx-code-review@v1.0.1
+        uses: svierk/sfdx-code-review@v1.1.0
         with:
           code-analyzer: 'true'
           prettier: 'true'
@@ -115,6 +115,7 @@ jobs:
           workspace: force-app
           config-file: code-analyzer.yml
           output-file: results.sarif
+          severity-threshold: '3'
           prettier-command: npm run prettier:verify
           eslint-command: npm run lint:sonar
 
