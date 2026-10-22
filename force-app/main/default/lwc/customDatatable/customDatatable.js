@@ -263,7 +263,6 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
 
   @wire(getRecordCount, {
     objectName: '$objectApiName',
-    fieldSetName: '$fieldSetApiName',
     whereConditions: '$whereConditions',
     searchTerm: '$currentSearchTerm'
   })
