@@ -42,6 +42,9 @@ jobs:
       - name: Check Component READMEs
         run: npm run lint:readme
 
+      - name: Test Docs Scripts
+        run: npm run test:docs
+
       - name: Code Review
         uses: svierk/sfdx-code-review@v1.0.1
         with:
@@ -85,6 +88,9 @@ jobs:
 
       - name: Check Component READMEs
         run: npm run lint:readme
+
+      - name: Test Docs Scripts
+        run: npm run test:docs
 
       - name: Code Review
         uses: svierk/sfdx-code-review@v1.0.1
