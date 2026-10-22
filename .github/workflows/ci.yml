@@ -1,8 +1,9 @@
 name: Validation
 
 # Validates changes to this repository: runs the static quality gate (Prettier,
-# ESLint, component READMEs) and, wherever secrets are available, deploys the
-# metadata to the target org and runs the Apex and LWC tests against it.
+# ESLint, component READMEs) and, wherever secrets are available, runs the
+# Salesforce Code Analyzer, deploys the metadata to the target org and runs the
+# Apex and LWC tests against it.
 
 on:
   push:
@@ -52,7 +53,7 @@ jobs:
           prettier: 'true'
           eslint: 'true'
           prettier-command: npm run prettier:verify
-          eslint-command: npm run lint
+          eslint-command: npm run lint:sonar # writes the report the job summary reads the error/warning counts from
 
       - name: Run Tests
         uses: svierk/sfdx-run-tests@v1.1.1
@@ -68,6 +69,11 @@ jobs:
     name: Org Validation
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
+    # Read the repository, plus write the Code Analyzer results back as a SARIF
+    # report (required by the Upload SARIF step).
+    permissions:
+      contents: read
+      security-events: write
     steps:
       - name: Checkout
         uses: actions/checkout@v7.0.1
@@ -92,17 +98,33 @@ jobs:
       - name: Test Docs Scripts
         run: npm run test:docs
 
+      # Installed before the Code Review, which runs the Code Analyzer as a
+      # plugin of the SF CLI.
+      - name: Install SF CLI
+        uses: svierk/sfdx-cli-setup@v1.1.3
+
+      # Prettier and ESLint fail the job. The Code Analyzer runs without a
+      # severity threshold: its findings are reported in the Security tab, but
+      # do not block a merge.
       - name: Code Review
         uses: svierk/sfdx-code-review@v1.0.1
         with:
-          code-analyzer: 'false'
+          code-analyzer: 'true'
           prettier: 'true'
           eslint: 'true'
+          workspace: force-app
+          config-file: code-analyzer.yml
+          output-file: results.sarif
           prettier-command: npm run prettier:verify
           eslint-command: npm run lint:sonar
 
-      - name: Install SF CLI
-        uses: svierk/sfdx-cli-setup@v1.1.3
+      # Also runs when Prettier or ESLint failed the Code Review, as long as the
+      # Code Analyzer wrote its report.
+      - name: Upload SARIF
+        if: ${{ !cancelled() && hashFiles('results.sarif') != '' }}
+        uses: github/codeql-action/upload-sarif@v4.39.1
+        with:
+          sarif_file: results.sarif
 
       - name: Salesforce Org Login
         uses: svierk/sfdx-login@v1.4.3

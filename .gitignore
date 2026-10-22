@@ -37,6 +37,9 @@ node_modules/
 .eslintcache
 eslint-report.json
 
+# Salesforce Code Analyzer report
+results.sarif
+
 # MacOS system files
 .DS_Store
 
