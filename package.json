@@ -30,7 +30,7 @@
     "prettier:verify": "prettier --list-different \"**/*.{cls,cmp,component,css,html,js,json,md,page,trigger,xml,yaml,yml}\"",
     "precommit": "lint-staged",
     "prepare": "husky",
-    "server:lwc": "sf force lightning lwc start"
+    "server:lwc": "sf lightning dev component"
   },
   "devDependencies": {
     "@babel/core": "^7.29.7",
