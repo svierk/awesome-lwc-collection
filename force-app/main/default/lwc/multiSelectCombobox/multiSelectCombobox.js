@@ -103,6 +103,11 @@ export default class MultiSelectCombobox extends LightningElement {
     this.isDisabled = this.disabled || this.readOnly;
     this.hasPillsEnabled = this.showPills && !this.singleSelect;
     this.currentOptions = this.options;
+    document.addEventListener('click', this.handleDocumentClick);
+  }
+
+  disconnectedCallback() {
+    document.removeEventListener('click', this.handleDocumentClick);
   }
 
   renderedCallback() {
@@ -113,9 +118,6 @@ export default class MultiSelectCombobox extends LightningElement {
       });
       this.template.addEventListener('click', (event) => {
         event.stopPropagation();
-      });
-      document.addEventListener('click', () => {
-        this.close();
       });
       this.isInitialized = true;
       this.setSelection();
@@ -129,6 +131,11 @@ export default class MultiSelectCombobox extends LightningElement {
     const term = this._searchTerm.toLowerCase();
     return this.currentOptions.filter((option) => option.label.toLowerCase().includes(term));
   }
+
+  // a class field, so the same function is added in connectedCallback and removed in disconnectedCallback
+  handleDocumentClick = () => {
+    this.close();
+  };
 
   handleSearch(event) {
     this._searchTerm = event.target.value;

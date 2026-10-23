@@ -86,6 +86,22 @@ export default class CustomCarousel extends LightningElement {
     return `height: ${this.customHeight}`;
   }
 
+  get showNavigationButtons() {
+    return !this.hideNavigationButtons;
+  }
+
+  get showNavigationDots() {
+    return !this.hideNavigationDots;
+  }
+
+  get showSlideNumber() {
+    return !this.hideSlideNumber;
+  }
+
+  get showSlideText() {
+    return !this.hideSlideText;
+  }
+
   /**
    * A list of slides that are displayed in the custom carousel.
    * Each slide has the following attributes: image, heading and description.

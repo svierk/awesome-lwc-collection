@@ -23,6 +23,12 @@ export default class Render3DElementsThreeJS extends LightningElement {
       });
   }
 
+  disconnectedCallback() {
+    // stop the animation loop and free the WebGL context once the component is removed
+    cancelAnimationFrame(this.animationFrame);
+    this.renderer?.dispose();
+  }
+
   init() {
     // initialize scene, camera and renderer
     const scene = new THREE.Scene();
@@ -47,12 +53,13 @@ export default class Render3DElementsThreeJS extends LightningElement {
     this.template.querySelector('canvas').style.height = 'auto';
 
     // add animation loop to rotate the cube
-    function animate() {
-      requestAnimationFrame(animate);
+    this.renderer = renderer;
+    const animate = () => {
+      this.animationFrame = requestAnimationFrame(animate);
       cube.rotation.x += 0.01;
       cube.rotation.y += 0.01;
       renderer.render(scene, camera);
-    }
+    };
     animate();
   }
 }
