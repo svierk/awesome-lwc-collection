@@ -26,7 +26,15 @@ const DATA_TYPE_MAP = {
   Reference: 'datatableLookup'
 };
 
-const SEARCHABLE_DATA_TYPES = new Set(['String', 'Email', 'Phone', 'Url', 'Picklist', 'TextArea']);
+// GraphQL type of the value the like operator expects, per searchable data type
+const SEARCH_VARIABLE_TYPES = {
+  String: 'String',
+  Email: 'Email',
+  Phone: 'PhoneNumber',
+  Url: 'Url',
+  Picklist: 'Picklist',
+  TextArea: 'TextArea'
+};
 const RAW_VALUE_DATA_TYPES = new Set(['Date', 'DateTime', 'Currency', 'Percent', 'Int', 'Double', 'Long', 'Boolean']);
 
 /**
@@ -146,9 +154,10 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   _buildWhereClause() {
     const parts = [];
     if (this.whereConditions) parts.push(this.whereConditions);
+    // the search term itself is never part of the query string, it is passed as variable
     if (this._searchTerm && this._objectInfo) {
       const filters = this._getSearchableFields()
-        .map((f) => `{ ${f}: { like: "%${this._escapeLike(this._searchTerm)}%" } }`)
+        .map((f) => `{ ${f}: { like: $${this._searchVariableName(f)} } }`)
         .join(', ');
       if (filters) parts.push(`{ or: [${filters}] }`);
     }
@@ -167,7 +176,11 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     const orderByClause = this._sortedBy
       ? `, orderBy: { ${this._sortedBy}: { order: ${this._sortDirection.toUpperCase()} } }`
       : '';
-    const queryString = `query { uiapi { query {
+    const variableDeclarations = Object.keys(this.graphqlVariables)
+      .map((name) => `$${name}: ${this._searchVariableTypes[name]}`)
+      .join(', ');
+    const operation = variableDeclarations ? `query getRecords(${variableDeclarations})` : 'query';
+    const queryString = `${operation} { uiapi { query {
       ${this.objectApiName}(first: ${firstVal}${afterParam}${whereClause}${orderByClause}) {
         edges { node { Id ${fieldNodes} } }
         totalCount
@@ -179,7 +192,26 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     `;
   }
 
-  @wire(graphql, { query: '$graphqlQuery' })
+  // one variable per GraphQL type, because the like operator of each field type expects its own type
+  get _searchVariableTypes() {
+    if (!this._searchTerm || !this._objectInfo) return {};
+    const types = {};
+    this._getSearchableFields().forEach((f) => {
+      types[this._searchVariableName(f)] = SEARCH_VARIABLE_TYPES[this._objectInfo.fields[f].dataType];
+    });
+    return types;
+  }
+
+  get graphqlVariables() {
+    const pattern = `%${this._escapeLike(this._searchTerm)}%`;
+    return Object.fromEntries(Object.keys(this._searchVariableTypes).map((name) => [name, pattern]));
+  }
+
+  _searchVariableName(fieldName) {
+    return `search${SEARCH_VARIABLE_TYPES[this._objectInfo.fields[fieldName].dataType]}`;
+  }
+
+  @wire(graphql, { query: '$graphqlQuery', variables: '$graphqlVariables' })
   wiredGraphQL({ data, errors, refresh }) {
     this._graphqlRefresh = refresh;
     if (data) {
@@ -221,7 +253,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     const objectFields = this._objectInfo.fields;
     return this.fieldList.filter((f) => {
       const info = objectFields[f];
-      return info && SEARCHABLE_DATA_TYPES.has(info.dataType);
+      return info?.filterable && info.dataType in SEARCH_VARIABLE_TYPES;
     });
   }
 
