@@ -26,7 +26,8 @@ describe('c-render3-d-elements-three-j-s', () => {
     mockRenderer = {
       setSize: jest.fn(),
       domElement: document.createElement('canvas'),
-      render: jest.fn()
+      render: jest.fn(),
+      dispose: jest.fn()
     };
     mockCube = { rotation: { x: 0, y: 0 } };
 
@@ -42,10 +43,9 @@ describe('c-render3-d-elements-three-j-s', () => {
       Mesh: jest.fn(() => mockCube)
     };
 
-    global.requestAnimationFrame = jest.fn((cb) => {
-      cb();
-      return 1;
-    });
+    // the next frame is only requested, never run, so the loop does not recurse
+    global.requestAnimationFrame = jest.fn(() => 42);
+    global.cancelAnimationFrame = jest.fn();
 
     element = createElement('c-render3-d-elements-three-j-s', {
       is: Render3DElementsThreeJS
@@ -86,6 +86,34 @@ describe('c-render3-d-elements-three-j-s', () => {
     expect(mockScene.add).toHaveBeenCalledWith(mockCube);
     expect(mockRenderer.setSize).toHaveBeenCalledWith(1024, 768, true);
     expect(mockCamera.position.z).toBe(3);
+  });
+
+  it('should render a first frame and request the next one', async () => {
+    // given
+    loadScript.mockResolvedValue();
+
+    // when
+    document.body.appendChild(element);
+    await Promise.resolve();
+
+    // then
+    expect(mockRenderer.render).toHaveBeenCalledWith(mockScene, mockCamera);
+    expect(mockCube.rotation.x).toBeCloseTo(0.01);
+    expect(requestAnimationFrame).toHaveBeenCalledTimes(1);
+  });
+
+  it('should stop the animation and dispose the renderer when removed', async () => {
+    // given
+    loadScript.mockResolvedValue();
+    document.body.appendChild(element);
+    await Promise.resolve();
+
+    // when
+    document.body.removeChild(element);
+
+    // then
+    expect(cancelAnimationFrame).toHaveBeenCalledWith(42);
+    expect(mockRenderer.dispose).toHaveBeenCalled();
   });
 
   it('should handle script loading error', async () => {

@@ -26,7 +26,7 @@ describe('c-csv-to-datatable', () => {
     }
   });
 
-  it('should render with default values', () => {
+  it('should render with default values and be accessible', async () => {
     // when
     document.body.appendChild(element);
 
@@ -39,6 +39,7 @@ describe('c-csv-to-datatable', () => {
     const datatable = element.shadowRoot.querySelector('lightning-datatable');
     expect(datatable).toBeTruthy();
     expect(datatable.hideCheckboxColumn).toBe(true);
+    await expect(element).toBeAccessible();
   });
 
   it('should handle valid csv file upload', async () => {

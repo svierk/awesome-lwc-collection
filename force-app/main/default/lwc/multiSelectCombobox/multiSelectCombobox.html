@@ -1,7 +1,7 @@
 <template>
   <div class="slds-form-element">
-    <label if:true={label} class="slds-form-element__label">
-      <abbr if:true={required} title="required" class="slds-required">*</abbr>
+    <label lwc:if={label} class="slds-form-element__label">
+      <abbr lwc:if={required} title="required" class="slds-required">*</abbr>
       {label}</label
     >
     <div class="slds-form-element__control">
@@ -60,9 +60,9 @@
         </div>
       </div>
     </div>
-    <div if:true={hasPillsEnabled}>
+    <div lwc:if={hasPillsEnabled}>
       <lightning-pill-container
-        if:true={isVisible}
+        lwc:if={isVisible}
         items={selectedOptions}
         variant="bare"
         onitemremove={handleRemove}

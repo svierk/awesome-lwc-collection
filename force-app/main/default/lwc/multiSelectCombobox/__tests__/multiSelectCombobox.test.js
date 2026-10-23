@@ -173,6 +173,28 @@ describe('c-multi-select-combobox', () => {
     });
   });
 
+  it('should close the dropdown on a click outside and stop listening once removed', async () => {
+    // given
+    const mockCloseHandler = jest.fn();
+    element.label = mockData.label;
+    element.options = mockData.options;
+    element.addEventListener('close', mockCloseHandler);
+    document.body.appendChild(element);
+
+    // when
+    document.dispatchEvent(new CustomEvent('click'));
+
+    // then
+    expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+
+    // when
+    document.body.removeChild(element);
+    document.dispatchEvent(new CustomEvent('click'));
+
+    // then
+    expect(mockCloseHandler).toHaveBeenCalledTimes(1);
+  });
+
   it('should close the dropdown when option is selected while using single select configuration', async () => {
     // given
     const mockCloseHandler = jest.fn();
