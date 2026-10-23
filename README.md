@@ -200,6 +200,12 @@ sf project deploy start
 
 Local Dev for Lightning Web Components lets you create and modify components leveraging a real-time browser preview: [Preview Components with Local Dev](https://developer.salesforce.com/docs/platform/lwc/guide/get-started-test-components.html)
 
+To preview a single component in isolation against the connected org run:
+
+```
+npm run server:lwc
+```
+
 ## Quality measures
 
 ### Git hooks
