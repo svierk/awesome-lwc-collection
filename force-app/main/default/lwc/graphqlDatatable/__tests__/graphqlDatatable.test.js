@@ -75,6 +75,7 @@ describe('c-graphql-datatable', () => {
     // when
     await mountWithDefaults();
     const datatable = element.shadowRoot.querySelector('c-datatable-extension');
+    expect(graphql.getLastConfig().variables).toEqual({});
 
     // then
     expect(datatable.data).toHaveLength(3);
@@ -396,6 +397,32 @@ describe('c-graphql-datatable', () => {
 
     // then
     expect(pagination.paginationLabel).toContain('Page 1 of');
+  });
+
+  it('should pass the search term as typed variables and leave non-filterable fields out', async () => {
+    // given
+    element.enableSearch = true;
+    element.fields = 'Name,Email,Phone,Description';
+    await mountWithDefaults();
+
+    // when
+    const searchInput = element.shadowRoot.querySelector('lightning-input.search-input');
+    searchInput.value = 'O"Brien 50%';
+    searchInput.dispatchEvent(new CustomEvent('change', { detail: { value: 'O"Brien 50%' } }));
+    await flushPromises();
+
+    // then
+    const { query, variables } = graphql.getLastConfig();
+    expect(query).toContain(
+      'query getRecords($searchString: String, $searchEmail: Email, $searchPhoneNumber: PhoneNumber)'
+    );
+    expect(query).toContain('{ Name: { like: $searchString } }');
+    expect(query).toContain('{ Email: { like: $searchEmail } }');
+    expect(query).toContain('{ Phone: { like: $searchPhoneNumber } }');
+    expect(query).not.toContain('Description: { like');
+    expect(query).not.toContain('Brien');
+    const pattern = String.raw`%O"Brien 50\%%`;
+    expect(variables).toEqual({ searchString: pattern, searchEmail: pattern, searchPhoneNumber: pattern });
   });
 
   it('should show error toast when graphql returns errors', async () => {
