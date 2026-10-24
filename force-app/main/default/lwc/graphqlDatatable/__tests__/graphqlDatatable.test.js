@@ -10,6 +10,10 @@ const mockGraphqlResponse = require('./data/graphqlResponse.json');
 const RECORD_ID = '0037Q000007dN20QAE';
 const MOCK_ERROR = { body: { message: 'some error message' } };
 
+const deleteMutation = (recordId) => expect.objectContaining({ variables: { input: { Id: recordId } } });
+const updateMutation = (recordId, fields) =>
+  expect.objectContaining({ variables: { input: { Id: recordId, Contact: fields } } });
+
 function cloneResponse(overrides = {}) {
   const resp = JSON.parse(JSON.stringify(mockGraphqlResponse));
   Object.assign(resp.uiapi.query.Contact, overrides);
@@ -120,9 +124,7 @@ describe('c-graphql-datatable', () => {
     );
 
     // then
-    expect(executeMutation).toHaveBeenCalledWith(
-      expect.objectContaining({ query: expect.stringContaining(RECORD_ID) })
-    );
+    expect(executeMutation).toHaveBeenCalledWith(deleteMutation(RECORD_ID));
 
     // when
     childElement.dispatchEvent(
@@ -145,28 +147,35 @@ describe('c-graphql-datatable', () => {
     await flushPromises();
 
     // then
-    expect(executeMutation).toHaveBeenCalledWith(
-      expect.objectContaining({ query: expect.stringContaining(RECORD_ID) })
-    );
+    expect(executeMutation).toHaveBeenCalledWith(deleteMutation(RECORD_ID));
   });
 
-  it('should execute update record operation when save event is fired after inline editing', async () => {
+  it('should pass record ids and field values of update and delete mutations as variables', async () => {
+    // given
+    const name = String.raw`O"Brien \ Sons`;
+
     // when
     await mountWithDefaults();
     const childElement = element.shadowRoot.querySelector('c-datatable-extension');
     childElement.dispatchEvent(
-      new CustomEvent('save', { detail: { draftValues: [{ Id: RECORD_ID, Name: 'Updated Name' }] } })
+      new CustomEvent('save', { detail: { draftValues: [{ Id: RECORD_ID, Name: name, Phone: null }] } })
     );
+    childElement.dispatchEvent(
+      new CustomEvent('rowaction', { detail: { action: { name: 'delete' }, row: { Id: RECORD_ID } } })
+    );
+    await flushPromises();
 
     // then
-    return Promise.resolve().then(() => {
-      expect(executeMutation).toHaveBeenCalledWith(
-        expect.objectContaining({ query: expect.stringContaining(RECORD_ID) })
-      );
-      expect(executeMutation).toHaveBeenCalledWith(
-        expect.objectContaining({ query: expect.stringContaining('Updated Name') })
-      );
-    });
+    const [update, remove] = executeMutation.mock.calls.map(([config]) => config);
+    expect(update.query).toContain('mutation UpdateRecord($input: ContactUpdateInput!)');
+    expect(update.query).toContain('ContactUpdate(input: $input)');
+    expect(update.query).not.toContain(RECORD_ID);
+    expect(update.query).not.toContain('Brien');
+    expect(update.variables).toEqual({ input: { Id: RECORD_ID, Contact: { Name: name, Phone: null } } });
+    expect(remove.query).toContain('mutation DeleteRecord($input: RecordDeleteInput!)');
+    expect(remove.query).toContain('ContactDelete(input: $input)');
+    expect(remove.query).not.toContain(RECORD_ID);
+    expect(remove.variables).toEqual({ input: { Id: RECORD_ID } });
   });
 
   it('should handle error when update record operation fails', async () => {
@@ -180,9 +189,7 @@ describe('c-graphql-datatable', () => {
 
     // then
     return Promise.resolve().then(() => {
-      expect(executeMutation).toHaveBeenCalledWith(
-        expect.objectContaining({ query: expect.stringContaining(RECORD_ID) })
-      );
+      expect(executeMutation).toHaveBeenCalledWith(updateMutation(RECORD_ID, { Name: 'Updated Name' }));
     });
   });
 
@@ -220,12 +227,8 @@ describe('c-graphql-datatable', () => {
     // then
     return Promise.resolve().then(() => {
       expect(executeMutation).toHaveBeenCalledTimes(2);
-      expect(executeMutation).toHaveBeenCalledWith(
-        expect.objectContaining({ query: expect.stringContaining(RECORD_ID) })
-      );
-      expect(executeMutation).toHaveBeenCalledWith(
-        expect.objectContaining({ query: expect.stringContaining('0037Q000007dN29QAE') })
-      );
+      expect(executeMutation).toHaveBeenCalledWith(deleteMutation(RECORD_ID));
+      expect(executeMutation).toHaveBeenCalledWith(deleteMutation('0037Q000007dN29QAE'));
     });
   });
 
@@ -284,9 +287,7 @@ describe('c-graphql-datatable', () => {
     await flushPromises();
 
     // then
-    expect(executeMutation).toHaveBeenCalledWith(
-      expect.objectContaining({ query: expect.stringContaining(RECORD_ID) })
-    );
+    expect(executeMutation).toHaveBeenCalledWith(deleteMutation(RECORD_ID));
   });
 
   it('should navigate pages and jump directly to last when cursors are cached', async () => {
