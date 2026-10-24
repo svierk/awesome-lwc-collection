@@ -61,6 +61,7 @@ Client-side git hooks ([husky](https://github.com/typicode/husky) + [lint-staged
 npm run prettier      # format and check all files
 npm run lint          # ESLint on all components
 npm run lint:readme   # check component READMEs against the component source
+npm run lint:slds     # SLDS Linter on all component styles and markup
 npm run test:unit     # run all Jest unit tests
 npm run test:docs     # run the tests of the docs build scripts
 ```
