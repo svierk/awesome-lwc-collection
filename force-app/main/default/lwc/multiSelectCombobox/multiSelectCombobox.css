@@ -5,7 +5,7 @@
 
 .multi-select-combobox__input {
   background-color: var(--slds-g-color-surface-container-1, #fff);
-  border: var(--slds-g-sizing-border-1, var(--lwc-borderWidthThin, 1px)) solid var(--slds-g-color-border-1, #c9c9c9);
+  border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #c9c9c9);
   border-radius: var(--slds-g-radius-border-2, 0.25rem);
   width: 100%;
   transition:
@@ -14,12 +14,12 @@
   display: inline-block;
   padding: 0 var(--slds-g-spacing-4, 1rem) 0 var(--slds-g-spacing-3, 0.75rem);
   line-height: 1.875rem;
-  min-height: calc(1.875rem + (var(--slds-g-sizing-border-1, var(--lwc-borderWidthThin, 1px)) * 2));
+  min-height: calc(1.875rem + (var(--slds-g-sizing-border-1, 1px) * 2));
 }
 
 .multi-select-combobox__input:disabled {
   background-color: var(--slds-g-color-surface-container-2, #f3f3f3);
-  border: var(--slds-g-sizing-border-1, var(--lwc-borderWidthThin, 1px)) solid var(--slds-g-color-border-1, #c9c9c9);
+  border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #c9c9c9);
 }
 
 .multi-select-combobox__icon {
@@ -34,8 +34,7 @@
   width: 100%;
   padding: var(--slds-g-spacing-2, 0.5rem) var(--slds-g-spacing-3, 0.75rem);
   border: none;
-  border-bottom: var(--slds-g-sizing-border-1, var(--lwc-borderWidthThin, 1px)) solid
-    var(--slds-g-color-border-1, #c9c9c9);
+  border-bottom: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #c9c9c9);
   outline: none;
   font-size: inherit;
 }
