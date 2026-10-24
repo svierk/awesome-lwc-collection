@@ -170,14 +170,14 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     if (!this.objectApiName || !this.fieldList.length) return undefined;
     const fieldNodes = this.fieldList.map((f) => `${f} { value displayValue }`).join('\n            ');
     const firstVal = this.enablePagination ? this.pageSize : 2000;
-    const afterVal = this._cursorCache[this._currentPage - 1] || null;
-    const afterParam = afterVal ? `, after: "${afterVal}"` : '';
+    // the pagination cursor is never part of the query string either, it is passed as variable
+    const afterParam = this._afterCursor ? ', after: $after' : '';
     const whereClause = this._buildWhereClause();
     const orderByClause = this._sortedBy
       ? `, orderBy: { ${this._sortedBy}: { order: ${this._sortDirection.toUpperCase()} } }`
       : '';
-    const variableDeclarations = Object.keys(this.graphqlVariables)
-      .map((name) => `$${name}: ${this._searchVariableTypes[name]}`)
+    const variableDeclarations = Object.entries(this._variableTypes)
+      .map(([name, type]) => `$${name}: ${type}`)
       .join(', ');
     const operation = variableDeclarations ? `query getRecords(${variableDeclarations})` : 'query';
     const queryString = `${operation} { uiapi { query {
@@ -202,9 +202,18 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     return types;
   }
 
+  get _afterCursor() {
+    return this._cursorCache[this._currentPage - 1] || null;
+  }
+
+  get _variableTypes() {
+    return this._afterCursor ? { ...this._searchVariableTypes, after: 'String' } : this._searchVariableTypes;
+  }
+
   get graphqlVariables() {
     const pattern = `%${this._escapeLike(this._searchTerm)}%`;
-    return Object.fromEntries(Object.keys(this._searchVariableTypes).map((name) => [name, pattern]));
+    const variables = Object.fromEntries(Object.keys(this._searchVariableTypes).map((name) => [name, pattern]));
+    return this._afterCursor ? { ...variables, after: this._afterCursor } : variables;
   }
 
   _searchVariableName(fieldName) {
