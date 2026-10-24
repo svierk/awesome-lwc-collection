@@ -17,7 +17,8 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #b0adab;
+  /* a neutral that stays the same in every theme, like the white surface, with a contrast of 4.6:1 */
+  color: var(--slds-g-color-neutral-base-50, #757575);
   font-size: var(--slds-g-font-scale-1, 0.875rem);
   pointer-events: none;
   user-select: none;

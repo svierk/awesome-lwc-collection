@@ -44,7 +44,7 @@
 .dot {
   height: 15px;
   width: 15px;
-  border-radius: 50%;
+  border-radius: var(--slds-g-radius-border-circle, 100%);
   cursor: pointer;
   background-color: var(--slds-g-color-neutral-base-80, #c9c9c9);
   margin: 0 2px;
