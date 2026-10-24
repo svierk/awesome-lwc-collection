@@ -367,53 +367,43 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     }
   }
 
-  _getDeleteQuery(recordId) {
-    return gql`
-      mutation DeleteRecord {
-        uiapi {
-          ${this.objectApiName}Delete(input: { Id: "${recordId}" }) {
-            Id
-          }
-        }
-      }
-    `;
-  }
-
-  _getUpdateQuery(draft) {
-    const { Id, ...fields } = draft;
-    const fieldStr = Object.entries(fields)
-      .map(([key, val]) => `${key}: ${this._serializeGqlValue(val)}`)
-      .join(', ');
-    return gql`
-      mutation UpdateRecord {
-        uiapi {
-          ${this.objectApiName}Update(input: {
-            Id: "${Id}",
-            ${this.objectApiName}: { ${fieldStr} }
-          }) {
-            Record {
+  // record ids and field values are never part of the mutation string, they are passed as input variable
+  _deleteRecordMutation(recordId) {
+    return executeMutation({
+      query: gql`
+        mutation DeleteRecord($input: RecordDeleteInput!) {
+          uiapi {
+            ${this.objectApiName}Delete(input: $input) {
               Id
             }
           }
         }
-      }
-    `;
+      `,
+      variables: { input: { Id: recordId } }
+    });
   }
 
-  _serializeGqlValue(val) {
-    if (val === null || val === undefined) return 'null';
-    if (typeof val === 'boolean' || typeof val === 'number') return String(val);
-    const escaped = String(val)
-      .replaceAll('\\', String.raw`\\`)
-      .replaceAll('"', String.raw`\"`);
-    return `"${escaped}"`;
+  _updateRecordMutation(draft) {
+    const { Id, ...fields } = draft;
+    return executeMutation({
+      query: gql`
+        mutation UpdateRecord($input: ${this.objectApiName}UpdateInput!) {
+          uiapi {
+            ${this.objectApiName}Update(input: $input) {
+              Record {
+                Id
+              }
+            }
+          }
+        }
+      `,
+      variables: { input: { Id, [this.objectApiName]: fields } }
+    });
   }
 
   async handleSave(event) {
     try {
-      const results = await Promise.all(
-        event.detail.draftValues.map((draft) => executeMutation({ query: this._getUpdateQuery(draft) }))
-      );
+      const results = await Promise.all(event.detail.draftValues.map((draft) => this._updateRecordMutation(draft)));
       const errors = results.flatMap((r) => r?.errors ?? []);
       if (errors.length) {
         this.showToast('Error updating records', errors[0]?.message ?? 'Unknown error', 'error');
@@ -434,9 +424,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   async deleteSelectedRecords() {
     this.isLoading = true;
     try {
-      const results = await Promise.all(
-        this.selectedRecords.map((record) => executeMutation({ query: this._getDeleteQuery(record.Id) }))
-      );
+      const results = await Promise.all(this.selectedRecords.map((record) => this._deleteRecordMutation(record.Id)));
       const errors = results.flatMap((r) => r?.errors ?? []);
       if (errors.length) {
         this.showToast('Error deleting records', errors[0]?.message ?? 'Unknown error', 'error');
@@ -454,7 +442,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   async _deleteRecord(recordId) {
     this.isLoading = true;
     try {
-      const result = await executeMutation({ query: this._getDeleteQuery(recordId) });
+      const result = await this._deleteRecordMutation(recordId);
       if (result?.errors?.length) {
         this.showToast('Error deleting record', result.errors[0]?.message ?? 'Unknown error', 'error');
         return;
