@@ -61,12 +61,17 @@ Client-side git hooks ([husky](https://github.com/typicode/husky) + [lint-staged
 npm run prettier      # format and check all files
 npm run lint          # ESLint on all components
 npm run lint:readme   # check component READMEs against the component source
-npm run lint:slds     # SLDS Linter on all component styles and markup
 npm run test:unit     # run all Jest unit tests
 npm run test:docs     # run the tests of the docs build scripts
 ```
 
 Please make sure Prettier, ESLint and the unit tests are green before opening a pull request.
+
+In CI, the [Salesforce Code Analyzer](https://developer.salesforce.com/docs/platform/salesforce-code-analyzer/guide/code-analyzer.html) also checks the component styles and markup for SLDS 2: retired SLDS 1 design tokens and classes fail the build, hard-coded values that have a styling hook are reported as warnings. To run these checks locally (Code Analyzer 5.4.0 or later):
+
+```
+sf code-analyzer run --workspace force-app --rule-selector eslint:SLDS
+```
 
 ## Commit messages
 

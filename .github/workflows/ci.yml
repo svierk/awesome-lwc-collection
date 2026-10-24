@@ -1,9 +1,9 @@
 name: Validation
 
 # Validates changes to this repository: runs the static quality gate (Prettier,
-# ESLint, component READMEs, SLDS usage) and, wherever secrets are available,
-# runs the Salesforce Code Analyzer, deploys the metadata to the target org and
-# runs the Apex and LWC tests against it.
+# ESLint, component READMEs) and, wherever secrets are available, runs the
+# Salesforce Code Analyzer, deploys the metadata to the target org and runs the
+# Apex and LWC tests against it.
 
 on:
   push:
@@ -42,11 +42,6 @@ jobs:
 
       - name: Check Component READMEs
         run: npm run lint:readme
-
-      # Retired SLDS 1 tokens and classes fail the job. Hard-coded values are
-      # only reported as warnings, as some of them are deliberate.
-      - name: Check SLDS Usage
-        run: npm run lint:slds
 
       - name: Test Docs Scripts
         run: npm run test:docs
@@ -99,11 +94,6 @@ jobs:
 
       - name: Check Component READMEs
         run: npm run lint:readme
-
-      # Retired SLDS 1 tokens and classes fail the job. Hard-coded values are
-      # only reported as warnings, as some of them are deliberate.
-      - name: Check SLDS Usage
-        run: npm run lint:slds
 
       - name: Test Docs Scripts
         run: npm run test:docs

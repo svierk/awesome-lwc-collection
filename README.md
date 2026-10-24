@@ -228,14 +228,6 @@ Run _ESLint_ to check for linting issues:
 npm run lint
 ```
 
-### SLDS usage with SLDS Linter
-
-Run the _SLDS Linter_ to check the component styles and markup for retired SLDS 1 tokens and classes and for hard-coded values that have an SLDS 2 styling hook:
-
-```
-npm run lint:slds
-```
-
 ### Unit tests with Jest
 
 To execute all unit tests only once run:

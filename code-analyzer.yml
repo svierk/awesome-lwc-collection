@@ -6,14 +6,28 @@
 # https://developer.salesforce.com/docs/platform/salesforce-code-analyzer/guide/config-custom.html
 
 engines:
-  # ESLint already runs with the project's own configuration (eslint.config.js)
-  # in the same step. The analyzer's built-in ESLint base config does not know
-  # that setup - e.g. it flags every `globalThis` and every Jest global as
-  # `no-undef` - so running it a second time would only add false positives.
+  # The ESLint engine only runs the SLDS rules, which check the component
+  # styles and markup for SLDS 2. JavaScript is already linted with the
+  # project's own configuration (eslint.config.js) in the same step. The
+  # analyzer's built-in JavaScript and LWC base configs do not know that setup -
+  # e.g. they flag every `globalThis` and every Jest global as `no-undef` - so
+  # running them a second time would only add false positives.
   eslint:
-    disable_engine: true
+    disable_javascript_base_config: true
+    disable_lwc_base_config: true
+    disable_typescript_base_config: true
+    disable_react_base_config: true
 
   # Duplicated code is already reported by SonarCloud. The copy-paste detector
   # mostly flags the bundled third-party libraries in staticresources.
   cpd:
     disable_engine: true
+
+rules:
+  eslint:
+    # Retired SLDS classes (e.g. `slds-icon--small`) are Low by default, below
+    # the severity threshold of the Code Review step. Raised to Moderate, they
+    # fail the job like the retired SLDS 1 design tokens. Hard-coded values stay
+    # Low: they are reported, but some of them are deliberate.
+    '@salesforce-ux/slds/enforce-bem-usage':
+      severity: Moderate
