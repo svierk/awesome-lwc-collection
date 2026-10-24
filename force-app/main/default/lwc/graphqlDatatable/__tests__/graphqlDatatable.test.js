@@ -188,9 +188,7 @@ describe('c-graphql-datatable', () => {
     );
 
     // then
-    return Promise.resolve().then(() => {
-      expect(executeMutation).toHaveBeenCalledWith(updateMutation(RECORD_ID, { Name: 'Updated Name' }));
-    });
+    expect(executeMutation).toHaveBeenCalledWith(updateMutation(RECORD_ID, { Name: 'Updated Name' }));
   });
 
   it('should show error toast when save mutation resolves with graphql errors', async () => {
@@ -225,11 +223,9 @@ describe('c-graphql-datatable', () => {
     element.shadowRoot.querySelector('lightning-button').click();
 
     // then
-    return Promise.resolve().then(() => {
-      expect(executeMutation).toHaveBeenCalledTimes(2);
-      expect(executeMutation).toHaveBeenCalledWith(deleteMutation(RECORD_ID));
-      expect(executeMutation).toHaveBeenCalledWith(deleteMutation('0037Q000007dN29QAE'));
-    });
+    expect(executeMutation).toHaveBeenCalledTimes(2);
+    expect(executeMutation).toHaveBeenCalledWith(deleteMutation(RECORD_ID));
+    expect(executeMutation).toHaveBeenCalledWith(deleteMutation('0037Q000007dN29QAE'));
   });
 
   it('should handle error when delete operation for multiple records fails', async () => {
@@ -250,9 +246,7 @@ describe('c-graphql-datatable', () => {
     element.shadowRoot.querySelector('lightning-button').click();
 
     // then
-    return Promise.resolve().then(() => {
-      expect(executeMutation).toHaveBeenCalledTimes(2);
-    });
+    expect(executeMutation).toHaveBeenCalledTimes(2);
   });
 
   it('should show error toast when delete multiple records mutation resolves with graphql errors', async () => {
@@ -315,6 +309,11 @@ describe('c-graphql-datatable', () => {
 
     // then
     expect(pagination.paginationLabel).toContain('Page 2 of 2');
+    const { query, variables } = graphql.getLastConfig();
+    expect(query).toContain('query getRecords($after: String)');
+    expect(query).toContain('Contact(first: 1, after: $after)');
+    expect(query).not.toContain('cursorA');
+    expect(variables).toEqual({ after: 'cursorA' });
 
     // when
     pagination.dispatchEvent(new CustomEvent('first'));
@@ -322,6 +321,7 @@ describe('c-graphql-datatable', () => {
 
     // then
     expect(pagination.paginationLabel).toContain('Page 1 of 2');
+    expect(graphql.getLastConfig().variables).toEqual({});
 
     // when
     pagination.dispatchEvent(new CustomEvent('last'));
