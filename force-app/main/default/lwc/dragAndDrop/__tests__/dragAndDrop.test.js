@@ -36,10 +36,25 @@ describe('c-drag-and-drop', () => {
 
     const dropzone = element.shadowRoot.querySelector('.dropzone');
     dropzone.dispatchEvent(dragover);
-    dropzone.dispatchEvent(dragleave);
-    dropzone.dispatchEvent(drop);
+    await Promise.resolve();
 
     // then
+    expect(dropzone.classList).toContain('dropzone-active');
+
+    // when
+    dropzone.dispatchEvent(dragleave);
+    await Promise.resolve();
+
+    // then
+    expect(dropzone.classList).not.toContain('dropzone-active');
+
+    // when
+    dropzone.dispatchEvent(dragover);
+    dropzone.dispatchEvent(drop);
+    await Promise.resolve();
+
+    // then
+    expect(dropzone.classList).not.toContain('dropzone-active');
     await expect(element).toBeAccessible();
   });
 });

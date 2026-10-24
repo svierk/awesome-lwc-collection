@@ -363,7 +363,7 @@ describe('c-org-chart-viewer', () => {
     expect(sfHtml).toContain('Morgan Lee');
     expect(sfHtml).toContain('VP of Engineering');
     expect(sfHtml).toContain('ML');
-    expect(sfHtml).toContain('#00A1E0');
+    expect(sfHtml).toContain('box-shadow:0 0 0 2px var(--slds-g-color-accent-light-2, #d8e6fe)');
 
     // when - a record without a name or title falls back to placeholder content
     const emptyHtml = renderNode({ data: {}, width: 220, height: 80 });
@@ -371,6 +371,7 @@ describe('c-org-chart-viewer', () => {
     // then
     expect(emptyHtml).toContain('Unknown');
     expect(emptyHtml).toContain('U</div>');
+    expect(emptyHtml).toContain('box-shadow:var(--slds-g-shadow-1, 0 2px 2px 0 #0000001a)');
 
     // when - untrusted markup must not survive into the rendered node
     const maliciousHtml = renderNode({

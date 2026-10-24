@@ -25,6 +25,20 @@ const HTML_ESCAPES = {
   "'": '&#39;'
 };
 
+// the nodes are rendered as an HTML string, so they reference the SLDS styling hooks inline, with the SLDS 1 values as fallback
+const NODE_STYLES = {
+  font: "var(--slds-g-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif)",
+  surface: 'var(--slds-g-color-surface-container-1, #fff)',
+  border: 'var(--slds-g-color-border-1, #c9c9c9)',
+  accent: 'var(--slds-g-color-border-accent-1, #0176d3)',
+  highlight: 'var(--slds-g-color-accent-light-2, #d8e6fe)',
+  shadow: 'var(--slds-g-shadow-1, 0 2px 2px 0 #0000001a)',
+  avatar: 'var(--slds-g-color-surface-inverse-1, #032d60)',
+  onAvatar: 'var(--slds-g-color-on-surface-inverse-1, #fff)',
+  name: 'var(--slds-g-color-on-surface-3, #181818)',
+  title: 'var(--slds-g-color-on-surface-1, #757575)'
+};
+
 function escapeHtml(value) {
   return String(value ?? '').replace(/[&<>"']/g, (char) => HTML_ESCAPES[char]);
 }
@@ -178,12 +192,12 @@ export default class OrgChartViewer extends LightningElement {
       .join('');
 
     return `
-      <div style="width:${d.width}px;height:${d.height}px;padding:4px;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;">
-        <div style="display:flex;align-items:center;gap:10px;height:100%;background:#FFFFFF;border:1px solid ${isHighlighted ? '#00A1E0' : '#D8DDE6'};border-left:4px solid #00A1E0;border-radius:6px;padding:0 12px;box-shadow:${isHighlighted ? '0 0 0 2px rgba(0,161,224,0.35)' : '0 1px 2px rgba(0,0,0,0.08)'};box-sizing:border-box;">
-          <div style="flex:0 0 36px;width:36px;height:36px;border-radius:50%;background:#0D1B3E;color:#FFFFFF;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;">${escapeHtml(initials)}</div>
+      <div style="width:${d.width}px;height:${d.height}px;padding:4px;box-sizing:border-box;font-family:${NODE_STYLES.font};">
+        <div style="display:flex;align-items:center;gap:10px;height:100%;background:${NODE_STYLES.surface};border:1px solid ${isHighlighted ? NODE_STYLES.accent : NODE_STYLES.border};border-left:4px solid ${NODE_STYLES.accent};border-radius:6px;padding:0 12px;box-shadow:${isHighlighted ? `0 0 0 2px ${NODE_STYLES.highlight}` : NODE_STYLES.shadow};box-sizing:border-box;">
+          <div style="flex:0 0 36px;width:36px;height:36px;border-radius:50%;background:${NODE_STYLES.avatar};color:${NODE_STYLES.onAvatar};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;">${escapeHtml(initials)}</div>
           <div style="overflow:hidden;">
-            <div style="font-size:13px;font-weight:600;color:#16325C;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(name)}</div>
-            <div style="font-size:11px;color:#54698D;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(title)}</div>
+            <div style="font-size:13px;font-weight:600;color:${NODE_STYLES.name};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(name)}</div>
+            <div style="font-size:11px;color:${NODE_STYLES.title};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(title)}</div>
           </div>
         </div>
       </div>`;

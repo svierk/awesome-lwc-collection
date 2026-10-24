@@ -1,7 +1,8 @@
+/* the canvas is transparent and the default pen is black, so the surface behind it stays white in every theme */
 .canvas-wrapper {
   height: 240px;
-  border: 1px solid #d8dde6;
-  border-radius: 0.25rem;
+  border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #c9c9c9);
+  border-radius: var(--slds-g-radius-border-2, 0.25rem);
   background-color: #ffffff;
 }
 
@@ -17,14 +18,14 @@
   left: 50%;
   transform: translate(-50%, -50%);
   color: #b0adab;
-  font-size: 0.875rem;
+  font-size: var(--slds-g-font-scale-1, 0.875rem);
   pointer-events: none;
   user-select: none;
   white-space: nowrap;
 }
 
 .action-buttons {
-  gap: 0.5rem;
+  gap: var(--slds-g-spacing-2, 0.5rem);
 }
 
 @media (min-width: 768px) {
@@ -39,6 +40,6 @@
   }
 
   .action-buttons {
-    margin-top: 0.5rem;
+    margin-top: var(--slds-g-spacing-2, 0.5rem);
   }
 }

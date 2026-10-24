@@ -2,6 +2,7 @@
   margin: auto;
 }
 
+/* the overlay, the slide numbers and the arrows sit on the slide image, so they keep fixed light-on-dark colors in every theme */
 .text-section {
   color: #f2f2f2;
   font-size: 15px;
@@ -13,10 +14,10 @@
 .next {
   top: 50%;
   width: auto;
-  padding: 16px;
+  padding: var(--slds-g-spacing-4, 1rem);
   color: #fff;
   font: inherit;
-  font-weight: 700;
+  font-weight: var(--slds-g-font-weight-bold, bold);
   cursor: pointer;
   border: none;
   background: transparent;
@@ -34,8 +35,8 @@
 }
 
 .slideNumbers {
-  font-size: 12px;
-  padding: 8px 12px;
+  font-size: var(--slds-g-font-scale-neg-1, 0.75rem);
+  padding: var(--slds-g-spacing-2, 0.5rem) var(--slds-g-spacing-3, 0.75rem);
   top: 0;
   color: #f2f2f2;
 }
@@ -45,14 +46,14 @@
   width: 15px;
   border-radius: 50%;
   cursor: pointer;
-  background-color: #bbb;
+  background-color: var(--slds-g-color-neutral-base-80, #c9c9c9);
   margin: 0 2px;
   display: inline-block;
 }
 
 .active,
 .dot:hover {
-  background-color: #717171;
+  background-color: var(--slds-g-color-neutral-base-50, #757575);
 }
 
 .fade {
