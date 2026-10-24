@@ -18,3 +18,8 @@
   cursor: -moz-grabbing;
   cursor: -webkit-grabbing;
 }
+
+.dropzone-active {
+  background-color: var(--slds-g-color-accent-light-1, #eef4ff);
+  border-color: var(--slds-g-color-border-accent-1, #0176d3);
+}

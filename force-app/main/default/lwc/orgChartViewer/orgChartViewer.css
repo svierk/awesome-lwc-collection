@@ -1,8 +1,8 @@
 .chart-wrapper {
   height: 480px;
-  border: 1px solid #d8dde6;
-  border-radius: 0.25rem;
-  background-color: #fafafa;
+  border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #c9c9c9);
+  border-radius: var(--slds-g-radius-border-2, 0.25rem);
+  background-color: var(--slds-g-color-surface-container-2, #f3f3f3);
 }
 
 .chart-container {

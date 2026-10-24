@@ -1,9 +1,9 @@
 .logo-preview {
   display: inline-flex;
   align-items: flex-start;
-  gap: 0.25rem;
-  border: 1px solid #d8dde6;
-  border-radius: 0.25rem;
+  gap: var(--slds-g-spacing-1, 0.25rem);
+  border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #c9c9c9);
+  border-radius: var(--slds-g-radius-border-2, 0.25rem);
 }
 
 .logo-preview-image {
@@ -12,10 +12,11 @@
   object-fit: contain;
 }
 
+/* stays white in every theme, like the light modules of the code itself, so the code remains scannable */
 .qr-code-container {
   background-color: #ffffff;
-  border-radius: 0.5rem;
-  border: 1px solid #d8dde6;
+  border-radius: var(--slds-g-radius-border-3, 0.5rem);
+  border: var(--slds-g-sizing-border-1, 1px) solid var(--slds-g-color-border-1, #c9c9c9);
 }
 
 .qr-code-image {

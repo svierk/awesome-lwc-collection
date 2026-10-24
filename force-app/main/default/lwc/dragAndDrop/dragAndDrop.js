@@ -13,9 +13,6 @@ const COLUMNS = [
   }
 ];
 
-const DEFAULT_STYLES = 'background-color: rgb(255, 255, 255); border-color: rgb(201, 201, 201);';
-const DRAG_OVER_STYLES = 'background-color: pink; border-color:red;';
-
 /**
  * HTML Drag and Drop API usage example.
  * @alias DragAndDrop
@@ -29,6 +26,11 @@ export default class DragAndDrop extends LightningElement {
   elements = [];
   columns = COLUMNS;
   @track data = [];
+  isDragOver = false;
+
+  get dropzoneClass() {
+    return `slds-card dropzone card-height${this.isDragOver ? ' dropzone-active' : ''}`;
+  }
 
   connectedCallback() {
     for (let i = 1; i <= 12; i++) {
@@ -43,17 +45,17 @@ export default class DragAndDrop extends LightningElement {
 
   handleDragOver(event) {
     event.preventDefault();
-    event.currentTarget.style = DRAG_OVER_STYLES;
+    this.isDragOver = true;
   }
 
   handleDragLeave(event) {
     event.preventDefault();
-    event.currentTarget.style = DEFAULT_STYLES;
+    this.isDragOver = false;
   }
 
   handleDrop(event) {
     event.preventDefault();
-    event.currentTarget.style = DEFAULT_STYLES;
+    this.isDragOver = false;
 
     const id = event.dataTransfer.getData('id');
     const label = event.dataTransfer.getData('label');
