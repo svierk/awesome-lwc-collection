@@ -34,6 +34,30 @@ export default class GraphqlMapView extends LightningElement {
   @api objectApiName;
 
   /**
+   * If present, the map is wrapped in a lightning card to fit better into the overall page layout.
+   * @type {boolean}
+   * @default false
+   */
+  @api showCard = false;
+
+  /**
+   * If show card option is active, the card icon is displayed in the header before the card title.
+   * It should contain the SLDS name of the icon.
+   * Specify the name in the format 'utility:down' where 'utility' is the category and 'down' the icon to be displayed.
+   * @type {string}
+   * @default 'utility:location'
+   * @example 'utility:location'
+   */
+  @api cardIcon = 'utility:location';
+
+  /**
+   * If show card option is active, the card title can include text and is displayed in the header above the map.
+   * @type {string}
+   * @default ''
+   */
+  @api cardTitle = '';
+
+  /**
    * Height of the map component in percent or pixels. The default is 400px.
    * @type {string}
    * @default '400px'
