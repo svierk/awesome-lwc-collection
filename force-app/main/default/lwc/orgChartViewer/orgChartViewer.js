@@ -25,7 +25,7 @@ const HTML_ESCAPES = {
   "'": '&#39;'
 };
 
-// the nodes are rendered as an HTML string, so they reference the SLDS styling hooks inline, with the SLDS 1 values as fallback
+// the nodes are rendered as an HTML string, so they reference the SLDS styling hooks inline, with static fallback values for environments without styling hooks
 const NODE_STYLES = {
   font: "var(--slds-g-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif)",
   surface: 'var(--slds-g-color-surface-container-1, #fff)',

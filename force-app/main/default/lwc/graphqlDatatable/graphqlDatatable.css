@@ -1,7 +1,0 @@
-div.page-header {
-  border: var(--slds-g-sizing-border-1, var(--lwc-borderWidthThin, 1px)) solid var(--slds-g-color-border-1, #c9c9c9);
-}
-
-ul.page-header-detail {
-  border-top: var(--slds-g-sizing-border-1, var(--lwc-borderWidthThin, 1px)) solid var(--slds-g-color-border-1, #c9c9c9);
-}

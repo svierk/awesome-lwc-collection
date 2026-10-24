@@ -105,7 +105,7 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   @api hideTableHeader = false;
 
   /**
-   * If present, the table is wrapped with the correct page header to fit better into the related list layout.
+   * If present, the table is wrapped in a card styled like a native related list, so it fits in with the related lists around it.
    * @type {boolean}
    * @default false
    */
