@@ -1,3 +1,17 @@
 <template>
-  <lightning-map list-view={listView} map-markers={mapMarkers} zoom-level={zoomLevel} style={styles}></lightning-map>
+  <template lwc:if={showCard}>
+    <lightning-card title={cardTitle} icon-name={cardIcon}>
+      <div class="slds-p-horizontal_medium">
+        <lightning-map
+          list-view={listView}
+          map-markers={mapMarkers}
+          zoom-level={zoomLevel}
+          style={styles}
+        ></lightning-map>
+      </div>
+    </lightning-card>
+  </template>
+  <template lwc:else>
+    <lightning-map list-view={listView} map-markers={mapMarkers} zoom-level={zoomLevel} style={styles}></lightning-map>
+  </template>
 </template>
