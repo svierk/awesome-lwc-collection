@@ -112,3 +112,21 @@
   line-clamp: var(--feature-details-lines);
   overflow: hidden;
 }
+
+/**
+ * Zoomable screenshots (theme/components/ImageZoom.vue): the cursor says they
+ * open larger, keyboard focus is visible, and the page behind the overlay
+ * stays put.
+ */
+.vp-doc img.image-zoomable {
+  cursor: zoom-in;
+}
+
+.vp-doc img.image-zoomable:focus-visible {
+  outline: 2px solid var(--vp-c-brand-1);
+  outline-offset: 2px;
+}
+
+html.image-zoom-open {
+  overflow: hidden;
+}
