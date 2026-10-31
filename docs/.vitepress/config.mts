@@ -19,7 +19,9 @@ export default defineConfig({
   base,
   cleanUrls: true,
   lastUpdated: true,
-  head: [['link', { rel: 'icon', href: '/awesome-lwc-collection/images/awesome-lwc-collection-logo.png' }]],
+  head: [
+    ['link', { rel: 'icon', type: 'image/png', href: '/awesome-lwc-collection/images/awesome-lwc-collection-logo.png' }]
+  ],
   vite: {
     // AI-friendly docs: llms.txt (an index of the site), llms-full.txt (every
     // page in one file) and a Markdown copy of each page next to its HTML, for
