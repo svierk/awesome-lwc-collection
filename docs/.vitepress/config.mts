@@ -19,7 +19,12 @@ export default defineConfig({
   base,
   cleanUrls: true,
   lastUpdated: true,
-  head: [['link', { rel: 'icon', href: '/awesome-lwc-collection/images/awesome-lwc-collection-logo.png' }]],
+  head: [
+    [
+      'link',
+      { rel: 'icon', type: 'image/svg+xml', href: '/awesome-lwc-collection/images/awesome-lwc-collection-logo.svg' }
+    ]
+  ],
   vite: {
     // AI-friendly docs: llms.txt (an index of the site), llms-full.txt (every
     // page in one file) and a Markdown copy of each page next to its HTML, for
@@ -42,7 +47,7 @@ export default defineConfig({
     writeFileSync(index, readFileSync(index, 'utf-8').replaceAll(`](${base}`, `](${siteUrl}`));
   },
   themeConfig: {
-    logo: '/images/awesome-lwc-collection-logo.png',
+    logo: '/images/awesome-lwc-collection-logo.svg',
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Components', link: '/components/customDatatable' },
