@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img"><title>Awesome LWC Collection</title>
+  <defs>
+    <linearGradient id="inner" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#b4cbe1" />
+      <stop offset="1" stop-color="#e2ebf4" />
+    </linearGradient>
+    <linearGradient id="bolt" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="#1468d9" />
+      <stop offset="1" stop-color="#3891ea" />
+    </linearGradient>
+  </defs>
+  <path
+    d="M87.88 20Q100 13 112.12 20L163.22 49.5Q175.34 56.5 175.34 70.5L175.34 129.5Q175.34 143.5 163.22 150.5L112.12 180Q100 187 87.88 180L36.78 150.5Q24.66 143.5 24.66 129.5L24.66 70.5Q24.66 56.5 36.78 49.5Z"
+    fill="#fff"
+  />
+  <path
+    d="M83.89 47.3L53.23 65Q46.31 69 46.31 77L46.31 123Q46.31 131 53.23 135L93.07 158Q100 162 106.93 158L113.42 154.25"
+    fill="none"
+    stroke="url(#inner)"
+    stroke-width="9"
+    stroke-linecap="round"
+  />
+  <path
+    d="M129.53 55.05L146.77 65Q153.69 69 153.69 77L153.69 82.64"
+    fill="none"
+    stroke="url(#inner)"
+    stroke-width="9"
+    stroke-linecap="round"
+  />
+  <rect x="156.34" y="98" width="20" height="36" rx="5" fill="#1e63a9" />
+  <path
+    d="M87.88 20Q100 13 112.12 20L163.22 49.5Q175.34 56.5 175.34 70.5L175.34 129.5Q175.34 143.5 163.22 150.5L112.12 180Q100 187 87.88 180L36.78 150.5Q24.66 143.5 24.66 129.5L24.66 70.5Q24.66 56.5 36.78 49.5Z"
+    fill="none"
+    stroke="#03284a"
+    stroke-width="14"
+  />
+  <path
+    d="M97.21 52.21Q98.5 49.5 101.5 49.5L120.5 49.5Q123.5 49.5 122.53 52.34L109.47 90.66Q108.5 93.5 111.5 93.63L128.5 94.37Q131.5 94.5 129.71 96.9L86.29 155.1Q84.5 157.5 85.12 154.57L93.88 113.43Q94.5 110.5 91.51 110.25L73.49 108.75Q70.5 108.5 71.79 105.79Z"
+    fill="url(#bolt)"
+  />
+</svg>

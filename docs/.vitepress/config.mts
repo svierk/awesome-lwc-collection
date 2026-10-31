@@ -20,7 +20,10 @@ export default defineConfig({
   cleanUrls: true,
   lastUpdated: true,
   head: [
-    ['link', { rel: 'icon', type: 'image/png', href: '/awesome-lwc-collection/images/awesome-lwc-collection-logo.png' }]
+    [
+      'link',
+      { rel: 'icon', type: 'image/svg+xml', href: '/awesome-lwc-collection/images/awesome-lwc-collection-logo.svg' }
+    ]
   ],
   vite: {
     // AI-friendly docs: llms.txt (an index of the site), llms-full.txt (every
@@ -44,7 +47,7 @@ export default defineConfig({
     writeFileSync(index, readFileSync(index, 'utf-8').replaceAll(`](${base}`, `](${siteUrl}`));
   },
   themeConfig: {
-    logo: '/images/awesome-lwc-collection-logo.png',
+    logo: '/images/awesome-lwc-collection-logo.svg',
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Components', link: '/components/customDatatable' },
