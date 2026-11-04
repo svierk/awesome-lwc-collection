@@ -228,7 +228,7 @@ export default class CustomCarousel extends LightningElement {
       slideClass: isCurrent ? 'fade slds-show' : 'fade slds-hide',
       dotClass: isCurrent ? 'dot active' : 'dot',
       dotLabel: `Show slide ${slide.index}`,
-      dotCurrent: isCurrent ? 'true' : 'false'
+      dotAria: { ariaCurrent: isCurrent ? 'true' : 'false' }
     };
   }
 }
