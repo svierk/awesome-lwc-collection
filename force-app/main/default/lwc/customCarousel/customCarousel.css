@@ -54,7 +54,7 @@
 }
 
 .dot:focus-visible {
-  outline: 2px solid var(--slds-g-color-neutral-base-50, #757575);
+  outline: var(--slds-g-sizing-border-2, 2px) solid var(--slds-g-color-neutral-base-50, #757575);
   outline-offset: 2px;
 }
 
