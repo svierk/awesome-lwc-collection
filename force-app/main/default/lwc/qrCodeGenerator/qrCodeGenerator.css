@@ -20,6 +20,5 @@
 }
 
 .qr-code-image {
-  max-width: 100%;
   image-rendering: crisp-edges;
 }

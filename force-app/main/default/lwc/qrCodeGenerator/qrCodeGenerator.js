@@ -227,7 +227,7 @@ export default class QrCodeGenerator extends LightningElement {
     }
   }
 
-  async generateCode() {
+  generateCode() {
     if (!this.url) {
       this.errorMessage = 'Please enter a URL.';
       return;
@@ -244,17 +244,23 @@ export default class QrCodeGenerator extends LightningElement {
     this._latestRun += 1;
     const run = this._latestRun;
 
-    try {
-      const dataUrl = await globalThis.QRCodeWithLogo.generate(this.codeOptions);
-      if (run !== this._latestRun) return;
-      this.isLoading = false;
-      this.setCode(dataUrl);
-      this.dispatchEvent(new CustomEvent('qrcodegenerate', { detail: { dataUrl, value: this.url } }));
-    } catch (err) {
-      if (run !== this._latestRun) return;
-      this.isLoading = false;
-      this.errorMessage = `Failed to generate QR code: ${getErrorMessage(err)}`;
-    }
+    Promise.resolve()
+      .then(() => globalThis.QRCodeWithLogo.generate(this.codeOptions))
+      .then((dataUrl) => this.finishGenerate(run, dataUrl))
+      .catch((err) => this.failGenerate(run, err));
+  }
+
+  finishGenerate(run, dataUrl) {
+    if (run !== this._latestRun) return;
+    this.isLoading = false;
+    this.setCode(dataUrl);
+    this.dispatchEvent(new CustomEvent('qrcodegenerate', { detail: { dataUrl, value: this.url } }));
+  }
+
+  failGenerate(run, err) {
+    if (run !== this._latestRun) return;
+    this.isLoading = false;
+    this.errorMessage = `Failed to generate QR code: ${getErrorMessage(err)}`;
   }
 
   get codeOptions() {
@@ -323,7 +329,7 @@ export default class QrCodeGenerator extends LightningElement {
   }
 
   get imageStyle() {
-    return `width: ${this.displaySize}px; height: ${this.displaySize}px`;
+    return `width: ${this.displaySize}px; max-width: 100%; height: auto`;
   }
 
   get hasQRCode() {

@@ -405,7 +405,7 @@ describe('c-qr-code-generator', () => {
 
     // then
     expect(lastOptions(generate)).toMatchObject({ colorDark: '#000000', colorLight: '#ffffff', width: 1024 });
-    expect(element.shadowRoot.querySelector('.qr-code-image').style.width).toBe('256px');
+    expect(element.shadowRoot.querySelector('.qr-code-image').style).toMatchObject({ width: '256px', height: 'auto' });
   });
 
   it('should hide the inputs and the button with hideInput and still show the code', async () => {
