@@ -1,5 +1,8 @@
 import QrCodeGenerator from 'c/qrCodeGenerator';
+import { FlowAttributeChangeEventName } from 'lightning/flowSupport';
 import { loadScript } from 'lightning/platformResourceLoader';
+import { ShowToastEventName } from 'lightning/platformShowToastEvent';
+import { createRecord, getRecord } from 'lightning/uiRecordApi';
 import { createElement } from 'lwc';
 
 jest.mock('lightning/platformResourceLoader', () => ({ loadScript: jest.fn() }), {
@@ -56,11 +59,42 @@ async function uploadLogo(result = 'data:image/png;base64,abc') {
   return reader;
 }
 
+const RECORD_ID = '001000000000001AAA';
+const VERSION_ID = '068000000000001AAA';
+const DOC_ID = '069000000000001AAA';
+const CODE = 'data:image/png;base64,qrcode';
+
+const renderWith = async (properties, generate = mockQrLib()) => {
+  Object.assign(element, properties);
+  await renderAndLoad();
+  await flushPromises();
+  return generate;
+};
+
+const lastOptions = (generate) => generate.mock.calls[generate.mock.calls.length - 1][0];
+const saveButton = () => element.shadowRoot.querySelector('[data-id="save"]');
+const flowChanges = (handler) => handler.mock.calls.map(([event]) => event.detail);
+
+const listen = (eventName) => {
+  const handler = jest.fn();
+  element.addEventListener(eventName, handler);
+  return handler;
+};
+
+const emitFile = async () => {
+  getRecord.emit({ fields: { ContentDocumentId: { value: DOC_ID } } }, (config) => config.recordId === VERSION_ID);
+  await flushPromises();
+};
+
+const emitField = async (value) => {
+  const matches = (config) => config.recordId === RECORD_ID && config.fields[0] === 'Account.Website';
+  getRecord.emit({ fields: { Website: { value } } }, matches);
+  await flushPromises();
+};
+
 describe('c-qr-code-generator', () => {
   beforeEach(() => {
-    element = createElement('c-qr-code-generator', {
-      is: QrCodeGenerator
-    });
+    element = createElement('c-qr-code-generator', { is: QrCodeGenerator });
   });
 
   afterEach(() => {
@@ -237,5 +271,230 @@ describe('c-qr-code-generator', () => {
     // then
     expect(errorText()).toBe('Failed to generate QR code: Canvas error');
     expect(element.shadowRoot.querySelector('lightning-spinner')).toBeNull();
+  });
+
+  it('should generate a code for a given value without a click and prefill the input', async () => {
+    // given
+    const handler = listen('qrcodegenerate');
+    const flowHandler = listen(FlowAttributeChangeEventName);
+
+    // when
+    const generate = await renderWith({ value: 'https://salesforce.com' });
+
+    // then
+    expect(lastOptions(generate).text).toBe('https://salesforce.com');
+    expect(getInputs().urlInput.value).toBe('https://salesforce.com');
+    expect(element.shadowRoot.querySelector('.qr-code-image').src).toContain(CODE);
+    expect(element.qrCodeDataUrl).toBe(CODE);
+    expect(handler.mock.calls[0][0].detail).toEqual({ dataUrl: CODE, value: 'https://salesforce.com' });
+    expect(flowChanges(flowHandler)).toContainEqual({ attributeName: 'qrCodeDataUrl', attributeValue: CODE });
+  });
+
+  it('should clear the code when the value is emptied', async () => {
+    // given
+    await renderWith({ value: 'first' });
+
+    // when
+    element.value = '';
+    await flushPromises();
+
+    // then
+    expect(element.shadowRoot.querySelector('.qr-code-image')).toBeNull();
+    expect(element.qrCodeDataUrl).toBe('');
+    expect(errorText()).toBeNull();
+  });
+
+  it.each([
+    ['nothing given', {}],
+    ['a record without a field name', { recordId: RECORD_ID }],
+    ['an empty field', { recordId: RECORD_ID, fieldApiName: 'Account.Website' }]
+  ])('should not generate anything on its own with %s', async (_label, properties) => {
+    // given
+    const generate = await renderWith(properties);
+
+    // when
+    await emitField(null);
+
+    // then
+    expect(generate).not.toHaveBeenCalled();
+    expect(errorText()).toBeNull();
+    expect(element.value).toBeUndefined();
+  });
+
+  it('should keep the result of the latest value when an older one finishes later', async () => {
+    // given
+    let finishFirst;
+    const generate = jest
+      .fn()
+      .mockImplementationOnce(() => new Promise((resolve) => (finishFirst = resolve)))
+      .mockResolvedValue('data:image/png;base64,second');
+    await renderWith({ value: 'first' }, mockQrLib(generate));
+
+    // when
+    element.value = 'second';
+    await flushPromises();
+    finishFirst('data:image/png;base64,first');
+    await flushPromises();
+
+    // then
+    expect(lastOptions(generate).text).toBe('second');
+    expect(element.qrCodeDataUrl).toBe('data:image/png;base64,second');
+  });
+
+  it('should read the value from a field of the object of the page', async () => {
+    // given
+    const generate = await renderWith({ recordId: RECORD_ID, objectApiName: 'Account', fieldApiName: 'Website' });
+
+    // when
+    await emitField('https://record.example');
+
+    // then
+    expect(lastOptions(generate).text).toBe('https://record.example');
+  });
+
+  it('should prefer a given value over the record field and fall back when it is emptied', async () => {
+    // given
+    const generate = await renderWith({ recordId: RECORD_ID, fieldApiName: 'Account.Website', value: 'own' });
+
+    // when
+    await emitField('https://record.example');
+
+    // then
+    expect(lastOptions(generate).text).toBe('own');
+
+    // when
+    element.value = undefined;
+    await flushPromises();
+
+    // then
+    expect(lastOptions(generate).text).toBe('https://record.example');
+  });
+
+  it('should show an error when the record field cannot be read', async () => {
+    // given
+    await renderWith({ recordId: RECORD_ID, fieldApiName: 'Account.Secret' });
+
+    // when
+    getRecord.error({ message: 'No access' });
+    await flushPromises();
+
+    // then
+    expect(errorText()).toContain('The record field could not be read:');
+    await expect(element).toBeAccessible();
+  });
+
+  it('should use the given colors, logo and size', async () => {
+    // given
+    const design = { colorDark: '#112233', colorLight: '#eeeeee', logoUrl: '/resource/logo' };
+
+    // when
+    const generate = await renderWith({ value: 'text', size: 2048, ...design });
+
+    // then
+    expect(lastOptions(generate)).toMatchObject({ ...design, width: 2048, height: 2048 });
+    expect(element.shadowRoot.querySelector('.qr-code-image').style.width).toBe('2048px');
+    expect(element.logoUrl).toBe('/resource/logo');
+  });
+
+  it.each([
+    ['no size', {}],
+    ['an invalid size', { size: 'big' }]
+  ])('should keep the defaults and a high resolution for %s', async (_label, properties) => {
+    // when
+    const generate = await renderWith({ value: 'text', ...properties });
+
+    // then
+    expect(lastOptions(generate)).toMatchObject({ colorDark: '#000000', colorLight: '#ffffff', width: 1024 });
+    expect(element.shadowRoot.querySelector('.qr-code-image').style.width).toBe('256px');
+  });
+
+  it('should hide the inputs and the button with hideInput and still show the code', async () => {
+    // when
+    await renderWith({ value: 'text', hideInput: true });
+
+    // then
+    expect(element.shadowRoot.querySelectorAll('lightning-input')).toHaveLength(0);
+    expect(element.shadowRoot.querySelector('[data-id="generate"]')).toBeNull();
+    expect(element.shadowRoot.querySelector('.qr-code-image')).toBeTruthy();
+    await expect(element).toBeAccessible();
+  });
+
+  it.each([
+    ['without saveToRecord', { recordId: RECORD_ID, value: 'text' }],
+    ['without a record', { saveToRecord: true, value: 'text' }],
+    ['without a code', { recordId: RECORD_ID, saveToRecord: true }]
+  ])('should offer no save button %s', async (_label, properties) => {
+    // when
+    await renderWith(properties);
+
+    // then
+    expect(saveButton()).toBeNull();
+  });
+
+  it('should save the code as a linked png file, publish its id and forget it with a new code', async () => {
+    // given
+    createRecord.mockResolvedValue({ id: VERSION_ID });
+    await renderWith({ recordId: RECORD_ID, saveToRecord: true, value: 'text' });
+    const saveHandler = listen('qrcodesave');
+    const flowHandler = listen(FlowAttributeChangeEventName);
+    const toastHandler = listen(ShowToastEventName);
+
+    // when
+    saveButton().click();
+    await flushPromises();
+
+    // then
+    expect(createRecord.mock.calls[0][0]).toEqual({
+      apiName: 'ContentVersion',
+      fields: {
+        Title: 'QR Code',
+        PathOnClient: 'qr-code.png',
+        VersionData: 'qrcode',
+        FirstPublishLocationId: RECORD_ID
+      }
+    });
+    expect(saveButton().disabled).toBe(true);
+
+    // when
+    await emitFile();
+
+    // then
+    expect(element.contentDocumentId).toBe(DOC_ID);
+    expect(saveHandler.mock.calls[0][0].detail).toEqual({ contentDocumentId: DOC_ID });
+    expect(flowChanges(flowHandler)).toContainEqual({
+      attributeName: 'contentDocumentId',
+      attributeValue: DOC_ID
+    });
+    expect(toastHandler.mock.calls[0][0].detail.variant).toBe('success');
+    expect(saveButton().disabled).toBe(true);
+
+    // when
+    element.value = 'other';
+    await flushPromises();
+
+    // then
+    expect(element.contentDocumentId).toBeUndefined();
+    expect(flowChanges(flowHandler)).toContainEqual({ attributeName: 'contentDocumentId', attributeValue: undefined });
+    expect(saveButton().disabled).toBe(false);
+  });
+
+  it.each([
+    ['creating the file', () => createRecord.mockRejectedValue({ body: { message: 'No access' } }), false],
+    ['reading its id', () => createRecord.mockResolvedValue({ id: VERSION_ID }), true]
+  ])('should show an error toast when %s fails and allow another try', async (_label, prepare, failRead) => {
+    // given
+    prepare();
+    await renderWith({ recordId: RECORD_ID, saveToRecord: true, value: 'text' });
+    const handler = listen(ShowToastEventName);
+
+    // when
+    saveButton().click();
+    await flushPromises();
+    if (failRead) getRecord.error();
+    await flushPromises();
+
+    // then
+    expect(handler.mock.calls[0][0].detail).toMatchObject({ title: 'Error saving the QR code', variant: 'error' });
+    expect(saveButton().disabled).toBe(false);
   });
 });

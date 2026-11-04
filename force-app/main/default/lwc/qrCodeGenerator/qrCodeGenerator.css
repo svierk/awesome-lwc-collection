@@ -20,7 +20,6 @@
 }
 
 .qr-code-image {
-  width: 256px;
-  height: 256px;
+  max-width: 100%;
   image-rendering: crisp-edges;
 }
