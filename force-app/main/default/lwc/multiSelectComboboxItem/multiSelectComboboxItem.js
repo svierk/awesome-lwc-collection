@@ -20,6 +20,25 @@ export default class MultiSelectComboboxItem extends LightningElement {
     return `slds-listbox__item ${this.item.selected ? 'slds-is-selected' : ''}`;
   }
 
+  get optionAria() {
+    return { ariaSelected: String(Boolean(this.item.selected)) };
+  }
+
+  /**
+   * Moves the keyboard focus to this option.
+   */
+  @api
+  focus() {
+    this.template.querySelector('[role="option"]').focus();
+  }
+
+  handleKeyDown(event) {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      this.handleClick();
+    }
+  }
+
   handleClick() {
     this.dispatchEvent(
       new CustomEvent('change', {

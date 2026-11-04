@@ -1,3 +1,4 @@
+import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import { api, LightningElement, track } from 'lwc';
 
 /**
@@ -38,24 +39,6 @@ export default class MultiSelectCombobox extends LightningElement {
   @api name;
 
   /**
-   * A list of options that are available for selection. Supported option attributes: label, value, selected.
-   * @type {Array}
-   * @example
-   * options = [
-   *   {
-   *     label: 'Option 1',
-   *     value: 'option1'
-   *   },
-   *   {
-   *     label: 'Option 2',
-   *     value: 'option2',
-   *     selected: true
-   *   },
-   * ]
-   */
-  @api options = [];
-
-  /**
    * Text that is displayed before an option is selected, to prompt the user to select an option.
    * @type {string}
    * @default 'Select an Option'
@@ -91,18 +74,72 @@ export default class MultiSelectCombobox extends LightningElement {
   @api showPills = false;
 
   @track currentOptions = [];
+  errorMessage = '';
+  _options = [];
   _searchTerm = '';
   selectedItems = [];
   selectedOptions = [];
   isInitialized = false;
-  isLoaded = false;
+  isOpen = false;
   isVisible = false;
   isDisabled = false;
+  pendingFocus;
+
+  /**
+   * A list of options that are available for selection, as an array or a JSON string.
+   * Supported option attributes: label, value, selected.
+   * @type {Array|string}
+   * @example
+   * options = [
+   *   {
+   *     label: 'Option 1',
+   *     value: 'option1'
+   *   },
+   *   {
+   *     label: 'Option 2',
+   *     value: 'option2',
+   *     selected: true
+   *   },
+   * ]
+   */
+  @api
+  get options() {
+    return this._options;
+  }
+
+  set options(value) {
+    this._options = value;
+    this.errorMessage = '';
+    const options = this.parseOptions(value);
+    this.currentOptions = Array.isArray(options) ? options.map((option) => ({ ...option })) : [];
+    if (this.isInitialized) this.setSelection();
+  }
+
+  /**
+   * The values of the selected options, separated by semicolons. Read-only, also available as a Flow output.
+   * @type {string}
+   */
+  @api
+  get value() {
+    return this.getSelectedItems()
+      .map((item) => item.value)
+      .join(';');
+  }
+
+  /**
+   * Checks the required attribute for Flow screens.
+   * @returns {{isValid: boolean, errorMessage: (string|undefined)}} The result of the check
+   */
+  @api
+  validate() {
+    if (!this.required || this.getSelectedItems().length > 0) return { isValid: true };
+    const target = this.label ? ` for ${this.label}` : '';
+    return { isValid: false, errorMessage: `Please select a value${target}.` };
+  }
 
   connectedCallback() {
     this.isDisabled = this.disabled || this.readOnly;
     this.hasPillsEnabled = this.showPills && !this.singleSelect;
-    this.currentOptions = this.options;
     document.addEventListener('click', this.handleDocumentClick);
   }
 
@@ -122,6 +159,41 @@ export default class MultiSelectCombobox extends LightningElement {
       this.isInitialized = true;
       this.setSelection();
     }
+    if (this.pendingFocus) {
+      const focus = this.pendingFocus;
+      this.pendingFocus = undefined;
+      focus();
+    }
+  }
+
+  get dropdownClass() {
+    const base =
+      'slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-picklist multi-select-combobox__dropdown';
+    return this.isOpen ? `${base} slds-is-open` : base;
+  }
+
+  get inputAria() {
+    return { ariaExpanded: String(this.isOpen) };
+  }
+
+  get inputLabel() {
+    return this.label || this.placeholder;
+  }
+
+  get listboxAria() {
+    return { role: 'listbox', ariaMultiSelectable: String(!this.singleSelect) };
+  }
+
+  get input() {
+    return this.template.querySelector('.multi-select-combobox__input');
+  }
+
+  get searchInput() {
+    return this.template.querySelector('.multi-select-combobox__search');
+  }
+
+  get optionItems() {
+    return [...this.template.querySelectorAll('c-multi-select-combobox-item')];
   }
 
   get filteredOptions() {
@@ -147,6 +219,7 @@ export default class MultiSelectCombobox extends LightningElement {
 
   handleChange(event) {
     this.change(event);
+    if (this.singleSelect) this.input.focus();
   }
 
   handleRemove(event) {
@@ -155,18 +228,113 @@ export default class MultiSelectCombobox extends LightningElement {
   }
 
   handleClick() {
-    // initialize picklist options on first click to make them editable
-    if (this.isLoaded === false || this.currentOptions?.length !== this.options?.length) {
-      this.currentOptions = structuredClone(this.options);
-      this.isLoaded = true;
-    }
-
-    if (this.template.querySelector('.slds-is-open')) {
+    if (this.isOpen) {
       this.close();
     } else {
-      this.template.querySelectorAll('.multi-select-combobox__dropdown').forEach((node) => {
-        node.classList.add('slds-is-open');
-      });
+      this.isOpen = true;
+    }
+  }
+
+  handleKeyDown(event) {
+    const { key, target } = event;
+    if (key === 'Escape') {
+      this.handleEscape(event);
+    } else if (key === 'Tab') {
+      this.handleTab(event);
+    } else if (target === this.input) {
+      this.handleInputKey(event);
+    } else if (target === this.searchInput) {
+      this.handleSearchKey(event);
+    } else {
+      this.handleOptionKey(event);
+    }
+  }
+
+  handleEscape(event) {
+    if (!this.isOpen) return;
+    event.preventDefault();
+    event.stopPropagation();
+    this.close();
+    this.input.focus();
+  }
+
+  handleTab({ target, shiftKey }) {
+    if (!this.isOpen) return;
+    const toSearch = target === this.input && this.enableSearch && !shiftKey;
+    const toInput = target === this.searchInput && shiftKey;
+    if (!toSearch && !toInput) this.close();
+  }
+
+  handleInputKey(event) {
+    const { key } = event;
+    if (this.isOpen && (key === 'Enter' || key === ' ')) {
+      event.preventDefault();
+      this.close();
+      return;
+    }
+    const index = this.getStartIndex(key);
+    if (index === undefined) return;
+    event.preventDefault();
+    this.focusOption(index);
+  }
+
+  getStartIndex(key) {
+    switch (key) {
+      case 'ArrowUp':
+      case 'End':
+        return this.optionItems.length - 1;
+      case 'Home':
+        return 0;
+      case 'ArrowDown':
+      case 'Enter':
+      case ' ':
+        return Math.max(
+          this.filteredOptions.findIndex((option) => option.selected),
+          0
+        );
+      default:
+        return undefined;
+    }
+  }
+
+  handleSearchKey(event) {
+    const { key } = event;
+    if (key === 'Enter') {
+      event.preventDefault();
+    } else if (key === 'ArrowDown' || key === 'ArrowUp') {
+      event.preventDefault();
+      this.focusOption(key === 'ArrowDown' ? 0 : this.optionItems.length - 1);
+    }
+  }
+
+  handleOptionKey(event) {
+    const { key, target } = event;
+    const items = this.optionItems;
+    const index = items.indexOf(target);
+    const last = items.length - 1;
+    if (key === 'ArrowUp' && index === 0 && this.enableSearch) {
+      event.preventDefault();
+      this.searchInput.focus();
+      return;
+    }
+    const next = {
+      ArrowDown: index === last ? 0 : index + 1,
+      ArrowUp: index === 0 ? last : index - 1,
+      Home: 0,
+      End: last
+    }[key];
+    if (next === undefined) return;
+    event.preventDefault();
+    this.focusOption(next);
+  }
+
+  focusOption(index) {
+    const focus = () => this.optionItems[index]?.focus();
+    if (this.isOpen) {
+      focus();
+    } else {
+      this.pendingFocus = focus;
+      this.isOpen = true;
     }
   }
 
@@ -183,6 +351,7 @@ export default class MultiSelectCombobox extends LightningElement {
     this.setSelection();
     const selection = this.getSelectedItems();
     this.dispatchEvent(new CustomEvent('change', { detail: this.singleSelect ? selection[0] : selection }));
+    this.dispatchEvent(new FlowAttributeChangeEvent('value', this.value));
 
     // for single select picklist close dropdown after selection is made
     if (this.singleSelect) {
@@ -192,10 +361,18 @@ export default class MultiSelectCombobox extends LightningElement {
 
   close() {
     this._searchTerm = '';
-    this.template.querySelectorAll('.multi-select-combobox__dropdown').forEach((node) => {
-      node.classList.remove('slds-is-open');
-    });
+    this.isOpen = false;
     this.dispatchEvent(new CustomEvent('close'));
+  }
+
+  parseOptions(value) {
+    if (typeof value !== 'string') return value;
+    try {
+      return JSON.parse(value);
+    } catch {
+      this.errorMessage = 'The options could not be displayed because they are not valid JSON.';
+      return [];
+    }
   }
 
   setSelection() {

@@ -1,7 +1,140 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
     <apiVersion>68.0</apiVersion>
-    <isExposed>false</isExposed>
+    <isExposed>true</isExposed>
     <masterLabel>Multi Select Combobox</masterLabel>
     <description>Combobox with different configuration options that also supports multi select.</description>
+    <targets>
+      <target>lightning__AppPage</target>
+      <target>lightning__HomePage</target>
+      <target>lightning__RecordPage</target>
+      <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+      <targetConfig targets="lightning__AppPage,lightning__HomePage,lightning__RecordPage">
+        <property name="label" type="String" label="Label" description="Text label for the combobox." />
+        <property
+        name="options"
+        type="String"
+        label="Options (JSON)"
+        description="JSON array of options with label, value and optionally selected. Example: [{'label':'Option 1','value':'option1'}]"
+        required="true"
+      />
+        <property
+        name="placeholder"
+        type="String"
+        label="Placeholder"
+        description="Text that is displayed before an option is selected."
+        default="Select an Option"
+      />
+        <property
+        name="required"
+        type="Boolean"
+        label="Required"
+        description="A value must be selected."
+        default="false"
+      />
+        <property
+        name="singleSelect"
+        type="Boolean"
+        label="Single Select"
+        description="Only allow the selection of a single value."
+        default="false"
+      />
+        <property
+        name="showPills"
+        type="Boolean"
+        label="Show Pills"
+        description="Show the selected options as pills."
+        default="false"
+      />
+        <property
+        name="enableSearch"
+        type="Boolean"
+        label="Enable Search"
+        description="Show a search input inside the dropdown."
+        default="false"
+      />
+        <property
+        name="disabled"
+        type="Boolean"
+        label="Disabled"
+        description="Users cannot interact with the combobox."
+        default="false"
+      />
+        <property
+        name="readOnly"
+        type="Boolean"
+        label="Read Only"
+        description="The combobox is read-only, and therefore also disabled."
+        default="false"
+      />
+      </targetConfig>
+      <targetConfig targets="lightning__FlowScreen">
+        <property name="label" type="String" label="Label" description="Text label for the combobox." />
+        <property
+        name="options"
+        type="String"
+        label="Options (JSON)"
+        description="JSON array of options with label, value and optionally selected. Example: [{'label':'Option 1','value':'option1'}]"
+        required="true"
+      />
+        <property
+        name="placeholder"
+        type="String"
+        label="Placeholder"
+        description="Text that is displayed before an option is selected."
+        default="Select an Option"
+      />
+        <property
+        name="required"
+        type="Boolean"
+        label="Required"
+        description="A value must be selected."
+        default="false"
+      />
+        <property
+        name="singleSelect"
+        type="Boolean"
+        label="Single Select"
+        description="Only allow the selection of a single value."
+        default="false"
+      />
+        <property
+        name="showPills"
+        type="Boolean"
+        label="Show Pills"
+        description="Show the selected options as pills."
+        default="false"
+      />
+        <property
+        name="enableSearch"
+        type="Boolean"
+        label="Enable Search"
+        description="Show a search input inside the dropdown."
+        default="false"
+      />
+        <property
+        name="disabled"
+        type="Boolean"
+        label="Disabled"
+        description="Users cannot interact with the combobox."
+        default="false"
+      />
+        <property
+        name="readOnly"
+        type="Boolean"
+        label="Read Only"
+        description="The combobox is read-only, and therefore also disabled."
+        default="false"
+      />
+        <property
+        name="value"
+        type="String"
+        label="Selected Values"
+        description="The values of the selected options, separated by semicolons."
+        role="outputOnly"
+      />
+      </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>
