@@ -8,8 +8,10 @@ import { LightningElement, track } from 'lwc';
  * @extends LightningElement
  * @hideconstructor
  *
+ * @fires CsvToDatatable#parsed
+ *
  * @example
- * <c-csv-to-datatable></c-csv-to-datatable>
+ * <c-csv-to-datatable onparsed={handleParsed}></c-csv-to-datatable>
  */
 export default class CsvToDatatable extends LightningElement {
   errorMessage = '';
@@ -61,5 +63,17 @@ export default class CsvToDatatable extends LightningElement {
     });
     this.keyField = keyField;
     this.data = rows;
+
+    /**
+     * Fired when a file was parsed.
+     * @event CsvToDatatable#parsed
+     * @type {CustomEvent}
+     * @property {Object} detail - A copy of the result: fileName, headers, keyField and rows
+     */
+    this.dispatchEvent(
+      new CustomEvent('parsed', {
+        detail: structuredClone({ fileName: this.fileName, headers, keyField, rows })
+      })
+    );
   }
 }

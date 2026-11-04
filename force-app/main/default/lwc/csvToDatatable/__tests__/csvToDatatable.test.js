@@ -202,4 +202,50 @@ describe('c-csv-to-datatable', () => {
     expect(errorMessage()).toBeUndefined();
     expect(element.shadowRoot.querySelector('lightning-datatable').data).toHaveLength(1);
   });
+
+  it('should dispatch parsed with the file name and the data', async () => {
+    // given
+    const handler = jest.fn();
+    element.addEventListener('parsed', handler);
+    document.body.appendChild(element);
+
+    // when
+    await upload(createMockFile('Name\nJohn', 'people.csv'));
+
+    // then
+    expect(handler).toHaveBeenCalledTimes(1);
+    expect(handler.mock.calls[0][0].detail).toEqual({
+      fileName: 'people.csv',
+      headers: ['Name'],
+      keyField: 'id',
+      rows: [{ id: 'row-1', Name: 'John' }]
+    });
+  });
+
+  it('should not dispatch parsed when the file is not valid csv', async () => {
+    // given
+    const handler = jest.fn();
+    element.addEventListener('parsed', handler);
+    document.body.appendChild(element);
+
+    // when
+    await upload(createMockFile('Name\n"open'));
+
+    // then
+    expect(handler).not.toHaveBeenCalled();
+  });
+
+  it('should keep its table when a listener changes the event data', async () => {
+    // given
+    element.addEventListener('parsed', (event) => {
+      event.detail.rows[0].Name = 'Changed';
+    });
+    document.body.appendChild(element);
+
+    // when
+    await upload(createMockFile('Name\nJohn'));
+
+    // then
+    expect(element.shadowRoot.querySelector('lightning-datatable').data[0].Name).toBe('John');
+  });
 });
