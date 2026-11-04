@@ -11,6 +11,7 @@ import { LightningElement, track } from 'lwc';
  * <c-csv-to-datatable></c-csv-to-datatable>
  */
 export default class CsvToDatatable extends LightningElement {
+  errorMessage = '';
   fileName = 'No file uploaded yet.';
   keyField = 'id';
   @track columns = [];
@@ -28,21 +29,28 @@ export default class CsvToDatatable extends LightningElement {
   }
 
   async read(file) {
+    this.reset();
+
+    let csv;
     try {
-      const result = await this.load(file);
-      this.parse(result);
+      csv = await file.text();
     } catch (e) {
-      this.error = e;
+      this.errorMessage = `The file could not be read: ${e.message}`;
+      return;
+    }
+
+    try {
+      this.parse(csv);
+    } catch (e) {
+      this.errorMessage = e.message;
     }
   }
 
-  async load(file) {
-    try {
-      return await file.text();
-    } catch (e) {
-      this.error = e;
-      return null;
-    }
+  reset() {
+    this.errorMessage = '';
+    this.columns = [];
+    this.data = [];
+    this.keyField = 'id';
   }
 
   parse(csv) {

@@ -29,8 +29,11 @@ Files are parsed according to [RFC 4180](https://www.rfc-editor.org/rfc/rfc4180)
 - Rows with fewer columns than the header are filled with empty values, and values beyond the last header column are dropped.
 - Empty and duplicate column names get a unique name, such as `Column 2` or `Name (2)`.
 
+If a file cannot be read or is not valid CSV, for example because a quote is never closed, the component clears the table and shows an error message.
+
 ## Component Dependencies
 
-| Name      | Type | Description                                                           |
-| --------- | ---- | --------------------------------------------------------------------- |
-| csvParser | LWC  | Shared module that parses comma separated text according to RFC 4180. |
+| Name       | Type | Description                                                           |
+| ---------- | ---- | --------------------------------------------------------------------- |
+| csvParser  | LWC  | Shared module that parses comma separated text according to RFC 4180. |
+| errorAlert | LWC  | Inline alert that shows error messages to the user.                   |

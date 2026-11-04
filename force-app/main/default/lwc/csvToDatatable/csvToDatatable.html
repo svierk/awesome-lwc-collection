@@ -1,6 +1,7 @@
 <template>
   <lightning-card title="CSV To Datatable" icon-name="doctype:csv">
     <div class="slds-var-p-around_medium">
+      <c-error-alert lwc:if={errorMessage} class="slds-show slds-m-bottom_small" message={errorMessage}></c-error-alert>
       <strong>Your file:</strong> {fileName} <br /><br />
       <lightning-input
         type="file"

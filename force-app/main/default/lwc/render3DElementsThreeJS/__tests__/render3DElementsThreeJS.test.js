@@ -9,6 +9,10 @@ jest.mock('lightning/platformResourceLoader', () => ({ loadScript: jest.fn() }),
 
 let element;
 
+const flushPromises = () => new Promise((resolve) => setTimeout(resolve, 0));
+
+const errorMessage = () => element.shadowRoot.querySelector('c-error-alert')?.message;
+
 describe('c-render3-d-elements-three-j-s', () => {
   let mockScene;
   let mockCamera;
@@ -116,15 +120,56 @@ describe('c-render3-d-elements-three-j-s', () => {
     expect(mockRenderer.dispose).toHaveBeenCalled();
   });
 
-  it('should handle script loading error', async () => {
+  it('should show an error when the script cannot be loaded', async () => {
     // given
     loadScript.mockRejectedValue(new Error('Script loading failed'));
 
     // when
     document.body.appendChild(element);
-    await Promise.resolve();
+    await flushPromises();
 
     // then
     expect(THREE.Scene).not.toHaveBeenCalled();
+    expect(errorMessage()).toBe('The 3D scene could not be displayed: Script loading failed');
+    await expect(element).toBeAccessible();
+  });
+
+  it('should show an error when the rejection has no message', async () => {
+    // given
+    loadScript.mockRejectedValue(undefined);
+
+    // when
+    document.body.appendChild(element);
+    await flushPromises();
+
+    // then
+    expect(errorMessage()).toBe('The 3D scene could not be displayed.');
+  });
+
+  it('should show an error when the scene cannot be initialized', async () => {
+    // given
+    loadScript.mockResolvedValue();
+    THREE.WebGLRenderer.mockImplementation(() => {
+      throw new Error('Error creating WebGL context.');
+    });
+
+    // when
+    document.body.appendChild(element);
+    await flushPromises();
+
+    // then
+    expect(errorMessage()).toBe('The 3D scene could not be displayed: Error creating WebGL context.');
+  });
+
+  it('should show no error when the scene is rendered', async () => {
+    // given
+    loadScript.mockResolvedValue();
+
+    // when
+    document.body.appendChild(element);
+    await flushPromises();
+
+    // then
+    expect(errorMessage()).toBeUndefined();
   });
 });

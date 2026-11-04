@@ -13,6 +13,14 @@ const flushPromises = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 let element;
 
+const errorMessage = () => element.shadowRoot.querySelector('c-error-alert')?.message;
+
+const upload = async (file) => {
+  const fileInput = element.shadowRoot.querySelector('lightning-input');
+  fileInput.dispatchEvent(new CustomEvent('change', { detail: { files: [file] } }));
+  await flushPromises();
+};
+
 describe('c-csv-to-datatable', () => {
   beforeEach(() => {
     element = createElement('c-csv-to-datatable', {
@@ -140,23 +148,58 @@ describe('c-csv-to-datatable', () => {
     expect(datatable.data).toEqual([]);
   });
 
-  it('should handle file read error properly', async () => {
+  it('should show an error when the file cannot be read', async () => {
     // given
     const mockFile = new File(['content'], 'error.csv', { type: 'text/csv' });
     mockFile.text = jest.fn().mockRejectedValue(new Error('File read error'));
 
     // when
     document.body.appendChild(element);
-    const fileInput = element.shadowRoot.querySelector('lightning-input');
-    fileInput.dispatchEvent(
-      new CustomEvent('change', {
-        detail: { files: [mockFile] }
-      })
-    );
-
-    await flushPromises();
+    await upload(mockFile);
 
     // then
-    expect(mockFile.text).toHaveBeenCalled();
+    expect(errorMessage()).toBe('The file could not be read: File read error');
+    await expect(element).toBeAccessible();
+  });
+
+  it('should show the parser error when the file is not valid csv', async () => {
+    // given
+    const mockFile = createMockFile('Name,Note\nJane,"open');
+
+    // when
+    document.body.appendChild(element);
+    await upload(mockFile);
+
+    // then
+    expect(errorMessage()).toBe('Invalid CSV: the quoted field starting on line 2 is never closed.');
+  });
+
+  it('should clear the previous table when a new file fails', async () => {
+    // given
+    document.body.appendChild(element);
+    await upload(createMockFile('id,Name\n1,John'));
+
+    // when
+    await upload(createMockFile('Name\n"open', 'broken.csv'));
+
+    // then
+    const datatable = element.shadowRoot.querySelector('lightning-datatable');
+    expect(datatable.columns).toEqual([]);
+    expect(datatable.data).toEqual([]);
+    expect(datatable.keyField).toBe('id');
+    expect(element.shadowRoot.querySelector('.slds-var-p-around_medium').textContent).toContain('broken.csv');
+  });
+
+  it('should remove the error when a valid file follows', async () => {
+    // given
+    document.body.appendChild(element);
+    await upload(createMockFile('Name\n"open'));
+
+    // when
+    await upload(createMockFile('Name\nJohn'));
+
+    // then
+    expect(errorMessage()).toBeUndefined();
+    expect(element.shadowRoot.querySelector('lightning-datatable').data).toHaveLength(1);
   });
 });

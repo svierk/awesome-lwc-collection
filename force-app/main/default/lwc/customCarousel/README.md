@@ -49,3 +49,11 @@ A simple custom carousel with different configuration options.
 ```
 
 When adding the component to a page in the Lightning App Builder, paste a slides JSON array like the example above into the slides-data property.
+
+If the slides-data value is a string that is not valid JSON, the component shows an error message instead of the slides.
+
+## Component Dependencies
+
+| Name       | Type | Description                                         |
+| ---------- | ---- | --------------------------------------------------- |
+| errorAlert | LWC  | Inline alert that shows error messages to the user. |
