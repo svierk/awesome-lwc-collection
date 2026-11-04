@@ -2,6 +2,8 @@
 
 An example LWC that adds a classic greeting to any page.
 
+**Type:** Example
+
 **Available in:** App Page · Home Page · Record Page
 
 <img src="../../../../../images/hello-world.png" alt="hello-world" width="300"/>

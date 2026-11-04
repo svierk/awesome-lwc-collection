@@ -10,6 +10,7 @@
 import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { toTypeBadge } from '../component-type.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const lwcDir = join(root, 'force-app', 'main', 'default', 'lwc');
@@ -102,7 +103,10 @@ function writeComponentPages(components) {
     const source = readFileSync(join(lwcDir, name, 'README.md'), 'utf-8');
     const { title, description } = parseReadme(source);
     meta[name] = { title, description, hasIcon: existsSync(join(lwcDir, name, `${name}.svg`)) };
-    writeFileSync(join(componentsOutDir, `${name}.md`), `${frontmatter(description)}${rewriteImages(source)}`);
+    writeFileSync(
+      join(componentsOutDir, `${name}.md`),
+      `${frontmatter(description)}${toTypeBadge(rewriteImages(source))}`
+    );
   }
   return meta;
 }

@@ -2,6 +2,8 @@
 
 A simple custom carousel with different configuration options.
 
+**Type:** Component
+
 **Available in:** App Page · Home Page · Record Page
 
 <img src="../../../../../images/custom-carousel.png" alt="custom-carousel" width="500"/>

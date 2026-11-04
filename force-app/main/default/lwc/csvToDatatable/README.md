@@ -2,6 +2,8 @@
 
 A simple parser for UTF-8 encoded, comma separated .csv files.
 
+**Type:** Building Block
+
 **Available in:** App Page · Home Page · Record Page
 
 <img src="../../../../../images/csv-to-datatable.png" alt="csv-to-datatable" width="500"/>

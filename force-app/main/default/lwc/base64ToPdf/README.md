@@ -2,6 +2,8 @@
 
 A simple utility for Base64 encoded strings to decode and download them as PDF file.
 
+**Type:** Building Block
+
 **Available in:** App Page · Home Page · Record Page · Flow Screen
 
 <img src="../../../../../images/base64-to-pdf.png" alt="base64-to-pdf" width="400"/>

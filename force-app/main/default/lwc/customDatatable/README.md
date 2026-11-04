@@ -2,6 +2,8 @@
 
 A basic custom datatable with different configuration options.
 
+**Type:** Component
+
 **Available in:** App Page · Home Page · Record Page · Flow Screen
 
 <img src="../../../../../images/custom-datatable.png" alt="custom-datatable" width="800"/>

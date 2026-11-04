@@ -38,6 +38,11 @@ New components are welcome when they cover a distinct, reusable need. A componen
 - **A `README.md`** in the component folder with:
   - an `# H1` title (this becomes the catalog page title and the display name - keep it consistent with the README overview),
   - a one-line description as the first paragraph,
+  - a `**Type:**` line directly below the description, with one of these types:
+    - `Component`: ready to place on pages or in flows and fully configurable through builder properties, so it has to be exposed and have at least one `<property>`,
+    - `Building Block`: embedded in your own components and controlled through `@api` and events,
+    - `Utility`: a small helper with exactly one purpose,
+    - `Example`: a learning example that isn't meant for production, reserved for Hello World,
   - an `**Available in:**` line matching the targets in the `.js-meta.xml`,
   - a screenshot (add the image to `images/` and reference it),
   - a `## Usage` section with an ` ```html ` snippet embedding the component tag,

@@ -2,6 +2,8 @@
 
 A simple demo component for rendering 3D elements using Three.js.
 
+**Type:** Component
+
 **Available in:** App Page · Home Page · Record Page · Flow Screen
 
 <img src="../../../../../images/render-3d-elements.png" alt="render-3d-elements" width="500"/>

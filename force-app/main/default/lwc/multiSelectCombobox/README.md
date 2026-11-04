@@ -2,6 +2,8 @@
 
 Combobox with different configuration options that also supports multi select.
 
+**Type:** Building Block
+
 **Available in:** Not exposed in the Lightning App Builder - intended to be embedded in other components.
 
 <img src="../../../../../images/multi-select-combobox.png" alt="multi-select-combobox" width="400"/>
