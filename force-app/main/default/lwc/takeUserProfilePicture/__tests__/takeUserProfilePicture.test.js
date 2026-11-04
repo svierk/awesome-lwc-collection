@@ -259,4 +259,23 @@ describe('c-take-user-profile-picture', () => {
     expect(event.detail.title).toBe('Error saving the profile picture');
     expect(event.detail.variant).toBe('error');
   });
+
+  it('should show the reason when the browser denies the camera', async () => {
+    // given
+    mockGetUserMedia.mockRejectedValue(new DOMException('Permission denied', 'NotAllowedError'));
+    document.body.appendChild(element);
+    const handler = jest.fn();
+    element.addEventListener('lightning__showtoast', handler);
+
+    // when
+    element.shadowRoot.querySelector('lightning-button[data-id="start"]').click();
+    await flushPromises();
+
+    // then
+    expect(handler.mock.calls[0][0].detail).toMatchObject({
+      title: 'Error accessing camera',
+      message: 'Permission denied',
+      variant: 'error'
+    });
+  });
 });

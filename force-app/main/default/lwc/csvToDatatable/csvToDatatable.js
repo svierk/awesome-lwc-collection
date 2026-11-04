@@ -1,4 +1,5 @@
 import { parseCsv } from 'c/csvParser';
+import { getErrorMessage } from 'c/errorUtils';
 import { LightningElement, track } from 'lwc';
 
 /**
@@ -35,14 +36,14 @@ export default class CsvToDatatable extends LightningElement {
     try {
       csv = await file.text();
     } catch (e) {
-      this.errorMessage = `The file could not be read: ${e.message}`;
+      this.errorMessage = `The file could not be read: ${getErrorMessage(e)}`;
       return;
     }
 
     try {
       this.parse(csv);
     } catch (e) {
-      this.errorMessage = e.message;
+      this.errorMessage = getErrorMessage(e);
     }
   }
 

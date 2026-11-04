@@ -9,6 +9,7 @@ import {
   navigateToRecord,
   showToast
 } from 'c/datatableUtils';
+import { showErrorToast } from 'c/errorUtils';
 import { NavigationMixin } from 'lightning/navigation';
 import { deleteRecord, updateRecord } from 'lightning/uiRecordApi';
 import { LightningElement, api, track, wire } from 'lwc';
@@ -287,7 +288,7 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
     if (result.data) {
       this.records = result.data;
     } else if (result.error) {
-      this.showToast('Error loading records', result.error.body?.message || 'Unknown error', 'error');
+      showErrorToast(this, 'Error loading records', result.error);
     }
   }
 
@@ -421,7 +422,7 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
       await refreshApex(this.wiredRecords);
       this.draftValues = [];
     } catch (error) {
-      this.showToast('Error updating records', error.body.message, 'error');
+      showErrorToast(this, 'Error updating records', error);
     }
   }
 
@@ -436,7 +437,7 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
       this.showToast('Success', 'Records deleted', 'success');
       await refreshApex(this.wiredRecords);
     } catch (error) {
-      this.showToast('Error deleting records', error.body.message, 'error');
+      showErrorToast(this, 'Error deleting records', error);
     } finally {
       this.isLoading = false;
     }
@@ -449,7 +450,7 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
       this.showToast('Success', 'Record deleted', 'success');
       await refreshApex(this.wiredRecords);
     } catch (error) {
-      this.showToast('Error deleting record', error.body.message, 'error');
+      showErrorToast(this, 'Error deleting record', error);
     } finally {
       this.isLoading = false;
     }

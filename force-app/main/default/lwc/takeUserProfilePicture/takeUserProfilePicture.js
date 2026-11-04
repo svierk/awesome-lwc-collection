@@ -1,4 +1,5 @@
 import updateProfilePicture from '@salesforce/apex/UserProfilePictureController.updateProfilePicture';
+import { showErrorToast } from 'c/errorUtils';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { LightningElement } from 'lwc';
 
@@ -25,7 +26,7 @@ export default class TakeUserProfilePicture extends LightningElement {
       try {
         this.video.srcObject = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
       } catch (error) {
-        this.showToast('Error accessing camera', error?.body?.message, 'error');
+        showErrorToast(this, 'Error accessing camera', error);
       }
     } else {
       this.showToast('Error', 'getUserMedia is not supported in this browser', 'error');
@@ -65,7 +66,7 @@ export default class TakeUserProfilePicture extends LightningElement {
         );
       })
       .catch((error) => {
-        this.showToast('Error saving the profile picture', error?.body?.message, 'error');
+        showErrorToast(this, 'Error saving the profile picture', error);
       });
   }
 

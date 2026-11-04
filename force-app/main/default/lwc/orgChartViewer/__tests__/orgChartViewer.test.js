@@ -186,9 +186,9 @@ describe('c-org-chart-viewer', () => {
     await flushPromises();
 
     // then
-    const errorBox = element.shadowRoot.querySelector('.slds-theme_error');
-    expect(errorBox).toBeTruthy();
-    expect(errorBox.textContent).toContain('network down');
+    const errorAlert = element.shadowRoot.querySelector('c-error-alert');
+    expect(errorAlert).toBeTruthy();
+    expect(errorAlert.message).toContain('network down');
     expect(global.d3.OrgChart).not.toHaveBeenCalled();
   });
 

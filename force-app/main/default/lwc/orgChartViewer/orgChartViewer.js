@@ -1,4 +1,5 @@
 import d3orgchart from '@salesforce/resourceUrl/d3orgchart';
+import { getErrorMessage } from 'c/errorUtils';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { LightningElement, api } from 'lwc';
 
@@ -62,7 +63,7 @@ function getNodeName(record) {
  */
 export default class OrgChartViewer extends LightningElement {
   isLibraryLoaded = false;
-  error;
+  errorMessage;
   searchTerm = '';
   visibleNodeCount = 0;
   totalNodeCount = 0;
@@ -92,7 +93,7 @@ export default class OrgChartViewer extends LightningElement {
         this.isLibraryLoaded = true;
       })
       .catch((err) => {
-        this.error = `Failed to load chart library: ${err.message || String(err)}`;
+        this.errorMessage = `Failed to load chart library: ${getErrorMessage(err)}`;
       });
   }
 

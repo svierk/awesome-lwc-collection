@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import threejs from '@salesforce/resourceUrl/threejs';
+import { getErrorMessage } from 'c/errorUtils';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { LightningElement } from 'lwc';
 
@@ -21,7 +22,7 @@ export default class Render3DElementsThreeJS extends LightningElement {
         this.init();
       })
       .catch((error) => {
-        const reason = error?.message;
+        const reason = getErrorMessage(error, '');
         this.errorMessage = reason
           ? `The 3D scene could not be displayed: ${reason}`
           : 'The 3D scene could not be displayed.';

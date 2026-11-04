@@ -1,4 +1,4 @@
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { showErrorToast } from 'c/errorUtils';
 import { getRecord } from 'lightning/uiRecordApi';
 import { api, LightningElement, track, wire } from 'lwc';
 
@@ -141,13 +141,7 @@ export default class CustomMapView extends LightningElement {
         }
       ];
     } else if (error) {
-      this.dispatchEvent(
-        new ShowToastEvent({
-          title: 'Error loading location data',
-          message: error?.body?.message,
-          variant: 'error'
-        })
-      );
+      showErrorToast(this, 'Error loading location data', error);
     }
   }
 

@@ -1,5 +1,5 @@
+import { showErrorToast } from 'c/errorUtils';
 import { gql, graphql } from 'lightning/graphql';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { api, LightningElement, track, wire } from 'lwc';
 
 const ICONS = {
@@ -183,13 +183,7 @@ export default class GraphqlMapView extends LightningElement {
         }
       ];
     } else if (errors) {
-      this.dispatchEvent(
-        new ShowToastEvent({
-          title: 'Error loading location data',
-          message: errors[0].message,
-          variant: 'error'
-        })
-      );
+      showErrorToast(this, 'Error loading location data', errors);
     }
   }
 

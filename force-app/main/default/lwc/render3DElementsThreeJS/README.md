@@ -26,7 +26,8 @@ The component renders a self-contained Three.js demo scene. Use it as a starting
 
 ## Component Dependencies
 
-| Name       | Type            | Description                                                   |
-| ---------- | --------------- | ------------------------------------------------------------- |
-| threejs    | Static Resource | Three.js - Lightweight, cross-browser 3D library using WebGL. |
-| errorAlert | LWC             | Inline alert that shows error messages to the user.           |
+| Name       | Type            | Description                                                    |
+| ---------- | --------------- | -------------------------------------------------------------- |
+| threejs    | Static Resource | Three.js - Lightweight, cross-browser 3D library using WebGL.  |
+| errorAlert | LWC             | Inline alert that shows error messages to the user.            |
+| errorUtils | LWC             | Shared functions to read error messages and show error toasts. |

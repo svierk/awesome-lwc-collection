@@ -26,6 +26,8 @@ The component is self-contained: enter a target URL, optionally upload a logo fo
 
 ## Component Dependencies
 
-| Name     | Type            | Description                                                              |
-| -------- | --------------- | ------------------------------------------------------------------------ |
-| qrcodejs | Static Resource | QRCode.js - JavaScript Library for generating QRCodes with Logo Support. |
+| Name       | Type            | Description                                                              |
+| ---------- | --------------- | ------------------------------------------------------------------------ |
+| qrcodejs   | Static Resource | QRCode.js - JavaScript Library for generating QRCodes with Logo Support. |
+| errorAlert | LWC             | Inline alert that shows error messages to the user.                      |
+| errorUtils | LWC             | Shared functions to read error messages and show error toasts.           |

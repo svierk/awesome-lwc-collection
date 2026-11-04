@@ -31,3 +31,5 @@ An interactive organization chart with search, expand/collapse and PNG export, p
 | Name       | Type            | Description                                                                                   |
 | ---------- | --------------- | --------------------------------------------------------------------------------------------- |
 | d3orgchart | Static Resource | d3 v7 + d3-flextree + d3-org-chart - Libraries for rendering interactive organization charts. |
+| errorAlert | LWC             | Inline alert that shows error messages to the user.                                           |
+| errorUtils | LWC             | Shared functions to read error messages and show error toasts.                                |
