@@ -181,7 +181,7 @@ export default class MultiSelectCombobox extends LightningElement {
   }
 
   get listboxAria() {
-    return { ariaMultiSelectable: String(!this.singleSelect) };
+    return { role: 'listbox', ariaMultiSelectable: String(!this.singleSelect) };
   }
 
   get input() {
