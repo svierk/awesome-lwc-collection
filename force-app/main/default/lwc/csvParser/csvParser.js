@@ -5,50 +5,56 @@ function lineOf(text, index) {
   return text.slice(0, index).split(/\r\n|\r|\n/).length;
 }
 
+/** Reads the quoted field that opens at `start` and returns its value and the index behind the closing quote. */
+function readQuotedField(text, start) {
+  let value = '';
+  let index = start + 1;
+  while (index < text.length) {
+    if (text[index] !== QUOTE) {
+      value += text[index];
+      index += 1;
+    } else if (text[index + 1] === QUOTE) {
+      value += QUOTE;
+      index += 2;
+    } else {
+      return { value, end: index + 1 };
+    }
+  }
+  throw new Error(`Invalid CSV: the quoted field starting on line ${lineOf(text, start)} is never closed.`);
+}
+
+function lineBreakLength(text, index) {
+  if (text[index] === '\r' && text[index + 1] === '\n') return 2;
+  return text[index] === '\n' || text[index] === '\r' ? 1 : 0;
+}
+
 /** Splits the text into records of raw field values, following RFC 4180. */
 function readRecords(text) {
   const records = [];
   let record = [];
   let field = '';
-  let quoteStart = -1;
+  let index = 0;
 
-  const endField = () => {
-    record.push(field);
-    field = '';
-  };
-  const endRecord = () => {
-    endField();
-    records.push(record);
-    record = [];
-  };
-
-  for (let i = 0; i < text.length; i++) {
-    const char = text[i];
-    if (quoteStart >= 0) {
-      if (char !== QUOTE) {
-        field += char;
-      } else if (text[i + 1] === QUOTE) {
-        field += QUOTE;
-        i++;
-      } else {
-        quoteStart = -1;
-      }
-    } else if (char === QUOTE && field === '') {
-      quoteStart = i;
-    } else if (char === DELIMITER) {
-      endField();
-    } else if (char === '\n' || char === '\r') {
-      if (char === '\r' && text[i + 1] === '\n') i++;
-      endRecord();
+  while (index < text.length) {
+    const breakLength = lineBreakLength(text, index);
+    if (text[index] === QUOTE && field === '') {
+      ({ value: field, end: index } = readQuotedField(text, index));
+    } else if (text[index] === DELIMITER) {
+      record.push(field);
+      field = '';
+      index += 1;
+    } else if (breakLength > 0) {
+      records.push([...record, field]);
+      record = [];
+      field = '';
+      index += breakLength;
     } else {
-      field += char;
+      field += text[index];
+      index += 1;
     }
   }
 
-  if (quoteStart >= 0) {
-    throw new Error(`Invalid CSV: the quoted field starting on line ${lineOf(text, quoteStart)} is never closed.`);
-  }
-  if (field !== '' || record.length > 0) endRecord();
+  if (field !== '' || record.length > 0) records.push([...record, field]);
   return records;
 }
 
@@ -62,7 +68,9 @@ function toUniqueHeaders(rawHeaders) {
   return rawHeaders.map((rawHeader, index) => {
     const base = rawHeader.trim() === '' ? `Column ${index + 1}` : rawHeader;
     let header = base;
-    for (let count = 2; used.has(header); count++) {
+    let count = 1;
+    while (used.has(header)) {
+      count += 1;
       header = `${base} (${count})`;
     }
     used.add(header);
