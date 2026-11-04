@@ -135,7 +135,7 @@ jobs:
           username: ${{ vars.SFDX_USERNAME }}
 
       - name: Deploy Metadata
-        uses: svierk/sfdx-deploy@v1.3.1
+        uses: svierk/sfdx-deploy@v1.4.1
 
       - name: Run Tests
         uses: svierk/sfdx-run-tests@v1.3.0
