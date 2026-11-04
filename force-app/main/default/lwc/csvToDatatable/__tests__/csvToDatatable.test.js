@@ -63,7 +63,8 @@ describe('c-csv-to-datatable', () => {
     expect(datatable.columns).toHaveLength(3);
     expect(datatable.columns[0]).toEqual({ label: 'Name', fieldName: 'Name' });
     expect(datatable.data).toHaveLength(2);
-    expect(datatable.data[0]).toEqual({ Name: 'John', Age: '30', City: 'New York' });
+    expect(datatable.keyField).toBe('id');
+    expect(datatable.data[0]).toEqual({ id: 'row-1', Name: 'John', Age: '30', City: 'New York' });
   });
 
   it('should handle csv with crlf line endings', async () => {
@@ -85,7 +86,40 @@ describe('c-csv-to-datatable', () => {
     // then
     const datatable = element.shadowRoot.querySelector('lightning-datatable');
     expect(datatable.data).toHaveLength(2);
-    expect(datatable.data[0]).toEqual({ Product: 'Laptop', Price: '1200' });
+    expect(datatable.data[0]).toEqual({ id: 'row-1', Product: 'Laptop', Price: '1200' });
+  });
+
+  it('should keep commas in quoted fields and ignore the empty last line', async () => {
+    // given
+    const mockFile = createMockFile('Name,City\n"Doe, John",Berlin\n');
+
+    // when
+    document.body.appendChild(element);
+    const fileInput = element.shadowRoot.querySelector('lightning-input');
+    fileInput.dispatchEvent(new CustomEvent('change', { detail: { files: [mockFile] } }));
+
+    await flushPromises();
+
+    // then
+    const datatable = element.shadowRoot.querySelector('lightning-datatable');
+    expect(datatable.data).toEqual([{ id: 'row-1', Name: 'Doe, John', City: 'Berlin' }]);
+  });
+
+  it('should use a separate key field when the csv has an id column', async () => {
+    // given
+    const mockFile = createMockFile('id,Name\n42,John');
+
+    // when
+    document.body.appendChild(element);
+    const fileInput = element.shadowRoot.querySelector('lightning-input');
+    fileInput.dispatchEvent(new CustomEvent('change', { detail: { files: [mockFile] } }));
+
+    await flushPromises();
+
+    // then
+    const datatable = element.shadowRoot.querySelector('lightning-datatable');
+    expect(datatable.keyField).toBe('_id');
+    expect(datatable.data).toEqual([{ _id: 'row-1', id: '42', Name: 'John' }]);
   });
 
   it('should handle empty files array', async () => {
