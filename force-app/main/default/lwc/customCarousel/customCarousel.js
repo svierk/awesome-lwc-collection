@@ -23,7 +23,15 @@ export default class CustomCarousel extends LightningElement {
    * @type {boolean}
    * @default false
    */
-  @api autoScroll = false;
+  @api
+  get autoScroll() {
+    return this._autoScroll;
+  }
+
+  set autoScroll(value) {
+    this._autoScroll = value;
+    this.restartTimer();
+  }
 
   /**
    * Set maximum height of the carousel in percent or pixels.
@@ -72,12 +80,22 @@ export default class CustomCarousel extends LightningElement {
    * @type {number}
    * @default 5000
    */
-  @api scrollDuration = 5000;
+  @api
+  get scrollDuration() {
+    return this._scrollDuration;
+  }
+
+  set scrollDuration(value) {
+    this._scrollDuration = value;
+    this.restartTimer();
+  }
 
   errorMessage = '';
   slides = [];
   slideIndex = 1;
   timer;
+  _autoScroll = false;
+  _scrollDuration = 5000;
 
   get maxWidth() {
     return `width: ${this.customWidth}`;
@@ -88,7 +106,7 @@ export default class CustomCarousel extends LightningElement {
   }
 
   get showNavigationButtons() {
-    return !this.hideNavigationButtons;
+    return !this.hideNavigationButtons && this.slides.length > 0;
   }
 
   get showNavigationDots() {
@@ -129,6 +147,7 @@ export default class CustomCarousel extends LightningElement {
   set slidesData(data) {
     let parsedData = data;
     this.errorMessage = '';
+    this.slideIndex = 1;
 
     if (typeof data === 'string') {
       try {
@@ -144,32 +163,35 @@ export default class CustomCarousel extends LightningElement {
       return;
     }
 
-    this.slides = parsedData.map((slide, i) => {
-      return {
-        ...slide,
-        index: i + 1,
-        slideClass: i === 0 ? 'fade slds-show' : 'fade slds-hide',
-        dotClass: i === 0 ? 'dot active' : 'dot'
-      };
-    });
+    this.slides = parsedData.map((slide, i) => this.withSlideState({ ...slide, index: i + 1 }));
   }
 
   connectedCallback() {
-    if (this.autoScroll) {
+    this.restartTimer();
+  }
+
+  disconnectedCallback() {
+    this.stopTimer();
+  }
+
+  restartTimer() {
+    this.stopTimer();
+    if (this.autoScroll && this.isConnected) {
       this.timer = globalThis.setInterval(() => {
         this.handleSlideSelection(this.slideIndex + 1);
       }, Number(this.scrollDuration));
     }
   }
 
-  disconnectedCallback() {
-    if (this.autoScroll) {
+  stopTimer() {
+    if (this.timer) {
       globalThis.clearInterval(this.timer);
+      this.timer = undefined;
     }
   }
 
   showSlide(event) {
-    const slideIndex = Number(event.target.dataset.id);
+    const slideIndex = Number(event.currentTarget.dataset.id);
     this.handleSlideSelection(slideIndex);
   }
 
@@ -184,6 +206,10 @@ export default class CustomCarousel extends LightningElement {
   }
 
   handleSlideSelection(index) {
+    if (this.slides.length === 0) {
+      return;
+    }
+
     if (index > this.slides.length) {
       this.slideIndex = 1;
     } else if (index < 1) {
@@ -192,12 +218,17 @@ export default class CustomCarousel extends LightningElement {
       this.slideIndex = index;
     }
 
-    this.slides = this.slides.map((slide) => {
-      return {
-        ...slide,
-        slideClass: this.slideIndex === slide.index ? 'fade slds-show' : 'fade slds-hide',
-        dotClass: this.slideIndex === slide.index ? 'dot active' : 'dot'
-      };
-    });
+    this.slides = this.slides.map((slide) => this.withSlideState(slide));
+  }
+
+  withSlideState(slide) {
+    const isCurrent = this.slideIndex === slide.index;
+    return {
+      ...slide,
+      slideClass: isCurrent ? 'fade slds-show' : 'fade slds-hide',
+      dotClass: isCurrent ? 'dot active' : 'dot',
+      dotLabel: `Show slide ${slide.index}`,
+      dotAria: { ariaCurrent: isCurrent ? 'true' : 'false' }
+    };
   }
 }

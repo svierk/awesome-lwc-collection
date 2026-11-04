@@ -48,7 +48,14 @@
   cursor: pointer;
   background-color: var(--slds-g-color-neutral-base-80, #c9c9c9);
   margin: 0 2px;
+  padding: 0;
+  border: none;
   display: inline-block;
+}
+
+.dot:focus-visible {
+  outline: var(--slds-g-sizing-border-2, 2px) solid var(--slds-g-color-neutral-base-50, #757575);
+  outline-offset: 2px;
 }
 
 .active,
