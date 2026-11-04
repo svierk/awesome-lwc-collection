@@ -1,4 +1,5 @@
 <template>
+  <c-error-alert lwc:if={errorMessage} class="slds-show slds-m-bottom_small" message={errorMessage}></c-error-alert>
   <div class="slds-is-relative container" style={maxWidth}>
     <template for:each={slidesData} for:item="slide">
       <div key={slide.index} class={slide.slideClass}>

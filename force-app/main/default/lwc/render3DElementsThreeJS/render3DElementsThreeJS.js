@@ -13,13 +13,18 @@ import { LightningElement } from 'lwc';
  * <c-render3-d-elements-three-j-s></c-render3-d-elements-three-j-s>
  */
 export default class Render3DElementsThreeJS extends LightningElement {
+  errorMessage = '';
+
   connectedCallback() {
     loadScript(this, threejs)
       .then(() => {
         this.init();
       })
       .catch((error) => {
-        this.error = error;
+        const reason = error?.message;
+        this.errorMessage = reason
+          ? `The 3D scene could not be displayed: ${reason}`
+          : 'The 3D scene could not be displayed.';
       });
   }
 

@@ -74,6 +74,7 @@ export default class CustomCarousel extends LightningElement {
    */
   @api scrollDuration = 5000;
 
+  errorMessage = '';
   slides = [];
   slideIndex = 1;
   timer;
@@ -127,12 +128,13 @@ export default class CustomCarousel extends LightningElement {
 
   set slidesData(data) {
     let parsedData = data;
+    this.errorMessage = '';
 
     if (typeof data === 'string') {
       try {
         parsedData = JSON.parse(data);
-      } catch (e) {
-        this.error = e;
+      } catch {
+        this.errorMessage = 'The slides could not be displayed because the slides data is not valid JSON.';
         parsedData = [];
       }
     }

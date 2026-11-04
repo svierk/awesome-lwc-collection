@@ -20,10 +20,11 @@ A simple demo component for rendering 3D elements using Three.js.
 <c-render3-d-elements-three-j-s></c-render3-d-elements-three-j-s>
 ```
 
-The component renders a self-contained Three.js demo scene. Use it as a starting point for your own 3D visualizations.
+The component renders a self-contained Three.js demo scene. Use it as a starting point for your own 3D visualizations. If Three.js cannot be loaded or the browser has no WebGL, it shows an error message.
 
 ## Component Dependencies
 
-| Name    | Type            | Description                                                   |
-| ------- | --------------- | ------------------------------------------------------------- |
-| threejs | Static Resource | Three.js - Lightweight, cross-browser 3D library using WebGL. |
+| Name       | Type            | Description                                                   |
+| ---------- | --------------- | ------------------------------------------------------------- |
+| threejs    | Static Resource | Three.js - Lightweight, cross-browser 3D library using WebGL. |
+| errorAlert | LWC             | Inline alert that shows error messages to the user.           |

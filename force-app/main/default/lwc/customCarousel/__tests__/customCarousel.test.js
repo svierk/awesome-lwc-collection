@@ -9,6 +9,8 @@ const flushPromises = () => Promise.resolve();
 
 const activeDotId = () => element.shadowRoot.querySelector('.dot.active').dataset.id;
 
+const errorMessage = () => element.shadowRoot.querySelector('c-error-alert')?.message;
+
 describe('c-custom-carousel', () => {
   beforeEach(() => {
     element = createElement('c-custom-carousel', {
@@ -213,5 +215,44 @@ describe('c-custom-carousel', () => {
 
     // then
     expect(slides.length).toBe(expected);
+  });
+
+  it('should show an error when the slides data is not valid json', async () => {
+    // given
+    element.slidesData = '{ not json';
+
+    // when
+    document.body.appendChild(element);
+
+    // then
+    expect(errorMessage()).toBe('The slides could not be displayed because the slides data is not valid JSON.');
+    expect(element.slidesData).toEqual([]);
+    jest.useRealTimers();
+    await expect(element).toBeAccessible();
+  });
+
+  it('should show no error for valid slides data', () => {
+    // given
+    element.slidesData = JSON.stringify(mockData.slideData);
+
+    // when
+    document.body.appendChild(element);
+
+    // then
+    expect(errorMessage()).toBeUndefined();
+  });
+
+  it('should remove the error when valid slides data arrives', async () => {
+    // given
+    element.slidesData = '{ not json';
+    document.body.appendChild(element);
+
+    // when
+    element.slidesData = mockData.slideData;
+    await flushPromises();
+
+    // then
+    expect(errorMessage()).toBeUndefined();
+    expect(element.slidesData.length).toBe(mockData.slideData.length);
   });
 });
