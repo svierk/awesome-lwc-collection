@@ -5,8 +5,9 @@
 #                      reference is pinned to an exact release tag, so an update
 #                      is always an explicit, reviewable change of that pin)
 #
-# All updates - patch, minor and major alike - are grouped into a single pull
-# request per ecosystem and merged autonomously by
+# All updates - patch, minor and major alike, apart from the ignored npm majors
+# below - are grouped into a single pull request per ecosystem and merged
+# autonomously by
 # .github/workflows/dependabot-auto-merge.yml once the required checks pass.
 # The quality gate is therefore the CI of this repository, not a human: keep the
 # required status checks on `main` in sync with what the pipelines actually need
@@ -34,6 +35,19 @@ updates:
       # affected by this.
       default-days: 7
       semver-major-days: 14
+    # The LWC ESLint packages only support @babel/eslint-parser 7 and eslint 9, so
+    # these majors can't install, and because all updates share one group they
+    # would block every other npm update as well. Remove this once the latest
+    # @lwc/eslint-plugin-lwc and @salesforce/eslint-config-lwc allow them. Ignore
+    # rules also apply to security updates: fixes within the current majors still
+    # arrive, but a fix that only exists in a new major has to be applied by hand.
+    ignore:
+      - dependency-name: '@babel/core'
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@babel/eslint-parser'
+        update-types: ['version-update:semver-major']
+      - dependency-name: 'eslint'
+        update-types: ['version-update:semver-major']
     groups:
       dependencies:
         applies-to: version-updates
