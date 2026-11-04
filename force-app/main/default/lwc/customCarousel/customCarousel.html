@@ -37,7 +37,15 @@
   </div>
   <div lwc:if={showNavigationDots} class="slds-text-align_center slds-var-p-around_medium">
     <template for:each={slidesData} for:item="slide">
-      <span key={slide.index} class={slide.dotClass} data-id={slide.index} onclick={showSlide}></span>
+      <button
+        key={slide.index}
+        type="button"
+        class={slide.dotClass}
+        data-id={slide.index}
+        aria-label={slide.dotLabel}
+        aria-current={slide.dotCurrent}
+        onclick={showSlide}
+      ></button>
     </template>
   </div>
 </template>

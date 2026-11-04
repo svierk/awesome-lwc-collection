@@ -50,7 +50,9 @@ A simple custom carousel with different configuration options.
 
 When adding the component to a page in the Lightning App Builder, paste a slides JSON array like the example above into the slides-data property.
 
-If the slides-data value is a string that is not valid JSON, the component shows an error message instead of the slides.
+If the slides-data value is a string that is not valid JSON, the component shows an error message instead of the slides. Without slides, the navigation is hidden.
+
+Changes to auto-scroll and scroll-duration take effect immediately, and new slides-data starts again at the first slide. The dots are buttons, so they can also be reached and used with the keyboard.
 
 ## Component Dependencies
 

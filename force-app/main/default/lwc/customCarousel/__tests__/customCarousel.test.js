@@ -255,4 +255,147 @@ describe('c-custom-carousel', () => {
     expect(errorMessage()).toBeUndefined();
     expect(element.slidesData.length).toBe(mockData.slideData.length);
   });
+
+  it('should hide the navigation when there are no slides', () => {
+    // given
+    element.slidesData = [];
+
+    // when
+    document.body.appendChild(element);
+
+    // then
+    expect(element.shadowRoot.querySelector('.prev')).toBeNull();
+    expect(element.shadowRoot.querySelector('.next')).toBeNull();
+    expect(element.shadowRoot.querySelectorAll('.dot').length).toBe(0);
+  });
+
+  it('should not lose its position when auto-scroll runs without slides', async () => {
+    // given
+    element.autoScroll = true;
+    element.scrollDuration = 1000;
+    document.body.appendChild(element);
+    jest.advanceTimersByTime(3000);
+
+    // when
+    element.slidesData = mockData.slideData;
+    await flushPromises();
+    jest.advanceTimersByTime(1000);
+    await flushPromises();
+
+    // then
+    expect(activeDotId()).toBe('2');
+  });
+
+  it('should start at the first slide when new slides arrive', async () => {
+    // given
+    element.slidesData = mockData.slideData;
+    document.body.appendChild(element);
+    element.shadowRoot.querySelectorAll('.dot')[1].click();
+    await flushPromises();
+
+    // when
+    element.slidesData = [...mockData.slideData];
+    await flushPromises();
+    element.shadowRoot.querySelector('.next').click();
+    await flushPromises();
+
+    // then
+    expect(activeDotId()).toBe('2');
+  });
+
+  it('should start scrolling when auto-scroll is enabled after connecting', async () => {
+    // given
+    element.slidesData = mockData.slideData;
+    element.scrollDuration = 1000;
+    document.body.appendChild(element);
+
+    // when
+    element.autoScroll = true;
+    jest.advanceTimersByTime(1000);
+    await flushPromises();
+
+    // then
+    expect(activeDotId()).toBe('2');
+  });
+
+  it('should stop scrolling when auto-scroll is disabled after connecting', async () => {
+    // given
+    element.slidesData = mockData.slideData;
+    element.autoScroll = true;
+    element.scrollDuration = 1000;
+    document.body.appendChild(element);
+
+    // when
+    element.autoScroll = false;
+    jest.advanceTimersByTime(3000);
+    await flushPromises();
+
+    // then
+    expect(activeDotId()).toBe('1');
+  });
+
+  it('should use the new duration when it changes after connecting', async () => {
+    // given
+    element.slidesData = mockData.slideData;
+    element.autoScroll = true;
+    element.scrollDuration = 5000;
+    document.body.appendChild(element);
+
+    // when
+    element.scrollDuration = 1000;
+    jest.advanceTimersByTime(1000);
+    await flushPromises();
+
+    // then
+    expect(activeDotId()).toBe('2');
+    expect(element.scrollDuration).toBe(1000);
+    expect(element.autoScroll).toBe(true);
+  });
+
+  it('should keep a single timer when the settings change repeatedly', async () => {
+    // given
+    element.slidesData = mockData.slideData;
+    element.autoScroll = true;
+    element.scrollDuration = 1000;
+    document.body.appendChild(element);
+
+    // when
+    element.scrollDuration = 1000;
+    element.autoScroll = true;
+    jest.advanceTimersByTime(1000);
+    await flushPromises();
+
+    // then
+    expect(activeDotId()).toBe('2');
+  });
+
+  it('should not start a timer before it is connected', () => {
+    // given
+    const setIntervalSpy = jest.spyOn(global, 'setInterval');
+
+    // when
+    element.autoScroll = true;
+    element.scrollDuration = 1000;
+
+    // then
+    expect(setIntervalSpy).not.toHaveBeenCalled();
+  });
+
+  it('should render dots as labelled buttons that mark the current slide', async () => {
+    // given
+    element.slidesData = mockData.slideData;
+    document.body.appendChild(element);
+
+    // when
+    const dots = element.shadowRoot.querySelectorAll('.dot');
+    dots[1].click();
+    await flushPromises();
+
+    // then
+    expect(dots[1].tagName).toBe('BUTTON');
+    expect(dots[1].type).toBe('button');
+    expect(dots[1].getAttribute('aria-label')).toBe('Show slide 2');
+    expect(dots[1].getAttribute('aria-current')).toBe('true');
+    expect(dots[0].getAttribute('aria-current')).toBe('false');
+  });
 });
