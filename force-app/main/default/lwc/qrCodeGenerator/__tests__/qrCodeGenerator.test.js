@@ -16,8 +16,7 @@ function getInputs() {
 }
 
 function errorText() {
-  const box = element.shadowRoot.querySelector('.slds-theme_error p');
-  return box ? box.textContent : null;
+  return element.shadowRoot.querySelector('c-error-alert')?.message ?? null;
 }
 
 // Append the element with the QR library script resolving successfully.

@@ -48,11 +48,11 @@
         </div>
       </template>
 
-      <template lwc:if={error}>
-        <div class="slds-box slds-theme_error slds-var-m-top_small">
-          <p>{error}</p>
-        </div>
-      </template>
+      <c-error-alert
+        lwc:if={errorMessage}
+        class="slds-show slds-var-m-top_small"
+        message={errorMessage}
+      ></c-error-alert>
 
       <template lwc:if={hasQRCode}>
         <div class="qr-code-container slds-grid slds-grid_align-center slds-var-p-around_medium slds-var-m-top_medium">

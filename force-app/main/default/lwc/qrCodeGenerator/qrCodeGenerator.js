@@ -1,4 +1,5 @@
 import qrcodejs from '@salesforce/resourceUrl/qrcodejs';
+import { getErrorMessage } from 'c/errorUtils';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { LightningElement } from 'lwc';
 
@@ -17,7 +18,7 @@ export default class QrCodeGenerator extends LightningElement {
   logoFileName = '';
   qrCodeDataUrl = '';
   isLoading = false;
-  error;
+  errorMessage;
   qrLibLoaded = false;
 
   connectedCallback() {
@@ -33,7 +34,7 @@ export default class QrCodeGenerator extends LightningElement {
         this.qrLibLoaded = true;
       })
       .catch((err) => {
-        this.error = `Failed to load QR code library: ${err.message || String(err)}`;
+        this.errorMessage = `Failed to load QR code library: ${getErrorMessage(err)}`;
       });
   }
 
@@ -55,7 +56,7 @@ export default class QrCodeGenerator extends LightningElement {
       this.logoDataUrl = e.target.result;
     };
     reader.onerror = () => {
-      this.error = 'Failed to read the selected file.';
+      this.errorMessage = 'Failed to read the selected file.';
     };
     reader.readAsDataURL(file);
   }
@@ -71,16 +72,16 @@ export default class QrCodeGenerator extends LightningElement {
 
   async generateCode() {
     if (!this.url) {
-      this.error = 'Please enter a URL.';
+      this.errorMessage = 'Please enter a URL.';
       return;
     }
 
     if (!this.qrLibLoaded || globalThis.QRCodeWithLogo === undefined) {
-      this.error = 'QR code library not loaded. Please try again.';
+      this.errorMessage = 'QR code library not loaded. Please try again.';
       return;
     }
 
-    this.error = undefined;
+    this.errorMessage = undefined;
     this.isLoading = true;
     this.qrCodeDataUrl = '';
 
@@ -102,7 +103,7 @@ export default class QrCodeGenerator extends LightningElement {
       this.isLoading = false;
     } catch (err) {
       this.isLoading = false;
-      this.error = `Failed to generate QR code: ${err.message || String(err)}`;
+      this.errorMessage = `Failed to generate QR code: ${getErrorMessage(err)}`;
     }
   }
 

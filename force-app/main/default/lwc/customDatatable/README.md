@@ -68,3 +68,4 @@ The displayed columns are driven by a field set on the object, so the table can 
 | datatableUtils          | LWC  | Shared utility functions for row actions, CRUD operations, and datatable properties.   |
 | CustomDatatableUtil     | Apex | Controller class for handling the columns configuration and data provisioning.         |
 | CustomDatatableUtilTest | Apex | Test class for CustomDatatableUtil.                                                    |
+| errorUtils              | LWC  | Shared functions to read error messages and show error toasts.                         |

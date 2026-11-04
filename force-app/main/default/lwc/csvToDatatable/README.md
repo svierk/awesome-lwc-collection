@@ -39,3 +39,4 @@ If a file cannot be read or is not valid CSV, for example because a quote is nev
 | ---------- | ---- | --------------------------------------------------------------------- |
 | csvParser  | LWC  | Shared module that parses comma separated text according to RFC 4180. |
 | errorAlert | LWC  | Inline alert that shows error messages to the user.                   |
+| errorUtils | LWC  | Shared functions to read error messages and show error toasts.        |

@@ -5,6 +5,7 @@ import {
   navigateToRecord,
   showToast
 } from 'c/datatableUtils';
+import { showErrorToast } from 'c/errorUtils';
 import { executeMutation, gql, graphql } from 'lightning/graphql';
 import { NavigationMixin } from 'lightning/navigation';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
@@ -249,7 +250,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
       }
     } else if (errors) {
       this.isLoading = false;
-      this.showToast('Error loading records', errors[0]?.message || 'Unknown error', 'error');
+      showErrorToast(this, 'Error loading records', errors);
     }
   }
 
@@ -415,14 +416,14 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
       const results = await Promise.all(event.detail.draftValues.map((draft) => this._updateRecordMutation(draft)));
       const errors = results.flatMap((r) => r?.errors ?? []);
       if (errors.length) {
-        this.showToast('Error updating records', errors[0]?.message ?? 'Unknown error', 'error');
+        showErrorToast(this, 'Error updating records', errors);
         return;
       }
       this.showToast('Success', 'Records updated', 'success');
       await this._refreshData();
       this.draftValues = [];
     } catch (error) {
-      this.showToast('Error updating records', error?.body?.message ?? error?.message ?? 'Unknown error', 'error');
+      showErrorToast(this, 'Error updating records', error);
     }
   }
 
@@ -436,13 +437,13 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
       const results = await Promise.all(this.selectedRecords.map((record) => this._deleteRecordMutation(record.Id)));
       const errors = results.flatMap((r) => r?.errors ?? []);
       if (errors.length) {
-        this.showToast('Error deleting records', errors[0]?.message ?? 'Unknown error', 'error');
+        showErrorToast(this, 'Error deleting records', errors);
         return;
       }
       this.showToast('Success', 'Records deleted', 'success');
       await this._refreshData();
     } catch (error) {
-      this.showToast('Error deleting records', error?.body?.message ?? error?.message ?? 'Unknown error', 'error');
+      showErrorToast(this, 'Error deleting records', error);
     } finally {
       this.isLoading = false;
     }
@@ -453,13 +454,13 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     try {
       const result = await this._deleteRecordMutation(recordId);
       if (result?.errors?.length) {
-        this.showToast('Error deleting record', result.errors[0]?.message ?? 'Unknown error', 'error');
+        showErrorToast(this, 'Error deleting record', result.errors);
         return;
       }
       this.showToast('Success', 'Record deleted', 'success');
       await this._refreshData();
     } catch (error) {
-      this.showToast('Error deleting record', error?.body?.message ?? error?.message ?? 'Unknown error', 'error');
+      showErrorToast(this, 'Error deleting record', error);
     } finally {
       this.isLoading = false;
     }

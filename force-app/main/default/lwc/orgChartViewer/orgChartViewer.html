@@ -52,11 +52,11 @@
       </p>
     </template>
 
-    <template lwc:if={error}>
-      <div class="slds-box slds-theme_error slds-var-p-horizontal_medium slds-var-m-top_small">
-        <p>{error}</p>
-      </div>
-    </template>
+    <c-error-alert
+      lwc:if={errorMessage}
+      class="slds-show slds-var-p-horizontal_medium slds-var-m-top_small"
+      message={errorMessage}
+    ></c-error-alert>
 
     <div class="slds-var-m-top_small">
       <div class="chart-wrapper slds-is-relative slds-scrollable_none">

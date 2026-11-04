@@ -1,6 +1,7 @@
 import { refreshApex } from '@salesforce/apex';
 import getDocuments from '@salesforce/apex/ContentDocumentController.getDocuments';
 import getLatestVersion from '@salesforce/apex/ContentDocumentController.getLatestVersion';
+import { showErrorToast } from 'c/errorUtils';
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { deleteRecord } from 'lightning/uiRecordApi';
@@ -197,7 +198,7 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
         globalThis.open(`/sfc/servlet.shepherd/version/download/${version}`);
       })
       .catch((error) => {
-        this.showToast('Error downloading file', error?.body?.message, 'error');
+        showErrorToast(this, 'Error downloading file', error);
       });
   }
 
@@ -219,7 +220,7 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
       this.showToast('Success', 'File deleted', 'success');
       await refreshApex(this.wiredRecords);
     } catch (error) {
-      this.showToast('Error deleting file', error?.body?.message, 'error');
+      showErrorToast(this, 'Error deleting file', error);
     } finally {
       this.isLoading = false;
     }

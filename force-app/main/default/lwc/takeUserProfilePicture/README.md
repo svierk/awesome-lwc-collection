@@ -28,7 +28,8 @@ The component is self-contained: it asks for camera access, takes a photo and up
 
 ## Component Dependencies
 
-| Name                             | Type | Description                                               |
-| -------------------------------- | ---- | --------------------------------------------------------- |
-| UserProfilePictureController     | Apex | Controller class for updating the user's profile picture. |
-| UserProfilePictureControllerTest | Apex | Test class for UserProfilePictureController.              |
+| Name                             | Type | Description                                                    |
+| -------------------------------- | ---- | -------------------------------------------------------------- |
+| UserProfilePictureController     | Apex | Controller class for updating the user's profile picture.      |
+| UserProfilePictureControllerTest | Apex | Test class for UserProfilePictureController.                   |
+| errorUtils                       | LWC  | Shared functions to read error messages and show error toasts. |

@@ -52,6 +52,7 @@ New components are welcome when they cover a distinct, reusable need. A componen
 
   `npm run lint:readme` verifies these conventions against the component source and also runs in CI.
 
+- **Visible errors.** Read messages with `getErrorMessage` from `c/errorUtils`. Show `c-error-alert` inline if the error makes the component unusable, and a toast through `showErrorToast` if only an action failed.
 - **Unit tests** in a `__tests__/` folder using [sfdx-lwc-jest](https://github.com/salesforce/sfdx-lwc-jest), including an accessibility assertion via `await expect(element).toBeAccessible()`.
 - **A category** entry for the component in [`scripts/docs/site.config.json`](scripts/docs/site.config.json) so it is grouped correctly in the catalog sidebar (uncategorized components fall back to an "Other" group).
 - **A row** in the `Components available` table of the root [`README.md`](README.md) within the matching category.

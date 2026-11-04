@@ -53,3 +53,4 @@ All attributes are also configurable in the Lightning App Builder, so no code is
 | contentDocumentTableExtension | LWC  | Custom extension of the standard LWC datatable to support individual table cell types.        |
 | ContentDocumentController     | Apex | Controller class for retrieving content documents from files library.                         |
 | ContentDocumentControllerTest | Apex | Test class for ContentDocumentController.                                                     |
+| errorUtils                    | LWC  | Shared functions to read error messages and show error toasts.                                |
