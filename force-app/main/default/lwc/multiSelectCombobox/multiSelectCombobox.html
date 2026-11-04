@@ -1,20 +1,22 @@
 <template>
+  <c-error-alert lwc:if={errorMessage} class="slds-show slds-m-bottom_small" message={errorMessage}></c-error-alert>
   <div class="slds-form-element">
-    <label lwc:if={label} class="slds-form-element__label">
+    <label lwc:if={label} class="slds-form-element__label" for="combobox-input">
       <abbr lwc:if={required} title="required" class="slds-required">*</abbr>
       {label}</label
     >
     <div class="slds-form-element__control">
       <div class="slds-combobox_container">
-        <div
-          class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-picklist multi-select-combobox__dropdown"
-        >
+        <div class={dropdownClass} onkeydown={handleKeyDown}>
           <div class="slds-combobox_form-element slds-input-has-icon slds-input-has-icon_right" role="none">
             <input
+              id="combobox-input"
               class="slds-combobox__input multi-select-combobox__input"
-              aria-label="Multi Select Combobox Input"
-              aria-controls="multi-pick-list-dropdown-items"
-              role="textbox"
+              aria-label={inputLabel}
+              aria-controls="combobox-listbox"
+              aria-haspopup="listbox"
+              lwc:spread={inputAria}
+              role="combobox"
               type="text"
               value={selectedItems}
               required={required}
@@ -34,11 +36,7 @@
               </lightning-icon>
             </span>
           </div>
-          <div
-            class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid multi-select-combobox__listbox"
-            aria-label="Multi Select Combobox Dropdown"
-            role="listbox"
-          >
+          <div class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid multi-select-combobox__listbox">
             <label lwc:if={enableSearch} class="slds-assistive-text" for="multi-select-combobox-search">Search</label>
             <input
               lwc:if={enableSearch}
@@ -50,7 +48,13 @@
               oninput={handleSearch}
               onclick={handleSearchClick}
             />
-            <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+            <ul
+              id="combobox-listbox"
+              class="slds-listbox slds-listbox_vertical"
+              role="listbox"
+              aria-label={inputLabel}
+              lwc:spread={listboxAria}
+            >
               <template for:each={filteredOptions} for:item="item">
                 <c-multi-select-combobox-item key={item.value} item={item} onchange={handleChange}>
                 </c-multi-select-combobox-item>

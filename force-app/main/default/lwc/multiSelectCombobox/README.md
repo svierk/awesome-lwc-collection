@@ -4,7 +4,7 @@ Combobox with different configuration options that also supports multi select.
 
 **Type:** Building Block
 
-**Available in:** Not exposed in the Lightning App Builder - intended to be embedded in other components.
+**Available in:** App Page · Home Page · Record Page · Flow Screen
 
 <img src="../../../../../images/multi-select-combobox.png" alt="multi-select-combobox" width="400"/>
 
@@ -18,18 +18,20 @@ Combobox with different configuration options that also supports multi select.
 
 ## Attributes
 
-| Name          | Type    | Default            | Description                                                                                                    |
-| ------------- | ------- | ------------------ | -------------------------------------------------------------------------------------------------------------- |
-| disabled      | boolean | false              | If present, the combobox is disabled and users cannot interact with it.                                        |
-| enable-search | boolean | false              | If present, a search input is shown inside the dropdown to filter options by label.                            |
-| label         | string  | ''                 | Text label for the combobox.                                                                                   |
-| name          | string  |                    | Specifies the name of the combobox.                                                                            |
-| options       | Array   | []                 | A list of options that are available for selection. Each option has the following attributes: label and value. |
-| placeholder   | string  | 'Select an Option' | Text that is displayed before an option is selected, to prompt the user to select an option.                   |
-| read-only     | boolean | false              | If present, the combobox is read-only. A read-only combobox is also disabled.                                  |
-| required      | boolean | false              | If present, a value must be selected before a form can be submitted.                                           |
-| single-select | boolean | false              | If present, the combobox only allows the selection of a single value.                                          |
-| show-pills    | boolean | false              | If present, the combobox will show a pill container with the currently selected options.                       |
+| Name          | Type            | Default            | Description                                                                                                                                     |
+| ------------- | --------------- | ------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| disabled      | boolean         | false              | If present, the combobox is disabled and users cannot interact with it.                                                                         |
+| enable-search | boolean         | false              | If present, a search input is shown inside the dropdown to filter options by label.                                                             |
+| label         | string          | ''                 | Text label for the combobox.                                                                                                                    |
+| name          | string          |                    | Specifies the name of the combobox.                                                                                                             |
+| options       | Array or string | []                 | A list of options that are available for selection, as an array or a JSON string. Each option has a label and a value, and optionally selected. |
+| placeholder   | string          | 'Select an Option' | Text that is displayed before an option is selected, to prompt the user to select an option.                                                    |
+| read-only     | boolean         | false              | If present, the combobox is read-only. A read-only combobox is also disabled.                                                                   |
+| required      | boolean         | false              | If present, a value must be selected before a form can be submitted.                                                                            |
+| single-select | boolean         | false              | If present, the combobox only allows the selection of a single value.                                                                           |
+| show-pills    | boolean         | false              | If present, the combobox will show a pill container with the currently selected options.                                                        |
+| value         | string          |                    | Read-only. The values of the selected options, separated by semicolons. Also available as a Flow output.                                        |
+| validate      | method          |                    | Checks the required attribute for Flow screens. Returns isValid and errorMessage.                                                               |
 
 ## Usage
 
@@ -44,7 +46,18 @@ Combobox with different configuration options that also supports multi select.
 ></c-multi-select-combobox>
 ```
 
-Each option requires a `label` and a `value`.
+Each option requires a `label` and a `value`. If a string is not valid JSON, the component shows an error message.
+
+## Keyboard
+
+| Key                         | Action                                                                     |
+| --------------------------- | -------------------------------------------------------------------------- |
+| Down, Enter or Space        | Opens the list and moves to the selected or first option.                  |
+| Up, Down                    | Moves through the options and wraps around. Up also returns to the search. |
+| Home, End                   | Moves to the first or last option.                                         |
+| Enter or Space on an option | Selects or deselects it.                                                   |
+| Escape                      | Closes the list and returns to the combobox.                               |
+| Tab                         | Moves on and closes the list.                                              |
 
 ## Events
 
@@ -58,3 +71,4 @@ Each option requires a `label` and a `value`.
 | Name                    | Type | Description                                                                              |
 | ----------------------- | ---- | ---------------------------------------------------------------------------------------- |
 | multiSelectComboboxItem | LWC  | Child component that represents an item within the multiSelectCombobox parent component. |
+| errorAlert              | LWC  | Inline alert that shows error messages to the user.                                      |

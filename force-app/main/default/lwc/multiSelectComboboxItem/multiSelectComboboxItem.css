@@ -1,0 +1,4 @@
+.multi-select-combobox-item__option:focus {
+  outline: var(--slds-g-sizing-border-2, 2px) solid var(--slds-g-color-border-accent-1, #0176d3);
+  outline-offset: calc(var(--slds-g-sizing-border-2, 2px) * -1);
+}

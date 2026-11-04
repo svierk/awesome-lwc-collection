@@ -1,6 +1,12 @@
 <template>
   <li role="presentation" class={itemClass} data-id={item.value} data-name={item.value} onclick={handleClick}>
-    <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+    <div
+      class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small multi-select-combobox-item__option"
+      role="option"
+      tabindex="-1"
+      lwc:spread={optionAria}
+      onkeydown={handleKeyDown}
+    >
       <span class="slds-media__figure">
         <lightning-icon
           icon-name="utility:check"
