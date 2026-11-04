@@ -1,4 +1,9 @@
-import { LightningElement } from 'lwc';
+import CONTENT_DOCUMENT_ID from '@salesforce/schema/ContentVersion.ContentDocumentId';
+import { showErrorToast } from 'c/errorUtils';
+import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { createRecord, getRecord } from 'lightning/uiRecordApi';
+import { api, LightningElement, wire } from 'lwc';
 
 /**
  * A canvas-based signature capture component with mouse and touch support.
@@ -6,14 +11,109 @@ import { LightningElement } from 'lwc';
  * @extends LightningElement
  * @hideconstructor
  *
+ * @fires SignaturePad#signaturechange
+ * @fires SignaturePad#signaturesave
+ *
  * @example
- * <c-signature-pad onsignaturechange={handleSignatureChange}></c-signature-pad>
+ * <c-signature-pad record-id={recordId} save-to-record onsignaturesave={handleSignatureSave}></c-signature-pad>
  */
 export default class SignaturePad extends LightningElement {
-  penColor = '#000000';
-  strokeWidth = 2;
-  isEmpty = true;
+  /**
+   * The height of the signature area, for example '400px'. By default it depends on the screen size.
+   * @type {string}
+   * @default ''
+   */
+  @api height = '';
 
+  /**
+   * The record to save the signature to. Set automatically on record pages.
+   * @type {string}
+   */
+  @api recordId;
+
+  /**
+   * If present, a signature is required by the validate method.
+   * @type {boolean}
+   * @default false
+   */
+  @api required = false;
+
+  /**
+   * If present, a button saves the signature as a file on the record given by record-id.
+   * @type {boolean}
+   * @default false
+   */
+  @api saveToRecord = false;
+
+  /**
+   * The initial pen color.
+   * @type {string}
+   * @default '#000000'
+   */
+  @api
+  get penColor() {
+    return this._penColor;
+  }
+
+  set penColor(value) {
+    this._penColor = value;
+  }
+
+  /**
+   * The initial stroke width in pixels.
+   * @type {number}
+   * @default 2
+   */
+  @api
+  get strokeWidth() {
+    return this._strokeWidth;
+  }
+
+  set strokeWidth(value) {
+    this._strokeWidth = value;
+  }
+
+  /**
+   * Read-only. The signature as a PNG data URL, empty while the pad is empty. Also available as a Flow output.
+   * @type {string}
+   */
+  @api
+  get signatureDataUrl() {
+    return this._signatureDataUrl;
+  }
+
+  /**
+   * Read-only. The id of the saved file. Empties when the signature changes. Also available as a Flow output.
+   * @type {string}
+   */
+  @api
+  get contentDocumentId() {
+    return this._contentDocumentId;
+  }
+
+  /**
+   * Checks the required attribute for Flow screens.
+   * @returns {{isValid: boolean, errorMessage: (string|undefined)}} The result of the check
+   */
+  @api
+  validate() {
+    if (!this.required) return { isValid: true };
+    if (this.isEmpty) return { isValid: false, errorMessage: 'Please provide a signature.' };
+    if (this.showSave && !this.contentDocumentId) {
+      return { isValid: false, errorMessage: 'Please save your signature.' };
+    }
+    return { isValid: true };
+  }
+
+  isEmpty = true;
+  isSaving = false;
+
+  _penColor = '#000000';
+  _strokeWidth = 2;
+  _signatureDataUrl = '';
+  _contentDocumentId;
+  _contentVersionId;
+  _renderedHeight;
   _canvas;
   _ctx;
   _isDrawing = false;
@@ -23,14 +123,41 @@ export default class SignaturePad extends LightningElement {
   _lastY = 0;
   _initialized = false;
 
+  @wire(getRecord, { recordId: '$_contentVersionId', fields: [CONTENT_DOCUMENT_ID] })
+  wiredContentVersion({ data, error }) {
+    if (data) {
+      this._finishSave(data.fields.ContentDocumentId.value);
+    } else if (error) {
+      this._failSave(error);
+    }
+  }
+
   renderedCallback() {
-    if (this._initialized) return;
+    if (this._initialized && this._renderedHeight === this.height) return;
     this._initialized = true;
+    this._renderedHeight = this.height;
     this._canvas = this.template.querySelector('canvas');
     this._ctx = this._canvas.getContext('2d');
     const { width, height } = this._canvas.getBoundingClientRect();
     this._canvas.width = width || this._canvas.offsetWidth || 600;
     this._canvas.height = height || this._canvas.offsetHeight || 240;
+    this._redrawAll();
+  }
+
+  get wrapperStyle() {
+    return this.height ? `height: ${this.height}` : '';
+  }
+
+  get showSave() {
+    return this.saveToRecord && Boolean(this.recordId);
+  }
+
+  get isSaveDisabled() {
+    return this.isEmpty || this.isSaving || Boolean(this.contentDocumentId);
+  }
+
+  get downloadVariant() {
+    return this.showSave ? 'neutral' : 'brand';
   }
 
   _getEventPos(event) {
@@ -118,11 +245,33 @@ export default class SignaturePad extends LightningElement {
 
   _dispatchSignatureChange() {
     const dataUrl = this.isEmpty ? '' : this._canvas.toDataURL('image/png');
+    this._signatureDataUrl = dataUrl;
     this.dispatchEvent(
       new CustomEvent('signaturechange', {
         detail: { dataUrl, isEmpty: this.isEmpty }
       })
     );
+    this.dispatchEvent(new FlowAttributeChangeEvent('signatureDataUrl', dataUrl));
+    if (this._contentDocumentId) {
+      this._contentDocumentId = undefined;
+      this._contentVersionId = undefined;
+      this.dispatchEvent(new FlowAttributeChangeEvent('contentDocumentId', undefined));
+    }
+  }
+
+  _finishSave(contentDocumentId) {
+    this.isSaving = false;
+    this._contentDocumentId = contentDocumentId;
+    this.dispatchEvent(new CustomEvent('signaturesave', { detail: { contentDocumentId } }));
+    this.dispatchEvent(new FlowAttributeChangeEvent('contentDocumentId', contentDocumentId));
+    this.dispatchEvent(
+      new ShowToastEvent({ title: 'Success', message: 'The signature has been saved.', variant: 'success' })
+    );
+  }
+
+  _failSave(error) {
+    this.isSaving = false;
+    showErrorToast(this, 'Error saving the signature', error);
   }
 
   handleMouseDown(event) {
@@ -159,11 +308,11 @@ export default class SignaturePad extends LightningElement {
   }
 
   handleColorChange(event) {
-    this.penColor = event.target.value;
+    this._penColor = event.target.value;
   }
 
   handleStrokeWidthChange(event) {
-    this.strokeWidth = Number.parseInt(event.target.value, 10);
+    this._strokeWidth = Number.parseInt(event.target.value, 10);
   }
 
   handleUndo() {
@@ -178,6 +327,24 @@ export default class SignaturePad extends LightningElement {
     this.isEmpty = true;
     this._ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
     this._dispatchSignatureChange();
+  }
+
+  async handleSave() {
+    this.isSaving = true;
+    try {
+      const { id } = await createRecord({
+        apiName: 'ContentVersion',
+        fields: {
+          Title: 'Signature',
+          PathOnClient: 'signature.png',
+          VersionData: this._signatureDataUrl.split(',')[1],
+          FirstPublishLocationId: this.recordId
+        }
+      });
+      this._contentVersionId = id;
+    } catch (error) {
+      this._failSave(error);
+    }
   }
 
   handleDownload() {

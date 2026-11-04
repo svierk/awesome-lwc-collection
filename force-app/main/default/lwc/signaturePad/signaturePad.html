@@ -1,7 +1,8 @@
 <template>
   <lightning-card title="Signature Pad" icon-name="utility:edit">
     <div class="slds-var-p-horizontal_medium slds-var-p-bottom_medium">
-      <div class="canvas-wrapper slds-is-relative slds-scrollable_none slds-var-m-bottom_small">
+      <div class="canvas-wrapper slds-is-relative slds-scrollable_none slds-var-m-bottom_small" style={wrapperStyle}>
+        <lightning-spinner lwc:if={isSaving} alternative-text="Saving" size="small"></lightning-spinner>
         <canvas
           class="signature-canvas slds-size_full"
           onmousedown={handleMouseDown}
@@ -55,11 +56,20 @@
             ></lightning-button>
             <lightning-button
               data-id="download"
-              variant="brand"
+              variant={downloadVariant}
               label="Download"
               icon-name="utility:download"
               onclick={handleDownload}
               disabled={isEmpty}
+            ></lightning-button>
+            <lightning-button
+              lwc:if={showSave}
+              data-id="save"
+              variant="brand"
+              label="Save"
+              icon-name="utility:save"
+              onclick={handleSave}
+              disabled={isSaveDisabled}
             ></lightning-button>
           </div>
         </div>
