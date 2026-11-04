@@ -1,4 +1,5 @@
 <template>
+  <c-error-alert lwc:if={errorMessage} class="slds-show slds-m-bottom_small" message={errorMessage}></c-error-alert>
   <div class="slds-grid slds-gutters">
     <div class="slds-col slds-size_1-of-2">
       <article class="slds-card card-height">
@@ -25,7 +26,6 @@
               <div key={element.id} class="slds-col slds-size_1-of-3">
                 <div
                   data-id={element.id}
-                  data-name={element.label}
                   class="slds-box slds-theme_shade slds-text-align_center slds-var-m-bottom_x-small grabbable"
                   draggable="true"
                   ondragstart={handleDragStart}

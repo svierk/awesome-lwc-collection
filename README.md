@@ -131,9 +131,9 @@ Each component has a dedicated page - with a screenshot, a full attribute refere
     <td>A simple custom carousel with different configuration options.</td>
   </tr>
   <tr>
-    <td align="center"><img src="force-app/main/default/lwc/dragAndDrop/dragAndDrop.svg" alt="Drag &amp; Drop Example" width="36" height="36" /></td>
-    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/dragAndDrop">Drag &amp; Drop Example</a></td>
-    <td>An example showing the use of the HTML Drag and Drop API with LWC.</td>
+    <td align="center"><img src="force-app/main/default/lwc/dragAndDrop/dragAndDrop.svg" alt="Drag &amp; Drop" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/dragAndDrop">Drag &amp; Drop</a></td>
+    <td>A drag and drop building block based on the HTML Drag and Drop API.</td>
   </tr>
 </table>
 

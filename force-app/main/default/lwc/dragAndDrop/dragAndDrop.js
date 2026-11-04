@@ -1,4 +1,4 @@
-import { LightningElement, track } from 'lwc';
+import { api, LightningElement } from 'lwc';
 
 const COLUMNS = [
   {
@@ -13,34 +13,61 @@ const COLUMNS = [
   }
 ];
 
+const DEMO_ITEMS = Array.from({ length: 12 }, (_, i) => ({ id: i + 1, label: `Element ${i + 1}` }));
+
 /**
- * HTML Drag and Drop API usage example.
+ * A drag and drop building block based on the HTML Drag and Drop API.
  * @alias DragAndDrop
  * @extends LightningElement
  * @hideconstructor
  *
+ * @fires DragAndDrop#itemdrop
+ *
  * @example
- * <c-drag-and-drop></c-drag-and-drop>
+ * <c-drag-and-drop items={items} onitemdrop={handleItemDrop}></c-drag-and-drop>
  */
 export default class DragAndDrop extends LightningElement {
-  elements = [];
   columns = COLUMNS;
-  @track data = [];
+  data = [];
+  elements = DEMO_ITEMS.map((item) => ({ ...item }));
+  errorMessage = '';
   isDragOver = false;
+  _items = DEMO_ITEMS;
+
+  /**
+   * The items to drag, as an array or a JSON string. Each item has a unique id and a label.
+   * Twelve demo elements are used until this is set.
+   * @type {Array|string}
+   */
+  @api
+  get items() {
+    return this._items;
+  }
+
+  set items(value) {
+    this._items = value;
+    this.errorMessage = '';
+    this.data = [];
+    const items = this.parseItems(value);
+    this.elements = Array.isArray(items) ? items.map((item) => ({ ...item })) : [];
+  }
 
   get dropzoneClass() {
     return `slds-card dropzone card-height${this.isDragOver ? ' dropzone-active' : ''}`;
   }
 
-  connectedCallback() {
-    for (let i = 1; i <= 12; i++) {
-      this.elements.push({ id: i, label: `Element ${i}` });
+  parseItems(value) {
+    if (typeof value !== 'string') return value;
+    try {
+      return JSON.parse(value);
+    } catch {
+      this.errorMessage = 'The items could not be displayed because they are not valid JSON.';
+      return [];
     }
   }
 
   handleDragStart(event) {
     event.dataTransfer.setData('id', event.target.dataset.id);
-    event.dataTransfer.setData('label', event.target.dataset.name);
   }
 
   handleDragOver(event) {
@@ -58,11 +85,18 @@ export default class DragAndDrop extends LightningElement {
     this.isDragOver = false;
 
     const id = event.dataTransfer.getData('id');
-    const label = event.dataTransfer.getData('label');
-    const element = this.template.querySelector(`div[data-id="${id}"]`);
-    element.remove();
+    const item = this.elements.find((element) => String(element.id) === id);
+    if (!item) return;
 
-    this.data.push({ id: id, label: label });
-    this.data = structuredClone(this.data);
+    this.elements = this.elements.filter((element) => element !== item);
+    this.data = [...this.data, item];
+
+    /**
+     * Fired when an item was dropped.
+     * @event DragAndDrop#itemdrop
+     * @type {CustomEvent}
+     * @property {Object} detail - A copy of the dropped item
+     */
+    this.dispatchEvent(new CustomEvent('itemdrop', { detail: { ...item } }));
   }
 }

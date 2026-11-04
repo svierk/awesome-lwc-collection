@@ -10,4 +10,21 @@
       <target>lightning__FlowScreen</target>
       <target>lightning__RecordPage</target>
     </targets>
+    <targetConfigs>
+      <targetConfig targets="lightning__AppPage,lightning__HomePage,lightning__RecordPage,lightning__FlowScreen">
+        <property
+        name="base64"
+        type="String"
+        label="Base64 Content"
+        description="The content of the PDF file as Base64 encoded string, without a data URL prefix. An example file is used until this is set."
+      />
+        <property
+        name="fileName"
+        type="String"
+        label="File Name"
+        description="The name of the downloaded file."
+        default="example.pdf"
+      />
+      </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>

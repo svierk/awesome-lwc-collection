@@ -16,13 +16,19 @@ A simple parser for UTF-8 encoded, comma separated .csv files.
 
 **[How to Build a Simple CSV Parser with Lightning Web Components](https://javascript.plainenglish.io/how-to-build-a-simple-csv-parser-with-lightning-web-components-464a110a1cd2)**
 
+## Events
+
+| Name   | Detail                                                             | Description                                                                         |
+| ------ | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------- |
+| parsed | A copy of the result: `fileName`, `headers`, `keyField` and `rows` | Fired when a file was parsed. `keyField` names the property holding each row's key. |
+
 ## Usage
 
 ```html
-<c-csv-to-datatable></c-csv-to-datatable>
+<c-csv-to-datatable onparsed={handleParsed}></c-csv-to-datatable>
 ```
 
-The component is self-contained: after uploading a UTF-8 encoded, comma separated `.csv` file, the parsed rows are displayed in a datatable.
+After uploading a UTF-8 encoded, comma separated `.csv` file, the parsed rows are displayed in a datatable and passed on through the `parsed` event.
 
 Files are parsed according to [RFC 4180](https://www.rfc-editor.org/rfc/rfc4180) by the shared `c/csvParser` module:
 
