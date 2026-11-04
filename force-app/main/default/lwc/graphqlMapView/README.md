@@ -2,6 +2,8 @@
 
 Configurable map component for displaying locations via Google Maps API using LWC GraphQL Wire Adapter.
 
+**Type:** Component
+
 **Available in:** Record Page
 
 <img src="../../../../../images/graphql-map-view.png" alt="graphql-map-view" width="800"/>

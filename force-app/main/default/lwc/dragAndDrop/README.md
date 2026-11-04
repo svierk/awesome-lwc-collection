@@ -2,6 +2,8 @@
 
 An example showing the use of the HTML Drag and Drop API with LWC.
 
+**Type:** Building Block
+
 **Available in:** App Page · Home Page · Record Page
 
 <img src="../../../../../images/drag-and-drop.png" alt="drag-and-drop" width="800"/>

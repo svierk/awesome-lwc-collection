@@ -7,19 +7,27 @@
  *
  * - every component exposed in the Lightning App Builder ships a README,
  * - the README starts with an H1 title,
+ * - the "**Type:**" line follows the rules in component-type.mjs,
  * - the "**Available in:**" line matches the targets in the js-meta.xml,
  * - a "## Usage" section exists and embeds the component's kebab-case tag,
  * - the "## Attributes" table covers exactly the @api properties of the JS,
  * - every dispatched CustomEvent is documented in an "## Events" table.
+ *
+ * Components that can't meet the type rules yet are listed in
+ * readme-exceptions.json, together with the issue or milestone resolving them.
+ * Finding a listed component that no longer needs its entry fails too, so the
+ * list can only shrink.
  *
  * Exits non-zero and lists all findings when a README has drifted.
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { checkExceptions, checkType } from './component-type.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const lwcDir = join(root, 'force-app', 'main', 'default', 'lwc');
+const exceptions = JSON.parse(readFileSync(join(root, 'scripts', 'readme-exceptions.json'), 'utf-8'));
 
 const TARGET_LABELS = new Map([
   ['lightning__AppPage', 'App Page'],
@@ -43,10 +51,11 @@ function stripComments(source) {
 
 function parseMeta(component) {
   const metaPath = join(lwcDir, component, `${component}.js-meta.xml`);
-  if (!existsSync(metaPath)) return { exposed: false, targets: [] };
+  if (!existsSync(metaPath)) return { exposed: false, properties: 0, targets: [] };
   const meta = readFileSync(metaPath, 'utf-8');
   return {
     exposed: /<isExposed>\s*true\s*<\/isExposed>/.test(meta),
+    properties: [...meta.matchAll(/<property\b/g)].length,
     targets: [...meta.matchAll(/<target>([^<]+)<\/target>/g)].map((match) => match[1])
   };
 }
@@ -90,7 +99,10 @@ function checkComponent(component, errors) {
 
   if (!/^# .+/m.test(readme)) fail('README is missing an H1 title.');
 
-  const expectedLine = expectedAvailabilityLine(parseMeta(component));
+  const meta = parseMeta(component);
+  for (const message of checkType({ component, readme, meta, exceptions })) fail(message);
+
+  const expectedLine = expectedAvailabilityLine(meta);
   const availabilityLine = readme.split('\n').find((line) => line.startsWith('**Available in:**'));
   if (!availabilityLine) {
     fail(`README is missing the availability line. Expected: "${expectedLine}"`);
@@ -145,7 +157,8 @@ const components = readdirSync(lwcDir, { withFileTypes: true })
   .map((entry) => entry.name)
   .sort();
 
-const errors = [];
+const publicComponents = components.filter((component) => existsSync(join(lwcDir, component, 'README.md')));
+const errors = checkExceptions(exceptions, publicComponents);
 for (const component of components) {
   const hasReadme = existsSync(join(lwcDir, component, 'README.md'));
   if (!hasReadme) {
@@ -162,6 +175,4 @@ if (errors.length > 0) {
   for (const error of errors) console.error(`  - ${error}`);
   process.exit(1);
 }
-console.log(
-  `README check passed for ${components.filter((c) => existsSync(join(lwcDir, c, 'README.md'))).length} public components.`
-);
+console.log(`README check passed for ${publicComponents.length} public components.`);

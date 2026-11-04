@@ -2,6 +2,8 @@
 
 A custom iFrame component with different configuration options.
 
+**Type:** Utility
+
 **Available in:** App Page · Home Page · Record Page · Flow Screen
 
 <img src="../../../../../images/iframe.png" alt="iframe" width="500"/>

@@ -2,6 +2,8 @@
 
 A basic QR Code Generator with optional logo overlay using the external QRCode.js library.
 
+**Type:** Component
+
 **Available in:** App Page · Home Page · Record Page · Flow Screen
 
 <img src="../../../../../images/qr-code-generator.png" alt="qr-code-generator" width="400"/>
