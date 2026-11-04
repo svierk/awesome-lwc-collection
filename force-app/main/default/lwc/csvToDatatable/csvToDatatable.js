@@ -1,3 +1,4 @@
+import { parseCsv } from 'c/csvParser';
 import { LightningElement, track } from 'lwc';
 
 /**
@@ -11,6 +12,7 @@ import { LightningElement, track } from 'lwc';
  */
 export default class CsvToDatatable extends LightningElement {
   fileName = 'No file uploaded yet.';
+  keyField = 'id';
   @track columns = [];
   @track data = [];
 
@@ -44,26 +46,11 @@ export default class CsvToDatatable extends LightningElement {
   }
 
   parse(csv) {
-    const lines = csv.split(/\r\n|\n/);
-
-    const headers = lines[0].split(',');
+    const { headers, rows, keyField } = parseCsv(csv);
     this.columns = headers.map((header) => {
       return { label: header, fieldName: header };
     });
-
-    const data = [];
-    lines.forEach((line, i) => {
-      if (i === 0) return;
-
-      const obj = {};
-      const currentline = line.split(',');
-
-      for (let j = 0; j < headers.length; j++) {
-        obj[headers[j]] = currentline[j];
-      }
-
-      data.push(obj);
-    });
-    this.data = data;
+    this.keyField = keyField;
+    this.data = rows;
   }
 }

@@ -21,3 +21,16 @@ A simple parser for UTF-8 encoded, comma separated .csv files.
 ```
 
 The component is self-contained: after uploading a UTF-8 encoded, comma separated `.csv` file, the parsed rows are displayed in a datatable.
+
+Files are parsed according to [RFC 4180](https://www.rfc-editor.org/rfc/rfc4180) by the shared `c/csvParser` module:
+
+- Quoted fields may contain commas, line breaks and doubled quotes (`""`).
+- Empty lines are ignored, including a trailing one.
+- Rows with fewer columns than the header are filled with empty values, and values beyond the last header column are dropped.
+- Empty and duplicate column names get a unique name, such as `Column 2` or `Name (2)`.
+
+## Component Dependencies
+
+| Name      | Type | Description                                                           |
+| --------- | ---- | --------------------------------------------------------------------- |
+| csvParser | LWC  | Shared module that parses comma separated text according to RFC 4180. |
