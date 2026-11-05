@@ -41,12 +41,6 @@ test('checkType reports an unknown type', () => {
   assert.match(message, /Unknown type "Widget"/);
 });
 
-test('checkType only allows Example for the allowlist', () => {
-  assert.deepEqual(check({ component: 'helloWorld', readme: readmeWith('Example') }), []);
-  const [message] = check({ readme: readmeWith('Example') });
-  assert.match(message, /only allowed for helloWorld/);
-});
-
 test('checkType requires an exposed Component', () => {
   const [message] = check({ meta: { exposed: false, properties: 1 } });
   assert.match(message, /isExposed/);
@@ -88,7 +82,6 @@ test('toTypeBadge shows a badge to people and plain text to agents', () => {
 test('toTypeBadge picks a badge style for every type', () => {
   assert.match(toTypeBadge(readmeWith('Building Block')), /<Badge type="info" text="Building Block" \/>/);
   assert.match(toTypeBadge(readmeWith('Utility')), /<Badge type="info" text="Utility" \/>/);
-  assert.match(toTypeBadge(readmeWith('Example')), /<Badge type="warning" text="Example" \/>/);
 });
 
 test('toTypeBadge leaves a readme without a type untouched', () => {

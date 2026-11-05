@@ -2,13 +2,10 @@
  * The rules for the "**Type:**" line in the component READMEs, used by the
  * README check and the docs generator.
  */
-const EXAMPLE_ALLOWLIST = ['helloWorld'];
-
 const BADGE_BY_TYPE = new Map([
   ['Component', 'tip'],
   ['Building Block', 'info'],
-  ['Utility', 'info'],
-  ['Example', 'warning']
+  ['Utility', 'info']
 ]);
 
 const TYPE_NAMES = [...BADGE_BY_TYPE.keys()].join(' | ');
@@ -32,9 +29,6 @@ export function checkType({ component, readme, meta, exceptions }) {
   const type = parseType(readme);
   if (!type) return [`README needs a line "**Type:** <${TYPE_NAMES}>" directly below the first paragraph.`];
   if (!BADGE_BY_TYPE.has(type)) return [`Unknown type "${type}". Use one of: ${TYPE_NAMES}.`];
-  if (type === 'Example' && !EXAMPLE_ALLOWLIST.includes(component)) {
-    return [`Type "Example" is only allowed for ${EXAMPLE_ALLOWLIST.join(', ')}.`];
-  }
 
   const requirements = type === 'Component' ? checkComponentRequirements(meta) : [];
   const isListed = Object.hasOwn(exceptions, component);

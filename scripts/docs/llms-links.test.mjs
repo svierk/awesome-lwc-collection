@@ -26,10 +26,10 @@ describe('resolveLink', () => {
       'components/graphqlDatatable.md',
       site('components/customDatatable.md#attributes')
     ],
-    ['/', 'components/helloWorld.md', site('')],
-    ['../../CONTRIBUTING.md', 'components/helloWorld.md', repo('CONTRIBUTING.md')],
+    ['/', 'components/iFrame.md', site('')],
+    ['../../CONTRIBUTING.md', 'components/iFrame.md', repo('CONTRIBUTING.md')],
     ['https://medium.com/@svierk', 'components/customDatatable.md', 'https://medium.com/@svierk'],
-    ['mailto:someone@example.com', 'components/helloWorld.md', 'mailto:someone@example.com'],
+    ['mailto:someone@example.com', 'components/iFrame.md', 'mailto:someone@example.com'],
     ['#usage', 'components/customDatatable.md', '#usage']
   ];
   for (const [target, page, expected] of cases) {

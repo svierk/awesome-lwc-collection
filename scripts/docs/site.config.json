@@ -35,7 +35,7 @@
     },
     {
       "text": "Fundamentals & Integration",
-      "components": ["helloWorld", "iFrame", "openRecordPageFlowAction"]
+      "components": ["iFrame", "openRecordPageFlowAction"]
     }
   ]
 }
