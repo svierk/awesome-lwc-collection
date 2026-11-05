@@ -47,6 +47,14 @@
         default="5000"
       />
       <property
+        name="transition"
+        type="String"
+        label="Transition"
+        description="How the carousel moves to another slide: 'fade' blends the new slide in, 'slide' moves it in from the side. Both are switched off when the user prefers reduced motion."
+        datasource="fade,slide"
+        default="fade"
+      />
+      <property
         name="hideNavigationButtons"
         type="Boolean"
         label="Hide Navigation Buttons"

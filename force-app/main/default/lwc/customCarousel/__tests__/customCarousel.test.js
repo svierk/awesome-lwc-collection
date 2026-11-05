@@ -3,13 +3,40 @@ import { createElement } from 'lwc';
 
 const mockData = require('./data/customCarousel.json');
 
+const threeSlides = [...mockData.slideData, { image: 'third link', description: 'Third' }];
+
 let element;
 
 const flushPromises = () => Promise.resolve();
 
-const activeDotId = () => element.shadowRoot.querySelector('.dot.active').dataset.id;
+const query = (selector) => element.shadowRoot.querySelector(selector);
 
-const errorMessage = () => element.shadowRoot.querySelector('c-error-alert')?.message;
+const queryAll = (selector) => element.shadowRoot.querySelectorAll(selector);
+
+const activeDotId = () => query('.dot.active').dataset.id;
+
+const errorMessage = () => query('c-error-alert')?.message;
+
+const announcement = () => query('output').textContent;
+
+const mount = (props = {}) => {
+  Object.assign(element, { slidesData: mockData.slideData, ...props });
+  document.body.appendChild(element);
+};
+
+const pressKey = (target, key) => {
+  const event = new KeyboardEvent('keydown', { key, bubbles: true, composed: true, cancelable: true });
+  target.dispatchEvent(event);
+  return event;
+};
+
+const swipe = (fromX, toX, toY = 0) => {
+  const viewport = query('.carousel-viewport');
+  viewport.dispatchEvent(new MouseEvent('pointerdown', { clientX: fromX, clientY: 0, bubbles: true }));
+  viewport.dispatchEvent(new MouseEvent('pointerup', { clientX: toX, clientY: toY, bubbles: true }));
+};
+
+const region = () => query('[role="region"]');
 
 describe('c-custom-carousel', () => {
   beforeEach(() => {
@@ -28,175 +55,96 @@ describe('c-custom-carousel', () => {
     jest.clearAllMocks();
   });
 
-  it('should render one slide element per slide in the data', () => {
-    // given
-    element.slidesData = mockData.slideData;
-
+  it('should render the slides of a json string and show the first one', () => {
     // when
-    document.body.appendChild(element);
+    mount({ slidesData: JSON.stringify(mockData.slideData) });
 
     // then
-    const slides = element.shadowRoot.querySelectorAll('.fade');
-    expect(slides.length).toBe(mockData.slideData.length);
+    expect(queryAll('.fade').length).toBe(mockData.slideData.length);
+    expect(queryAll('.fade.slds-show').length).toBe(1);
+    expect(activeDotId()).toBe('1');
+    expect(errorMessage()).toBeUndefined();
   });
 
   it('should apply the configured custom width and height', () => {
-    // given
-    element.slidesData = mockData.slideData;
-    element.customWidth = '800px';
-    element.customHeight = '400px';
-
     // when
-    document.body.appendChild(element);
+    mount({ customWidth: '800px', customHeight: '400px' });
 
     // then
-    const container = element.shadowRoot.querySelector('.slds-is-relative.container');
-    const image = element.shadowRoot.querySelector('img');
-    expect(container.style.width).toBe('800px');
-    expect(image.style.height).toBe('400px');
-  });
-
-  it('should show the first slide with an active dot initially', () => {
-    // given
-    element.slidesData = mockData.slideData;
-
-    // when
-    document.body.appendChild(element);
-
-    // then
-    expect(element.shadowRoot.querySelector('.fade.slds-show')).toBeTruthy();
-    expect(element.shadowRoot.querySelector('.dot.active')).toBeTruthy();
+    expect(query('.slds-is-relative.container').style.width).toBe('800px');
+    expect(query('img').style.height).toBe('400px');
   });
 
   it('should hide all optional ui elements when the hide flags are set', () => {
-    // given
-    element.slidesData = mockData.slideData;
-    element.hideNavigationButtons = true;
-    element.hideNavigationDots = true;
-    element.hideSlideText = true;
-    element.hideSlideNumber = true;
-
     // when
-    document.body.appendChild(element);
+    mount({ hideNavigationButtons: true, hideNavigationDots: true, hideSlideText: true, hideSlideNumber: true });
 
     // then
-    expect(element.shadowRoot.querySelector('.prev')).toBeNull();
-    expect(element.shadowRoot.querySelector('.next')).toBeNull();
-    expect(element.shadowRoot.querySelectorAll('.dot').length).toBe(0);
-    expect(element.shadowRoot.querySelector('.text-section')).toBeNull();
-    expect(element.shadowRoot.querySelector('.slideNumbers')).toBeNull();
+    expect(query('.prev')).toBeNull();
+    expect(query('.next')).toBeNull();
+    expect(queryAll('.dot').length).toBe(0);
+    expect(query('.text-section')).toBeNull();
+    expect(query('.slideNumbers')).toBeNull();
   });
 
-  it('should be accessible', async () => {
+  it.each([
+    ['fade', {}],
+    ['slide with auto-scroll', { transition: 'slide', autoScroll: true }]
+  ])('should be accessible with %s', async (_label, props) => {
     // given
     jest.useRealTimers();
-    element.slidesData = mockData.slideData;
 
     // when
-    document.body.appendChild(element);
+    mount(props);
 
     // then
     await expect(element).toBeAccessible();
   });
 
-  it('should advance to the next slide when the next button is clicked', async () => {
+  it.each([
+    ['the next button', () => query('.next').click(), '2'],
+    ['prev on the first slide', () => query('.prev').click(), String(mockData.slideData.length)],
+    ['next past the last slide', () => mockData.slideData.forEach(() => query('.next').click()), '1'],
+    ['a dot', () => queryAll('.dot')[1].click(), '2']
+  ])('should select the expected slide after clicking %s', async (_label, act, expected) => {
     // given
-    element.slidesData = mockData.slideData;
-    document.body.appendChild(element);
+    mount();
 
     // when
-    element.shadowRoot.querySelector('.next').click();
+    act();
     await flushPromises();
 
     // then
-    expect(activeDotId()).toBe('2');
+    expect(activeDotId()).toBe(expected);
   });
 
-  it('should wrap to the last slide when clicking prev on the first slide', async () => {
+  it('should advance slides automatically when auto-scroll is enabled', async () => {
     // given
-    element.slidesData = mockData.slideData;
-    document.body.appendChild(element);
-
-    // when
-    element.shadowRoot.querySelector('.prev').click();
-    await flushPromises();
-
-    // then
-    expect(activeDotId()).toBe(String(mockData.slideData.length));
-  });
-
-  it('should wrap to the first slide when clicking next past the last', async () => {
-    // given
-    element.slidesData = mockData.slideData;
-    document.body.appendChild(element);
-
-    // when
-    const next = element.shadowRoot.querySelector('.next');
-    for (let i = 0; i < mockData.slideData.length; i++) {
-      next.click();
-    }
-    await flushPromises();
-
-    // then
-    expect(activeDotId()).toBe('1');
-  });
-
-  it('should jump to a slide when its dot is clicked', async () => {
-    // given
-    element.slidesData = mockData.slideData;
-    document.body.appendChild(element);
-
-    // when
-    element.shadowRoot.querySelectorAll('.dot')[1].click();
-    await flushPromises();
-
-    // then
-    expect(activeDotId()).toBe('2');
-  });
-
-  it('should advance slides automatically when auto-scroll is enabled', () => {
-    // given
-    element.slidesData = mockData.slideData;
-    element.autoScroll = true;
-    element.scrollDuration = 2000;
-    document.body.appendChild(element);
+    mount({ autoScroll: true, scrollDuration: 2000 });
 
     // when
     jest.advanceTimersByTime(2000);
+    await flushPromises();
 
     // then
-    return flushPromises().then(() => {
-      expect(element.shadowRoot.querySelectorAll('.fade.slds-show').length).toBe(1);
-    });
+    expect(queryAll('.fade.slds-show').length).toBe(1);
+    expect(activeDotId()).toBe('2');
+    expect(announcement()).toBe('');
   });
 
-  it('should clear the interval on disconnect when auto-scroll is enabled', () => {
+  it.each([
+    [true, true],
+    [false, false]
+  ])('should clear the interval on disconnect only when auto-scroll is %s', (autoScroll, cleared) => {
     // given
-    element.slidesData = mockData.slideData;
-    element.autoScroll = true;
-    element.scrollDuration = 2000;
-    document.body.appendChild(element);
+    mount({ autoScroll, scrollDuration: 2000 });
     const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
 
     // when
     document.body.removeChild(element);
 
     // then
-    expect(clearIntervalSpy).toHaveBeenCalled();
-  });
-
-  it('should not clear the interval on disconnect when auto-scroll is disabled', () => {
-    // given
-    element.slidesData = mockData.slideData;
-    element.autoScroll = false;
-    document.body.appendChild(element);
-    const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
-
-    // when
-    document.body.removeChild(element);
-
-    // then
-    expect(clearIntervalSpy).not.toHaveBeenCalled();
+    expect(clearIntervalSpy).toHaveBeenCalledTimes(cleared ? 1 : 0);
   });
 
   it.each([
@@ -207,22 +155,16 @@ describe('c-custom-carousel', () => {
     ['a non-array object', { invalid: 'data' }, 0],
     ['an empty array', [], 0]
   ])('should expose the expected number of slides for %s', (_label, input, expected) => {
-    // given
+    // when
     element.slidesData = input;
 
-    // when
-    const slides = element.slidesData;
-
     // then
-    expect(slides.length).toBe(expected);
+    expect(element.slidesData.length).toBe(expected);
   });
 
   it('should show an error when the slides data is not valid json', async () => {
-    // given
-    element.slidesData = '{ not json';
-
     // when
-    document.body.appendChild(element);
+    mount({ slidesData: '{ not json' });
 
     // then
     expect(errorMessage()).toBe('The slides could not be displayed because the slides data is not valid JSON.');
@@ -231,21 +173,9 @@ describe('c-custom-carousel', () => {
     await expect(element).toBeAccessible();
   });
 
-  it('should show no error for valid slides data', () => {
-    // given
-    element.slidesData = JSON.stringify(mockData.slideData);
-
-    // when
-    document.body.appendChild(element);
-
-    // then
-    expect(errorMessage()).toBeUndefined();
-  });
-
   it('should remove the error when valid slides data arrives', async () => {
     // given
-    element.slidesData = '{ not json';
-    document.body.appendChild(element);
+    mount({ slidesData: '{ not json' });
 
     // when
     element.slidesData = mockData.slideData;
@@ -257,23 +187,19 @@ describe('c-custom-carousel', () => {
   });
 
   it('should hide the navigation when there are no slides', () => {
-    // given
-    element.slidesData = [];
-
     // when
-    document.body.appendChild(element);
+    mount({ slidesData: [], autoScroll: true });
 
     // then
-    expect(element.shadowRoot.querySelector('.prev')).toBeNull();
-    expect(element.shadowRoot.querySelector('.next')).toBeNull();
-    expect(element.shadowRoot.querySelectorAll('.dot').length).toBe(0);
+    expect(query('.prev')).toBeNull();
+    expect(query('.next')).toBeNull();
+    expect(queryAll('.dot').length).toBe(0);
+    expect(query('.carousel-playback')).toBeNull();
   });
 
   it('should not lose its position when auto-scroll runs without slides', async () => {
     // given
-    element.autoScroll = true;
-    element.scrollDuration = 1000;
-    document.body.appendChild(element);
+    mount({ slidesData: [], autoScroll: true, scrollDuration: 1000 });
     jest.advanceTimersByTime(3000);
 
     // when
@@ -288,85 +214,52 @@ describe('c-custom-carousel', () => {
 
   it('should start at the first slide when new slides arrive', async () => {
     // given
-    element.slidesData = mockData.slideData;
-    document.body.appendChild(element);
-    element.shadowRoot.querySelectorAll('.dot')[1].click();
+    mount();
+    queryAll('.dot')[1].click();
     await flushPromises();
 
     // when
     element.slidesData = [...mockData.slideData];
     await flushPromises();
-    element.shadowRoot.querySelector('.next').click();
+    query('.next').click();
     await flushPromises();
 
     // then
     expect(activeDotId()).toBe('2');
   });
 
-  it('should start scrolling when auto-scroll is enabled after connecting', async () => {
+  it.each([
+    ['auto-scroll is enabled after connecting', { scrollDuration: 1000 }, { autoScroll: true }, '2'],
+    [
+      'auto-scroll is disabled after connecting',
+      { autoScroll: true, scrollDuration: 1000 },
+      { autoScroll: false },
+      '1'
+    ],
+    [
+      'the duration changes after connecting',
+      { autoScroll: true, scrollDuration: 5000 },
+      { scrollDuration: 1000 },
+      '2'
+    ],
+    [
+      'the settings are set again',
+      { autoScroll: true, scrollDuration: 1000 },
+      { scrollDuration: 1000, autoScroll: true },
+      '2'
+    ]
+  ])('should follow the timer settings when %s', async (_label, initial, changes, expected) => {
     // given
-    element.slidesData = mockData.slideData;
-    element.scrollDuration = 1000;
-    document.body.appendChild(element);
+    mount(initial);
 
     // when
-    element.autoScroll = true;
+    Object.assign(element, changes);
     jest.advanceTimersByTime(1000);
     await flushPromises();
 
     // then
-    expect(activeDotId()).toBe('2');
-  });
-
-  it('should stop scrolling when auto-scroll is disabled after connecting', async () => {
-    // given
-    element.slidesData = mockData.slideData;
-    element.autoScroll = true;
-    element.scrollDuration = 1000;
-    document.body.appendChild(element);
-
-    // when
-    element.autoScroll = false;
-    jest.advanceTimersByTime(3000);
-    await flushPromises();
-
-    // then
-    expect(activeDotId()).toBe('1');
-  });
-
-  it('should use the new duration when it changes after connecting', async () => {
-    // given
-    element.slidesData = mockData.slideData;
-    element.autoScroll = true;
-    element.scrollDuration = 5000;
-    document.body.appendChild(element);
-
-    // when
-    element.scrollDuration = 1000;
-    jest.advanceTimersByTime(1000);
-    await flushPromises();
-
-    // then
-    expect(activeDotId()).toBe('2');
-    expect(element.scrollDuration).toBe(1000);
-    expect(element.autoScroll).toBe(true);
-  });
-
-  it('should keep a single timer when the settings change repeatedly', async () => {
-    // given
-    element.slidesData = mockData.slideData;
-    element.autoScroll = true;
-    element.scrollDuration = 1000;
-    document.body.appendChild(element);
-
-    // when
-    element.scrollDuration = 1000;
-    element.autoScroll = true;
-    jest.advanceTimersByTime(1000);
-    await flushPromises();
-
-    // then
-    expect(activeDotId()).toBe('2');
+    expect(activeDotId()).toBe(expected);
+    expect(element.scrollDuration).toBe(changes.scrollDuration ?? initial.scrollDuration);
   });
 
   it('should not start a timer before it is connected', () => {
@@ -383,11 +276,10 @@ describe('c-custom-carousel', () => {
 
   it('should render dots as labelled buttons that mark the current slide', async () => {
     // given
-    element.slidesData = mockData.slideData;
-    document.body.appendChild(element);
+    mount();
 
     // when
-    const dots = element.shadowRoot.querySelectorAll('.dot');
+    const dots = queryAll('.dot');
     dots[1].click();
     await flushPromises();
 
@@ -397,5 +289,197 @@ describe('c-custom-carousel', () => {
     expect(dots[1].getAttribute('aria-label')).toBe('Show slide 2');
     expect(dots[1].getAttribute('aria-current')).toBe('true');
     expect(dots[0].getAttribute('aria-current')).toBe('false');
+  });
+
+  it('should mark the carousel and its slides for screen readers', () => {
+    // when
+    mount({ slidesData: threeSlides });
+
+    // then
+    expect(region().getAttribute('aria-roledescription')).toBe('carousel');
+    const slides = queryAll('[aria-roledescription="slide"]');
+    expect([...slides].map((slide) => slide.getAttribute('aria-label'))).toEqual(['1 of 3', '2 of 3', '3 of 3']);
+    expect([...slides].map((slide) => slide.getAttribute('aria-hidden'))).toEqual(['false', 'true', 'true']);
+  });
+
+  it('should move a track with all slides when the transition is slide', async () => {
+    // given
+    mount({ slidesData: threeSlides, transition: 'slide' });
+
+    // when
+    query('.next').click();
+    await flushPromises();
+
+    // then
+    expect(queryAll('.carousel-slide').length).toBe(3);
+    expect(query('.fade')).toBeNull();
+    expect(query('.carousel-track-slide').style.transform).toBe('translateX(-100%)');
+  });
+
+  it.each([
+    ['an unknown transition', 'unknown', 'unknown'],
+    ['a switch from slide to fade', 'slide', 'fade']
+  ])('should render the fade transition for %s', async (_label, initial, changed) => {
+    // given
+    mount({ slidesData: threeSlides, transition: initial });
+
+    // when
+    element.transition = changed;
+    await flushPromises();
+
+    // then
+    expect(queryAll('.fade').length).toBe(3);
+    expect(queryAll('.carousel-slide').length).toBe(0);
+    expect(query('.carousel-track-slide')).toBeNull();
+  });
+
+  it.each([
+    ['ArrowRight', '2', true, 'Slide 2 of 3: Slide 2'],
+    ['ArrowLeft', '3', true, 'Slide 3 of 3'],
+    ['Enter', '1', false, '']
+  ])('should handle the %s key', async (key, expected, handled, announced) => {
+    // given
+    mount({ slidesData: threeSlides });
+
+    // when
+    const event = pressKey(query('.next'), key);
+    await flushPromises();
+
+    // then
+    expect(activeDotId()).toBe(expected);
+    expect(event.defaultPrevented).toBe(handled);
+    expect(announcement()).toBe(announced);
+  });
+
+  it('should move the focus to the new dot when an arrow key is pressed on a dot', async () => {
+    // given
+    mount({ slidesData: threeSlides });
+    const dots = queryAll('.dot');
+    dots[0].focus();
+
+    // when
+    pressKey(dots[0], 'ArrowRight');
+    await flushPromises();
+
+    // then
+    expect(element.shadowRoot.activeElement).toBe(dots[1]);
+    expect(announcement()).toBe('Slide 2 of 3: Slide 2');
+  });
+
+  it.each([
+    ['to the left', 200, 100, 0, '2'],
+    ['to the right', 100, 200, 0, '3'],
+    ['too short', 100, 130, 0, '1'],
+    ['mostly vertical', 100, 160, 120, '1']
+  ])('should follow a swipe %s', async (_label, fromX, toX, toY, expected) => {
+    // given
+    mount({ slidesData: threeSlides });
+
+    // when
+    swipe(fromX, toX, toY);
+    await flushPromises();
+
+    // then
+    expect(activeDotId()).toBe(expected);
+  });
+
+  it('should ignore a pointer up without a pointer down and a cancelled swipe', async () => {
+    // given
+    mount({ slidesData: threeSlides });
+    const viewport = query('.carousel-viewport');
+
+    // when
+    viewport.dispatchEvent(new MouseEvent('pointerup', { clientX: 0, bubbles: true }));
+    viewport.dispatchEvent(new MouseEvent('pointerdown', { clientX: 200, bubbles: true }));
+    viewport.dispatchEvent(new MouseEvent('pointercancel', { bubbles: true }));
+    viewport.dispatchEvent(new MouseEvent('pointerup', { clientX: 0, bubbles: true }));
+    await flushPromises();
+
+    // then
+    expect(activeDotId()).toBe('1');
+  });
+
+  it('should pause auto-scroll while the mouse is over the carousel', async () => {
+    // given
+    mount({ autoScroll: true, scrollDuration: 1000 });
+
+    // when
+    region().dispatchEvent(new MouseEvent('mouseenter'));
+    jest.advanceTimersByTime(3000);
+    await flushPromises();
+    const whileHovered = activeDotId();
+    region().dispatchEvent(new MouseEvent('mouseleave'));
+    jest.advanceTimersByTime(1000);
+    await flushPromises();
+
+    // then
+    expect(whileHovered).toBe('1');
+    expect(activeDotId()).toBe('2');
+  });
+
+  it('should stop and start auto-scroll with the playback button', async () => {
+    // given
+    mount({ autoScroll: true, scrollDuration: 1000 });
+    const button = query('.carousel-playback');
+
+    // when
+    button.click();
+    jest.advanceTimersByTime(3000);
+    await flushPromises();
+    const stopped = { slide: activeDotId(), icon: button.iconName, label: button.alternativeText };
+    button.click();
+    jest.advanceTimersByTime(1000);
+    await flushPromises();
+
+    // then
+    expect(stopped).toEqual({ slide: '1', icon: 'utility:play', label: 'Start automatic slide show' });
+    expect(activeDotId()).toBe('2');
+    expect(button.iconName).toBe('utility:pause');
+    expect(button.alternativeText).toBe('Stop automatic slide show');
+  });
+
+  it('should show the playback button only with auto-scroll and more than one slide', () => {
+    // when
+    mount({ slidesData: [mockData.slideData[0]], autoScroll: true, hideNavigationDots: true });
+
+    // then
+    expect(query('.carousel-playback')).toBeNull();
+    expect(query('.carousel-controls')).toBeNull();
+  });
+
+  it.each([
+    ['keyboard focus stops it', false, '1'],
+    ['focus after a pointer press keeps it running', true, '2']
+  ])('should treat focus inside the carousel so that %s', async (_label, pointer, expected) => {
+    // given
+    mount({ autoScroll: true, scrollDuration: 1000 });
+    const dot = queryAll('.dot')[0];
+
+    // when
+    if (pointer) {
+      query('.carousel-viewport').dispatchEvent(new MouseEvent('pointerdown', { bubbles: true }));
+    }
+    dot.dispatchEvent(new FocusEvent('focusin', { bubbles: true, composed: true }));
+    jest.advanceTimersByTime(1000);
+    await flushPromises();
+
+    // then
+    expect(activeDotId()).toBe(expected);
+  });
+
+  it('should forget a pointer press once it is released', async () => {
+    // given
+    mount({ autoScroll: true, scrollDuration: 1000 });
+    const viewport = query('.carousel-viewport');
+    viewport.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true }));
+    viewport.dispatchEvent(new MouseEvent('pointerup', { bubbles: true }));
+
+    // when
+    queryAll('.dot')[0].dispatchEvent(new FocusEvent('focusin', { bubbles: true, composed: true }));
+    jest.advanceTimersByTime(1000);
+    await flushPromises();
+
+    // then
+    expect(activeDotId()).toBe('1');
   });
 });

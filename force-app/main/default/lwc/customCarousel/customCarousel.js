@@ -1,5 +1,7 @@
 import { api, LightningElement } from 'lwc';
 
+const SWIPE_DISTANCE = 50;
+
 /**
  * A simple custom carousel with different configuration options.
  * @alias CustomCarousel
@@ -15,6 +17,7 @@ import { api, LightningElement } from 'lwc';
  *   hide-navigation-buttons
  *   hide-slide-text
  *   hide-slide-number
+ *   transition="slide"
  * ></c-custom-carousel>
  */
 export default class CustomCarousel extends LightningElement {
@@ -30,6 +33,7 @@ export default class CustomCarousel extends LightningElement {
 
   set autoScroll(value) {
     this._autoScroll = value;
+    this.isPlaying = true;
     this.restartTimer();
   }
 
@@ -90,12 +94,35 @@ export default class CustomCarousel extends LightningElement {
     this.restartTimer();
   }
 
+  /**
+   * Set how the carousel moves to another slide: 'fade' blends the new slide in, 'slide' moves it in from the side.
+   * Both are switched off when the user prefers reduced motion.
+   * @type {string}
+   * @default 'fade'
+   */
+  @api
+  get transition() {
+    return this._transition;
+  }
+
+  set transition(value) {
+    this._transition = value;
+    this.slides = this.slides.map((slide) => this.withSlideState(slide));
+  }
+
+  announcement = '';
   errorMessage = '';
+  focusActiveDot = false;
+  isHovered = false;
+  isPlaying = true;
+  pointerStart;
+  pointerUsed = false;
   slides = [];
   slideIndex = 1;
   timer;
   _autoScroll = false;
   _scrollDuration = 5000;
+  _transition = 'fade';
 
   get maxWidth() {
     return `width: ${this.customWidth}`;
@@ -119,6 +146,34 @@ export default class CustomCarousel extends LightningElement {
 
   get showSlideText() {
     return !this.hideSlideText;
+  }
+
+  get isSlideTransition() {
+    return this.transition === 'slide';
+  }
+
+  get trackClass() {
+    return this.isSlideTransition ? 'carousel-track carousel-track-slide' : 'carousel-track';
+  }
+
+  get trackStyle() {
+    return this.isSlideTransition ? `transform: translateX(-${(this.slideIndex - 1) * 100}%)` : '';
+  }
+
+  get showPlaybackButton() {
+    return Boolean(this.autoScroll) && this.slides.length > 1;
+  }
+
+  get showControls() {
+    return this.showNavigationDots || this.showPlaybackButton;
+  }
+
+  get playbackIcon() {
+    return this.isPlaying ? 'utility:pause' : 'utility:play';
+  }
+
+  get playbackLabel() {
+    return this.isPlaying ? 'Stop automatic slide show' : 'Start automatic slide show';
   }
 
   /**
@@ -163,7 +218,7 @@ export default class CustomCarousel extends LightningElement {
       return;
     }
 
-    this.slides = parsedData.map((slide, i) => this.withSlideState({ ...slide, index: i + 1 }));
+    this.slides = parsedData.map((slide, i) => this.withSlideState({ ...slide, index: i + 1 }, parsedData.length));
   }
 
   connectedCallback() {
@@ -174,9 +229,16 @@ export default class CustomCarousel extends LightningElement {
     this.stopTimer();
   }
 
+  renderedCallback() {
+    if (this.focusActiveDot) {
+      this.focusActiveDot = false;
+      this.template.querySelector('.dot.active')?.focus();
+    }
+  }
+
   restartTimer() {
     this.stopTimer();
-    if (this.autoScroll && this.isConnected) {
+    if (this.autoScroll && this.isPlaying && !this.isHovered && this.isConnected) {
       this.timer = globalThis.setInterval(() => {
         this.handleSlideSelection(this.slideIndex + 1);
       }, Number(this.scrollDuration));
@@ -191,21 +253,91 @@ export default class CustomCarousel extends LightningElement {
   }
 
   showSlide(event) {
-    const slideIndex = Number(event.currentTarget.dataset.id);
-    this.handleSlideSelection(slideIndex);
+    this.selectByUser(Number(event.currentTarget.dataset.id));
   }
 
   slideBackward() {
-    const slideIndex = this.slideIndex - 1;
-    this.handleSlideSelection(slideIndex);
+    this.selectByUser(this.slideIndex - 1);
   }
 
   slideForward() {
-    const slideIndex = this.slideIndex + 1;
-    this.handleSlideSelection(slideIndex);
+    this.selectByUser(this.slideIndex + 1);
+  }
+
+  togglePlayback() {
+    this.isPlaying = !this.isPlaying;
+    this.restartTimer();
+  }
+
+  handleKeyDown(event) {
+    this.pointerUsed = false;
+    const step = { ArrowLeft: -1, ArrowRight: 1 }[event.key];
+    if (!step || this.slides.length === 0) {
+      return;
+    }
+    event.preventDefault();
+    this.focusActiveDot = event.target.classList.contains('dot');
+    this.selectByUser(this.slideIndex + step);
+  }
+
+  handleMouseEnter() {
+    this.isHovered = true;
+    this.restartTimer();
+  }
+
+  handleMouseLeave() {
+    this.isHovered = false;
+    this.restartTimer();
+  }
+
+  /** Keyboard focus inside the carousel stops the rotation until the user starts it again. */
+  handleFocusIn() {
+    if (!this.pointerUsed && this.isPlaying && this.autoScroll) {
+      this.togglePlayback();
+    }
+  }
+
+  /** A pointer press moves the focus before it is released, so focus during a press doesn't stop the rotation. */
+  handlePointerPress() {
+    this.pointerUsed = true;
+  }
+
+  handlePointerRelease() {
+    this.pointerUsed = false;
+  }
+
+  handlePointerDown(event) {
+    this.pointerStart = { x: event.clientX, y: event.clientY };
+  }
+
+  handlePointerUp(event) {
+    if (!this.pointerStart) {
+      return;
+    }
+    const distanceX = event.clientX - this.pointerStart.x;
+    const distanceY = event.clientY - this.pointerStart.y;
+    this.pointerStart = undefined;
+    if (Math.abs(distanceX) >= SWIPE_DISTANCE && Math.abs(distanceX) > Math.abs(distanceY)) {
+      this.selectByUser(this.slideIndex + (distanceX < 0 ? 1 : -1));
+    }
+  }
+
+  handlePointerCancel() {
+    this.pointerStart = undefined;
+  }
+
+  /** Changes the slide on behalf of the user and announces the new slide to screen readers. */
+  selectByUser(index) {
+    this.handleSlideSelection(index);
+    const slide = this.slides[this.slideIndex - 1];
+    if (slide) {
+      const heading = slide.heading ? `: ${slide.heading}` : '';
+      this.announcement = `Slide ${slide.index} of ${this.slides.length}${heading}`;
+    }
   }
 
   handleSlideSelection(index) {
+    this.announcement = '';
     if (this.slides.length === 0) {
       return;
     }
@@ -221,11 +353,13 @@ export default class CustomCarousel extends LightningElement {
     this.slides = this.slides.map((slide) => this.withSlideState(slide));
   }
 
-  withSlideState(slide) {
+  withSlideState(slide, total = this.slides.length) {
     const isCurrent = this.slideIndex === slide.index;
+    const fadeClass = isCurrent ? 'fade slds-show' : 'fade slds-hide';
     return {
       ...slide,
-      slideClass: isCurrent ? 'fade slds-show' : 'fade slds-hide',
+      slideClass: this.isSlideTransition ? 'carousel-slide' : fadeClass,
+      slideAria: { ariaLabel: `${slide.index} of ${total}`, ariaHidden: String(!isCurrent) },
       dotClass: isCurrent ? 'dot active' : 'dot',
       dotLabel: `Show slide ${slide.index}`,
       dotAria: { ariaCurrent: isCurrent ? 'true' : 'false' }
