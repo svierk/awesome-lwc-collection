@@ -29,9 +29,10 @@ async function renderAndLoad() {
   await flushPromises();
 }
 
-async function enterUrl(value) {
+async function enterUrl(value, valid = true) {
   const { urlInput } = getInputs();
   urlInput.value = value;
+  urlInput.validity = { valid };
   urlInput.dispatchEvent(new CustomEvent('change'));
   await flushPromises();
 }
@@ -67,7 +68,6 @@ const CODE = 'data:image/png;base64,qrcode';
 const renderWith = async (properties, generate = mockQrLib()) => {
   Object.assign(element, properties);
   await renderAndLoad();
-  await flushPromises();
   return generate;
 };
 
@@ -86,10 +86,12 @@ const emitFile = async () => {
   await flushPromises();
 };
 
-const emitField = async (value) => {
-  const matches = (config) => config.recordId === RECORD_ID && config.fields[0] === 'Account.Website';
-  getRecord.emit({ fields: { Website: { value } } }, matches);
+const generateFor = async (properties, generate = mockQrLib()) => {
+  await renderWith(properties, generate);
+  await enterUrl('https://example.com');
+  element.shadowRoot.querySelector('lightning-button').click();
   await flushPromises();
+  return generate;
 };
 
 describe('c-qr-code-generator', () => {
@@ -242,7 +244,7 @@ describe('c-qr-code-generator', () => {
     await flushPromises();
 
     // then
-    expect(errorText()).toBe('Please enter a text or URL.');
+    expect(errorText()).toBe('Please enter a URL.');
   });
 
   it('should show an error when the library is not available', async () => {
@@ -273,114 +275,61 @@ describe('c-qr-code-generator', () => {
     expect(element.shadowRoot.querySelector('lightning-spinner')).toBeNull();
   });
 
-  it('should generate a code for a given value without a click and prefill the input', async () => {
-    // given
-    const handler = listen('qrcodegenerate');
-    const flowHandler = listen(FlowAttributeChangeEventName);
-
+  it('should offer a url input without anything filled in or generated on its own', async () => {
     // when
-    const generate = await renderWith({ value: 'https://salesforce.com' });
+    const generate = await renderWith({ recordId: RECORD_ID, saveToRecord: true });
 
     // then
-    expect(lastOptions(generate).text).toBe('https://salesforce.com');
-    expect(getInputs().urlInput).toMatchObject({ value: 'https://salesforce.com', type: 'text', label: 'Text or URL' });
-    expect(element.shadowRoot.querySelector('.qr-code-image').src).toContain(CODE);
-    expect(element.qrCodeDataUrl).toBe(CODE);
-    expect(handler.mock.calls[0][0].detail).toEqual({ dataUrl: CODE, value: 'https://salesforce.com' });
-    expect(flowChanges(flowHandler)).toContainEqual({ attributeName: 'qrCodeDataUrl', attributeValue: CODE });
+    expect(getInputs().urlInput).toMatchObject({ type: 'url', label: 'Target URL' });
+    expect(getInputs().urlInput.value).toBe('');
+    expect(generate).not.toHaveBeenCalled();
+    expect(element.shadowRoot.querySelector('.qr-code-image')).toBeNull();
   });
 
-  it('should clear the code when the value is emptied', async () => {
+  it('should not allow generating while the url is invalid', async () => {
     // given
-    await renderWith({ value: 'first' });
+    await renderWith({});
 
     // when
-    element.value = '';
-    await flushPromises();
+    await enterUrl('dfg.com', false);
+
+    // then
+    expect(element.shadowRoot.querySelector('lightning-button').disabled).toBe(true);
+  });
+
+  it('should remove the validation message as soon as the url is valid', async () => {
+    // given
+    await renderWith({});
+    await enterUrl('dfg.com', false);
+    const report = jest.spyOn(getInputs().urlInput, 'reportValidity');
+    expect(report).not.toHaveBeenCalled();
+
+    // when
+    await enterUrl('https://dfg.com');
+
+    // then
+    expect(report).toHaveBeenCalledTimes(1);
+    expect(element.shadowRoot.querySelector('lightning-button').disabled).toBe(false);
+  });
+
+  it('should publish a generated code and remove it when the url becomes invalid', async () => {
+    // given
+    const generateHandler = listen('qrcodegenerate');
+    const flowHandler = listen(FlowAttributeChangeEventName);
+    await generateFor({});
+
+    // then
+    expect(element.shadowRoot.querySelector('.qr-code-image').src).toContain(CODE);
+    expect(element.qrCodeDataUrl).toBe(CODE);
+    expect(generateHandler.mock.calls[0][0].detail).toEqual({ dataUrl: CODE, value: 'https://example.com' });
+    expect(flowChanges(flowHandler)).toContainEqual({ attributeName: 'qrCodeDataUrl', attributeValue: CODE });
+
+    // when
+    await enterUrl('dfg.com', false);
 
     // then
     expect(element.shadowRoot.querySelector('.qr-code-image')).toBeNull();
     expect(element.qrCodeDataUrl).toBe('');
-    expect(errorText()).toBeNull();
-  });
-
-  it.each([
-    ['nothing given', {}],
-    ['a record without a field name', { recordId: RECORD_ID }],
-    ['an empty field', { recordId: RECORD_ID, fieldApiName: 'Account.Website' }]
-  ])('should not generate anything on its own with %s', async (_label, properties) => {
-    // given
-    const generate = await renderWith(properties);
-
-    // when
-    await emitField(null);
-
-    // then
-    expect(generate).not.toHaveBeenCalled();
-    expect(errorText()).toBeNull();
-    expect(element.value).toBeUndefined();
-  });
-
-  it('should keep the result of the latest value when an older one finishes later', async () => {
-    // given
-    let finishFirst;
-    const generate = jest
-      .fn()
-      .mockImplementationOnce(() => new Promise((resolve) => (finishFirst = resolve)))
-      .mockResolvedValue('data:image/png;base64,second');
-    await renderWith({ value: 'first' }, mockQrLib(generate));
-
-    // when
-    element.value = 'second';
-    await flushPromises();
-    finishFirst('data:image/png;base64,first');
-    await flushPromises();
-
-    // then
-    expect(lastOptions(generate).text).toBe('second');
-    expect(element.qrCodeDataUrl).toBe('data:image/png;base64,second');
-  });
-
-  it('should read the value from a field of the object of the page', async () => {
-    // given
-    const generate = await renderWith({ recordId: RECORD_ID, objectApiName: 'Account', fieldApiName: 'Website' });
-
-    // when
-    await emitField('https://record.example');
-
-    // then
-    expect(lastOptions(generate).text).toBe('https://record.example');
-  });
-
-  it('should prefer a given value over the record field and fall back when it is emptied', async () => {
-    // given
-    const generate = await renderWith({ recordId: RECORD_ID, fieldApiName: 'Account.Website', value: 'own' });
-
-    // when
-    await emitField('https://record.example');
-
-    // then
-    expect(lastOptions(generate).text).toBe('own');
-
-    // when
-    element.value = undefined;
-    await flushPromises();
-
-    // then
-    expect(lastOptions(generate).text).toBe('https://record.example');
-  });
-
-  it('should show an error when the record field cannot be read', async () => {
-    // given
-    await renderWith({ recordId: RECORD_ID, fieldApiName: 'Account.Secret' });
-
-    // when
-    getRecord.error({ message: 'No access' });
-    await flushPromises();
-
-    // then
-    expect(errorText()).toContain('The record field could not be read:');
-    await expect(element).toBeAccessible();
   });
 
   it('should use the given colors, logo and size', async () => {
@@ -388,7 +337,7 @@ describe('c-qr-code-generator', () => {
     const design = { colorDark: '#112233', colorLight: '#eeeeee', logoUrl: '/resource/logo' };
 
     // when
-    const generate = await renderWith({ value: 'text', size: 2048, ...design });
+    const generate = await generateFor({ size: 2048, ...design });
 
     // then
     expect(lastOptions(generate)).toMatchObject({ ...design, width: 2048, height: 2048 });
@@ -401,31 +350,19 @@ describe('c-qr-code-generator', () => {
     ['an invalid size', { size: 'big' }]
   ])('should keep the defaults and a high resolution for %s', async (_label, properties) => {
     // when
-    const generate = await renderWith({ value: 'text', ...properties });
+    const generate = await generateFor(properties);
 
     // then
     expect(lastOptions(generate)).toMatchObject({ colorDark: '#000000', colorLight: '#ffffff', width: 1024 });
     expect(element.shadowRoot.querySelector('.qr-code-image').style).toMatchObject({ width: '256px', height: 'auto' });
   });
 
-  it('should hide the inputs and the button with hideInput and still show the code', async () => {
-    // when
-    await renderWith({ value: 'text', hideInput: true });
-
-    // then
-    expect(element.shadowRoot.querySelectorAll('lightning-input')).toHaveLength(0);
-    expect(element.shadowRoot.querySelector('[data-id="generate"]')).toBeNull();
-    expect(element.shadowRoot.querySelector('.qr-code-image')).toBeTruthy();
-    await expect(element).toBeAccessible();
-  });
-
   it.each([
-    ['without saveToRecord', { recordId: RECORD_ID, value: 'text' }],
-    ['without a record', { saveToRecord: true, value: 'text' }],
-    ['without a code', { recordId: RECORD_ID, saveToRecord: true }]
+    ['without saveToRecord', { recordId: RECORD_ID }],
+    ['without a record', { saveToRecord: true }]
   ])('should offer no save button %s', async (_label, properties) => {
     // when
-    await renderWith(properties);
+    await generateFor(properties);
 
     // then
     expect(saveButton()).toBeNull();
@@ -434,7 +371,7 @@ describe('c-qr-code-generator', () => {
   it('should save the code as a linked png file, publish its id and forget it with a new code', async () => {
     // given
     createRecord.mockResolvedValue({ id: VERSION_ID });
-    await renderWith({ recordId: RECORD_ID, saveToRecord: true, value: 'text' });
+    await generateFor({ recordId: RECORD_ID, saveToRecord: true });
     const saveHandler = listen('qrcodesave');
     const flowHandler = listen(FlowAttributeChangeEventName);
     const toastHandler = listen(ShowToastEventName);
@@ -469,7 +406,7 @@ describe('c-qr-code-generator', () => {
     expect(saveButton().disabled).toBe(true);
 
     // when
-    element.value = 'other';
+    element.shadowRoot.querySelector('lightning-button').click();
     await flushPromises();
 
     // then
@@ -484,7 +421,7 @@ describe('c-qr-code-generator', () => {
   ])('should show an error toast when %s fails and allow another try', async (_label, prepare, failRead) => {
     // given
     prepare();
-    await renderWith({ recordId: RECORD_ID, saveToRecord: true, value: 'text' });
+    await generateFor({ recordId: RECORD_ID, saveToRecord: true });
     const handler = listen(ShowToastEventName);
 
     // when

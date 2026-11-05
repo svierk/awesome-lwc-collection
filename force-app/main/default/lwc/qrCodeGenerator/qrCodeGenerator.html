@@ -1,49 +1,46 @@
 <template>
   <lightning-card title="QR Code Generator" icon-name="utility:scan">
     <div class="slds-var-p-horizontal_medium slds-var-p-bottom_medium">
-      <template lwc:if={showInput}>
-        <lightning-input
-          type="text"
-          label="Text or URL"
-          placeholder="https://example.com"
-          value={url}
-          onchange={handleUrlChange}
-          class="slds-var-m-bottom_small"
-        ></lightning-input>
+      <lightning-input
+        type="url"
+        label="Target URL"
+        placeholder="https://example.com"
+        value={url}
+        onchange={handleUrlChange}
+        class="slds-var-m-bottom_small"
+      ></lightning-input>
 
-        <lightning-input
-          data-id="file-input"
-          type="file"
-          label="Logo (optional)"
-          onchange={handleFileUpload}
-          class="slds-var-m-bottom_small"
-        ></lightning-input>
+      <lightning-input
+        data-id="file-input"
+        type="file"
+        label="Logo (optional)"
+        onchange={handleFileUpload}
+        class="slds-var-m-bottom_small"
+      ></lightning-input>
 
-        <template lwc:if={hasLogo}>
-          <div class="logo-preview slds-theme_shade slds-var-p-around_x-small slds-var-m-bottom_medium">
-            <img src={logoDataUrl} alt="Logo preview" class="logo-preview-image" />
-            <lightning-button-icon
-              icon-name="utility:close"
-              alternative-text="Remove logo"
-              variant="bare"
-              size="small"
-              onclick={handleRemoveLogo}
-              class="remove-logo-btn"
-            ></lightning-button-icon>
-          </div>
-        </template>
-
-        <div>
-          <lightning-button
-            data-id="generate"
-            variant="brand"
-            label="Generate QR Code"
-            onclick={generateCode}
-            disabled={isGenerateDisabled}
-            class="slds-var-m-bottom_medium"
-          ></lightning-button>
+      <template lwc:if={hasLogo}>
+        <div class="logo-preview slds-theme_shade slds-var-p-around_x-small slds-var-m-bottom_medium">
+          <img src={logoDataUrl} alt="Logo preview" class="logo-preview-image" />
+          <lightning-button-icon
+            icon-name="utility:close"
+            alternative-text="Remove logo"
+            variant="bare"
+            size="small"
+            onclick={handleRemoveLogo}
+            class="remove-logo-btn"
+          ></lightning-button-icon>
         </div>
       </template>
+
+      <div>
+        <lightning-button
+          variant="brand"
+          label="Generate QR Code"
+          onclick={generateCode}
+          disabled={isGenerateDisabled}
+          class="slds-var-m-bottom_medium"
+        ></lightning-button>
+      </div>
 
       <template lwc:if={isLoading}>
         <div class="slds-grid slds-grid_align-center slds-var-p-vertical_x-large">

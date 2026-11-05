@@ -22,14 +22,10 @@ A basic QR Code Generator with optional logo overlay using the external QRCode.j
 | ------------------- | ------- | --------- | --------------------------------------------------------------------------------------------------------------- |
 | color-dark          | string  | '#000000' | The color of the dark modules of the code. Keep enough contrast to the light color, so that it stays scannable. |
 | color-light         | string  | '#ffffff' | The color of the light modules of the code.                                                                     |
-| field-api-name      | string  |           | The field to read the text from, as 'Website' on record pages or as 'Account.Website' everywhere else.          |
-| hide-input          | boolean | false     | If present, only the code is shown, without the inputs and the generate button.                                 |
 | logo-url            | string  |           | The logo to show in the code. An image from another domain needs to allow this with CORS.                       |
-| object-api-name     | string  |           | The API name of the object of the record. Set automatically on record pages.                                    |
-| record-id           | string  |           | The record to read the field from and to save the code to. Set automatically on record pages.                   |
+| record-id           | string  |           | The record to save the code to. Set automatically on record pages.                                              |
 | save-to-record      | boolean | false     | If present, a button saves the code as a file on the record given by record-id.                                 |
 | size                | number  | 256       | The displayed size of the code in pixels. The image has at least a resolution of 1024 pixels.                   |
-| value               | string  |           | The text of the code. It wins over a record field, and the code is generated without a click.                   |
 | qr-code-data-url    | string  |           | Read-only. The code as a PNG data URL, empty without a code. Also available as a Flow output.                   |
 | content-document-id | string  |           | Read-only. The id of the saved file. Empties with a new code. Also available as a Flow output.                  |
 
@@ -43,10 +39,10 @@ A basic QR Code Generator with optional logo overlay using the external QRCode.j
 ## Usage
 
 ```html
-<c-qr-code-generator value="https://example.com" hide-input onqrcodegenerate={handleGenerate}></c-qr-code-generator>
+<c-qr-code-generator size="300" onqrcodegenerate={handleGenerate}></c-qr-code-generator>
 ```
 
-Without attributes, users enter a text or URL, optionally upload a logo and generate the code. With `value` or a record field, the code is generated without a click.
+Users enter a target URL, optionally upload a logo and generate the code. The URL has to be complete, including `https://`.
 
 Saving creates the file directly through Lightning Data Service, so no Apex is involved and the permissions of the user apply.
 

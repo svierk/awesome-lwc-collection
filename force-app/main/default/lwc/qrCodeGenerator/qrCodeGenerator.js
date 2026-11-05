@@ -11,8 +11,7 @@ const DEFAULT_SIZE = 256;
 const MIN_RESOLUTION = 1024;
 
 /**
- * A QR Code Generator with optional logo overlay using the QRCode.js library. The text comes from the user, from the
- * value attribute or from a record field.
+ * A QR Code Generator for URLs with optional logo overlay using the QRCode.js library.
  * @alias QrCodeGenerator
  * @extends LightningElement
  * @hideconstructor
@@ -21,7 +20,7 @@ const MIN_RESOLUTION = 1024;
  * @fires QrCodeGenerator#qrcodesave
  *
  * @example
- * <c-qr-code-generator value="https://example.com" hide-input onqrcodegenerate={handleGenerate}></c-qr-code-generator>
+ * <c-qr-code-generator size="300" onqrcodegenerate={handleGenerate}></c-qr-code-generator>
  */
 export default class QrCodeGenerator extends LightningElement {
   /**
@@ -39,26 +38,7 @@ export default class QrCodeGenerator extends LightningElement {
   @api colorLight = '#ffffff';
 
   /**
-   * The field to read the text from, as 'Website' on record pages or as 'Account.Website' everywhere else.
-   * @type {string}
-   */
-  @api fieldApiName;
-
-  /**
-   * If present, only the code is shown, without the inputs and the generate button.
-   * @type {boolean}
-   * @default false
-   */
-  @api hideInput = false;
-
-  /**
-   * The API name of the object of the record. Set automatically on record pages.
-   * @type {string}
-   */
-  @api objectApiName;
-
-  /**
-   * The record to read the field from and to save the code to. Set automatically on record pages.
+   * The record to save the code to. Set automatically on record pages.
    * @type {string}
    */
   @api recordId;
@@ -76,20 +56,6 @@ export default class QrCodeGenerator extends LightningElement {
    * @default 256
    */
   @api size = DEFAULT_SIZE;
-
-  /**
-   * The text of the code. It wins over a record field, and the code is generated without a click.
-   * @type {string}
-   */
-  @api
-  get value() {
-    return this._value;
-  }
-
-  set value(text) {
-    this._value = text;
-    this.syncExternalText();
-  }
 
   /**
    * The logo to show in the code. An image from another domain needs to allow this with CORS.
@@ -128,35 +94,13 @@ export default class QrCodeGenerator extends LightningElement {
   logoFileName = '';
   isLoading = false;
   isSaving = false;
+  isUrlValid = true;
   errorMessage;
   qrLibLoaded = false;
-  _value;
   _logoUrl;
-  _recordText = '';
   _qrCodeDataUrl = '';
   _contentDocumentId;
   _contentVersionId;
-  _latestRun = 0;
-
-  get fieldRecordId() {
-    return this.fieldApiName ? this.recordId : undefined;
-  }
-
-  get recordFields() {
-    if (!this.fieldApiName) return undefined;
-    return [this.fieldApiName.includes('.') ? this.fieldApiName : `${this.objectApiName}.${this.fieldApiName}`];
-  }
-
-  @wire(getRecord, { recordId: '$fieldRecordId', fields: '$recordFields' })
-  wiredField({ data, error }) {
-    if (data) {
-      const fieldName = this.fieldApiName.split('.').pop();
-      this._recordText = String(data.fields[fieldName]?.value ?? '');
-      this.syncExternalText();
-    } else if (error) {
-      this.errorMessage = `The record field could not be read: ${getErrorMessage(error)}`;
-    }
-  }
 
   @wire(getRecord, { recordId: '$_contentVersionId', fields: [CONTENT_DOCUMENT_ID] })
   wiredContentVersion({ data, error }) {
@@ -178,25 +122,22 @@ export default class QrCodeGenerator extends LightningElement {
     loadScript(this, qrcodejs)
       .then(() => {
         this.qrLibLoaded = true;
-        this.syncExternalText();
       })
       .catch((err) => {
         this.errorMessage = `Failed to load QR code library: ${getErrorMessage(err)}`;
       });
   }
 
-  syncExternalText() {
-    if (this._value === undefined && !this._recordText) return;
-    this.url = this._value || this._recordText;
-    if (!this.url) {
-      this.setCode('');
-    } else if (this.qrLibLoaded) {
-      this.generateCode();
-    }
-  }
-
   handleUrlChange(event) {
-    this.url = event.target.value;
+    const input = event.target;
+    this.url = input.value;
+    this.isUrlValid = input.validity.valid;
+    if (this.isUrlValid) {
+      // the input only updates its message when it loses the focus, so a corrected url has to clear it here
+      input.reportValidity();
+    } else {
+      this.setCode('');
+    }
   }
 
   handleFileUpload(event) {
@@ -227,9 +168,9 @@ export default class QrCodeGenerator extends LightningElement {
     }
   }
 
-  generateCode() {
+  async generateCode() {
     if (!this.url) {
-      this.errorMessage = 'Please enter a text or URL.';
+      this.errorMessage = 'Please enter a URL.';
       return;
     }
 
@@ -241,26 +182,16 @@ export default class QrCodeGenerator extends LightningElement {
     this.errorMessage = undefined;
     this.isLoading = true;
     this.setCode('');
-    this._latestRun += 1;
-    const run = this._latestRun;
 
-    Promise.resolve()
-      .then(() => globalThis.QRCodeWithLogo.generate(this.codeOptions))
-      .then((dataUrl) => this.finishGenerate(run, dataUrl))
-      .catch((err) => this.failGenerate(run, err));
-  }
-
-  finishGenerate(run, dataUrl) {
-    if (run !== this._latestRun) return;
-    this.isLoading = false;
-    this.setCode(dataUrl);
-    this.dispatchEvent(new CustomEvent('qrcodegenerate', { detail: { dataUrl, value: this.url } }));
-  }
-
-  failGenerate(run, err) {
-    if (run !== this._latestRun) return;
-    this.isLoading = false;
-    this.errorMessage = `Failed to generate QR code: ${getErrorMessage(err)}`;
+    try {
+      const dataUrl = await globalThis.QRCodeWithLogo.generate(this.codeOptions);
+      this.setCode(dataUrl);
+      this.dispatchEvent(new CustomEvent('qrcodegenerate', { detail: { dataUrl, value: this.url } }));
+    } catch (err) {
+      this.errorMessage = `Failed to generate QR code: ${getErrorMessage(err)}`;
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   get codeOptions() {
@@ -340,10 +271,6 @@ export default class QrCodeGenerator extends LightningElement {
     return this.logoDataUrl !== null;
   }
 
-  get showInput() {
-    return !this.hideInput;
-  }
-
   get showSave() {
     return this.saveToRecord && Boolean(this.recordId) && this.hasQRCode;
   }
@@ -353,6 +280,6 @@ export default class QrCodeGenerator extends LightningElement {
   }
 
   get isGenerateDisabled() {
-    return !this.url || this.isLoading;
+    return !this.url || !this.isUrlValid || this.isLoading;
   }
 }
