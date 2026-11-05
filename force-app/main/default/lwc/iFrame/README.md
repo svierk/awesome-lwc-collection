@@ -18,17 +18,26 @@ A custom iFrame component with different configuration options.
 
 ## Attributes
 
-| Name    | Type   | Default | Description                                                        |
-| ------- | ------ | ------- | ------------------------------------------------------------------ |
-| height  | string | '500px' | Specifies the height of the iframe. Default height is 500 pixels.  |
-| sandbox | string | ''      | Enables an extra set of restrictions for the content in an iframe. |
-| url     | string | ''      | Specifies the address of the document to embed in the iframe.      |
-| width   | string | '100%'  | Specifies the width of an iframe. Default width is 100 percent.    |
+| Name       | Type    | Default         | Description                                                                                                                                                                                                                                                    |
+| ---------- | ------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| card-icon  | string  | 'utility:world' | If show card option is active, the card icon is displayed in the header before the card title. It should contain the SLDS name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category and 'down' the icon to be displayed. |
+| card-title | string  | ''              | If show card option is active, the card title can include text and is displayed in the header above the iframe.                                                                                                                                                |
+| height     | string  | '500px'         | Specifies the height of the iframe. Default height is 500 pixels.                                                                                                                                                                                              |
+| sandbox    | string  | ''              | Enables an extra set of restrictions for the content in an iframe.                                                                                                                                                                                             |
+| show-card  | boolean | false           | If present, the iframe is wrapped in a lightning card to fit better into the overall page layout.                                                                                                                                                              |
+| url        | string  | ''              | Specifies the address of the document to embed in the iframe.                                                                                                                                                                                                  |
+| width      | string  | '100%'          | Specifies the width of an iframe. Default width is 100 percent.                                                                                                                                                                                                |
 
 ## Usage
 
 ```html
 <c-i-frame url="https://example.com/" height="600px" sandbox="allow-scripts allow-same-origin"></c-i-frame>
+```
+
+Wrap it in a Lightning Card to match the cards around it on a page:
+
+```html
+<c-i-frame url="https://example.com/" show-card card-title="Website"></c-i-frame>
 ```
 
 Note that the target site must allow itself to be embedded in an iframe (X-Frame-Options / frame-ancestors). All attributes are also configurable in the Lightning App Builder, so no code is required to use the component.

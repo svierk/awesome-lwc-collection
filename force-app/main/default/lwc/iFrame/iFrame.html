@@ -1,3 +1,12 @@
 <template>
-  <iframe src={url} height={height} width={width} title="iFrame"></iframe>
+  <template lwc:if={showCard}>
+    <lightning-card title={cardTitle} icon-name={cardIcon}>
+      <div class="slds-p-horizontal_medium">
+        <iframe src={url} height={height} width={width} title="iFrame"></iframe>
+      </div>
+    </lightning-card>
+  </template>
+  <template lwc:else>
+    <iframe src={url} height={height} width={width} title="iFrame"></iframe>
+  </template>
 </template>
