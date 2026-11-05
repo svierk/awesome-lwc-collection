@@ -146,18 +146,6 @@ describe('c-qr-code-generator', () => {
     expect(loadScript).toHaveBeenCalledTimes(1);
   });
 
-  it('should be accessible', async () => {
-    // given
-    loadScript.mockResolvedValueOnce();
-
-    // when
-    document.body.appendChild(element);
-    await flushPromises();
-
-    // then
-    await expect(element).toBeAccessible();
-  });
-
   it('should read the file and show a logo preview after uploading a logo', async () => {
     // given
     await renderAndLoad();
@@ -219,43 +207,22 @@ describe('c-qr-code-generator', () => {
     expect(errorText()).toBe('Failed to read the selected file.');
   });
 
-  it('should show an error when generating without a url', async () => {
+  it.each([
+    ['generating without a url', undefined, undefined, 'Please enter a URL.'],
+    ['the library is not available', 'https://example.com', undefined, 'QR code library not loaded. Please try again.'],
+    ['generation fails', 'https://example.com', 'Canvas error', 'Failed to generate QR code: Canvas error']
+  ])('should show an error when %s', async (_label, url, failure, expected) => {
     // given
     await renderAndLoad();
+    if (url) await enterUrl(url);
+    if (failure) mockQrLib(jest.fn().mockRejectedValue(new Error(failure)));
 
     // when
     element.shadowRoot.querySelector('lightning-button').click();
     await flushPromises();
 
     // then
-    expect(errorText()).toBe('Please enter a URL.');
-  });
-
-  it('should show an error when the library is not available', async () => {
-    // given
-    await renderAndLoad();
-    await enterUrl('https://example.com');
-
-    // when
-    element.shadowRoot.querySelector('lightning-button').click();
-    await flushPromises();
-
-    // then
-    expect(errorText()).toBe('QR code library not loaded. Please try again.');
-  });
-
-  it('should show an error and hide the spinner when generation fails', async () => {
-    // given
-    await renderAndLoad();
-    await enterUrl('https://example.com');
-    mockQrLib(jest.fn().mockRejectedValue(new Error('Canvas error')));
-
-    // when
-    element.shadowRoot.querySelector('lightning-button').click();
-    await flushPromises();
-
-    // then
-    expect(errorText()).toBe('Failed to generate QR code: Canvas error');
+    expect(errorText()).toBe(expected);
     expect(element.shadowRoot.querySelector('lightning-spinner')).toBeNull();
   });
 
@@ -269,6 +236,7 @@ describe('c-qr-code-generator', () => {
     expect(generate).not.toHaveBeenCalled();
     expect(element.shadowRoot.querySelector('.qr-code-image')).toBeNull();
     expect(element.shadowRoot.querySelector('lightning-button').disabled).toBe(true);
+    await expect(element).toBeAccessible();
   });
 
   it('should block an invalid url and remove the message as soon as the url is valid', async () => {
@@ -412,7 +380,10 @@ describe('c-qr-code-generator', () => {
 
   it.each([
     ['the default colors', {}, '#000000', '#ffffff'],
-    ['the given colors', { colorDark: '#112233', colorLight: '#eeeeee' }, '#112233', '#eeeeee']
+    ['the given colors', { colorDark: '#112233', colorLight: '#eeeeee' }, '#112233', '#eeeeee'],
+    ['named colors as hex', { colorDark: 'navy', colorLight: 'white' }, '#000080', '#ffffff'],
+    ['an rgb color as hex', { colorDark: 'rgb(0, 128, 0)' }, '#008000', '#ffffff'],
+    ['a value that is not a color as it is', { colorDark: 'nothing' }, 'nothing', '#ffffff']
   ])('should start the color pickers with %s', async (_label, properties, dark, light) => {
     // when
     await renderWith(properties);
@@ -490,5 +461,31 @@ describe('c-qr-code-generator', () => {
 
     // then
     expect(hint()).toBeNull();
+  });
+
+  it.each([
+    ['a valid dark color', 'darkInput', 'navy', '#000080', 1],
+    ['a valid light color', 'lightInput', '#ff0', '#ffff00', 1],
+    ['a value that is not a color', 'darkInput', 'nothing', 'nothing', 0]
+  ])('should only convert %s when leaving the field', async (_label, name, typed, expected, reports) => {
+    // given
+    await renderWith({});
+    const input = getInputs()[name];
+    const report = jest.spyOn(input, 'reportValidity');
+
+    // when
+    await pickColor(input, typed);
+
+    // then
+    expect(input.value).toBe(typed);
+    expect(report).not.toHaveBeenCalled();
+
+    // when
+    input.dispatchEvent(new CustomEvent('blur'));
+    await flushPromises();
+
+    // then
+    expect(input.value).toBe(expected);
+    expect(report).toHaveBeenCalledTimes(reports);
   });
 });

@@ -20,8 +20,8 @@ A basic QR Code Generator with optional logo overlay using the external QRCode.j
 
 | Name                | Type    | Default   | Description                                                                                    |
 | ------------------- | ------- | --------- | ---------------------------------------------------------------------------------------------- |
-| color-dark          | string  | '#000000' | The initial color of the dark modules of the code. Users can change it.                        |
-| color-light         | string  | '#ffffff' | The initial color of the light modules of the code. Users can change it.                       |
+| color-dark          | string  | '#000000' | The initial color of the dark modules of the code, as any CSS color. Users can change it.      |
+| color-light         | string  | '#ffffff' | The initial color of the light modules of the code, as any CSS color. Users can change it.     |
 | logo-url            | string  |           | The logo to show in the code. An image from another domain needs to allow this with CORS.      |
 | record-id           | string  |           | The record to save the code to. Set automatically on record pages.                             |
 | save-to-record      | boolean | false     | If present, a button saves the code as a file on the record given by record-id.                |

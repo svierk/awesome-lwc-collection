@@ -48,7 +48,7 @@ function getLuminance(color) {
  */
 export default class QrCodeGenerator extends LightningElement {
   /**
-   * The initial color of the dark modules of the code. Users can change it.
+   * The initial color of the dark modules of the code, as any CSS color. Users can change it.
    * @type {string}
    * @default '#000000'
    */
@@ -58,11 +58,11 @@ export default class QrCodeGenerator extends LightningElement {
   }
 
   set colorDark(value) {
-    this._colorDark = value;
+    this._colorDark = toHex(value) ?? value;
   }
 
   /**
-   * The initial color of the light modules of the code. Users can change it.
+   * The initial color of the light modules of the code, as any CSS color. Users can change it.
    * @type {string}
    * @default '#ffffff'
    */
@@ -72,7 +72,7 @@ export default class QrCodeGenerator extends LightningElement {
   }
 
   set colorLight(value) {
-    this._colorLight = value;
+    this._colorLight = toHex(value) ?? value;
   }
 
   /**
@@ -186,6 +186,23 @@ export default class QrCodeGenerator extends LightningElement {
 
   handleColorLightChange(event) {
     this._colorLight = event.target.value;
+  }
+
+  handleColorDarkBlur(event) {
+    this._colorDark = this.normalizeColor(event.target);
+  }
+
+  handleColorLightBlur(event) {
+    this._colorLight = this.normalizeColor(event.target);
+  }
+
+  // the color input only accepts hex, so a valid color like navy is converted once it is typed in completely
+  normalizeColor(input) {
+    const hex = toHex(input.value);
+    if (!hex) return input.value;
+    input.value = hex;
+    input.reportValidity();
+    return hex;
   }
 
   handleFileUpload(event) {
