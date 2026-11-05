@@ -453,7 +453,9 @@ describe('c-qr-code-generator', () => {
     ['black on white', '#000000', '#ffffff', false],
     ['dark blue on white', '#000080', '#ffffff', false],
     ['dark blue on light grey', '#112233', '#eeeeee', false],
-    ['a color without a hex value', 'red', '#ffffff', false]
+    ['red on blue', 'red', 'blue', true],
+    ['a named color with enough contrast', 'navy', 'white', false],
+    ['a value that is not a color', 'nothing', '#ffffff', false]
   ])('should decide the hint for %s', async (_label, colorDark, colorLight, expected) => {
     // when
     await renderWith({ colorDark, colorLight });

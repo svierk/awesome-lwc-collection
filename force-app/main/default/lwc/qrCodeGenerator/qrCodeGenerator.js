@@ -11,13 +11,24 @@ const DEFAULT_SIZE = 256;
 const MIN_RESOLUTION = 1024;
 const MIN_SCAN_CONTRAST = 3;
 
-/** Returns the WCAG relative luminance of a hex color, or null for any other color format. */
+/** Returns any CSS color as hex through the canvas, or null if it isn't a solid color. */
+function toHex(color) {
+  const context = document.createElement('canvas').getContext('2d');
+  // an invalid color leaves the previous one in place, so it doesn't survive two different starting values
+  const [first, second] = ['#000000', '#ffffff'].map((start) => {
+    context.fillStyle = start;
+    context.fillStyle = color;
+    return context.fillStyle;
+  });
+  return first === second && /^#[0-9a-f]{6}$/i.test(first) ? first : null;
+}
+
+/** Returns the WCAG relative luminance of a CSS color, or null if it can't be determined. */
 function getLuminance(color) {
-  const hex = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(color)?.[1];
+  const hex = toHex(color);
   if (!hex) return null;
-  const full = hex.length === 3 ? hex.replace(/./g, '$&$&') : hex;
-  const [r, g, b] = [0, 2, 4].map((start) => {
-    const channel = Number.parseInt(full.slice(start, start + 2), 16) / 255;
+  const [r, g, b] = [1, 3, 5].map((start) => {
+    const channel = Number.parseInt(hex.slice(start, start + 2), 16) / 255;
     return channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
   });
   return 0.2126 * r + 0.7152 * g + 0.0722 * b;
