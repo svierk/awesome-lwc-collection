@@ -24,7 +24,14 @@
     },
     {
       "text": "Media & Input",
-      "components": ["signaturePad", "takeUserProfilePicture", "qrCodeGenerator", "customCarousel", "dragAndDrop"]
+      "components": [
+        "signaturePad",
+        "takeUserProfilePicture",
+        "cameraCapture",
+        "qrCodeGenerator",
+        "customCarousel",
+        "dragAndDrop"
+      ]
     },
     {
       "text": "Fundamentals & Integration",

@@ -1,7 +1,7 @@
 import updateProfilePicture from '@salesforce/apex/UserProfilePictureController.updateProfilePicture';
 import { showErrorToast } from 'c/errorUtils';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import { LightningElement } from 'lwc';
+import { api, LightningElement } from 'lwc';
 
 /**
  * Create a photo using the device's camera and use it to update the user profile.
@@ -10,52 +10,45 @@ import { LightningElement } from 'lwc';
  * @hideconstructor
  *
  * @example
- * <c-take-user-profile-picture></c-take-user-profile-picture>
+ * <c-take-user-profile-picture default-camera="front"></c-take-user-profile-picture>
  */
 export default class TakeUserProfilePicture extends LightningElement {
-  video;
-  canvas;
+  /**
+   * The camera to start with, front or back. Devices with only one camera use that one.
+   * @type {string}
+   * @default 'front'
+   */
+  @api defaultCamera = 'front';
 
-  renderedCallback() {
-    this.video = this.template.querySelector('.video');
-    this.canvas = this.template.querySelector('.canvas');
+  photoDataUrl;
+
+  get camera() {
+    return this.template.querySelector('c-camera-capture');
+  }
+
+  get isUpdateDisabled() {
+    return !this.photoDataUrl;
   }
 
   async startCamera() {
-    if (navigator.mediaDevices) {
-      try {
-        this.video.srcObject = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-      } catch (error) {
-        showErrorToast(this, 'Error accessing camera', error);
-      }
-    } else {
-      this.showToast('Error', 'getUserMedia is not supported in this browser', 'error');
-    }
+    await this.camera.start();
   }
 
   stopCamera() {
-    this.video.srcObject.getTracks().forEach((track) => track.stop());
-    this.video.srcObject = null;
-    this.hidePreview();
+    this.camera.stop();
+    this.photoDataUrl = undefined;
   }
 
   capturePhoto() {
-    if (this.video && this.video.srcObject !== null) {
-      this.canvas.height = this.video.videoHeight;
-      this.canvas.width = this.video.videoWidth;
-      const context = this.canvas.getContext('2d');
-      context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
-      const dataUrl = this.canvas.toDataURL('image/png');
-      const preview = this.template.querySelector('.preview');
-      preview.setAttribute('src', dataUrl);
-      preview.classList.add('slds-show');
-      preview.classList.remove('slds-hide');
-    }
+    this.camera.capture();
+  }
+
+  handleCapture(event) {
+    this.photoDataUrl = event.detail.dataUrl;
   }
 
   updatePhoto() {
-    const dataUrl = this.canvas.toDataURL('image/png');
-    const base64 = dataUrl.replace('data:', '').replace(/^.+,/, '');
+    const base64 = this.photoDataUrl.split(',')[1];
 
     updateProfilePicture({ base64: base64 })
       .then(() => {
@@ -68,13 +61,6 @@ export default class TakeUserProfilePicture extends LightningElement {
       .catch((error) => {
         showErrorToast(this, 'Error saving the profile picture', error);
       });
-  }
-
-  hidePreview() {
-    const preview = this.template.querySelector('.preview');
-    preview.setAttribute('src', '');
-    preview.classList.add('slds-hide');
-    preview.classList.remove('slds-show');
   }
 
   showToast(title, message, variant) {

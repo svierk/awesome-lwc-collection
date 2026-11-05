@@ -121,6 +121,11 @@ Each component has a dedicated page - with a screenshot, a full attribute refere
     <td>Lets Salesforce users take a new profile photo with their device's camera.</td>
   </tr>
   <tr>
+    <td align="center"><img src="force-app/main/default/lwc/cameraCapture/cameraCapture.svg" alt="Camera Capture" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/cameraCapture">Camera Capture</a></td>
+    <td>A live camera view that takes photos, to build into your own components.</td>
+  </tr>
+  <tr>
     <td align="center"><img src="force-app/main/default/lwc/qrCodeGenerator/qrCodeGenerator.svg" alt="QR Code Generator" width="36" height="36" /></td>
     <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/qrCodeGenerator">QR Code Generator</a></td>
     <td>A basic QR Code Generator with optional logo overlay using the external QRCode.js library.</td>
