@@ -115,8 +115,8 @@ export default class CameraCapture extends LightningElement {
     stream.getTracks().forEach((track) => track.stop());
   }
 
-  handleStart() {
-    this.start();
+  async handleStart() {
+    await this.start();
   }
 
   handleStop() {

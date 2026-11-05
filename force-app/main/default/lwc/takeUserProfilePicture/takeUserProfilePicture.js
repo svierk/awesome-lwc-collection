@@ -30,8 +30,8 @@ export default class TakeUserProfilePicture extends LightningElement {
     return !this.photoDataUrl;
   }
 
-  startCamera() {
-    this.camera.start();
+  async startCamera() {
+    await this.camera.start();
   }
 
   stopCamera() {
