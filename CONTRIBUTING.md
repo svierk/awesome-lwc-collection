@@ -42,7 +42,6 @@ New components are welcome when they cover a distinct, reusable need. A componen
     - `Component`: ready to place on pages or in flows and fully configurable through builder properties, so it has to be exposed and have at least one `<property>`,
     - `Building Block`: embedded in your own components and controlled through `@api` and events,
     - `Utility`: a small helper with exactly one purpose,
-    - `Example`: a learning example that isn't meant for production, reserved for Hello World,
   - an `**Available in:**` line matching the targets in the `.js-meta.xml`,
   - a screenshot (add the image to `images/` and reference it),
   - a `## Usage` section with an ` ```html ` snippet embedding the component tag,

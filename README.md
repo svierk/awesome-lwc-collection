@@ -151,11 +151,6 @@ Each component has a dedicated page - with a screenshot, a full attribute refere
     <th align="left">Description</th>
   </tr>
   <tr>
-    <td align="center"><img src="force-app/main/default/lwc/helloWorld/helloWorld.svg" alt="Hello World" width="36" height="36" /></td>
-    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/helloWorld">Hello World</a></td>
-    <td>An example LWC that adds a classic greeting to any page.</td>
-  </tr>
-  <tr>
     <td align="center"><img src="force-app/main/default/lwc/iFrame/iFrame.svg" alt="iFrame" width="36" height="36" /></td>
     <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/iFrame">iFrame</a></td>
     <td>A custom iFrame component with different configuration options.</td>
