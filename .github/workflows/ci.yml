@@ -3,7 +3,8 @@ name: Validation
 # Validates changes to this repository: runs the static quality gate (Prettier,
 # ESLint, component READMEs) and, wherever secrets are available, runs the
 # Salesforce Code Analyzer, deploys the metadata to the target org and runs the
-# Apex and LWC tests against it.
+# Apex and LWC tests against it. Pull requests only validate the deployment, so
+# nothing reaches the org, deletions included, before it's merged to main.
 
 on:
   push:
@@ -134,8 +135,14 @@ jobs:
           jwt-secret-key: ${{ secrets.SFDX_JWT_SECRET_KEY }}
           username: ${{ vars.SFDX_USERNAME }}
 
+      # A check-only deployment doesn't save anything to the org. Its Apex tests
+      # run against the code of the pull request. The Run Tests step below only
+      # sees what's in the org, which on a pull request is the state of main.
       - name: Deploy Metadata
         uses: svierk/sfdx-deploy@v1.4.1
+        with:
+          dry-run: ${{ github.event_name == 'pull_request' }}
+          test-level: ${{ github.event_name == 'pull_request' && 'RunLocalTests' || '' }}
 
       - name: Run Tests
         uses: svierk/sfdx-run-tests@v1.3.0
