@@ -36,7 +36,7 @@ const swipe = (fromX, toX, toY = 0) => {
   viewport.dispatchEvent(new MouseEvent('pointerup', { clientX: toX, clientY: toY, bubbles: true }));
 };
 
-const region = () => query('[role="region"]');
+const region = () => query('section.carousel');
 
 describe('c-custom-carousel', () => {
   beforeEach(() => {
@@ -297,7 +297,9 @@ describe('c-custom-carousel', () => {
 
     // then
     expect(region().getAttribute('aria-roledescription')).toBe('carousel');
-    const slides = queryAll('[aria-roledescription="slide"]');
+    const slides = queryAll('.fade');
+    expect([...slides].map((slide) => slide.getAttribute('role'))).toEqual(['group', 'group', 'group']);
+    expect([...slides].map((slide) => slide.getAttribute('aria-roledescription'))).toEqual(['slide', 'slide', 'slide']);
     expect([...slides].map((slide) => slide.getAttribute('aria-label'))).toEqual(['1 of 3', '2 of 3', '3 of 3']);
     expect([...slides].map((slide) => slide.getAttribute('aria-hidden'))).toEqual(['false', 'true', 'true']);
   });
@@ -404,11 +406,11 @@ describe('c-custom-carousel', () => {
     mount({ autoScroll: true, scrollDuration: 1000 });
 
     // when
-    region().dispatchEvent(new MouseEvent('mouseenter'));
+    element.dispatchEvent(new MouseEvent('mouseenter'));
     jest.advanceTimersByTime(3000);
     await flushPromises();
     const whileHovered = activeDotId();
-    region().dispatchEvent(new MouseEvent('mouseleave'));
+    element.dispatchEvent(new MouseEvent('mouseleave'));
     jest.advanceTimersByTime(1000);
     await flushPromises();
 

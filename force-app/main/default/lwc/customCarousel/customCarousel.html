@@ -1,16 +1,6 @@
 <template>
   <c-error-alert lwc:if={errorMessage} class="slds-show slds-m-bottom_small" message={errorMessage}></c-error-alert>
-  <div
-    role="region"
-    aria-roledescription="carousel"
-    aria-label="Image carousel"
-    onkeydown={handleKeyDown}
-    onfocusin={handleFocusIn}
-    onmouseenter={handleMouseEnter}
-    onmouseleave={handleMouseLeave}
-    onpointerdown={handlePointerPress}
-    onpointerup={handlePointerRelease}
-  >
+  <section class="carousel" aria-roledescription="carousel" aria-label="Image carousel">
     <div class="slds-is-relative container" style={maxWidth}>
       <div
         class="carousel-viewport"
@@ -20,13 +10,7 @@
       >
         <div class={trackClass} style={trackStyle}>
           <template for:each={slidesData} for:item="slide">
-            <div
-              key={slide.index}
-              class={slide.slideClass}
-              role="group"
-              aria-roledescription="slide"
-              lwc:spread={slide.slideAria}
-            >
+            <div key={slide.index} class={slide.slideClass} lwc:spread={slide.slideAria}>
               <div lwc:if={showSlideNumber} class="slideNumbers slds-is-absolute">
                 {slide.index}/{slidesData.length}
               </div>
@@ -88,5 +72,5 @@
       </template>
     </div>
     <output class="slds-assistive-text">{announcement}</output>
-  </div>
+  </section>
 </template>
