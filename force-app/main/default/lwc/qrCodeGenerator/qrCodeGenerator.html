@@ -2,6 +2,7 @@
   <lightning-card title="QR Code Generator" icon-name="utility:scan">
     <div class="slds-var-p-horizontal_medium slds-var-p-bottom_medium">
       <lightning-input
+        data-id="url"
         type="url"
         label="Target URL"
         placeholder="https://example.com"
@@ -9,6 +10,27 @@
         onchange={handleUrlChange}
         class="slds-var-m-bottom_small"
       ></lightning-input>
+
+      <div class="slds-grid slds-gutters slds-var-m-bottom_small">
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input
+            data-id="color-dark"
+            type="color"
+            label="Dark Color"
+            value={colorDark}
+            onchange={handleColorDarkChange}
+          ></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input
+            data-id="color-light"
+            type="color"
+            label="Light Color"
+            value={colorLight}
+            onchange={handleColorLightChange}
+          ></lightning-input>
+        </div>
+      </div>
 
       <lightning-input
         data-id="file-input"
@@ -40,6 +62,12 @@
           disabled={isGenerateDisabled}
           class="slds-var-m-bottom_medium"
         ></lightning-button>
+      </div>
+
+      <div role="status">
+        <p lwc:if={isHardToScan} data-id="contrast-hint" class="slds-text-color_weak slds-var-m-bottom_small">
+          These colors may be hard to scan.
+        </p>
       </div>
 
       <template lwc:if={isLoading}>

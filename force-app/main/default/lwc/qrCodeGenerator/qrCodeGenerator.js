@@ -9,6 +9,19 @@ import { api, LightningElement, wire } from 'lwc';
 
 const DEFAULT_SIZE = 256;
 const MIN_RESOLUTION = 1024;
+const MIN_SCAN_CONTRAST = 3;
+
+/** Returns the WCAG relative luminance of a hex color, or null for any other color format. */
+function getLuminance(color) {
+  const hex = /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.exec(color)?.[1];
+  if (!hex) return null;
+  const full = hex.length === 3 ? hex.replace(/./g, '$&$&') : hex;
+  const [r, g, b] = [0, 2, 4].map((start) => {
+    const channel = Number.parseInt(full.slice(start, start + 2), 16) / 255;
+    return channel <= 0.03928 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+  });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
 
 /**
  * A QR Code Generator for URLs with optional logo overlay using the QRCode.js library.
@@ -24,18 +37,32 @@ const MIN_RESOLUTION = 1024;
  */
 export default class QrCodeGenerator extends LightningElement {
   /**
-   * The color of the dark modules of the code. Keep enough contrast to the light color, so that it stays scannable.
+   * The initial color of the dark modules of the code. Users can change it.
    * @type {string}
    * @default '#000000'
    */
-  @api colorDark = '#000000';
+  @api
+  get colorDark() {
+    return this._colorDark;
+  }
+
+  set colorDark(value) {
+    this._colorDark = value;
+  }
 
   /**
-   * The color of the light modules of the code.
+   * The initial color of the light modules of the code. Users can change it.
    * @type {string}
    * @default '#ffffff'
    */
-  @api colorLight = '#ffffff';
+  @api
+  get colorLight() {
+    return this._colorLight;
+  }
+
+  set colorLight(value) {
+    this._colorLight = value;
+  }
 
   /**
    * The record to save the code to. Set automatically on record pages.
@@ -95,6 +122,8 @@ export default class QrCodeGenerator extends LightningElement {
   isLoading = false;
   isSaving = false;
   isUrlValid = true;
+  _colorDark = '#000000';
+  _colorLight = '#ffffff';
   errorMessage;
   qrLibLoaded = false;
   _logoUrl;
@@ -138,6 +167,14 @@ export default class QrCodeGenerator extends LightningElement {
     } else {
       this.setCode('');
     }
+  }
+
+  handleColorDarkChange(event) {
+    this._colorDark = event.target.value;
+  }
+
+  handleColorLightChange(event) {
+    this._colorLight = event.target.value;
   }
 
   handleFileUpload(event) {
@@ -253,6 +290,13 @@ export default class QrCodeGenerator extends LightningElement {
   failSave(error) {
     this.isSaving = false;
     showErrorToast(this, 'Error saving the QR code', error);
+  }
+
+  get isHardToScan() {
+    const dark = getLuminance(this.colorDark);
+    const light = getLuminance(this.colorLight);
+    if (dark === null || light === null) return false;
+    return dark >= light || (light + 0.05) / (dark + 0.05) < MIN_SCAN_CONTRAST;
   }
 
   get displaySize() {

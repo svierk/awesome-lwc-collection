@@ -18,16 +18,16 @@ A basic QR Code Generator with optional logo overlay using the external QRCode.j
 
 ## Attributes
 
-| Name                | Type    | Default   | Description                                                                                                     |
-| ------------------- | ------- | --------- | --------------------------------------------------------------------------------------------------------------- |
-| color-dark          | string  | '#000000' | The color of the dark modules of the code. Keep enough contrast to the light color, so that it stays scannable. |
-| color-light         | string  | '#ffffff' | The color of the light modules of the code.                                                                     |
-| logo-url            | string  |           | The logo to show in the code. An image from another domain needs to allow this with CORS.                       |
-| record-id           | string  |           | The record to save the code to. Set automatically on record pages.                                              |
-| save-to-record      | boolean | false     | If present, a button saves the code as a file on the record given by record-id.                                 |
-| size                | number  | 256       | The displayed size of the code in pixels. The image has at least a resolution of 1024 pixels.                   |
-| qr-code-data-url    | string  |           | Read-only. The code as a PNG data URL, empty without a code. Also available as a Flow output.                   |
-| content-document-id | string  |           | Read-only. The id of the saved file. Empties with a new code. Also available as a Flow output.                  |
+| Name                | Type    | Default   | Description                                                                                    |
+| ------------------- | ------- | --------- | ---------------------------------------------------------------------------------------------- |
+| color-dark          | string  | '#000000' | The initial color of the dark modules of the code. Users can change it.                        |
+| color-light         | string  | '#ffffff' | The initial color of the light modules of the code. Users can change it.                       |
+| logo-url            | string  |           | The logo to show in the code. An image from another domain needs to allow this with CORS.      |
+| record-id           | string  |           | The record to save the code to. Set automatically on record pages.                             |
+| save-to-record      | boolean | false     | If present, a button saves the code as a file on the record given by record-id.                |
+| size                | number  | 256       | The displayed size of the code in pixels. The image has at least a resolution of 1024 pixels.  |
+| qr-code-data-url    | string  |           | Read-only. The code as a PNG data URL, empty without a code. Also available as a Flow output.  |
+| content-document-id | string  |           | Read-only. The id of the saved file. Empties with a new code. Also available as a Flow output. |
 
 ## Events
 
@@ -43,6 +43,8 @@ A basic QR Code Generator with optional logo overlay using the external QRCode.j
 ```
 
 Users enter a target URL, optionally upload a logo and generate the code. The URL has to be complete, including `https://`.
+
+Users can also change both colors. A hint appears if the contrast is low or the code is inverted, because such a code may be hard to scan. It doesn't block generating.
 
 Saving creates the file directly through Lightning Data Service, so no Apex is involved and the permissions of the user apply.
 

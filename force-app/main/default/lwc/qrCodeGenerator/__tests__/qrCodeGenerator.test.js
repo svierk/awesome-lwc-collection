@@ -14,8 +14,13 @@ const flushPromises = () => new Promise(process.nextTick);
 let element;
 
 function getInputs() {
-  const inputs = element.shadowRoot.querySelectorAll('lightning-input');
-  return { urlInput: inputs[0], fileInput: inputs[1] };
+  const input = (id) => element.shadowRoot.querySelector(`[data-id="${id}"]`);
+  return {
+    urlInput: input('url'),
+    darkInput: input('color-dark'),
+    lightInput: input('color-light'),
+    fileInput: input('file-input')
+  };
 }
 
 function errorText() {
@@ -92,6 +97,14 @@ const generateFor = async (properties, generate = mockQrLib()) => {
   element.shadowRoot.querySelector('lightning-button').click();
   await flushPromises();
   return generate;
+};
+
+const hint = () => element.shadowRoot.querySelector('[data-id="contrast-hint"]');
+
+const pickColor = async (input, value) => {
+  input.value = value;
+  input.dispatchEvent(new CustomEvent('change'));
+  await flushPromises();
 };
 
 describe('c-qr-code-generator', () => {
@@ -206,35 +219,6 @@ describe('c-qr-code-generator', () => {
     expect(errorText()).toBe('Failed to read the selected file.');
   });
 
-  it('should enable the generate button once a url is entered', async () => {
-    // given
-    await renderAndLoad();
-    const generateBtn = element.shadowRoot.querySelector('lightning-button');
-
-    // when
-    await enterUrl('https://example.com');
-
-    // then
-    expect(generateBtn.disabled).toBe(false);
-  });
-
-  it('should generate a QR code image when the generate button is clicked', async () => {
-    // given
-    await renderAndLoad();
-    await enterUrl('https://example.com');
-    const generate = mockQrLib();
-
-    // when
-    element.shadowRoot.querySelector('lightning-button').click();
-    await flushPromises();
-
-    // then
-    expect(generate).toHaveBeenCalled();
-    const qrImage = element.shadowRoot.querySelector('.qr-code-image');
-    expect(qrImage).toBeTruthy();
-    expect(qrImage.src).toBe('data:image/png;base64,qrcode');
-  });
-
   it('should show an error when generating without a url', async () => {
     // given
     await renderAndLoad();
@@ -284,25 +268,16 @@ describe('c-qr-code-generator', () => {
     expect(getInputs().urlInput.value).toBe('');
     expect(generate).not.toHaveBeenCalled();
     expect(element.shadowRoot.querySelector('.qr-code-image')).toBeNull();
-  });
-
-  it('should not allow generating while the url is invalid', async () => {
-    // given
-    await renderWith({});
-
-    // when
-    await enterUrl('dfg.com', false);
-
-    // then
     expect(element.shadowRoot.querySelector('lightning-button').disabled).toBe(true);
   });
 
-  it('should remove the validation message as soon as the url is valid', async () => {
+  it('should block an invalid url and remove the message as soon as the url is valid', async () => {
     // given
     await renderWith({});
     await enterUrl('dfg.com', false);
     const report = jest.spyOn(getInputs().urlInput, 'reportValidity');
     expect(report).not.toHaveBeenCalled();
+    expect(element.shadowRoot.querySelector('lightning-button').disabled).toBe(true);
 
     // when
     await enterUrl('https://dfg.com');
@@ -319,7 +294,7 @@ describe('c-qr-code-generator', () => {
     await generateFor({});
 
     // then
-    expect(element.shadowRoot.querySelector('.qr-code-image').src).toContain(CODE);
+    expect(element.shadowRoot.querySelector('.qr-code-image').src).toBe(CODE);
     expect(element.qrCodeDataUrl).toBe(CODE);
     expect(generateHandler.mock.calls[0][0].detail).toEqual({ dataUrl: CODE, value: 'https://example.com' });
     expect(flowChanges(flowHandler)).toContainEqual({ attributeName: 'qrCodeDataUrl', attributeValue: CODE });
@@ -433,5 +408,85 @@ describe('c-qr-code-generator', () => {
     // then
     expect(handler.mock.calls[0][0].detail).toMatchObject({ title: 'Error saving the QR code', variant: 'error' });
     expect(saveButton().disabled).toBe(false);
+  });
+
+  it.each([
+    ['the default colors', {}, '#000000', '#ffffff'],
+    ['the given colors', { colorDark: '#112233', colorLight: '#eeeeee' }, '#112233', '#eeeeee']
+  ])('should start the color pickers with %s', async (_label, properties, dark, light) => {
+    // when
+    await renderWith(properties);
+
+    // then
+    expect(getInputs().darkInput).toMatchObject({ type: 'color', label: 'Dark Color', value: dark });
+    expect(getInputs().lightInput).toMatchObject({ type: 'color', label: 'Light Color', value: light });
+    expect([element.colorDark, element.colorLight]).toEqual([dark, light]);
+    expect(hint()).toBeNull();
+  });
+
+  it('should use the picked colors only for the next code', async () => {
+    // given
+    const generate = await generateFor({});
+
+    // when
+    await pickColor(getInputs().darkInput, '#112233');
+    await pickColor(getInputs().lightInput, '#eeeeee');
+
+    // then
+    expect(generate).toHaveBeenCalledTimes(1);
+    expect(element.shadowRoot.querySelector('.qr-code-image')).toBeTruthy();
+
+    // when
+    element.shadowRoot.querySelector('lightning-button').click();
+    await flushPromises();
+
+    // then
+    expect(lastOptions(generate)).toMatchObject({ colorDark: '#112233', colorLight: '#eeeeee' });
+  });
+
+  it.each([
+    ['yellow on white', '#ffff00', '#ffffff', true],
+    ['dark blue on black', '#000080', '#000000', true],
+    ['white on black', '#ffffff', '#000000', true],
+    ['the same color', '#808080', '#808080', true],
+    ['a short hex value', '#ff0', '#fff', true],
+    ['black on white', '#000000', '#ffffff', false],
+    ['dark blue on white', '#000080', '#ffffff', false],
+    ['dark blue on light grey', '#112233', '#eeeeee', false],
+    ['a color without a hex value', 'red', '#ffffff', false]
+  ])('should decide the hint for %s', async (_label, colorDark, colorLight, expected) => {
+    // when
+    await renderWith({ colorDark, colorLight });
+
+    // then
+    expect(Boolean(hint())).toBe(expected);
+  });
+
+  it('should show the hint while picking and not block generating', async () => {
+    // given
+    const generate = await renderWith({});
+    await enterUrl('https://example.com');
+
+    // when
+    await pickColor(getInputs().darkInput, '#ffff00');
+
+    // then
+    expect(hint().textContent).toBe('These colors may be hard to scan.');
+    expect(element.shadowRoot.querySelector('[role="status"]')).toBeTruthy();
+    expect(element.shadowRoot.querySelector('lightning-button').disabled).toBe(false);
+    await expect(element).toBeAccessible();
+
+    // when
+    element.shadowRoot.querySelector('lightning-button').click();
+    await flushPromises();
+
+    // then
+    expect(lastOptions(generate).colorDark).toBe('#ffff00');
+
+    // when
+    await pickColor(getInputs().darkInput, '#000000');
+
+    // then
+    expect(hint()).toBeNull();
   });
 });
