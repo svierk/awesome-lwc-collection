@@ -72,7 +72,7 @@ function parseComponentJs(component) {
   const jsPath = join(lwcDir, component, `${component}.js`);
   if (!existsSync(jsPath)) return { apiProperties: [], events: [] };
   const source = stripComments(readFileSync(jsPath, 'utf-8'));
-  const apiProperties = [...source.matchAll(/@api\s+(?:get\s+)?([A-Za-z_$][\w$]*)/g)].map((match) => match[1]);
+  const apiProperties = [...source.matchAll(/@api\s+(?:(?:get|async)\s+)?([A-Za-z_$][\w$]*)/g)].map((match) => match[1]);
   const events = [...source.matchAll(/new CustomEvent\(\s*['"]([^'"]+)['"]/g)].map((match) => match[1]);
   return { apiProperties: [...new Set(apiProperties)], events: [...new Set(events)] };
 }

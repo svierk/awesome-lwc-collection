@@ -18,13 +18,19 @@ A simple component that makes use of the Media Capture and Streams API to allow 
 
 **[Allow your Salesforce Users to take a new Profile Picture](https://medium.com/gitconnected/allow-your-salesforce-users-to-take-a-new-profile-picture-201b45de9a6c)**
 
+## Attributes
+
+| Name           | Type   | Default | Description                                                                         |
+| -------------- | ------ | ------- | ----------------------------------------------------------------------------------- |
+| default-camera | string | 'front' | The camera to start with, front or back. Devices with only one camera use that one. |
+
 ## Usage
 
 ```html
-<c-take-user-profile-picture></c-take-user-profile-picture>
+<c-take-user-profile-picture default-camera="front"></c-take-user-profile-picture>
 ```
 
-The component is self-contained: it asks for camera access, takes a photo and updates the profile picture of the current user.
+The component is self-contained: it asks for camera access, takes a photo and updates the profile picture of the current user. To use the camera for something else, see Camera Capture.
 
 ## Component Dependencies
 
@@ -33,3 +39,4 @@ The component is self-contained: it asks for camera access, takes a photo and up
 | UserProfilePictureController     | Apex | Controller class for updating the user's profile picture.      |
 | UserProfilePictureControllerTest | Apex | Test class for UserProfilePictureController.                   |
 | errorUtils                       | LWC  | Shared functions to read error messages and show error toasts. |
+| cameraCapture                    | LWC  | Building block for the live camera view and taking photos.     |

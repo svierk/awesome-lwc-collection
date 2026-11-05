@@ -1,0 +1,24 @@
+<template>
+  <video class="video" autoplay playsinline></video>
+  <canvas class="slds-hide canvas"></canvas>
+  <lightning-button-group lwc:if={showControls} class="slds-show slds-var-m-top_small">
+    <lightning-button
+      data-id="start"
+      label="Start Camera"
+      icon-name="utility:video"
+      onclick={handleStart}
+    ></lightning-button>
+    <lightning-button
+      data-id="stop"
+      label="Stop Camera"
+      icon-name="utility:video_off"
+      onclick={handleStop}
+    ></lightning-button>
+    <lightning-button
+      data-id="capture"
+      label="Capture Photo"
+      icon-name="utility:photo"
+      onclick={handleCapture}
+    ></lightning-button>
+  </lightning-button-group>
+</template>

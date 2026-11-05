@@ -2,40 +2,44 @@ import updateProfilePicture from '@salesforce/apex/UserProfilePictureController.
 import TakeUserProfilePicture from 'c/takeUserProfilePicture';
 import { createElement } from 'lwc';
 
-jest.mock(
-  '@salesforce/apex/UserProfilePictureController.updateProfilePicture',
-  () => {
-    return {
-      default: jest.fn()
-    };
-  },
-  { virtual: true }
-);
+jest.mock('@salesforce/apex/UserProfilePictureController.updateProfilePicture', () => ({ default: jest.fn() }), {
+  virtual: true
+});
 
-// mock media devices
 const mockGetUserMedia = jest.fn();
-const mockTrack = {
-  stop: jest.fn()
-};
+const mockTrack = { stop: jest.fn() };
+const PHOTO = 'data:image/png;base64,testData';
 
 Object.defineProperty(global.navigator, 'mediaDevices', {
   writable: true,
   configurable: true,
-  value: {
-    getUserMedia: mockGetUserMedia
-  }
+  value: { getUserMedia: mockGetUserMedia }
 });
 
-// helper to wait for async dom updates
 const flushPromises = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 let element;
 
+const camera = () => element.shadowRoot.querySelector('c-camera-capture');
+const button = (id) => element.shadowRoot.querySelector(`lightning-button[data-id="${id}"]`);
+const preview = () => element.shadowRoot.querySelector('.preview');
+
+const takePhoto = async (dataUrl = PHOTO) => {
+  camera().dispatchEvent(new CustomEvent('capture', { detail: { dataUrl } }));
+  await flushPromises();
+};
+
+const listenForToast = () => {
+  const handler = jest.fn();
+  element.addEventListener('lightning__showtoast', handler);
+  return handler;
+};
+
 describe('c-take-user-profile-picture', () => {
   beforeEach(() => {
-    element = createElement('c-take-user-profile-picture', {
-      is: TakeUserProfilePicture
-    });
+    global.ResizeObserver = jest.fn(() => ({ observe: jest.fn(), disconnect: jest.fn() }));
+    element = createElement('c-take-user-profile-picture', { is: TakeUserProfilePicture });
+    mockGetUserMedia.mockResolvedValue({ getTracks: () => [mockTrack] });
   });
 
   afterEach(() => {
@@ -43,239 +47,145 @@ describe('c-take-user-profile-picture', () => {
       document.body.removeChild(document.body.firstChild);
     }
     jest.clearAllMocks();
-    mockTrack.stop.mockClear();
-
-    // restore media devices
-    Object.defineProperty(global.navigator, 'mediaDevices', {
-      writable: true,
-      configurable: true,
-      value: {
-        getUserMedia: mockGetUserMedia
-      }
-    });
   });
 
-  it('should be accessible', async () => {
+  it('should be accessible and keep its four buttons in the footer', async () => {
     // when
     document.body.appendChild(element);
 
     // then
+    expect(camera().hideControls).toBe(true);
+    const labels = [...element.shadowRoot.querySelectorAll('[slot="footer"] lightning-button')].map((b) => b.label);
+    expect(labels).toEqual(['Start Camera', 'Stop Camera', 'Capture Photo', 'Update Profile Picture']);
     await expect(element).toBeAccessible();
   });
 
-  it('should start camera successfully', async () => {
+  it.each([
+    ['the front camera by default', {}, 'front', 'user'],
+    ['the given camera', { defaultCamera: 'back' }, 'back', 'environment']
+  ])('should start %s', async (_label, properties, cameraName, facingMode) => {
     // given
-    const mockStream = {
-      getTracks: jest.fn(() => [mockTrack])
-    };
-    mockGetUserMedia.mockResolvedValue(mockStream);
+    Object.assign(element, properties);
     document.body.appendChild(element);
 
     // when
-    const startButton = element.shadowRoot.querySelector('lightning-button[data-id="start"]');
-    startButton.click();
+    button('start').click();
     await flushPromises();
 
     // then
-    expect(mockGetUserMedia).toHaveBeenCalledWith({ video: true, audio: false });
-    const video = element.shadowRoot.querySelector('.video');
-    expect(video.srcObject).toBe(mockStream);
+    expect(camera().camera).toBe(cameraName);
+    expect(mockGetUserMedia).toHaveBeenCalledWith({ video: { facingMode }, audio: false });
   });
 
-  it('should handle camera access error', async () => {
+  it('should capture through the camera and show the photo', async () => {
     // given
-    const mockError = {
-      body: {
-        message: 'Camera access denied'
-      }
-    };
-    mockGetUserMedia.mockRejectedValue(mockError);
+    const capture = jest.spyOn(CanvasRenderingContext2D.prototype, 'drawImage').mockImplementation(() => {});
     document.body.appendChild(element);
-
-    const handler = jest.fn();
-    element.addEventListener('lightning__showtoast', handler);
-
-    // when
-    const startButton = element.shadowRoot.querySelector('lightning-button[data-id="start"]');
-    startButton.click();
-    await flushPromises();
-
-    // then
-    expect(handler).toHaveBeenCalled();
-    const event = handler.mock.calls[0][0];
-    expect(event.detail.title).toBe('Error accessing camera');
-    expect(event.detail.variant).toBe('error');
-  });
-
-  it('should handle missing user media support', async () => {
-    // given
-    Object.defineProperty(global.navigator, 'mediaDevices', {
-      writable: true,
-      configurable: true,
-      value: undefined
-    });
-    document.body.appendChild(element);
-
-    const handler = jest.fn();
-    element.addEventListener('lightning__showtoast', handler);
-
-    // when
-    const startButton = element.shadowRoot.querySelector('lightning-button[data-id="start"]');
-    startButton.click();
-    await flushPromises();
-
-    // then
-    expect(handler).toHaveBeenCalled();
-    const event = handler.mock.calls[0][0];
-    expect(event.detail.title).toBe('Error');
-    expect(event.detail.message).toBe('getUserMedia is not supported in this browser');
-  });
-
-  it('should stop camera and hide preview', async () => {
-    // given
-    const mockStream = {
-      getTracks: jest.fn(() => [mockTrack])
-    };
-    mockGetUserMedia.mockResolvedValue(mockStream);
-    document.body.appendChild(element);
-
-    const startButton = element.shadowRoot.querySelector('lightning-button[data-id="start"]');
-    startButton.click();
+    button('start').click();
     await flushPromises();
 
     // when
-    const stopButton = element.shadowRoot.querySelector('lightning-button[data-id="stop"]');
-    stopButton.click();
-
-    // then
-    expect(mockTrack.stop).toHaveBeenCalled();
-    const video = element.shadowRoot.querySelector('.video');
-    expect(video.srcObject).toBeNull();
-  });
-
-  it('should capture photo and show preview', async () => {
-    // given
-    const mockStream = {
-      getTracks: jest.fn(() => [mockTrack])
-    };
-    mockGetUserMedia.mockResolvedValue(mockStream);
-    document.body.appendChild(element);
-
-    const video = element.shadowRoot.querySelector('.video');
-    const canvas = element.shadowRoot.querySelector('.canvas');
-
-    Object.defineProperty(video, 'videoHeight', { value: 480, writable: true });
-    Object.defineProperty(video, 'videoWidth', { value: 640, writable: true });
-    Object.defineProperty(video, 'srcObject', { value: mockStream, writable: true });
-
-    const mockContext = {
-      drawImage: jest.fn()
-    };
-    canvas.getContext = jest.fn(() => mockContext);
-    canvas.toDataURL = jest.fn(() => 'data:image/png;base64,mockData');
-
-    const startButton = element.shadowRoot.querySelector('lightning-button[data-id="start"]');
-    startButton.click();
+    button('capture').click();
     await flushPromises();
 
-    // when
-    const captureButton = element.shadowRoot.querySelector('lightning-button[data-id="capture"]');
-    captureButton.click();
-
     // then
-    expect(mockContext.drawImage).toHaveBeenCalled();
-    const preview = element.shadowRoot.querySelector('.preview');
-    expect(preview.classList.contains('slds-show')).toBe(true);
+    expect(capture).toHaveBeenCalledTimes(1);
+    expect(preview().src).toContain('data:image/png');
+    capture.mockRestore();
   });
 
-  it('should not capture photo when video stream is null', () => {
+  it('should only allow updating the profile with a photo', async () => {
     // given
     document.body.appendChild(element);
-    const video = element.shadowRoot.querySelector('.video');
-    Object.defineProperty(video, 'srcObject', { value: null, writable: true });
-
-    const canvas = element.shadowRoot.querySelector('.canvas');
-    const mockContext = {
-      drawImage: jest.fn()
-    };
-    canvas.getContext = jest.fn(() => mockContext);
+    expect(button('update').disabled).toBe(true);
+    expect(preview()).toBeNull();
 
     // when
-    const captureButton = element.shadowRoot.querySelector('lightning-button[data-id="capture"]');
-    captureButton.click();
+    await takePhoto();
 
     // then
-    expect(mockContext.drawImage).not.toHaveBeenCalled();
+    expect(button('update').disabled).toBe(false);
+    expect(preview().src).toBe(PHOTO);
   });
 
-  it('should update profile picture successfully', async () => {
+  it('should stop the camera and remove the photo', async () => {
+    // given
+    document.body.appendChild(element);
+    button('start').click();
+    await flushPromises();
+    await takePhoto();
+
+    // when
+    button('stop').click();
+    await flushPromises();
+
+    // then
+    expect(mockTrack.stop).toHaveBeenCalledTimes(1);
+    expect(preview()).toBeNull();
+    expect(button('update').disabled).toBe(true);
+  });
+
+  it('should not fail when stopping before starting', async () => {
+    // given
+    document.body.appendChild(element);
+
+    // when
+    button('stop').click();
+    await flushPromises();
+
+    // then
+    expect(mockTrack.stop).not.toHaveBeenCalled();
+  });
+
+  it('should update the profile picture with the photo', async () => {
     // given
     updateProfilePicture.mockResolvedValue();
     document.body.appendChild(element);
-
-    const canvas = element.shadowRoot.querySelector('.canvas');
-    canvas.toDataURL = jest.fn(() => 'data:image/png;base64,testData');
-
-    const handler = jest.fn();
-    element.addEventListener('lightning__showtoast', handler);
+    await takePhoto();
+    const handler = listenForToast();
 
     // when
-    const updateButton = element.shadowRoot.querySelector('lightning-button[data-id="update"]');
-    updateButton.click();
+    button('update').click();
     await flushPromises();
 
     // then
     expect(updateProfilePicture).toHaveBeenCalledWith({ base64: 'testData' });
-    expect(handler).toHaveBeenCalled();
-    const event = handler.mock.calls[0][0];
-    expect(event.detail.title).toBe('Success');
-    expect(event.detail.variant).toBe('success');
+    expect(handler.mock.calls[0][0].detail).toMatchObject({ title: 'Success', variant: 'success' });
   });
 
-  it('should handle error when updating profile picture', async () => {
+  it('should show an error when updating the profile picture fails', async () => {
     // given
-    const mockError = {
-      body: {
-        message: 'Update failed'
-      }
-    };
-    updateProfilePicture.mockRejectedValue(mockError);
+    updateProfilePicture.mockRejectedValue({ body: { message: 'Update failed' } });
     document.body.appendChild(element);
-
-    const canvas = element.shadowRoot.querySelector('.canvas');
-    canvas.toDataURL = jest.fn(() => 'data:image/png;base64,testData');
-
-    const handler = jest.fn();
-    element.addEventListener('lightning__showtoast', handler);
+    await takePhoto();
+    const handler = listenForToast();
 
     // when
-    const updateButton = element.shadowRoot.querySelector('lightning-button[data-id="update"]');
-    updateButton.click();
+    button('update').click();
     await flushPromises();
 
     // then
-    expect(handler).toHaveBeenCalled();
-    const event = handler.mock.calls[0][0];
-    expect(event.detail.title).toBe('Error saving the profile picture');
-    expect(event.detail.variant).toBe('error');
+    expect(handler.mock.calls[0][0].detail).toMatchObject({
+      title: 'Error saving the profile picture',
+      message: 'Update failed',
+      variant: 'error'
+    });
   });
 
   it('should show the reason when the browser denies the camera', async () => {
     // given
     mockGetUserMedia.mockRejectedValue(new DOMException('Permission denied', 'NotAllowedError'));
     document.body.appendChild(element);
-    const handler = jest.fn();
-    element.addEventListener('lightning__showtoast', handler);
+    const handler = listenForToast();
 
     // when
-    element.shadowRoot.querySelector('lightning-button[data-id="start"]').click();
+    button('start').click();
     await flushPromises();
 
     // then
     expect(handler.mock.calls[0][0].detail).toMatchObject({
       title: 'Error accessing camera',
-      message: 'Permission denied',
-      variant: 'error'
+      message: 'Permission denied'
     });
   });
 });

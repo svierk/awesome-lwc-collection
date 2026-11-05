@@ -10,4 +10,16 @@
       <target>lightning__HomePage</target>
       <target>lightning__RecordPage</target>
     </targets>
+    <targetConfigs>
+      <targetConfig targets="lightning__AppPage,lightning__FlowScreen,lightning__HomePage,lightning__RecordPage">
+        <property
+        name="defaultCamera"
+        type="String"
+        label="Default Camera"
+        description="The camera to start with, front or back. Devices with only one camera use that one."
+        datasource="front,back"
+        default="front"
+      />
+      </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>

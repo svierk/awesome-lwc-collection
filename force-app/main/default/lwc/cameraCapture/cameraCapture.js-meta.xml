@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>68.0</apiVersion>
+    <isExposed>false</isExposed>
+    <masterLabel>Camera Capture</masterLabel>
+    <description>A live camera view that takes photos with the Media Capture and Streams API.</description>
+</LightningComponentBundle>
