@@ -63,9 +63,38 @@
   background-color: var(--slds-g-color-neutral-base-50, #757575);
 }
 
+.carousel-viewport {
+  overflow: hidden;
+  touch-action: pan-y;
+}
+
+.carousel-track-slide {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide {
+  position: relative;
+  flex: 0 0 100%;
+}
+
+.carousel-playback {
+  vertical-align: middle;
+}
+
 .fade {
   animation-name: fade;
   animation-duration: 1.5s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade {
+    animation: none;
+  }
+
+  .carousel-track-slide {
+    transition: none;
+  }
 }
 
 @keyframes fade {
