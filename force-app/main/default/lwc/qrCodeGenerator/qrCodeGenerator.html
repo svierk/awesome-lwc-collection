@@ -64,11 +64,15 @@
         ></lightning-button>
       </div>
 
-      <div role="status">
-        <p lwc:if={isHardToScan} data-id="contrast-hint" class="slds-text-color_weak slds-var-m-bottom_small">
+      <output>
+        <span
+          lwc:if={isHardToScan}
+          data-id="contrast-hint"
+          class="slds-show slds-text-color_weak slds-var-m-bottom_small"
+        >
           These colors may be hard to scan.
-        </p>
-      </div>
+        </span>
+      </output>
 
       <template lwc:if={isLoading}>
         <div class="slds-grid slds-grid_align-center slds-var-p-vertical_x-large">

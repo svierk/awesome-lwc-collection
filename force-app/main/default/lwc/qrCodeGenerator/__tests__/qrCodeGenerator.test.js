@@ -472,7 +472,7 @@ describe('c-qr-code-generator', () => {
 
     // then
     expect(hint().textContent).toBe('These colors may be hard to scan.');
-    expect(element.shadowRoot.querySelector('[role="status"]')).toBeTruthy();
+    expect(hint().parentElement.tagName).toBe('OUTPUT');
     expect(element.shadowRoot.querySelector('lightning-button').disabled).toBe(false);
     await expect(element).toBeAccessible();
 
