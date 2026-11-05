@@ -146,7 +146,7 @@ describe('c-qr-code-generator', () => {
     expect(loadScript).toHaveBeenCalledTimes(1);
   });
 
-  it('should read the file and show a logo preview after uploading a logo', async () => {
+  it('should show a logo preview after uploading and remove it with the button or an empty selection', async () => {
     // given
     await renderAndLoad();
     const { fileInput } = getInputs();
@@ -162,12 +162,6 @@ describe('c-qr-code-generator', () => {
     // then
     expect(reader.readAsDataURL).toHaveBeenCalledWith(file);
     expect(element.shadowRoot.querySelector('.logo-preview-image')).toBeTruthy();
-  });
-
-  it('should remove the logo preview when the remove button is clicked', async () => {
-    // given
-    await renderAndLoad();
-    await uploadLogo();
 
     // when
     element.shadowRoot.querySelector('lightning-button-icon').click();
@@ -175,14 +169,9 @@ describe('c-qr-code-generator', () => {
 
     // then
     expect(element.shadowRoot.querySelector('.logo-preview-image')).toBeNull();
-  });
-
-  it('should not set a logo when no file is selected', async () => {
-    // given
-    await renderAndLoad();
-    const { fileInput } = getInputs();
 
     // when
+    await uploadLogo();
     fileInput.files = [];
     fileInput.dispatchEvent(new CustomEvent('change'));
     await flushPromises();
@@ -487,5 +476,22 @@ describe('c-qr-code-generator', () => {
     // then
     expect(input.value).toBe(expected);
     expect(report).toHaveBeenCalledTimes(reports);
+  });
+
+  it('should draw whole pixel modules inside a quiet zone with the real library', async () => {
+    // given
+    jest.isolateModules(() => require('../../../staticresources/qrcodejs.js'));
+    const fillRect = jest.spyOn(CanvasRenderingContext2D.prototype, 'fillRect');
+
+    // when
+    await globalThis.QRCodeWithLogo.generate({ text: 'https://example.com', width: 1024, height: 1024 });
+
+    // then
+    const [background, ...modules] = fillRect.mock.calls;
+    const size = modules[0][2];
+    expect(background).toEqual([0, 0, 1024, 1024]);
+    expect(Number.isInteger(size)).toBe(true);
+    expect(Math.min(...modules.map(([x]) => x))).toBeGreaterThanOrEqual(size * 4);
+    expect(Math.max(...modules.map(([x]) => x + size))).toBeLessThanOrEqual(1024 - size * 4);
   });
 });

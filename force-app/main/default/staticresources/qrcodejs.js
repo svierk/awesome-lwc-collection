@@ -58,8 +58,12 @@ window.QRCodeWithLogo = {
                 var ctx = canvas.getContext('2d');
 
                 // Draw QR code
+                // Whole pixel modules avoid seams, and scanners need a quiet zone of 4 modules around the code
                 var moduleCount = qrCode.getModuleCount();
-                var moduleSize = opts.width / moduleCount;
+                var quietZone = 4;
+                var moduleSize = Math.max(Math.floor(opts.width / (moduleCount + quietZone * 2)), 1);
+                var codeSize = moduleSize * moduleCount;
+                var offset = Math.floor((opts.width - codeSize) / 2);
 
                 // Fill background
                 ctx.fillStyle = opts.colorLight;
@@ -71,8 +75,8 @@ window.QRCodeWithLogo = {
                     for (var col = 0; col < moduleCount; col++) {
                         if (qrCode.isDark(row, col)) {
                             ctx.fillRect(
-                                col * moduleSize,
-                                row * moduleSize,
+                                offset + col * moduleSize,
+                                offset + row * moduleSize,
                                 moduleSize,
                                 moduleSize
                             );
@@ -85,8 +89,8 @@ window.QRCodeWithLogo = {
                     var logo = new Image();
                     logo.crossOrigin = 'anonymous';
                     logo.onload = function() {
-                        var logoWidth = opts.width * opts.logoSize;
-                        var logoHeight = opts.height * opts.logoSize;
+                        var logoWidth = codeSize * opts.logoSize;
+                        var logoHeight = codeSize * opts.logoSize;
                         var logoX = (opts.width - logoWidth) / 2;
                         var logoY = (opts.height - logoHeight) / 2;
 

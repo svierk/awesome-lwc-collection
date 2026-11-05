@@ -46,6 +46,8 @@ Users enter a target URL, optionally upload a logo and generate the code. The UR
 
 Users can also change both colors. A hint appears if the contrast is low or the code is inverted, because such a code may be hard to scan. It doesn't block generating.
 
+The image includes the empty border that scanners need, in the light color, so a saved code can be printed or placed anywhere.
+
 Saving creates the file directly through Lightning Data Service, so no Apex is involved and the permissions of the user apply.
 
 ## Component Dependencies
