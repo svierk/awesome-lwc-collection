@@ -258,4 +258,19 @@ describe('c-camera-capture', () => {
     expect(global.ResizeObserver).toHaveBeenCalledTimes(1);
     expect(observer.disconnect).toHaveBeenCalledTimes(1);
   });
+
+  it('should stop the camera with its stop button', async () => {
+    // given
+    const stream = createStream();
+    mockGetUserMedia.mockResolvedValue(stream);
+    render();
+    await element.start();
+
+    // when
+    button('stop').click();
+
+    // then
+    expect(stream.track.stop).toHaveBeenCalledTimes(1);
+    expect(video().srcObject).toBeNull();
+  });
 });
