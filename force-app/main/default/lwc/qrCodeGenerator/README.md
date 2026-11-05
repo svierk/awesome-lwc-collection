@@ -16,13 +16,39 @@ A basic QR Code Generator with optional logo overlay using the external QRCode.j
 
 **[How to Generate QR Codes with Lightning Web Components](https://medium.com/capgemini-salesforce-architects/how-to-generate-qr-codes-with-lightning-web-components-4d41dd09f3c1)**
 
+## Attributes
+
+| Name                | Type    | Default   | Description                                                                                    |
+| ------------------- | ------- | --------- | ---------------------------------------------------------------------------------------------- |
+| color-dark          | string  | '#000000' | The initial color of the dark modules of the code, as any CSS color. Users can change it.      |
+| color-light         | string  | '#ffffff' | The initial color of the light modules of the code, as any CSS color. Users can change it.     |
+| logo-url            | string  |           | The logo to show in the code. An image from another domain needs to allow this with CORS.      |
+| record-id           | string  |           | The record to save the code to. Set automatically on record pages.                             |
+| save-to-record      | boolean | false     | If present, a button saves the code as a file on the record given by record-id.                |
+| size                | number  | 256       | The displayed size of the code in pixels. The image has at least a resolution of 1024 pixels.  |
+| qr-code-data-url    | string  |           | Read-only. The code as a PNG data URL, empty without a code. Also available as a Flow output.  |
+| content-document-id | string  |           | Read-only. The id of the saved file. Empties with a new code. Also available as a Flow output. |
+
+## Events
+
+| Name           | Detail                  | Description                                             |
+| -------------- | ----------------------- | ------------------------------------------------------- |
+| qrcodegenerate | `{ dataUrl, value }`    | Fired when a code was generated.                        |
+| qrcodesave     | `{ contentDocumentId }` | Fired after the code was saved as a file on the record. |
+
 ## Usage
 
 ```html
-<c-qr-code-generator></c-qr-code-generator>
+<c-qr-code-generator size="300" onqrcodegenerate={handleGenerate}></c-qr-code-generator>
 ```
 
-The component is self-contained: enter a target URL, optionally upload a logo for the overlay and generate the QR code.
+Users enter a target URL, optionally upload a logo and generate the code. The URL has to be complete, including `https://`.
+
+Users can also change both colors. A hint appears if the contrast is low or the code is inverted, because such a code may be hard to scan. It doesn't block generating.
+
+The image includes the empty border that scanners need, in the light color, so a saved code can be printed or placed anywhere.
+
+Saving creates the file directly through Lightning Data Service, so no Apex is involved and the permissions of the user apply.
 
 ## Component Dependencies
 

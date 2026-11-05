@@ -2,6 +2,7 @@
   <lightning-card title="QR Code Generator" icon-name="utility:scan">
     <div class="slds-var-p-horizontal_medium slds-var-p-bottom_medium">
       <lightning-input
+        data-id="url"
         type="url"
         label="Target URL"
         placeholder="https://example.com"
@@ -9,6 +10,29 @@
         onchange={handleUrlChange}
         class="slds-var-m-bottom_small"
       ></lightning-input>
+
+      <div class="slds-grid slds-gutters slds-var-m-bottom_small">
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input
+            data-id="color-dark"
+            type="color"
+            label="Dark Color"
+            value={colorDark}
+            onchange={handleColorDarkChange}
+            onblur={handleColorDarkBlur}
+          ></lightning-input>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input
+            data-id="color-light"
+            type="color"
+            label="Light Color"
+            value={colorLight}
+            onchange={handleColorLightChange}
+            onblur={handleColorLightBlur}
+          ></lightning-input>
+        </div>
+      </div>
 
       <lightning-input
         data-id="file-input"
@@ -42,6 +66,16 @@
         ></lightning-button>
       </div>
 
+      <output>
+        <span
+          lwc:if={isHardToScan}
+          data-id="contrast-hint"
+          class="slds-show slds-text-color_weak slds-var-m-bottom_small"
+        >
+          These colors may be hard to scan.
+        </span>
+      </output>
+
       <template lwc:if={isLoading}>
         <div class="slds-grid slds-grid_align-center slds-var-p-vertical_x-large">
           <lightning-spinner alternative-text="Generating..." size="medium"></lightning-spinner>
@@ -55,9 +89,19 @@
       ></c-error-alert>
 
       <template lwc:if={hasQRCode}>
-        <div class="qr-code-container slds-grid slds-grid_align-center slds-var-p-around_medium slds-var-m-top_medium">
-          <img src={qrCodeDataUrl} alt="Generated QR Code" class="qr-code-image" />
+        <div class="qr-code-container slds-grid slds-grid_align-center slds-var-m-top_medium">
+          <img src={qrCodeDataUrl} alt="Generated QR Code" class="qr-code-image" style={imageStyle} />
         </div>
+        <lightning-button
+          lwc:if={showSave}
+          data-id="save"
+          class="slds-show slds-var-m-top_small"
+          variant="brand"
+          label="Save"
+          icon-name="utility:save"
+          onclick={handleSave}
+          disabled={isSaveDisabled}
+        ></lightning-button>
       </template>
     </div>
   </lightning-card>

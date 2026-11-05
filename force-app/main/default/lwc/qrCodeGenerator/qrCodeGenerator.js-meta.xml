@@ -10,4 +10,129 @@
         <target>lightning__FlowScreen</target>
         <target>lightning__RecordPage</target>
     </targets>
+    <targetConfigs>
+      <targetConfig targets="lightning__AppPage,lightning__HomePage">
+        <property
+        name="size"
+        type="Integer"
+        label="Size"
+        description="The displayed size of the code in pixels."
+        default="256"
+      />
+        <property
+        name="colorDark"
+        type="String"
+        label="Dark Color"
+        description="The initial color of the dark modules of the code. Users can change it."
+        default="#000000"
+      />
+        <property
+        name="colorLight"
+        type="String"
+        label="Light Color"
+        description="The initial color of the light modules of the code. Users can change it."
+        default="#ffffff"
+      />
+        <property
+        name="logoUrl"
+        type="String"
+        label="Logo URL"
+        description="The logo to show in the code. An image from another domain needs to allow this with CORS."
+      />
+      </targetConfig>
+      <targetConfig targets="lightning__RecordPage">
+        <property
+        name="size"
+        type="Integer"
+        label="Size"
+        description="The displayed size of the code in pixels."
+        default="256"
+      />
+        <property
+        name="colorDark"
+        type="String"
+        label="Dark Color"
+        description="The initial color of the dark modules of the code. Users can change it."
+        default="#000000"
+      />
+        <property
+        name="colorLight"
+        type="String"
+        label="Light Color"
+        description="The initial color of the light modules of the code. Users can change it."
+        default="#ffffff"
+      />
+        <property
+        name="logoUrl"
+        type="String"
+        label="Logo URL"
+        description="The logo to show in the code. An image from another domain needs to allow this with CORS."
+      />
+        <property
+        name="saveToRecord"
+        type="Boolean"
+        label="Save To Record"
+        description="Show a button that saves the code as a file on the record."
+        default="false"
+      />
+      </targetConfig>
+      <targetConfig targets="lightning__FlowScreen">
+        <property
+        name="size"
+        type="Integer"
+        label="Size"
+        description="The displayed size of the code in pixels."
+        default="256"
+      />
+        <property
+        name="colorDark"
+        type="String"
+        label="Dark Color"
+        description="The initial color of the dark modules of the code. Users can change it."
+        default="#000000"
+      />
+        <property
+        name="colorLight"
+        type="String"
+        label="Light Color"
+        description="The initial color of the light modules of the code. Users can change it."
+        default="#ffffff"
+      />
+        <property
+        name="logoUrl"
+        type="String"
+        label="Logo URL"
+        description="The logo to show in the code. An image from another domain needs to allow this with CORS."
+      />
+        <property
+        name="recordId"
+        type="String"
+        label="Record Id"
+        description="The record to save the code to."
+        role="inputOnly"
+      />
+        <property
+        name="saveToRecord"
+        type="Boolean"
+        label="Save To Record"
+        description="Show a button that saves the code as a file on the record."
+        default="false"
+        role="inputOnly"
+      />
+        <property
+        name="qrCodeDataUrl"
+        type="String"
+        label="QR Code Data URL"
+        description="The code as a PNG data URL."
+        role="outputOnly"
+      />
+        <property
+        name="contentDocumentId"
+        type="String"
+        label="Content Document Id"
+        description="The id of the saved file."
+        role="outputOnly"
+      />
+      </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>
