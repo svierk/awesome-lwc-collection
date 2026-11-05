@@ -229,7 +229,7 @@ export default class QrCodeGenerator extends LightningElement {
 
   generateCode() {
     if (!this.url) {
-      this.errorMessage = 'Please enter a URL.';
+      this.errorMessage = 'Please enter a text or URL.';
       return;
     }
 

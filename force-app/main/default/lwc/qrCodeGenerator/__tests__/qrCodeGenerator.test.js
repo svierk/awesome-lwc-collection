@@ -242,7 +242,7 @@ describe('c-qr-code-generator', () => {
     await flushPromises();
 
     // then
-    expect(errorText()).toBe('Please enter a URL.');
+    expect(errorText()).toBe('Please enter a text or URL.');
   });
 
   it('should show an error when the library is not available', async () => {
@@ -283,7 +283,7 @@ describe('c-qr-code-generator', () => {
 
     // then
     expect(lastOptions(generate).text).toBe('https://salesforce.com');
-    expect(getInputs().urlInput.value).toBe('https://salesforce.com');
+    expect(getInputs().urlInput).toMatchObject({ value: 'https://salesforce.com', type: 'text', label: 'Text or URL' });
     expect(element.shadowRoot.querySelector('.qr-code-image').src).toContain(CODE);
     expect(element.qrCodeDataUrl).toBe(CODE);
     expect(handler.mock.calls[0][0].detail).toEqual({ dataUrl: CODE, value: 'https://salesforce.com' });

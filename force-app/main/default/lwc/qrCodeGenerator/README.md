@@ -46,7 +46,7 @@ A basic QR Code Generator with optional logo overlay using the external QRCode.j
 <c-qr-code-generator value="https://example.com" hide-input onqrcodegenerate={handleGenerate}></c-qr-code-generator>
 ```
 
-Without attributes, users enter a target URL, optionally upload a logo and generate the code. With `value` or a record field, the code is generated without a click.
+Without attributes, users enter a text or URL, optionally upload a logo and generate the code. With `value` or a record field, the code is generated without a click.
 
 Saving creates the file directly through Lightning Data Service, so no Apex is involved and the permissions of the user apply.
 
