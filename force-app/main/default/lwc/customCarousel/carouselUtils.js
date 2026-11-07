@@ -102,7 +102,7 @@ export function toSlideState(slide, { current, total, slideTransition, thumbnail
     ...slide,
     link: safeLink(slide.link),
     linkLabel: slide.linkLabel || 'Learn more',
-    imageAlt: slide.description || slide.heading || '',
+    altText: slide.description || slide.heading || '',
     // links of hidden slides stay out of the tab order
     linkAttributes: { tabIndex: isCurrent ? 0 : -1 },
     slideClass: slideTransition ? 'carousel-slide' : fadeClass,

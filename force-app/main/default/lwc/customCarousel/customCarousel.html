@@ -29,7 +29,7 @@
             <div class={trackClass} style={trackStyle}>
               <template for:each={slidesData} for:item="slide">
                 <div key={slide.index} class={slide.slideClass} lwc:spread={slide.slideAria}>
-                  <img src={slide.image} alt={slide.imageAlt} style={maxHeight} draggable="false" />
+                  <img src={slide.image} alt={slide.altText} style={maxHeight} draggable="false" />
                   <div
                     lwc:if={showSlideText}
                     class="text-section slds-var-p-around_medium slds-is-absolute slds-size_full slds-text-align_center"
