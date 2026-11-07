@@ -1,44 +1,78 @@
 <template>
   <lightning-card title="CSV Importer" icon-name="doctype:csv">
-    <div class="slds-var-p-horizontal_medium">
-      <c-error-alert lwc:if={errorMessage} class="slds-show slds-m-bottom_small" message={errorMessage}></c-error-alert>
-      <lightning-input
-        type="file"
-        label="CSV file"
-        accept=".csv,.txt,text/csv"
-        onchange={handleFileUpload}
-      ></lightning-input>
-      <div class="slds-grid slds-gutters slds-wrap slds-m-top_small">
-        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
-          <lightning-combobox
-            name="encoding"
-            data-id="encoding"
-            label="Encoding"
-            value={encoding}
-            options={encodingOptions}
-            onchange={handleEncodingChange}
-          ></lightning-combobox>
-        </div>
-        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
-          <lightning-combobox
-            name="delimiter"
-            data-id="delimiter"
-            label="Delimiter"
-            value={delimiter}
-            options={delimiterOptions}
-            onchange={handleDelimiterChange}
-          ></lightning-combobox>
-        </div>
-      </div>
-      <p lwc:if={hasRows} class="summary slds-text-color_weak slds-m-vertical_small">{summary}</p>
+    <div class="slds-var-p-horizontal_medium slds-m-bottom_medium">
+      <lightning-progress-indicator current-step={currentStep} type="path" variant="base">
+        <template for:each={steps} for:item="step">
+          <lightning-progress-step key={step.value} label={step.label} value={step.value}></lightning-progress-step>
+        </template>
+      </lightning-progress-indicator>
     </div>
-    <div lwc:if={hasRows} class="preview">
-      <lightning-datatable
-        key-field={keyField}
-        data={previewRows}
-        columns={columns}
-        hide-checkbox-column
-      ></lightning-datatable>
+    <div class={uploadClass} data-id="upload-step">
+      <div class="slds-var-p-horizontal_medium">
+        <c-error-alert
+          lwc:if={errorMessage}
+          class="slds-show slds-m-bottom_small"
+          message={errorMessage}
+        ></c-error-alert>
+        <lightning-input
+          type="file"
+          label="CSV file"
+          accept=".csv,.txt,text/csv"
+          onchange={handleFileUpload}
+        ></lightning-input>
+        <div class="slds-grid slds-gutters slds-wrap slds-m-top_small">
+          <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+            <lightning-combobox
+              name="encoding"
+              data-id="encoding"
+              label="Encoding"
+              value={encoding}
+              options={encodingOptions}
+              onchange={handleEncodingChange}
+            ></lightning-combobox>
+          </div>
+          <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+            <lightning-combobox
+              name="delimiter"
+              data-id="delimiter"
+              label="Delimiter"
+              value={delimiter}
+              options={delimiterOptions}
+              onchange={handleDelimiterChange}
+            ></lightning-combobox>
+          </div>
+        </div>
+        <p lwc:if={hasRows} class="summary slds-text-color_weak slds-m-vertical_small">{summary}</p>
+      </div>
+      <div lwc:if={hasRows} class="preview">
+        <lightning-datatable
+          key-field={keyField}
+          data={previewRows}
+          columns={columns}
+          hide-checkbox-column
+        ></lightning-datatable>
+      </div>
+    </div>
+    <div class={mapClass} data-id="map-step">
+      <div class="slds-var-p-horizontal_medium">
+        <c-csv-importer-mapping
+          lwc:if={hasRows}
+          headers={headers}
+          sample-row={sampleRow}
+          fixed-object-api-name={importObjectApiName}
+        ></c-csv-importer-mapping>
+      </div>
+    </div>
+    <div slot="footer" class="slds-grid slds-size_full">
+      <lightning-button data-id="back" class={mapClass} label="Back" onclick={handleBack}></lightning-button>
+      <lightning-button
+        data-id="next"
+        class={nextClass}
+        variant="brand"
+        label="Next"
+        disabled={isNextDisabled}
+        onclick={handleNext}
+      ></lightning-button>
     </div>
   </lightning-card>
 </template>

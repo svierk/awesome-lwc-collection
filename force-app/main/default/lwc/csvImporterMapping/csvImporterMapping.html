@@ -1,0 +1,73 @@
+<template>
+  <div class="slds-grid slds-gutters slds-wrap slds-m-bottom_small">
+    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+      <lightning-input
+        lwc:if={isObjectFixed}
+        data-id="object"
+        label="Object"
+        value={fixedObjectApiName}
+        read-only
+      ></lightning-input>
+      <lightning-input
+        lwc:else
+        data-id="object"
+        label="Object API Name"
+        placeholder="e.g. Contact"
+        field-level-help="The API name of the object to import into, e.g. Contact or Invoice__c."
+        value={objectApiName}
+        oncommit={handleObjectChange}
+      ></lightning-input>
+      <p lwc:if={objectLabel} class="object-label slds-text-color_weak slds-m-top_xx-small">
+        Importing into {objectLabel}.
+      </p>
+    </div>
+  </div>
+  <c-error-alert lwc:if={objectError} class="slds-show slds-m-bottom_small" message={objectError}></c-error-alert>
+  <template lwc:if={hasObject}>
+    <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+      <thead>
+        <tr class="slds-line-height_reset">
+          <th scope="col"><div class="slds-truncate" title="Column">Column</div></th>
+          <th scope="col"><div class="slds-truncate" title="Example">Example</div></th>
+          <th scope="col"><div class="slds-truncate" title="Salesforce field">Salesforce field</div></th>
+        </tr>
+      </thead>
+      <tbody>
+        <template for:each={rows} for:item="row">
+          <tr key={row.column}>
+            <th scope="row"><div class="slds-truncate" title={row.column}>{row.column}</div></th>
+            <td><div class="slds-truncate" title={row.sample}>{row.sample}</div></td>
+            <td>
+              <lightning-combobox
+                data-column={row.column}
+                label={row.label}
+                variant="label-hidden"
+                value={row.field}
+                options={fieldOptions}
+                onchange={handleFieldChange}
+              ></lightning-combobox>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+    <p lwc:if={duplicateMessage} class="duplicates slds-text-color_error slds-m-top_small">{duplicateMessage}</p>
+  </template>
+  <div class="slds-grid slds-wrap slds-grid_vertical-align-end slds-m-top_medium">
+    <lightning-button
+      lwc:if={hasObject}
+      class="slds-m-right_medium slds-m-bottom_x-small"
+      label="Download mapping"
+      icon-name="utility:download"
+      onclick={handleExport}
+    ></lightning-button>
+    <lightning-input
+      data-id="mapping-file"
+      type="file"
+      label="Upload a mapping"
+      accept=".json,application/json"
+      onchange={handleImport}
+    ></lightning-input>
+  </div>
+  <c-error-alert lwc:if={importError} class="slds-show slds-m-top_small" message={importError}></c-error-alert>
+</template>

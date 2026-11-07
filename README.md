@@ -38,7 +38,7 @@ Each component has a dedicated page - with a screenshot, a full attribute refere
   <tr>
     <td align="center"><img src="force-app/main/default/lwc/csvImporter/csvImporter.svg" alt="CSV Importer" width="36" height="36" /></td>
     <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/csvImporter">CSV Importer</a></td>
-    <td>Imports CSV files into Salesforce. The first step reads a file and shows a preview of its rows.</td>
+    <td>Imports CSV files into Salesforce in steps: the file is read and previewed, then its columns are mapped to the fields of an object.</td>
   </tr>
   <tr>
     <td align="center"><img src="force-app/main/default/lwc/multiSelectCombobox/multiSelectCombobox.svg" alt="Multi Select Combobox" width="36" height="36" /></td>

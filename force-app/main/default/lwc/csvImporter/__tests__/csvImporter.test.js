@@ -256,4 +256,34 @@ describe('c-csv-importer', () => {
     // then
     expect(datatable().data[0].Name).toBe('John');
   });
+
+  it('should go to the mapping step only with rows and back again', async () => {
+    // given
+    element.importObjectApiName = 'Contact';
+    const next = () => query('lightning-button[data-id="next"]');
+    const disabledWithoutRows = next().disabled;
+    await upload(createFile('Name,Email\nJohn,john@example.com'));
+
+    // when
+    next().click();
+    await flushPromises();
+    const onMapStep = {
+      step: query('lightning-progress-indicator').currentStep,
+      upload: query('[data-id="upload-step"]').className,
+      map: query('[data-id="map-step"]').className
+    };
+    const mapping = query('c-csv-importer-mapping');
+    query('lightning-button[data-id="back"]').click();
+    await flushPromises();
+
+    // then
+    expect(disabledWithoutRows).toBe(true);
+    expect(onMapStep).toEqual({ step: 'map', upload: 'slds-hide', map: '' });
+    expect(mapping.headers).toEqual(['Name', 'Email']);
+    expect(mapping.sampleRow).toEqual({ id: 'row-1', Name: 'John', Email: 'john@example.com' });
+    expect(mapping.fixedObjectApiName).toBe('Contact');
+    expect(query('lightning-progress-indicator').currentStep).toBe('upload');
+    expect(query('[data-id="map-step"]').className).toBe('slds-hide');
+    await expect(element).toBeAccessible();
+  });
 });

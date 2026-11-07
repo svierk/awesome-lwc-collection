@@ -3,7 +3,7 @@
     <apiVersion>68.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>CSV Importer</masterLabel>
-    <description>Imports CSV files into Salesforce, starting with upload and preview.</description>
+    <description>Imports CSV files into Salesforce: upload and preview, then map columns to fields.</description>
     <targets>
         <target>lightning__AppPage</target>
         <target>lightning__HomePage</target>
@@ -11,6 +11,12 @@
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__AppPage,lightning__HomePage,lightning__RecordPage">
+            <property
+        name="importObjectApiName"
+        type="String"
+        label="Object API Name"
+        description="The object the rows are imported into, e.g. Contact. Without it, users enter the object in the wizard."
+      />
             <property
         name="maxFileSizeMb"
         type="Integer"
