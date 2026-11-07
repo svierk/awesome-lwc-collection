@@ -287,31 +287,63 @@ describe('c-csv-importer', () => {
     await expect(element).toBeAccessible();
   });
 
-  it('should go to the review with a valid mapping and pass the rows and mapping on', async () => {
+  it('should go through the review to the import and pass on what each step needs', async () => {
     // given
+    element.externalIdFieldApiName = 'Email';
     const next = () => query('lightning-button[data-id="next"]');
-    await upload(createFile('Name,Email\nJohn,john@example.com'));
-    next().click();
-    await flushPromises();
-    const disabledWithoutMapping = next().disabled;
-    const detail = { objectApiName: 'Contact', mapping: { Name: 'LastName', Email: 'Email' }, valid: true };
+    const back = () => query('lightning-button[data-id="back"]');
+    const send = async (selector, name, detail) => {
+      query(selector).dispatchEvent(new CustomEvent(name, { detail }));
+      await flushPromises();
+    };
+    const go = async () => {
+      next().click();
+      await flushPromises();
+    };
+    const imported = jest.fn();
+    element.addEventListener('imported', imported);
+    await upload(createFile('Name;Email\nJohn;john@example.com', 'leads.csv'));
+    await go();
+    const disabled = { map: next().disabled };
+    const mapping = { Name: 'LastName', Email: 'Email' };
+    const correctedRows = [{ id: 'row-1', Name: 'Johnny', Email: 'john@example.com' }];
 
     // when
-    query('c-csv-importer-mapping').dispatchEvent(new CustomEvent('mappingchange', { detail }));
-    await flushPromises();
-    next().click();
-    await flushPromises();
+    await send('c-csv-importer-mapping', 'mappingchange', { objectApiName: 'Contact', mapping, valid: true });
+    await go();
+    disabled.review = next().disabled;
+    const review = query('c-csv-importer-review');
+    await send('c-csv-importer-review', 'reviewchange', { rows: correctedRows, valid: true });
+    await go();
+    const importStep = query('c-csv-importer-import');
+    const onImportStep = [query('[data-id="import-step"]').className, next().className, back().className];
+    await send('c-csv-importer-import', 'importstart');
+    const backAfterStart = back().className;
+    await send('c-csv-importer-import', 'importfinish', { created: 1, updated: 0, failed: 0, recordIds: ['003x'] });
 
     // then
-    const review = query('c-csv-importer-review');
-    expect(disabledWithoutMapping).toBe(true);
-    expect(query('lightning-progress-indicator').currentStep).toBe('review');
-    expect(query('[data-id="review-step"]').className).toBe('');
-    expect([next().className, query('lightning-button[data-id="back"]').className]).toEqual([
-      'slds-col_bump-left slds-hide',
-      ''
-    ]);
-    expect([review.objectApiName, review.mapping, review.rows.length]).toEqual(['Contact', detail.mapping, 1]);
+    expect(disabled).toEqual({ map: true, review: true });
+    expect(query('c-csv-importer-mapping').keyFieldApiName).toBe('Email');
+    expect([review.objectApiName, review.mapping, review.rows.length]).toEqual(['Contact', mapping, 1]);
+    expect(query('lightning-progress-indicator').currentStep).toBe('import');
+    expect(onImportStep).toEqual(['', 'slds-col_bump-left slds-hide', '']);
+    expect(backAfterStart).toBe('slds-hide');
+    expect([
+      importStep.objectApiName,
+      importStep.mapping,
+      importStep.rows,
+      importStep.headers,
+      importStep.delimiter,
+      importStep.fileName,
+      importStep.externalIdFieldApiName
+    ]).toEqual(['Contact', mapping, correctedRows, ['Name', 'Email'], ';', 'leads.csv', 'Email']);
+    expect(imported.mock.calls[0][0].detail).toEqual({
+      objectApiName: 'Contact',
+      created: 1,
+      updated: 0,
+      failed: 0,
+      recordIds: ['003x']
+    });
     await expect(element).toBeAccessible();
   });
 });

@@ -30,6 +30,7 @@ const INVALID_ROW = { id: 'row-2', Name: '', Mail: 'doe', Born: '01.05.1990', So
 const flushPromises = () => new Promise((resolve) => setTimeout(resolve, 0));
 
 let element;
+let changes;
 
 const query = (selector) => element.shadowRoot.querySelector(selector);
 
@@ -57,7 +58,9 @@ const save = async (draftValues) => {
 
 describe('c-csv-importer-review', () => {
   beforeEach(() => {
+    changes = [];
     element = createElement('c-csv-importer-review', { is: CsvImporterReview });
+    element.addEventListener('reviewchange', (event) => changes.push(event.detail));
   });
 
   afterEach(() => {
@@ -88,6 +91,7 @@ describe('c-csv-importer-review', () => {
       [SCORE]: '4.5'
     });
     expect(Object.keys(rowErrors())).toEqual(['2']);
+    expect(changes.at(-1)).toMatchObject({ valid: false, rows: [VALID_ROW, INVALID_ROW] });
     expect(rowErrors()['2']).toEqual({
       title: 'This row has 5 errors.',
       messages: [
@@ -140,6 +144,15 @@ describe('c-csv-importer-review', () => {
     expect(table().data[1]).toMatchObject({ LastName: 'Roe', LeadSource: 'Phone Inquiry' });
     expect(summary()).toBe('Rows with errors: 0 of 2.');
     expect(query('lightning-input').disabled).toBe(true);
+    expect(changes.at(-1).valid).toBe(true);
+    expect(changes.at(-1).rows[1]).toEqual({
+      ...INVALID_ROW,
+      Name: 'Roe',
+      Mail: 'roe@example.com',
+      Born: '1990-05-01',
+      Source: 'Phone Inquiry',
+      Score: '4.5'
+    });
   });
 
   it('should keep corrections when the mapping changes, and drop them for a new file', async () => {
@@ -195,6 +208,7 @@ describe('c-csv-importer-review', () => {
       "The picklist values could not be loaded, so they aren't checked: No access"
     );
     expect(rowErrors()['2'].fieldNames).toEqual(['LastName', 'Email', 'Birthdate', 'Score__c']);
+    expect(changes.at(-1).valid).toBe(false);
     await expect(element).toBeAccessible();
   });
 
@@ -221,5 +235,19 @@ describe('c-csv-importer-review', () => {
     expect({ mapping: element.mapping, rows: element.rows }).toEqual({ mapping: {}, rows: [] });
     expect(table().data).toEqual([]);
     expect(summary()).toBe('Rows with errors: 0 of 0.');
+  });
+
+  it('should be valid only once the picklist values are there', async () => {
+    // given
+    await mount({ rows: [VALID_ROW], picklists: false });
+    const before = changes.at(-1).valid;
+
+    // when
+    getPicklistValuesByRecordType.error({ message: 'No access' });
+    await flushPromises();
+
+    // then
+    expect(before).toBe(false);
+    expect(changes.at(-1).valid).toBe(true);
   });
 });

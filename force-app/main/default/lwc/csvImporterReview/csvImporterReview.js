@@ -15,6 +15,8 @@ const PAGE_SIZE = 50;
  * @alias CsvImporterReview
  * @extends LightningElement
  * @hideconstructor
+ *
+ * @fires CsvImporterReview#reviewchange
  */
 export default class CsvImporterReview extends LightningElement {
   /**
@@ -32,6 +34,7 @@ export default class CsvImporterReview extends LightningElement {
       this.objectInfo = undefined;
       this.recordTypeId = undefined;
       this.picklists = {};
+      this.picklistsLoaded = false;
       this.build();
     }
   }
@@ -69,6 +72,7 @@ export default class CsvImporterReview extends LightningElement {
   objectInfo;
   recordTypeId;
   picklists = {};
+  picklistsLoaded = false;
   picklistError = '';
   records = [];
   errors = {};
@@ -94,11 +98,14 @@ export default class CsvImporterReview extends LightningElement {
   wiredPicklists({ data, error }) {
     if (data) {
       this.picklists = picklistValues(data);
+      this.picklistsLoaded = true;
       this.picklistError = '';
       this.build();
     } else if (error) {
       this.picklists = {};
+      this.picklistsLoaded = true;
       this.picklistError = `The picklist values could not be loaded, so they aren't checked: ${getErrorMessage(error)}`;
+      this.notify();
     }
   }
 
@@ -191,6 +198,25 @@ export default class CsvImporterReview extends LightningElement {
       mappedFields.map(({ field }) => field),
       KEY,
       this.picklists
+    );
+    this.notify();
+  }
+
+  notify() {
+    /**
+     * Fired when the rows were checked again.
+     * @event CsvImporterReview#reviewchange
+     * @type {CustomEvent}
+     * @property {Object} detail - valid: whether every row can be imported; rows: the rows of the file with the
+     * corrections, by column
+     */
+    this.dispatchEvent(
+      new CustomEvent('reviewchange', {
+        detail: {
+          valid: Boolean(this.objectInfo) && this.picklistsLoaded && this.records.length > 0 && this.hasNoErrors,
+          rows: this._rows.map((row, index) => ({ ...row, ...this.corrections[String(index + 1)] }))
+        }
+      })
     );
   }
 }

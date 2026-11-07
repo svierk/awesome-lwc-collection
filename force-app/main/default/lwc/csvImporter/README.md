@@ -1,6 +1,6 @@
 # CSV Importer
 
-Imports CSV files into Salesforce in steps: the file is read and previewed, its columns are mapped to the fields of an object, and the rows are checked against these fields.
+Imports CSV files into Salesforce in steps: the file is read and previewed, its columns are mapped to the fields of an object, the rows are checked against these fields, and then inserted or upserted.
 
 **Type:** Component
 
@@ -18,22 +18,29 @@ Imports CSV files into Salesforce in steps: the file is read and previewed, its 
 
 ## Attributes
 
-| Name                   | Type   | Default | Description                                                                                              |
-| ---------------------- | ------ | ------- | -------------------------------------------------------------------------------------------------------- |
-| import-object-api-name | string | ''      | The object the rows are imported into, e.g. 'Contact'. Without it, users enter the object in the wizard. |
-| max-file-size-mb       | number | 5       | The largest file in megabytes that can be read.                                                          |
-| max-rows               | number | 10000   | The most rows a file may have, not counting the header.                                                  |
+| Name                       | Type   | Default | Description                                                                                                                                                                                          |
+| -------------------------- | ------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| external-id-field-api-name | string | ''      | The field the rows are upserted by, e.g. an external ID field or Id: rows with the value of an existing record update it, the others create new records. Without it, every row creates a new record. |
+| import-object-api-name     | string | ''      | The object the rows are imported into, e.g. 'Contact'. Without it, users enter the object in the wizard.                                                                                             |
+| max-file-size-mb           | number | 5       | The largest file in megabytes that can be read.                                                                                                                                                      |
+| max-rows                   | number | 10000   | The most rows a file may have, not counting the header.                                                                                                                                              |
 
 ## Events
 
-| Name   | Detail                                                                          | Description                                                                         |
-| ------ | ------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| parsed | A copy of the result: `fileName`, `headers`, `keyField`, `rows` and `delimiter` | Fired when a file was parsed. `keyField` names the property holding each row's key. |
+| Name     | Detail                                                                                                            | Description                                                                         |
+| -------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| imported | `objectApiName`; `created`, `updated` and `failed`: the number of rows; `recordIds`: the ids of the saved records | Fired when the import is done.                                                      |
+| parsed   | A copy of the result: `fileName`, `headers`, `keyField`, `rows` and `delimiter`                                   | Fired when a file was parsed. `keyField` names the property holding each row's key. |
 
 ## Usage
 
 ```html
-<c-csv-importer import-object-api-name="Contact" max-file-size-mb="10" onparsed={handleParsed}></c-csv-importer>
+<c-csv-importer
+  import-object-api-name="Contact"
+  external-id-field-api-name="Email"
+  max-file-size-mb="10"
+  onimported={handleImported}
+></c-csv-importer>
 ```
 
 ### Upload
@@ -59,7 +66,7 @@ The next step maps every column to a field of the object set in import-object-ap
 
 - Columns are matched automatically when they equal a field's label or API name, ignoring case, spaces and punctuation: `First Name`, `first_name` and `FirstName` all match `FirstName`.
 - Only fields records can be created with are offered. Columns without a field are skipped, and a field can't be chosen for two columns.
-- Every required field needs a column, unless Salesforce fills it in on its own, such as the owner or a checkbox.
+- Every required field needs a column, unless Salesforce fills it in on its own, such as the owner or a checkbox. With external-id-field-api-name, that field needs a column as well.
 - **Download mapping** saves the mapping as JSON to use it again; **Upload a mapping** applies a saved one, skipping fields the object doesn't have:
 
 ```json
@@ -89,13 +96,29 @@ The last step checks every row against the mapped fields before anything is writ
 
 Rows with errors are marked, and the cells with errors are highlighted; the error icon of a row lists its messages. The table shows 50 rows at a time and loads more when users scroll down. Values can be corrected in the table and are checked again on save. **Only rows with errors** hides the valid rows and adds a column with each row's number in the file. Corrections are kept when the mapping changes and dropped for a new file.
 
+The rows can be imported once none of them has an error.
+
+### Import
+
+**Import** sends the rows to the `CsvImportController` Apex class in chunks of 200, one after the other, and a progress bar shows how far it got:
+
+- Without external-id-field-api-name, every row creates a new record. With it, the rows are upserted: a row with the value of an existing record updates it, the others create new records. The field has to identify records, such as an external ID field, Id, or a standard field like the email of a contact.
+- Values are converted to the types of the fields. Empty cells leave a field unset, so an upsert doesn't clear values of existing records. Date/times without a time zone are taken as the time of the browser.
+- The controller runs `with sharing` and in user mode, so the sharing rules, object and field permissions of the running user apply. A row that fails doesn't stop the others.
+- Lookups are not resolved by name: a lookup column needs record ids.
+
+At the end, the importer shows how many records were created and updated, and lists the failed rows with the reason. **Download failed rows** saves them as a CSV file with the delimiter of the uploaded file and an additional `Import Error` column, so they can be fixed and imported again. Going back is no longer possible once the import started, so the rows can't be imported twice by accident.
+
 ## Component Dependencies
 
-| Name               | Type | Description                                                                             |
-| ------------------ | ---- | --------------------------------------------------------------------------------------- |
-| csvImporterMapping | LWC  | Maps the columns of a CSV file to the fields of a Salesforce object.                    |
-| csvImporterReview  | LWC  | Checks the rows of a CSV file against the mapped fields and lets users correct them.    |
-| csvParser          | LWC  | Shared module that parses comma, semicolon or tab separated text according to RFC 4180. |
-| csvValidator       | LWC  | Shared checks for CSV values against the fields of a Salesforce object.                 |
-| errorAlert         | LWC  | Inline alert that shows error messages to the user.                                     |
-| errorUtils         | LWC  | Shared functions to read error messages and show error toasts.                          |
+| Name                    | Type | Description                                                                             |
+| ----------------------- | ---- | --------------------------------------------------------------------------------------- |
+| CsvImportController     | Apex | Inserts or upserts the rows in user mode and returns the result of each row.            |
+| CsvImportControllerTest | Apex | Test class for CsvImportController.                                                     |
+| csvImporterImport       | LWC  | Imports the checked rows in chunks and shows the result of each row.                    |
+| csvImporterMapping      | LWC  | Maps the columns of a CSV file to the fields of a Salesforce object.                    |
+| csvImporterReview       | LWC  | Checks the rows of a CSV file against the mapped fields and lets users correct them.    |
+| csvParser               | LWC  | Shared module that parses comma, semicolon or tab separated text according to RFC 4180. |
+| csvValidator            | LWC  | Shared checks for CSV values against the fields of a Salesforce object.                 |
+| errorAlert              | LWC  | Inline alert that shows error messages to the user.                                     |
+| errorUtils              | LWC  | Shared functions to read error messages and show error toasts.                          |

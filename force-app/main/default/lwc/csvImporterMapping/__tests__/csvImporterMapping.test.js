@@ -179,6 +179,22 @@ describe('c-csv-importer-mapping', () => {
     await expect(element).toBeAccessible();
   });
 
+  it.each([
+    ['a field records are not created with', 'Id', 'Contact ID'],
+    ['a field the object does not have', 'External__c', 'External__c']
+  ])('should ask for a column for the upsert field, also %s', async (_label, keyFieldApiName, missing) => {
+    // given
+    await mount({ fixedObjectApiName: 'Contact', keyFieldApiName, headers: ['Last Name', 'Key'] });
+
+    // when
+    await loadContact();
+
+    // then
+    expect(query('.missing').textContent).toBe(`Map a column to every required field: ${missing}.`);
+    expect(lastChange().valid).toBe(false);
+    expect(query('lightning-combobox').options.some((option) => option.value === 'Id')).toBe(keyFieldApiName === 'Id');
+  });
+
   it('should keep the chosen fields of columns that are still in a new file', async () => {
     // given
     await mount({ fixedObjectApiName: 'Contact' });

@@ -56,6 +56,13 @@ export default class CsvImporterMapping extends LightningElement {
     this.objectApiName = value || this.objectApiName;
   }
 
+  /**
+   * The field the records are upserted by, e.g. an external ID field or Id. It needs a column, and can be chosen even
+   * when records can't be created with it.
+   * @type {string}
+   */
+  @api keyFieldApiName;
+
   objectApiName;
   objectInfo;
   objectError = '';
@@ -91,10 +98,16 @@ export default class CsvImporterMapping extends LightningElement {
     return this.objectInfo?.label;
   }
 
-  /** The fields records can be created with, sorted by label, after the option to skip a column. */
+  /** The fields a column can be mapped to: the ones records can be created with, and the upsert field. */
+  get importableFields() {
+    return Object.values(this.objectInfo?.fields ?? {}).filter(
+      (field) => field.createable || field.apiName === this.keyFieldApiName
+    );
+  }
+
+  /** The importable fields sorted by label, after the option to skip a column. */
   get fieldOptions() {
-    const fields = Object.values(this.objectInfo?.fields ?? {})
-      .filter((field) => field.createable)
+    const fields = this.importableFields
       .map((field) => ({ label: `${field.label} (${field.apiName})`, value: field.apiName }))
       .sort((a, b) => a.label.localeCompare(b.label));
     return [{ label: "Don't import", value: SKIP }, ...fields];
@@ -110,12 +123,16 @@ export default class CsvImporterMapping extends LightningElement {
     return labels.length ? `More than one column is mapped to: ${labels.join(', ')}.` : '';
   }
 
-  /** The labels of the fields records can't be created without, when no column is mapped to them. Needs the object. */
+  /** The labels of the fields records can't be imported without, when no column is mapped to them. Needs the object. */
   get missingFields() {
     const used = new Set(Object.values(this.mapping));
-    return Object.values(this.objectInfo.fields)
-      .filter((field) => field.createable && isRequired(field) && !used.has(field.apiName))
+    const required = this.importableFields
+      .filter((field) => isRequired(field) || field.apiName === this.keyFieldApiName)
+      .filter((field) => !used.has(field.apiName))
       .map((field) => field.label);
+    // an upsert field the object doesn't have can't be mapped either
+    const unknownKey = this.keyFieldApiName && !this.objectInfo.fields[this.keyFieldApiName];
+    return unknownKey ? [...required, this.keyFieldApiName] : required;
   }
 
   get missingMessage() {
@@ -163,7 +180,7 @@ export default class CsvImporterMapping extends LightningElement {
     if (!this.objectInfo) {
       return;
     }
-    const fields = Object.values(this.objectInfo.fields).filter((field) => field.createable);
+    const fields = this.importableFields;
     const mapping = {};
     this.headers.forEach((column) => {
       const key = normalize(column);

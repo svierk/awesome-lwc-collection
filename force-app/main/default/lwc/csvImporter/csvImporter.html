@@ -60,6 +60,7 @@
           headers={headers}
           sample-row={sampleRow}
           fixed-object-api-name={importObjectApiName}
+          key-field-api-name={externalIdFieldApiName}
           onmappingchange={handleMappingChange}
         ></c-csv-importer-mapping>
       </div>
@@ -70,7 +71,22 @@
         object-api-name={mappingObjectApiName}
         mapping={mapping}
         rows={rows}
+        onreviewchange={handleReviewChange}
       ></c-csv-importer-review>
+    </div>
+    <div class={importClass} data-id="import-step">
+      <c-csv-importer-import
+        lwc:if={reviewValid}
+        object-api-name={mappingObjectApiName}
+        mapping={mapping}
+        rows={reviewRows}
+        headers={headers}
+        delimiter={usedDelimiter}
+        file-name={fileName}
+        external-id-field-api-name={externalIdFieldApiName}
+        onimportstart={handleImportStart}
+        onimportfinish={handleImportFinish}
+      ></c-csv-importer-import>
     </div>
     <div slot="footer" class="slds-grid slds-size_full">
       <lightning-button data-id="back" class={backClass} label="Back" onclick={handleBack}></lightning-button>
