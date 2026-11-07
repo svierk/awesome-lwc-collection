@@ -1,4 +1,4 @@
-import { parseCsv } from 'c/csvParser';
+import { detectDelimiter, parseCsv } from 'c/csvParser';
 
 describe('c-csv-parser', () => {
   it('should parse headers and rows', () => {
@@ -154,5 +154,27 @@ describe('c-csv-parser', () => {
     expect(() => parseCsv('Name,Note\nJohn,ok\nJane,"open\nmore')).toThrow(
       'Invalid CSV: the quoted field starting on line 3 is never closed.'
     );
+  });
+
+  it.each([
+    ['a comma', 'Name,Age\nJohn,30', ','],
+    ['a semicolon', 'Name;Age;City\nJohn;30;Berlin', ';'],
+    ['a tab', 'Name\tAge\nJohn\t30', '\t'],
+    ['the most frequent delimiter', 'Name;Note,Remark;Age\nJohn;a,b;30', ';'],
+    ['no delimiter inside quotes', '"Doe; John",Age\nx,1', ','],
+    ['the first line after a byte order mark only', '\uFEFFName,Age\r\nJohn;Doe;Berlin;Germany', ','],
+    ['a comma without any delimiter', 'Name\nJohn', ',']
+  ])('should detect %s', (_label, text, expected) => {
+    // when / then
+    expect(detectDelimiter(text)).toBe(expected);
+  });
+
+  it('should parse with another delimiter and keep it inside quoted fields', () => {
+    // when
+    const { headers, rows } = parseCsv('Name;City\n"Doe; John";Berlin, Germany', { delimiter: ';' });
+
+    // then
+    expect(headers).toEqual(['Name', 'City']);
+    expect(rows[0]).toMatchObject({ Name: 'Doe; John', City: 'Berlin, Germany' });
   });
 });
