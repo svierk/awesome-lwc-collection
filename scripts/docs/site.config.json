@@ -12,7 +12,7 @@
   "categories": [
     {
       "text": "Data & Tables",
-      "components": ["customDatatable", "graphqlDatatable", "csvToDatatable", "multiSelectCombobox"]
+      "components": ["customDatatable", "graphqlDatatable", "csvImporter", "multiSelectCombobox"]
     },
     {
       "text": "Files & Documents",

@@ -1,5 +1,5 @@
-const DELIMITER = ',';
 const QUOTE = '"';
+const DELIMITERS = [',', ';', '\t'];
 
 function lineOf(text, index) {
   return text.slice(0, index).split(/\r\n|\r|\n/).length;
@@ -29,7 +29,7 @@ function lineBreakLength(text, index) {
 }
 
 /** Splits the text into records of raw field values, following RFC 4180. */
-function readRecords(text) {
+function readRecords(text, delimiter) {
   const records = [];
   let record = [];
   let field = '';
@@ -39,7 +39,7 @@ function readRecords(text) {
     const breakLength = lineBreakLength(text, index);
     if (text[index] === QUOTE && field === '') {
       ({ value: field, end: index } = readQuotedField(text, index));
-    } else if (text[index] === DELIMITER) {
+    } else if (text[index] === delimiter) {
       record.push(field);
       field = '';
       index += 1;
@@ -87,19 +87,41 @@ function toKeyField(headers) {
 }
 
 /**
- * Parses comma separated text according to RFC 4180.
+ * Detects the delimiter from the first line: the comma, semicolon or tab that occurs most often outside quoted fields.
+ *
+ * @param {string} text - The content of the file
+ * @returns {string} The delimiter, a comma if none of them occurs
+ */
+export function detectDelimiter(text) {
+  const counts = new Map(DELIMITERS.map((delimiter) => [delimiter, 0]));
+  let quoted = false;
+  for (const char of text.replace(/^\uFEFF/, '')) {
+    if (char === QUOTE) {
+      quoted = !quoted;
+    } else if (!quoted && (char === '\n' || char === '\r')) {
+      break;
+    } else if (!quoted && counts.has(char)) {
+      counts.set(char, counts.get(char) + 1);
+    }
+  }
+  return DELIMITERS.reduce((best, delimiter) => (counts.get(delimiter) > counts.get(best) ? delimiter : best));
+}
+
+/**
+ * Parses delimiter separated text according to RFC 4180.
  *
  * Quoted fields may contain delimiters, line breaks and doubled quotes. A byte order mark and empty lines are
  * ignored. Rows with fewer columns than the header are filled with empty strings, values beyond the last header
  * column are dropped.
  *
  * @param {string} text - The content of the file
+ * @param {{delimiter: string}} [options] - The delimiter, a comma by default
  * @returns {{headers: string[], rows: Object[], keyField: string}} The unique column names, one object per row and
  * the name of the property holding each row's synthetic key: `id`, or `_id` if the file has an `id` column.
  * @throws {Error} If a quoted field is never closed
  */
-export function parseCsv(text) {
-  const records = readRecords(text.replace(/^\uFEFF/, '')).filter((record) => !isBlank(record));
+export function parseCsv(text, { delimiter = ',' } = {}) {
+  const records = readRecords(text.replace(/^\uFEFF/, ''), delimiter).filter((record) => !isBlank(record));
   const headers = toUniqueHeaders(records[0] ?? []);
   const keyField = toKeyField(headers);
   const rows = records

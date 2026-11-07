@@ -1,0 +1,44 @@
+<template>
+  <lightning-card title="CSV Importer" icon-name="doctype:csv">
+    <div class="slds-var-p-horizontal_medium">
+      <c-error-alert lwc:if={errorMessage} class="slds-show slds-m-bottom_small" message={errorMessage}></c-error-alert>
+      <lightning-input
+        type="file"
+        label="CSV file"
+        accept=".csv,.txt,text/csv"
+        onchange={handleFileUpload}
+      ></lightning-input>
+      <div class="slds-grid slds-gutters slds-wrap slds-m-top_small">
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+          <lightning-combobox
+            name="encoding"
+            data-id="encoding"
+            label="Encoding"
+            value={encoding}
+            options={encodingOptions}
+            onchange={handleEncodingChange}
+          ></lightning-combobox>
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+          <lightning-combobox
+            name="delimiter"
+            data-id="delimiter"
+            label="Delimiter"
+            value={delimiter}
+            options={delimiterOptions}
+            onchange={handleDelimiterChange}
+          ></lightning-combobox>
+        </div>
+      </div>
+      <p lwc:if={hasRows} class="summary slds-text-color_weak slds-m-vertical_small">{summary}</p>
+    </div>
+    <div lwc:if={hasRows} class="preview">
+      <lightning-datatable
+        key-field={keyField}
+        data={previewRows}
+        columns={columns}
+        hide-checkbox-column
+      ></lightning-datatable>
+    </div>
+  </lightning-card>
+</template>

@@ -36,9 +36,9 @@ Each component has a dedicated page - with a screenshot, a full attribute refere
     <td>A custom datatable powered by the GraphQL wire adapter instead of Apex.</td>
   </tr>
   <tr>
-    <td align="center"><img src="force-app/main/default/lwc/csvToDatatable/csvToDatatable.svg" alt="CSV To Datatable" width="36" height="36" /></td>
-    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/csvToDatatable">CSV To Datatable</a></td>
-    <td>A simple parser for UTF-8 encoded, comma separated .csv files.</td>
+    <td align="center"><img src="force-app/main/default/lwc/csvImporter/csvImporter.svg" alt="CSV Importer" width="36" height="36" /></td>
+    <td><a href="https://github.com/svierk/awesome-lwc-collection/tree/main/force-app/main/default/lwc/csvImporter">CSV Importer</a></td>
+    <td>Imports CSV files into Salesforce. The first step reads a file and shows a preview of its rows.</td>
   </tr>
   <tr>
     <td align="center"><img src="force-app/main/default/lwc/multiSelectCombobox/multiSelectCombobox.svg" alt="Multi Select Combobox" width="36" height="36" /></td>
