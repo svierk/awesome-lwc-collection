@@ -3,14 +3,7 @@
   <!-- Writing pad -->
   <rect x="6" y="14" width="46" height="68" rx="4" fill="none" stroke="#0D1B3E" stroke-width="5" />
   <!-- Signature wave -->
-  <path
-    d="M14,50 C22,38 32,62 40,50 C46,40 50,52 48,44"
-    fill="none"
-    stroke="#00A1E0"
-    stroke-width="5"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  />
+  <path d="M14,50 C22,38 32,62 40,50 C46,40 50,52 48,44" fill="none" stroke="#00A1E0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
   <!-- Baseline -->
   <line x1="14" y1="64" x2="48" y2="64" stroke="#0D1B3E" stroke-width="3" stroke-linecap="round" opacity="0.35" />
   <!-- Large diagonal pen body -->
