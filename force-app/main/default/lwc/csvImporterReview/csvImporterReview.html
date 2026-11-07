@@ -1,0 +1,29 @@
+<template>
+  <div class="slds-var-p-horizontal_medium">
+    <c-error-alert lwc:if={picklistError} class="slds-show slds-m-bottom_small" message={picklistError}></c-error-alert>
+    <div class="slds-grid slds-wrap slds-grid_vertical-align-center slds-m-bottom_small">
+      <p class="summary slds-col slds-m-right_medium">{summary}</p>
+      <lightning-input
+        type="checkbox"
+        label="Only rows with errors"
+        checked={onlyErrors}
+        disabled={hasNoErrors}
+        onchange={handleOnlyErrorsChange}
+      ></lightning-input>
+    </div>
+  </div>
+  <div class="review-table">
+    <lightning-datatable
+      key-field="_key"
+      data={visibleRecords}
+      columns={columns}
+      errors={tableErrors}
+      draft-values={draftValues}
+      onsave={handleSave}
+      enable-infinite-loading={hasMoreRows}
+      onloadmore={handleLoadMore}
+      hide-checkbox-column
+      show-row-number-column
+    ></lightning-datatable>
+  </div>
+</template>

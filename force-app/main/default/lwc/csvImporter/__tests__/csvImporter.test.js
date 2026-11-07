@@ -286,4 +286,32 @@ describe('c-csv-importer', () => {
     expect(query('[data-id="map-step"]').className).toBe('slds-hide');
     await expect(element).toBeAccessible();
   });
+
+  it('should go to the review with a valid mapping and pass the rows and mapping on', async () => {
+    // given
+    const next = () => query('lightning-button[data-id="next"]');
+    await upload(createFile('Name,Email\nJohn,john@example.com'));
+    next().click();
+    await flushPromises();
+    const disabledWithoutMapping = next().disabled;
+    const detail = { objectApiName: 'Contact', mapping: { Name: 'LastName', Email: 'Email' }, valid: true };
+
+    // when
+    query('c-csv-importer-mapping').dispatchEvent(new CustomEvent('mappingchange', { detail }));
+    await flushPromises();
+    next().click();
+    await flushPromises();
+
+    // then
+    const review = query('c-csv-importer-review');
+    expect(disabledWithoutMapping).toBe(true);
+    expect(query('lightning-progress-indicator').currentStep).toBe('review');
+    expect(query('[data-id="review-step"]').className).toBe('');
+    expect([next().className, query('lightning-button[data-id="back"]').className]).toEqual([
+      'slds-col_bump-left slds-hide',
+      ''
+    ]);
+    expect([review.objectApiName, review.mapping, review.rows.length]).toEqual(['Contact', detail.mapping, 1]);
+    await expect(element).toBeAccessible();
+  });
 });
