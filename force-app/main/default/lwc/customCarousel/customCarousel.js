@@ -1,7 +1,7 @@
 import { api, LightningElement } from 'lwc';
 
 const SWIPE_DISTANCE = 50;
-const ASPECT_RATIO = /^\s*(\d+(?:\.\d+)?)\s*(?:[:/]\s*(\d+(?:\.\d+)?))?\s*$/;
+const POSITIVE_NUMBER = /^\d+(\.\d+)?$/;
 
 /**
  * A simple custom carousel with different configuration options.
@@ -170,11 +170,11 @@ export default class CustomCarousel extends LightningElement {
 
   /** The aspect ratio as CSS value, or an empty string if none or an invalid one is set. */
   get ratio() {
-    const match = ASPECT_RATIO.exec(String(this.aspectRatio));
-    if (!match || Number(match[1]) === 0 || Number(match[2] ?? 1) === 0) {
-      return '';
-    }
-    return match[2] ? `${match[1]} / ${match[2]}` : match[1];
+    const parts = String(this.aspectRatio)
+      .split(/[:/]/)
+      .map((part) => part.trim());
+    const valid = parts.length <= 2 && parts.every((part) => POSITIVE_NUMBER.test(part) && Number(part) > 0);
+    return valid ? parts.join(' / ') : '';
   }
 
   get viewportClass() {
@@ -202,7 +202,7 @@ export default class CustomCarousel extends LightningElement {
   }
 
   get showSlideNumber() {
-    return !this.hideSlideNumber;
+    return !this.hideSlideNumber && this.slides.length > 0;
   }
 
   get showSlideText() {

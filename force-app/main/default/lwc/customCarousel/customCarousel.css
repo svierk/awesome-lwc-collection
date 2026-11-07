@@ -17,17 +17,21 @@
   flex: 0 0 100%;
 }
 
-/* with a fixed aspect ratio, every slide fills the viewport and crops its image */
-.carousel-fill .carousel-track,
+/* with a fixed aspect ratio, grids stretch the track, every slide and its image to the viewport, and the image is
+   cropped to fit */
+.carousel-fill,
+.carousel-fill .carousel-track:not(.carousel-track-slide),
 .carousel-fill .fade,
 .carousel-fill .carousel-slide {
-  height: 100%;
+  display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
 }
 
 .carousel-fill img {
-  display: block;
-  width: 100%;
-  height: 100%;
+  align-self: stretch;
+  justify-self: stretch;
+  min-width: 0;
+  min-height: 0;
   object-fit: cover;
 }
 

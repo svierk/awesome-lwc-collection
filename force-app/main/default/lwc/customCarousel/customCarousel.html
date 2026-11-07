@@ -26,9 +26,6 @@
             <div class={trackClass} style={trackStyle}>
               <template for:each={slidesData} for:item="slide">
                 <div key={slide.index} class={slide.slideClass} lwc:spread={slide.slideAria}>
-                  <div lwc:if={showSlideNumber} class="slideNumbers slds-is-absolute">
-                    {slide.index}/{slidesData.length}
-                  </div>
                   <img src={slide.image} alt={slide.description} style={maxHeight} draggable="false" />
                   <div
                     lwc:if={showSlideText}
@@ -41,6 +38,7 @@
               </template>
             </div>
           </div>
+          <div lwc:if={showSlideNumber} class="slideNumbers slds-is-absolute">{slideIndex}/{slidesData.length}</div>
           <div lwc:if={showNavigationButtons} class="carousel-arrows">
             <lightning-button-icon
               class="prev"

@@ -121,6 +121,7 @@ describe('c-custom-carousel', () => {
 
     // then
     expect(activeDotId()).toBe(expected);
+    expect(query('.slideNumbers').textContent).toBe(`${expected}/${mockData.slideData.length}`);
   });
 
   it('should advance slides automatically when auto-scroll is enabled', async () => {
@@ -184,21 +185,11 @@ describe('c-custom-carousel', () => {
     expect(element.slidesData.length).toBe(mockData.slideData.length);
   });
 
-  it('should hide the navigation when there are no slides', () => {
-    // when
-    mount({ slidesData: [], autoScroll: true });
-
-    // then
-    expect(query('.prev')).toBeNull();
-    expect(query('.next')).toBeNull();
-    expect(queryAll('.dot').length).toBe(0);
-    expect(query('.carousel-playback')).toBeNull();
-  });
-
-  it('should not lose its position when auto-scroll runs without slides', async () => {
+  it('should hide the navigation without slides and keep its position while auto-scroll runs', async () => {
     // given
     mount({ slidesData: [], autoScroll: true, scrollDuration: 1000 });
     jest.advanceTimersByTime(3000);
+    const hidden = ['.prev', '.next', '.dot', '.carousel-playback', '.slideNumbers'].map((selector) => query(selector));
 
     // when
     element.slidesData = mockData.slideData;
@@ -207,6 +198,7 @@ describe('c-custom-carousel', () => {
     await flushPromises();
 
     // then
+    expect(hidden).toEqual([null, null, null, null, null]);
     expect(activeDotId()).toBe('2');
   });
 
@@ -250,6 +242,7 @@ describe('c-custom-carousel', () => {
     [' 4 / 3 ', '4 / 3'],
     ['1.5', '1.5'],
     ['16:0', ''],
+    ['16:9:4', ''],
     ['wide', '']
   ])('should apply the aspect ratio %p as %p', (aspectRatio, expected) => {
     // when
