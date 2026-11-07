@@ -221,6 +221,17 @@ export default class CustomCarousel extends LightningElement {
     this.slides = parsedData.map((slide, i) => this.withSlideState({ ...slide, index: i + 1 }, parsedData.length));
   }
 
+  constructor() {
+    super();
+    // Listeners on the host and the template root need no cleanup, they live as long as the component.
+    this.addEventListener('mouseenter', this.handleMouseEnter);
+    this.addEventListener('mouseleave', this.handleMouseLeave);
+    this.template.addEventListener('keydown', this.handleKeyDown);
+    this.template.addEventListener('focusin', this.handleFocusIn);
+    this.template.addEventListener('pointerdown', this.handlePointerPress);
+    this.template.addEventListener('pointerup', this.handlePointerRelease);
+  }
+
   connectedCallback() {
     this.restartTimer();
   }
@@ -269,7 +280,7 @@ export default class CustomCarousel extends LightningElement {
     this.restartTimer();
   }
 
-  handleKeyDown(event) {
+  handleKeyDown = (event) => {
     this.pointerUsed = false;
     const step = { ArrowLeft: -1, ArrowRight: 1 }[event.key];
     if (!step || this.slides.length === 0) {
@@ -278,33 +289,33 @@ export default class CustomCarousel extends LightningElement {
     event.preventDefault();
     this.focusActiveDot = event.target.classList.contains('dot');
     this.selectByUser(this.slideIndex + step);
-  }
+  };
 
-  handleMouseEnter() {
+  handleMouseEnter = () => {
     this.isHovered = true;
     this.restartTimer();
-  }
+  };
 
-  handleMouseLeave() {
+  handleMouseLeave = () => {
     this.isHovered = false;
     this.restartTimer();
-  }
+  };
 
   /** Keyboard focus inside the carousel stops the rotation until the user starts it again. */
-  handleFocusIn() {
+  handleFocusIn = () => {
     if (!this.pointerUsed && this.isPlaying && this.autoScroll) {
       this.togglePlayback();
     }
-  }
+  };
 
   /** A pointer press moves the focus before it is released, so focus during a press doesn't stop the rotation. */
-  handlePointerPress() {
+  handlePointerPress = () => {
     this.pointerUsed = true;
-  }
+  };
 
-  handlePointerRelease() {
+  handlePointerRelease = () => {
     this.pointerUsed = false;
-  }
+  };
 
   handlePointerDown(event) {
     this.pointerStart = { x: event.clientX, y: event.clientY };
@@ -359,7 +370,13 @@ export default class CustomCarousel extends LightningElement {
     return {
       ...slide,
       slideClass: this.isSlideTransition ? 'carousel-slide' : fadeClass,
-      slideAria: { ariaLabel: `${slide.index} of ${total}`, ariaHidden: String(!isCurrent) },
+      // role and description follow the WAI-ARIA carousel pattern, a <fieldset> as Sonar suggests would not fit
+      slideAria: {
+        role: 'group',
+        ariaRoleDescription: 'slide',
+        ariaLabel: `${slide.index} of ${total}`,
+        ariaHidden: String(!isCurrent)
+      },
       dotClass: isCurrent ? 'dot active' : 'dot',
       dotLabel: `Show slide ${slide.index}`,
       dotAria: { ariaCurrent: isCurrent ? 'true' : 'false' }
