@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Public</cacheControl>
+    <contentType>image/gif</contentType>
+    <description>Crate texture shown by Render 3D Elements when no model is set</description>
+</StaticResource>
