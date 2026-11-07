@@ -60,11 +60,20 @@
           headers={headers}
           sample-row={sampleRow}
           fixed-object-api-name={importObjectApiName}
+          onmappingchange={handleMappingChange}
         ></c-csv-importer-mapping>
       </div>
     </div>
+    <div class={reviewClass} data-id="review-step">
+      <c-csv-importer-review
+        lwc:if={hasRows}
+        object-api-name={mappingObjectApiName}
+        mapping={mapping}
+        rows={rows}
+      ></c-csv-importer-review>
+    </div>
     <div slot="footer" class="slds-grid slds-size_full">
-      <lightning-button data-id="back" class={mapClass} label="Back" onclick={handleBack}></lightning-button>
+      <lightning-button data-id="back" class={backClass} label="Back" onclick={handleBack}></lightning-button>
       <lightning-button
         data-id="next"
         class={nextClass}

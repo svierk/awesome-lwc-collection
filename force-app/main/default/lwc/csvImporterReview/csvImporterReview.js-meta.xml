@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>68.0</apiVersion>
+    <isExposed>false</isExposed>
+    <description
+  >Checks the rows of a CSV file against the mapped fields and lets users correct them. Used by the CSV Importer.</description>
+</LightningComponentBundle>

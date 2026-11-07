@@ -1,0 +1,10 @@
+{
+  "picklistFieldValues": {
+    "LeadSource": {
+      "values": [
+        { "label": "Web", "value": "Web" },
+        { "label": "Phone Inquiry", "value": "Phone Inquiry" }
+      ]
+    }
+  }
+}

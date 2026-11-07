@@ -1,3 +1,4 @@
+import { isRequired } from 'c/csvValidator';
 import { getErrorMessage } from 'c/errorUtils';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { api, LightningElement, wire } from 'lwc';
@@ -109,8 +110,26 @@ export default class CsvImporterMapping extends LightningElement {
     return labels.length ? `More than one column is mapped to: ${labels.join(', ')}.` : '';
   }
 
+  /** The labels of the fields records can't be created without, when no column is mapped to them. Needs the object. */
+  get missingFields() {
+    const used = new Set(Object.values(this.mapping));
+    return Object.values(this.objectInfo.fields)
+      .filter((field) => field.createable && isRequired(field) && !used.has(field.apiName))
+      .map((field) => field.label);
+  }
+
+  get missingMessage() {
+    const labels = this.missingFields;
+    return labels.length ? `Map a column to every required field: ${labels.join(', ')}.` : '';
+  }
+
   get isValid() {
-    return Boolean(this.objectInfo) && this.duplicateFields.length === 0 && Object.values(this.mapping).some(Boolean);
+    return (
+      Boolean(this.objectInfo) &&
+      this.duplicateFields.length === 0 &&
+      this.missingFields.length === 0 &&
+      Object.values(this.mapping).some(Boolean)
+    );
   }
 
   get rows() {

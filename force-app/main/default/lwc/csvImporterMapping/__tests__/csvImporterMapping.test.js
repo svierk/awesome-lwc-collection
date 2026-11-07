@@ -100,6 +100,7 @@ describe('c-csv-importer-mapping', () => {
       'Email',
       'FirstName',
       'LastName',
+      'OwnerId',
       'Score__c'
     ]);
   });
@@ -163,6 +164,19 @@ describe('c-csv-importer-mapping', () => {
 
     // then
     expect(lastChange()).toMatchObject({ mapping: { Notes: '' }, valid: false });
+  });
+
+  it('should not be valid while no column is mapped to a field records need, leaving out the ones with defaults', async () => {
+    // given
+    await mount({ fixedObjectApiName: 'Contact', headers: ['First Name', 'Notes'] });
+
+    // when
+    await loadContact();
+
+    // then
+    expect(query('.missing').textContent).toBe('Map a column to every required field: Last Name.');
+    expect(lastChange()).toMatchObject({ mapping: { 'First Name': 'FirstName' }, valid: false });
+    await expect(element).toBeAccessible();
   });
 
   it('should keep the chosen fields of columns that are still in a new file', async () => {
