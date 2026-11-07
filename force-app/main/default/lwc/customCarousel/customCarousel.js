@@ -1,7 +1,8 @@
 import { getErrorMessage } from 'c/errorUtils';
+import { formatLabel } from 'c/labelUtils';
 import { graphql } from 'lightning/graphql';
 import { api, LightningElement, wire } from 'lwc';
-import { parseSlides, RECORD_FILES_QUERY, toCssRatio, toImageSlides, toSlideState } from './carouselUtils';
+import { LABELS, parseSlides, RECORD_FILES_QUERY, toCssRatio, toImageSlides, toSlideState } from './carouselUtils';
 
 const SWIPE_DISTANCE = 50;
 
@@ -179,6 +180,7 @@ export default class CustomCarousel extends LightningElement {
   @api useRecordFiles = false;
 
   announcement = '';
+  labels = LABELS;
   errorMessage = '';
   focusActiveDot = false;
   isHovered = false;
@@ -264,7 +266,7 @@ export default class CustomCarousel extends LightningElement {
   }
 
   get playbackLabel() {
-    return this.isPlaying ? 'Stop automatic slide show' : 'Start automatic slide show';
+    return this.isPlaying ? LABELS.stopSlideShow : LABELS.startSlideShow;
   }
 
   /**
@@ -313,7 +315,7 @@ export default class CustomCarousel extends LightningElement {
   wiredRecordFiles({ data, errors }) {
     if (errors) {
       this.applySlides([]);
-      this.errorMessage = `The images of this record could not be loaded: ${getErrorMessage(errors)}`;
+      this.errorMessage = formatLabel(LABELS.imagesNotLoaded, getErrorMessage(errors));
     } else if (data) {
       const images = toImageSlides(data);
       this.applySlides(images);
@@ -450,8 +452,9 @@ export default class CustomCarousel extends LightningElement {
     this.handleSlideSelection(index);
     const slide = this.slides[this.slideIndex - 1];
     if (slide) {
-      const heading = slide.heading ? `: ${slide.heading}` : '';
-      this.announcement = `Slide ${slide.index} of ${this.slides.length}${heading}`;
+      this.announcement = slide.heading
+        ? formatLabel(LABELS.announcementWithHeading, slide.index, this.slides.length, slide.heading)
+        : formatLabel(LABELS.announcement, slide.index, this.slides.length);
     }
   }
 

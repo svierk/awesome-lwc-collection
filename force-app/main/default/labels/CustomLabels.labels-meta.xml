@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>CameraCapture_CapturePhoto</fullName>
+        <categories>cameraCapture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Camera Capture: Capture Photo</shortDescription>
+        <value>Capture Photo</value>
+    </labels>
+    <labels>
+        <fullName>CameraCapture_Error</fullName>
+        <categories>cameraCapture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Camera Capture: Error</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>CameraCapture_ErrorAccessingCamera</fullName>
+        <categories>cameraCapture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Camera Capture: Error Accessing Camera</shortDescription>
+        <value>Error accessing camera</value>
+    </labels>
+    <labels>
+        <fullName>CameraCapture_NotSupported</fullName>
+        <categories>cameraCapture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Camera Capture: Not Supported</shortDescription>
+        <value>getUserMedia is not supported in this browser</value>
+    </labels>
+    <labels>
+        <fullName>CameraCapture_StartCamera</fullName>
+        <categories>cameraCapture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Camera Capture: Start Camera</shortDescription>
+        <value>Start Camera</value>
+    </labels>
+    <labels>
+        <fullName>CameraCapture_StopCamera</fullName>
+        <categories>cameraCapture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Camera Capture: Stop Camera</shortDescription>
+        <value>Stop Camera</value>
+    </labels>
+    <labels>
         <fullName>ContentDocumentTable_Created</fullName>
         <categories>contentDocumentTable</categories>
         <language>en_US</language>
@@ -626,6 +674,126 @@
         <value>This row has {0} errors.</value>
     </labels>
     <labels>
+        <fullName>CustomCarousel_Announcement</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Announcement</shortDescription>
+        <value>Slide {0} of {1}</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_AnnouncementWithHeading</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Announcement With Heading</shortDescription>
+        <value>Slide {0} of {1}: {2}</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_Carousel</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Carousel</shortDescription>
+        <value>carousel</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_ImageCarousel</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Image Carousel</shortDescription>
+        <value>Image carousel</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_ImagesNotLoaded</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Images Not Loaded</shortDescription>
+        <value>The images of this record could not be loaded: {0}</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_InvalidSlides</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Invalid Slides</shortDescription>
+        <value>The slides could not be displayed because the slides data is not valid JSON.</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_LearnMore</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Learn More</shortDescription>
+        <value>Learn more</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_NextSlide</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Next Slide</shortDescription>
+        <value>Next slide</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_NoImages</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: No Images</shortDescription>
+        <value>No images are attached to this record.</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_PreviousSlide</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Previous Slide</shortDescription>
+        <value>Previous slide</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_ShowSlide</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Show Slide</shortDescription>
+        <value>Show slide {0}</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_Slide</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Slide</shortDescription>
+        <value>slide</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_SlidePosition</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Slide Position</shortDescription>
+        <value>{0} of {1}</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_StartSlideShow</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Start Slide Show</shortDescription>
+        <value>Start automatic slide show</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_StopSlideShow</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Stop Slide Show</shortDescription>
+        <value>Stop automatic slide show</value>
+    </labels>
+    <labels>
         <fullName>CustomDatatable_Delete</fullName>
         <categories>customDatatable</categories>
         <language>en_US</language>
@@ -944,5 +1112,405 @@
         <protected>false</protected>
         <shortDescription>Multi Select Combobox Item: Selected</shortDescription>
         <value>Selected</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_DarkColor</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Dark Color</shortDescription>
+        <value>Dark Color</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_EnterUrl</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Enter Url</shortDescription>
+        <value>Please enter a URL.</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_ErrorSaving</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Error Saving</shortDescription>
+        <value>Error saving the QR code</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_FileNotRead</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: File Not Read</shortDescription>
+        <value>Failed to read the selected file.</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_FileTitle</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: File Title</shortDescription>
+        <value>QR Code</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_Generate</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Generate</shortDescription>
+        <value>Generate QR Code</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_GeneratedCode</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Generated Code</shortDescription>
+        <value>Generated QR Code</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_Generating</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Generating</shortDescription>
+        <value>Generating...</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_GenerationFailed</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Generation Failed</shortDescription>
+        <value>Failed to generate QR code: {0}</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_HardToScan</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Hard To Scan</shortDescription>
+        <value>These colors may be hard to scan.</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_LibraryMissing</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Library Missing</shortDescription>
+        <value>QR code library not loaded. Please try again.</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_LibraryNotLoaded</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Library Not Loaded</shortDescription>
+        <value>Failed to load QR code library: {0}</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_LightColor</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Light Color</shortDescription>
+        <value>Light Color</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_Logo</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Logo</shortDescription>
+        <value>Logo (optional)</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_LogoPreview</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Logo Preview</shortDescription>
+        <value>Logo preview</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_RemoveLogo</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Remove Logo</shortDescription>
+        <value>Remove logo</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_Save</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Save</shortDescription>
+        <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_Saved</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Saved</shortDescription>
+        <value>The QR code has been saved.</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_Success</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Success</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_TargetUrl</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Target Url</shortDescription>
+        <value>Target URL</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_Title</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Title</shortDescription>
+        <value>QR Code Generator</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_UrlPlaceholder</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Url Placeholder</shortDescription>
+        <value>https://example.com</value>
+    </labels>
+    <labels>
+        <fullName>Render3DElementsThreeJS_ErrorWithoutReason</fullName>
+        <categories>render3DElementsThreeJS</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Render3 DElements Three JS: Error Without Reason</shortDescription>
+        <value>{0}.</value>
+    </labels>
+    <labels>
+        <fullName>Render3DElementsThreeJS_ErrorWithReason</fullName>
+        <categories>render3DElementsThreeJS</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Render3 DElements Three JS: Error With Reason</shortDescription>
+        <value>{0}: {1}</value>
+    </labels>
+    <labels>
+        <fullName>Render3DElementsThreeJS_ModelNotLoaded</fullName>
+        <categories>render3DElementsThreeJS</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Render3 DElements Three JS: Model Not Loaded</shortDescription>
+        <value>The 3D model could not be loaded</value>
+    </labels>
+    <labels>
+        <fullName>Render3DElementsThreeJS_SceneNotDisplayed</fullName>
+        <categories>render3DElementsThreeJS</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Render3 DElements Three JS: Scene Not Displayed</shortDescription>
+        <value>The 3D scene could not be displayed</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Clear</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Clear</shortDescription>
+        <value>Clear</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Download</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Download</shortDescription>
+        <value>Download</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_ErrorSaving</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Error Saving</shortDescription>
+        <value>Error saving the signature</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_FileTitle</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: File Title</shortDescription>
+        <value>Signature</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_PenColor</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Pen Color</shortDescription>
+        <value>Pen Color</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Placeholder</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Placeholder</shortDescription>
+        <value>Draw your signature here</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_ProvideSignature</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Provide Signature</shortDescription>
+        <value>Please provide a signature.</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Save</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Save</shortDescription>
+        <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Saved</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Saved</shortDescription>
+        <value>The signature has been saved.</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_SaveSignature</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Save Signature</shortDescription>
+        <value>Please save your signature.</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Saving</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Saving</shortDescription>
+        <value>Saving</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_StrokeWidth</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Stroke Width</shortDescription>
+        <value>Stroke Width ({0}px)</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Success</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Success</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Title</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Title</shortDescription>
+        <value>Signature Pad</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Undo</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Undo</shortDescription>
+        <value>Undo</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_CapturePhoto</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: Capture Photo</shortDescription>
+        <value>Capture Photo</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_ErrorSaving</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: Error Saving</shortDescription>
+        <value>Error saving the profile picture</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_NewProfilePreview</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: New Profile Preview</shortDescription>
+        <value>Preview of the new profile</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_StartCamera</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: Start Camera</shortDescription>
+        <value>Start Camera</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_StopCamera</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: Stop Camera</shortDescription>
+        <value>Stop Camera</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_Success</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: Success</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_Title</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: Title</shortDescription>
+        <value>Take User Profile Picture</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_Updated</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: Updated</shortDescription>
+        <value>Profile picture has been updated, it takes some time until the change is visible</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_UpdateProfile</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: Update Profile</shortDescription>
+        <value>Update Profile Picture</value>
     </labels>
 </CustomLabels>

@@ -1,3 +1,9 @@
+import CAPTURE_PHOTO from '@salesforce/label/c.CameraCapture_CapturePhoto';
+import ERROR from '@salesforce/label/c.CameraCapture_Error';
+import ERROR_ACCESSING_CAMERA from '@salesforce/label/c.CameraCapture_ErrorAccessingCamera';
+import NOT_SUPPORTED from '@salesforce/label/c.CameraCapture_NotSupported';
+import START_CAMERA from '@salesforce/label/c.CameraCapture_StartCamera';
+import STOP_CAMERA from '@salesforce/label/c.CameraCapture_StopCamera';
 import { showErrorToast } from 'c/errorUtils';
 import { api, LightningElement } from 'lwc';
 
@@ -15,6 +21,8 @@ const FACING_MODES = { front: 'user', back: 'environment' };
  * <c-camera-capture camera="back" oncapture={handleCapture}></c-camera-capture>
  */
 export default class CameraCapture extends LightningElement {
+  labels = { startCamera: START_CAMERA, stopCamera: STOP_CAMERA, capturePhoto: CAPTURE_PHOTO };
+
   /**
    * The camera to ask for, front or back. Devices with only one camera use that one.
    * @type {string}
@@ -36,7 +44,7 @@ export default class CameraCapture extends LightningElement {
   @api
   async start() {
     if (!navigator.mediaDevices) {
-      showErrorToast(this, 'Error', 'getUserMedia is not supported in this browser');
+      showErrorToast(this, ERROR, NOT_SUPPORTED);
       return;
     }
     this.stop();
@@ -49,7 +57,7 @@ export default class CameraCapture extends LightningElement {
         this.stopTracks(stream);
       }
     } catch (error) {
-      showErrorToast(this, 'Error accessing camera', error);
+      showErrorToast(this, ERROR_ACCESSING_CAMERA, error);
     }
   }
 

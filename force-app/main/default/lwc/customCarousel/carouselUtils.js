@@ -1,9 +1,39 @@
+import ANNOUNCEMENT from '@salesforce/label/c.CustomCarousel_Announcement';
+import ANNOUNCEMENT_WITH_HEADING from '@salesforce/label/c.CustomCarousel_AnnouncementWithHeading';
+import CAROUSEL from '@salesforce/label/c.CustomCarousel_Carousel';
+import IMAGES_NOT_LOADED from '@salesforce/label/c.CustomCarousel_ImagesNotLoaded';
+import IMAGE_CAROUSEL from '@salesforce/label/c.CustomCarousel_ImageCarousel';
+import INVALID_SLIDES from '@salesforce/label/c.CustomCarousel_InvalidSlides';
+import LEARN_MORE from '@salesforce/label/c.CustomCarousel_LearnMore';
+import NEXT_SLIDE from '@salesforce/label/c.CustomCarousel_NextSlide';
+import NO_IMAGES from '@salesforce/label/c.CustomCarousel_NoImages';
+import PREVIOUS_SLIDE from '@salesforce/label/c.CustomCarousel_PreviousSlide';
+import SHOW_SLIDE from '@salesforce/label/c.CustomCarousel_ShowSlide';
+import SLIDE from '@salesforce/label/c.CustomCarousel_Slide';
+import SLIDE_POSITION from '@salesforce/label/c.CustomCarousel_SlidePosition';
+import START_SLIDE_SHOW from '@salesforce/label/c.CustomCarousel_StartSlideShow';
+import STOP_SLIDE_SHOW from '@salesforce/label/c.CustomCarousel_StopSlideShow';
+import { formatLabel } from 'c/labelUtils';
 import { gql } from 'lightning/graphql';
 
 const POSITIVE_NUMBER = /^\d+(\.\d+)?$/;
 const SAFE_LINK = /^(https?:\/\/|\/(?!\/))/i;
 const IMAGE_EXTENSIONS = new Set(['gif', 'jpeg', 'jpg', 'png', 'webp']);
-const INVALID_JSON = 'The slides could not be displayed because the slides data is not valid JSON.';
+const INVALID_JSON = INVALID_SLIDES;
+
+/** The texts of the carousel, as Custom Labels. */
+export const LABELS = {
+  noImages: NO_IMAGES,
+  imageCarousel: IMAGE_CAROUSEL,
+  carousel: CAROUSEL,
+  previousSlide: PREVIOUS_SLIDE,
+  nextSlide: NEXT_SLIDE,
+  stopSlideShow: STOP_SLIDE_SHOW,
+  startSlideShow: START_SLIDE_SHOW,
+  imagesNotLoaded: IMAGES_NOT_LOADED,
+  announcement: ANNOUNCEMENT,
+  announcementWithHeading: ANNOUNCEMENT_WITH_HEADING
+};
 
 /** Loads the files attached to a record, see toImageSlides. */
 export const RECORD_FILES_QUERY = gql`
@@ -101,7 +131,7 @@ export function toSlideState(slide, { current, total, slideTransition, thumbnail
   return {
     ...slide,
     link: safeLink(slide.link),
-    linkLabel: slide.linkLabel || 'Learn more',
+    linkLabel: slide.linkLabel || LEARN_MORE,
     altText: slide.description || slide.heading || '',
     // links of hidden slides stay out of the tab order
     linkAttributes: { tabIndex: isCurrent ? 0 : -1 },
@@ -109,12 +139,12 @@ export function toSlideState(slide, { current, total, slideTransition, thumbnail
     // role and description follow the WAI-ARIA carousel pattern, a <fieldset> as Sonar suggests would not fit
     slideAria: {
       role: 'group',
-      ariaRoleDescription: 'slide',
-      ariaLabel: `${slide.index} of ${total}`,
+      ariaRoleDescription: SLIDE,
+      ariaLabel: formatLabel(SLIDE_POSITION, slide.index, total),
       ariaHidden: String(!isCurrent)
     },
     dotClass: isCurrent ? `${navigationClass} active` : navigationClass,
-    dotLabel: `Show slide ${slide.index}`,
+    dotLabel: formatLabel(SHOW_SLIDE, slide.index),
     dotAria: { ariaCurrent: isCurrent ? 'true' : 'false' }
   };
 }

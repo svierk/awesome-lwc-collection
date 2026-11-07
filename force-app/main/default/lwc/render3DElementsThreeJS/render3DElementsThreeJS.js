@@ -1,4 +1,9 @@
 /* eslint-disable no-undef */
+import ERROR_WITHOUT_REASON from '@salesforce/label/c.Render3DElementsThreeJS_ErrorWithoutReason';
+import ERROR_WITH_REASON from '@salesforce/label/c.Render3DElementsThreeJS_ErrorWithReason';
+import MODEL_NOT_LOADED from '@salesforce/label/c.Render3DElementsThreeJS_ModelNotLoaded';
+import SCENE_NOT_DISPLAYED from '@salesforce/label/c.Render3DElementsThreeJS_SceneNotDisplayed';
+import { formatLabel } from 'c/labelUtils';
 import crateMaterial from '@salesforce/resourceUrl/crateMaterial';
 import threejs from '@salesforce/resourceUrl/threejs';
 import { getErrorMessage } from 'c/errorUtils';
@@ -102,7 +107,7 @@ export default class Render3DElementsThreeJS extends LightningElement {
       .then(() => {
         this.init();
       })
-      .catch((error) => this.showError('The 3D scene could not be displayed', error));
+      .catch((error) => this.showError(SCENE_NOT_DISPLAYED, error));
   }
 
   disconnectedCallback() {
@@ -115,7 +120,9 @@ export default class Render3DElementsThreeJS extends LightningElement {
 
   showError(prefix, error) {
     const reason = getErrorMessage(error, '');
-    this.errorMessage = reason ? `${prefix}: ${reason}` : `${prefix}.`;
+    this.errorMessage = reason
+      ? formatLabel(ERROR_WITH_REASON, prefix, reason)
+      : formatLabel(ERROR_WITHOUT_REASON, prefix);
   }
 
   init() {
@@ -167,7 +174,7 @@ export default class Render3DElementsThreeJS extends LightningElement {
       this.modelUrl,
       (gltf) => this.showModel(gltf.scene),
       undefined,
-      (error) => this.showError('The 3D model could not be loaded', error)
+      (error) => this.showError(MODEL_NOT_LOADED, error)
     );
   }
 

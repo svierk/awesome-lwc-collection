@@ -1,5 +1,5 @@
 <template>
-  <lightning-card icon-name="utility:photo" title="Take User Profile Picture">
+  <lightning-card icon-name="utility:photo" title={labels.title}>
     <div class="slds-grid slds-gutters">
       <div class="slds-col slds-size_1-of-2">
         <div class="slds-p-left_small">
@@ -11,7 +11,7 @@
           lwc:if={photoDataUrl}
           src={photoDataUrl}
           class="slds-p-right_small preview"
-          alt="Preview of the new profile"
+          alt={labels.newProfilePreview}
         />
       </div>
     </div>
@@ -19,25 +19,25 @@
       <lightning-button-group>
         <lightning-button
           data-id="start"
-          label="Start Camera"
+          label={labels.startCamera}
           icon-name="utility:video"
           onclick={startCamera}
         ></lightning-button>
         <lightning-button
           data-id="stop"
-          label="Stop Camera"
+          label={labels.stopCamera}
           icon-name="utility:video_off"
           onclick={stopCamera}
         ></lightning-button>
         <lightning-button
           data-id="capture"
-          label="Capture Photo"
+          label={labels.capturePhoto}
           icon-name="utility:photo"
           onclick={capturePhoto}
         ></lightning-button>
         <lightning-button
           data-id="update"
-          label="Update Profile Picture"
+          label={labels.updateProfile}
           icon-name="utility:save"
           onclick={updatePhoto}
           disabled={isUpdateDisabled}

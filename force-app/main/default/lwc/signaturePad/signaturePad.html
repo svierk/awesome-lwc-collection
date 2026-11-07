@@ -1,8 +1,8 @@
 <template>
-  <lightning-card title="Signature Pad" icon-name="utility:edit">
+  <lightning-card title={labels.title} icon-name="utility:edit">
     <div class="slds-var-p-horizontal_medium slds-var-p-bottom_medium">
       <div class="canvas-wrapper slds-is-relative slds-scrollable_none slds-var-m-bottom_small" style={wrapperStyle}>
-        <lightning-spinner lwc:if={isSaving} alternative-text="Saving" size="small"></lightning-spinner>
+        <lightning-spinner lwc:if={isSaving} alternative-text={labels.saving} size="small"></lightning-spinner>
         <canvas
           class="signature-canvas slds-size_full"
           onmousedown={handleMouseDown}
@@ -14,7 +14,7 @@
           ontouchend={handleTouchEnd}
         ></canvas>
         <template lwc:if={isEmpty}>
-          <span class="placeholder slds-is-absolute">Draw your signature here</span>
+          <span class="placeholder slds-is-absolute">{labels.placeholder}</span>
         </template>
       </div>
 
@@ -22,7 +22,7 @@
         <div class="slds-col slds-size_1-of-2 slds-medium-size_3-of-12">
           <lightning-input
             type="color"
-            label="Pen Color"
+            label={labels.penColor}
             value={penColor}
             onchange={handleColorChange}
           ></lightning-input>
@@ -42,14 +42,14 @@
           <div class="slds-grid slds-wrap slds-var-p-bottom_x-small action-buttons">
             <lightning-button
               data-id="undo"
-              label="Undo"
+              label={labels.undo}
               icon-name="utility:undo"
               onclick={handleUndo}
               disabled={isUndoDisabled}
             ></lightning-button>
             <lightning-button
               data-id="clear"
-              label="Clear"
+              label={labels.clear}
               icon-name="utility:clear"
               onclick={handleClear}
               disabled={isEmpty}
@@ -57,7 +57,7 @@
             <lightning-button
               data-id="download"
               variant={downloadVariant}
-              label="Download"
+              label={labels.download}
               icon-name="utility:download"
               onclick={handleDownload}
               disabled={isEmpty}
@@ -66,7 +66,7 @@
               lwc:if={showSave}
               data-id="save"
               variant="brand"
-              label="Save"
+              label={labels.save}
               icon-name="utility:save"
               onclick={handleSave}
               disabled={isSaveDisabled}

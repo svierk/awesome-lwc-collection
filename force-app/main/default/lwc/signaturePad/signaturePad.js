@@ -1,3 +1,19 @@
+import CLEAR from '@salesforce/label/c.SignaturePad_Clear';
+import DOWNLOAD from '@salesforce/label/c.SignaturePad_Download';
+import ERROR_SAVING from '@salesforce/label/c.SignaturePad_ErrorSaving';
+import FILE_TITLE from '@salesforce/label/c.SignaturePad_FileTitle';
+import PEN_COLOR from '@salesforce/label/c.SignaturePad_PenColor';
+import PLACEHOLDER from '@salesforce/label/c.SignaturePad_Placeholder';
+import PROVIDE_SIGNATURE from '@salesforce/label/c.SignaturePad_ProvideSignature';
+import SAVE from '@salesforce/label/c.SignaturePad_Save';
+import SAVED from '@salesforce/label/c.SignaturePad_Saved';
+import SAVE_SIGNATURE from '@salesforce/label/c.SignaturePad_SaveSignature';
+import SAVING from '@salesforce/label/c.SignaturePad_Saving';
+import STROKE_WIDTH from '@salesforce/label/c.SignaturePad_StrokeWidth';
+import SUCCESS from '@salesforce/label/c.SignaturePad_Success';
+import TITLE from '@salesforce/label/c.SignaturePad_Title';
+import UNDO from '@salesforce/label/c.SignaturePad_Undo';
+import { formatLabel } from 'c/labelUtils';
 import CONTENT_DOCUMENT_ID from '@salesforce/schema/ContentVersion.ContentDocumentId';
 import { showErrorToast } from 'c/errorUtils';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
@@ -18,6 +34,17 @@ import { api, LightningElement, wire } from 'lwc';
  * <c-signature-pad record-id={recordId} save-to-record onsignaturesave={handleSignatureSave}></c-signature-pad>
  */
 export default class SignaturePad extends LightningElement {
+  labels = {
+    title: TITLE,
+    saving: SAVING,
+    placeholder: PLACEHOLDER,
+    penColor: PEN_COLOR,
+    undo: UNDO,
+    clear: CLEAR,
+    download: DOWNLOAD,
+    save: SAVE
+  };
+
   /**
    * The height of the signature area, for example '400px'. By default it depends on the screen size.
    * @type {string}
@@ -98,9 +125,9 @@ export default class SignaturePad extends LightningElement {
   @api
   validate() {
     if (!this.required) return { isValid: true };
-    if (this.isEmpty) return { isValid: false, errorMessage: 'Please provide a signature.' };
+    if (this.isEmpty) return { isValid: false, errorMessage: PROVIDE_SIGNATURE };
     if (this.showSave && !this.contentDocumentId) {
-      return { isValid: false, errorMessage: 'Please save your signature.' };
+      return { isValid: false, errorMessage: SAVE_SIGNATURE };
     }
     return { isValid: true };
   }
@@ -264,14 +291,12 @@ export default class SignaturePad extends LightningElement {
     this._contentDocumentId = contentDocumentId;
     this.dispatchEvent(new CustomEvent('signaturesave', { detail: { contentDocumentId } }));
     this.dispatchEvent(new FlowAttributeChangeEvent('contentDocumentId', contentDocumentId));
-    this.dispatchEvent(
-      new ShowToastEvent({ title: 'Success', message: 'The signature has been saved.', variant: 'success' })
-    );
+    this.dispatchEvent(new ShowToastEvent({ title: SUCCESS, message: SAVED, variant: 'success' }));
   }
 
   _failSave(error) {
     this.isSaving = false;
-    showErrorToast(this, 'Error saving the signature', error);
+    showErrorToast(this, ERROR_SAVING, error);
   }
 
   handleMouseDown(event) {
@@ -335,7 +360,7 @@ export default class SignaturePad extends LightningElement {
       const { id } = await createRecord({
         apiName: 'ContentVersion',
         fields: {
-          Title: 'Signature',
+          Title: FILE_TITLE,
           PathOnClient: 'signature.png',
           VersionData: this._signatureDataUrl.split(',')[1],
           FirstPublishLocationId: this.recordId
@@ -360,6 +385,6 @@ export default class SignaturePad extends LightningElement {
   }
 
   get strokeWidthLabel() {
-    return `Stroke Width (${this.strokeWidth}px)`;
+    return formatLabel(STROKE_WIDTH, this.strokeWidth);
   }
 }
