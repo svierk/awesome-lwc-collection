@@ -64,6 +64,9 @@ describe('c-custom-carousel', () => {
     expect(queryAll('.fade.slds-show').length).toBe(1);
     expect(activeDotId()).toBe('1');
     expect(errorMessage()).toBeUndefined();
+    expect(query('.slds-card')).toBeNull();
+    expect(query('.prev').iconName).toBe('utility:chevronleft');
+    expect(query('.next').iconName).toBe('utility:chevronright');
   });
 
   it('should apply the configured custom width and height', () => {
@@ -89,7 +92,9 @@ describe('c-custom-carousel', () => {
 
   it.each([
     ['fade', {}],
-    ['slide with auto-scroll', { transition: 'slide', autoScroll: true }]
+    ['slide with auto-scroll', { transition: 'slide', autoScroll: true }],
+    ['a card, a title and an aspect ratio', { showCard: true, cardTitle: 'Highlights', aspectRatio: '16:9' }],
+    ['a card without title', { showCard: true }]
   ])('should be accessible with %s', async (_label, props) => {
     // given
     jest.useRealTimers();
@@ -116,6 +121,7 @@ describe('c-custom-carousel', () => {
 
     // then
     expect(activeDotId()).toBe(expected);
+    expect(query('.slideNumbers').textContent).toBe(`${expected}/${mockData.slideData.length}`);
   });
 
   it('should advance slides automatically when auto-scroll is enabled', async () => {
@@ -162,45 +168,28 @@ describe('c-custom-carousel', () => {
     expect(element.slidesData.length).toBe(expected);
   });
 
-  it('should show an error when the slides data is not valid json', async () => {
-    // when
-    mount({ slidesData: '{ not json' });
-
-    // then
-    expect(errorMessage()).toBe('The slides could not be displayed because the slides data is not valid JSON.');
-    expect(element.slidesData).toEqual([]);
-    jest.useRealTimers();
-    await expect(element).toBeAccessible();
-  });
-
-  it('should remove the error when valid slides data arrives', async () => {
+  it('should show an error for invalid json and remove it when valid slides data arrives', async () => {
     // given
+    jest.useRealTimers();
     mount({ slidesData: '{ not json' });
+    const shown = errorMessage();
+    await expect(element).toBeAccessible();
 
     // when
     element.slidesData = mockData.slideData;
     await flushPromises();
 
     // then
+    expect(shown).toBe('The slides could not be displayed because the slides data is not valid JSON.');
     expect(errorMessage()).toBeUndefined();
     expect(element.slidesData.length).toBe(mockData.slideData.length);
   });
 
-  it('should hide the navigation when there are no slides', () => {
-    // when
-    mount({ slidesData: [], autoScroll: true });
-
-    // then
-    expect(query('.prev')).toBeNull();
-    expect(query('.next')).toBeNull();
-    expect(queryAll('.dot').length).toBe(0);
-    expect(query('.carousel-playback')).toBeNull();
-  });
-
-  it('should not lose its position when auto-scroll runs without slides', async () => {
+  it('should hide the navigation without slides and keep its position while auto-scroll runs', async () => {
     // given
     mount({ slidesData: [], autoScroll: true, scrollDuration: 1000 });
     jest.advanceTimersByTime(3000);
+    const hidden = ['.prev', '.next', '.dot', '.carousel-playback', '.slideNumbers'].map((selector) => query(selector));
 
     // when
     element.slidesData = mockData.slideData;
@@ -209,6 +198,7 @@ describe('c-custom-carousel', () => {
     await flushPromises();
 
     // then
+    expect(hidden).toEqual([null, null, null, null, null]);
     expect(activeDotId()).toBe('2');
   });
 
@@ -229,26 +219,11 @@ describe('c-custom-carousel', () => {
   });
 
   it.each([
-    ['auto-scroll is enabled after connecting', { scrollDuration: 1000 }, { autoScroll: true }, '2'],
-    [
-      'auto-scroll is disabled after connecting',
-      { autoScroll: true, scrollDuration: 1000 },
-      { autoScroll: false },
-      '1'
-    ],
-    [
-      'the duration changes after connecting',
-      { autoScroll: true, scrollDuration: 5000 },
-      { scrollDuration: 1000 },
-      '2'
-    ],
-    [
-      'the settings are set again',
-      { autoScroll: true, scrollDuration: 1000 },
-      { scrollDuration: 1000, autoScroll: true },
-      '2'
-    ]
-  ])('should follow the timer settings when %s', async (_label, initial, changes, expected) => {
+    ['enabling auto-scroll', { scrollDuration: 1000 }, { autoScroll: true }, '2'],
+    ['disabling auto-scroll', { autoScroll: true, scrollDuration: 1000 }, { autoScroll: false }, '1'],
+    ['a new duration', { autoScroll: true, scrollDuration: 5000 }, { scrollDuration: 1000 }, '2'],
+    ['the same settings', { autoScroll: true, scrollDuration: 1000 }, { scrollDuration: 1000, autoScroll: true }, '2']
+  ])('should follow the timer settings after %s', async (_label, initial, changes, expected) => {
     // given
     mount(initial);
 
@@ -260,6 +235,34 @@ describe('c-custom-carousel', () => {
     // then
     expect(activeDotId()).toBe(expected);
     expect(element.scrollDuration).toBe(changes.scrollDuration ?? initial.scrollDuration);
+  });
+
+  it.each([
+    ['16:9', '16 / 9'],
+    [' 4 / 3 ', '4 / 3'],
+    ['1.5', '1.5'],
+    ['16:0', ''],
+    ['16:9:4', ''],
+    ['wide', '']
+  ])('should apply the aspect ratio %p as %p', (aspectRatio, expected) => {
+    // when
+    mount({ aspectRatio, customHeight: '400px' });
+
+    // then
+    const viewport = query('.carousel-viewport');
+    expect(viewport.getAttribute('style') ?? '').toBe(expected ? `aspect-ratio: ${expected}` : '');
+    expect(viewport.classList.contains('carousel-fill')).toBe(expected !== '');
+    expect(query('img').style.height).toBe(expected ? '' : '400px');
+  });
+
+  it('should wrap the carousel in a card with icon and title', () => {
+    // when
+    mount({ showCard: true, cardIcon: 'standard:feed', cardTitle: 'Highlights' });
+
+    // then
+    expect(query('.slds-card__header lightning-icon').iconName).toBe('standard:feed');
+    expect(query('.slds-card__header-title').textContent).toBe('Highlights');
+    expect(query('.slds-card .slds-card__body section.carousel')).toBeTruthy();
   });
 
   it('should not start a timer before it is connected', () => {

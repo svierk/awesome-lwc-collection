@@ -10,18 +10,22 @@ A simple custom carousel with different configuration options.
 
 ## Attributes
 
-| Name                    | Type    | Default | Description                                                                                                                                                                 |
-| ----------------------- | ------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| auto-scroll             | boolean | false   | If present, automatic slide scrolling will be enabled.                                                                                                                      |
-| custom-height           | string  | ''      | Set maximum height of the carousel in percent or pixels.                                                                                                                    |
-| custom-width            | string  | '600px' | Set maximum width of the carousel in percent or pixels.                                                                                                                     |
-| hide-navigation-buttons | boolean | false   | If present, the "next" and "prev" navigation buttons will be hidden.                                                                                                        |
-| hide-navigation-dots    | boolean | false   | If present, the navigation dots below the carousel will be hidden.                                                                                                          |
-| hide-slide-number       | boolean | false   | If present, the current slide number will be hidden.                                                                                                                        |
-| hide-slide-text         | boolean | false   | If present, the text overlay with heading and description will be hidden.                                                                                                   |
-| scroll-duration         | number  | 5000    | Set the duration in milliseconds after which the next slide should be displayed.                                                                                            |
-| slides-data             | Array   |         | JSON array of slides that are displayed in the custom carousel. Each slide has the following attributes: image, heading and description.                                    |
-| transition              | string  | 'fade'  | Set how the carousel moves to another slide: 'fade' blends the new slide in, 'slide' moves it in from the side. Both are switched off when the user prefers reduced motion. |
+| Name                    | Type    | Default         | Description                                                                                                                                                                                                                                                    |
+| ----------------------- | ------- | --------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| aspect-ratio            | string  | ''              | Set a fixed aspect ratio for the slides, e.g. '16:9' or '4/3'. The images then fill the slides and are cropped where needed. Takes precedence over custom-height.                                                                                              |
+| auto-scroll             | boolean | false           | If present, automatic slide scrolling will be enabled.                                                                                                                                                                                                         |
+| card-icon               | string  | 'utility:image' | If show card option is active, the card icon is displayed in the header before the card title. It should contain the SLDS name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category and 'down' the icon to be displayed. |
+| card-title              | string  | ''              | If show card option is active, the card title can include text and is displayed in the header above the carousel.                                                                                                                                              |
+| custom-height           | string  | ''              | Set maximum height of the carousel in percent or pixels.                                                                                                                                                                                                       |
+| custom-width            | string  | '600px'         | Set maximum width of the carousel in percent or pixels.                                                                                                                                                                                                        |
+| hide-navigation-buttons | boolean | false           | If present, the "next" and "prev" navigation buttons will be hidden.                                                                                                                                                                                           |
+| hide-navigation-dots    | boolean | false           | If present, the navigation dots below the carousel will be hidden.                                                                                                                                                                                             |
+| hide-slide-number       | boolean | false           | If present, the current slide number will be hidden.                                                                                                                                                                                                           |
+| hide-slide-text         | boolean | false           | If present, the text overlay with heading and description will be hidden.                                                                                                                                                                                      |
+| scroll-duration         | number  | 5000            | Set the duration in milliseconds after which the next slide should be displayed.                                                                                                                                                                               |
+| show-card               | boolean | false           | If present, the carousel is wrapped in a lightning card to fit better into the overall page layout.                                                                                                                                                            |
+| slides-data             | Array   |                 | JSON array of slides that are displayed in the custom carousel. Each slide has the following attributes: image, heading and description.                                                                                                                       |
+| transition              | string  | 'fade'          | Set how the carousel moves to another slide: 'fade' blends the new slide in, 'slide' moves it in from the side. Both are switched off when the user prefers reduced motion.                                                                                    |
 
 ### Example slides-data JSON array;
 
@@ -49,6 +53,12 @@ A simple custom carousel with different configuration options.
 
 ```html
 <c-custom-carousel slides-data={slides} custom-width="800px" auto-scroll scroll-duration="7000"></c-custom-carousel>
+```
+
+With a fixed aspect ratio, all slides have the same size, whatever the size of their images, and the carousel can sit in a Lightning Card:
+
+```html
+<c-custom-carousel slides-data={slides} aspect-ratio="16:9" show-card card-title="Highlights"></c-custom-carousel>
 ```
 
 When adding the component to a page in the Lightning App Builder, paste a slides JSON array like the example above into the slides-data property.
