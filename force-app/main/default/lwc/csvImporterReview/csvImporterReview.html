@@ -5,7 +5,7 @@
       <p class="summary slds-col slds-m-right_medium">{summary}</p>
       <lightning-input
         type="checkbox"
-        label="Only rows with errors"
+        label={labels.onlyErrors}
         checked={onlyErrors}
         disabled={hasNoErrors}
         onchange={handleOnlyErrorsChange}

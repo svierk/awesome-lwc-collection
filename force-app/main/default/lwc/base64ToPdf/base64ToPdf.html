@@ -1,7 +1,7 @@
 <template>
-  <lightning-card title="Base64 To PDF" icon-name="doctype:pdf">
+  <lightning-card title={labels.title} icon-name="doctype:pdf">
     <a lwc:if={pdf} class="slds-button slds-button_brand" href={pdf} download={fileName} slot="actions"
-      >Download PDF File</a
+      >{labels.download}</a
     >
   </lightning-card>
 </template>

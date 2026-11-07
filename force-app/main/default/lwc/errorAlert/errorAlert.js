@@ -1,3 +1,4 @@
+import ERROR from '@salesforce/label/c.ErrorAlert_Error';
 import { api, LightningElement } from 'lwc';
 
 /**
@@ -15,4 +16,6 @@ export default class ErrorAlert extends LightningElement {
    * @type {string}
    */
   @api message;
+
+  labels = { error: ERROR };
 }

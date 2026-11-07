@@ -1,19 +1,6 @@
 import CsvImporter from 'c/csvImporter';
 import { FlowAttributeChangeEventName } from 'lightning/flowSupport';
 import { createElement } from 'lwc';
-
-// the stub of the event drops the attribute, so this one keeps it in the detail
-jest.mock('lightning/flowSupport', () => {
-  const name = 'lightning__flowattributechange';
-  return {
-    FlowAttributeChangeEventName: name,
-    FlowAttributeChangeEvent: class extends CustomEvent {
-      constructor(attribute, value) {
-        super(name, { bubbles: true, composed: true, detail: { attribute, value } });
-      }
-    }
-  };
-});
 import { TextDecoder, TextEncoder } from 'node:util';
 
 // jsdom has no text encoding API, browsers do
@@ -337,7 +324,7 @@ describe('c-csv-importer', () => {
     const backAfterStart = back().className;
     const flowChanges = {};
     element.addEventListener(FlowAttributeChangeEventName, (event) => {
-      flowChanges[event.detail.attribute] = event.detail.value;
+      flowChanges[event.detail.attributeName] = event.detail.attributeValue;
     });
     await send('c-csv-importer-import', 'importfinish', {
       created: 1,
@@ -399,7 +386,7 @@ describe('c-csv-importer', () => {
       createdRecordIds: ['00Qx']
     });
     const flowChanges = [];
-    element.addEventListener(FlowAttributeChangeEventName, (event) => flowChanges.push(event.detail.attribute));
+    element.addEventListener(FlowAttributeChangeEventName, (event) => flowChanges.push(event.detail.attributeName));
 
     // when
     query('lightning-button[data-id="new-import"]').click();

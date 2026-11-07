@@ -1,14 +1,14 @@
 <template>
   <div class="slds-grid slds-grid_align-center slds-m-top_small slds-var-p-vertical_x-small">
     <lightning-button
-      label="First"
+      label={labels.first}
       icon-name="utility:jump_to_left"
       onclick={handleFirst}
       disabled={isFirstPage}
       class="slds-m-right_xx-small"
     ></lightning-button>
     <lightning-button
-      label="Previous"
+      label={labels.previous}
       icon-name="utility:chevronleft"
       onclick={handlePrevious}
       disabled={isFirstPage}
@@ -16,7 +16,7 @@
     ></lightning-button>
     <span class="slds-align-middle slds-p-horizontal_small slds-text-body_small"> {paginationLabel} </span>
     <lightning-button
-      label="Next"
+      label={labels.next}
       icon-name="utility:chevronright"
       icon-position="right"
       onclick={handleNext}
@@ -24,7 +24,7 @@
       class="slds-m-left_xx-small"
     ></lightning-button>
     <lightning-button
-      label="Last"
+      label={labels.last}
       icon-name="utility:jump_to_right"
       icon-position="right"
       onclick={handleLast}

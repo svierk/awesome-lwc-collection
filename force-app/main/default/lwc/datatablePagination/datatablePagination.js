@@ -1,3 +1,7 @@
+import FIRST from '@salesforce/label/c.DatatablePagination_First';
+import LAST from '@salesforce/label/c.DatatablePagination_Last';
+import NEXT from '@salesforce/label/c.DatatablePagination_Next';
+import PREVIOUS from '@salesforce/label/c.DatatablePagination_Previous';
 import { LightningElement, api } from 'lwc';
 
 /**
@@ -17,6 +21,8 @@ export default class DatatablePagination extends LightningElement {
   @api paginationLabel = '';
   @api isFirstPage = false;
   @api isLastPage = false;
+
+  labels = { first: FIRST, previous: PREVIOUS, next: NEXT, last: LAST };
 
   handleFirst() {
     this.dispatchEvent(new CustomEvent('first'));

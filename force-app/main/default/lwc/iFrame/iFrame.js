@@ -1,3 +1,4 @@
+import FRAME_TITLE from '@salesforce/label/c.IFrame_FrameTitle';
 import { api, LightningElement } from 'lwc';
 
 /**
@@ -14,6 +15,8 @@ import { api, LightningElement } from 'lwc';
  * ></c-i-frame>
  */
 export default class IFrame extends LightningElement {
+  labels = { frameTitle: FRAME_TITLE };
+
   /**
    * If show card option is active, the card icon is displayed in the header before the card title.
    * It should contain the SLDS name of the icon.

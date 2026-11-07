@@ -1,6 +1,6 @@
 <template>
   <template lwc:if={isLoading}>
-    <lightning-spinner alternative-text="Loading" variant="brand"></lightning-spinner>
+    <lightning-spinner alternative-text={labels.loading} variant="brand"></lightning-spinner>
   </template>
   <template lwc:if={isUsedAsRelatedList}>
     <article class="slds-card slds-card_boundary slds-card_related-list-fix">
@@ -27,7 +27,7 @@
                 <template lwc:if={showMultipleRowDeleteAction}>
                   <lightning-button
                     lwc:if={hasSelectedRecords}
-                    label="Delete"
+                    label={labels.delete}
                     onclick={deleteSelectedRecords}
                   ></lightning-button>
                 </template>
@@ -38,9 +38,9 @@
         <lightning-input
           lwc:if={showSearch}
           type="search"
-          label="Search"
+          label={labels.search}
           variant="label-hidden"
-          placeholder="Search all fields..."
+          placeholder={labels.searchPlaceholder}
           value={_searchTerm}
           onchange={handleSearchChange}
           class="search-input slds-m-top_small"
@@ -78,7 +78,7 @@
       <template lwc:if={showMultipleRowDeleteAction}>
         <lightning-button
           lwc:if={hasSelectedRecords}
-          label="Delete"
+          label={labels.delete}
           slot="actions"
           onclick={deleteSelectedRecords}
         ></lightning-button>
@@ -86,9 +86,9 @@
       <lightning-input
         lwc:if={showSearch}
         type="search"
-        label="Search"
+        label={labels.search}
         variant="label-hidden"
-        placeholder="Search all fields..."
+        placeholder={labels.searchPlaceholder}
         value={_searchTerm}
         onchange={handleSearchChange}
         class="search-input slds-p-horizontal_medium"
@@ -126,9 +126,9 @@
     <lightning-input
       lwc:if={showSearch}
       type="search"
-      label="Search"
+      label={labels.search}
       variant="label-hidden"
-      placeholder="Search all fields..."
+      placeholder={labels.searchPlaceholder}
       value={_searchTerm}
       onchange={handleSearchChange}
       class="search-input"

@@ -1,3 +1,18 @@
+import DELETE from '@salesforce/label/c.GraphqlDatatable_Delete';
+import ERROR_DELETING_RECORD from '@salesforce/label/c.GraphqlDatatable_ErrorDeletingRecord';
+import ERROR_DELETING_RECORDS from '@salesforce/label/c.GraphqlDatatable_ErrorDeletingRecords';
+import ERROR_LOADING_RECORDS from '@salesforce/label/c.GraphqlDatatable_ErrorLoadingRecords';
+import ERROR_UPDATING_RECORDS from '@salesforce/label/c.GraphqlDatatable_ErrorUpdatingRecords';
+import LOADING from '@salesforce/label/c.GraphqlDatatable_Loading';
+import PAGE from '@salesforce/label/c.GraphqlDatatable_Page';
+import RECORDS_DELETED from '@salesforce/label/c.GraphqlDatatable_RecordsDeleted';
+import RECORDS_UPDATED from '@salesforce/label/c.GraphqlDatatable_RecordsUpdated';
+import RECORD_COUNT from '@salesforce/label/c.GraphqlDatatable_RecordCount';
+import RECORD_DELETED from '@salesforce/label/c.GraphqlDatatable_RecordDeleted';
+import SEARCH from '@salesforce/label/c.GraphqlDatatable_Search';
+import SEARCH_PLACEHOLDER from '@salesforce/label/c.GraphqlDatatable_SearchPlaceholder';
+import SUCCESS from '@salesforce/label/c.GraphqlDatatable_Success';
+import { formatLabel } from 'c/labelUtils';
 import {
   addRowActions,
   buildDatatableProperties,
@@ -53,6 +68,8 @@ const RAW_VALUE_DATA_TYPES = new Set(['Date', 'DateTime', 'Currency', 'Percent',
  * ></c-graphql-datatable>
  */
 export default class GraphqlDatatable extends NavigationMixin(LightningElement) {
+  labels = { loading: LOADING, delete: DELETE, search: SEARCH, searchPlaceholder: SEARCH_PLACEHOLDER };
+
   @api cardIcon = 'utility:table';
   @api cardTitle = '';
   @api columnWidthsMode = 'fixed';
@@ -251,7 +268,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
       }
     } else if (errors) {
       this.isLoading = false;
-      showErrorToast(this, 'Error loading records', errors);
+      showErrorToast(this, ERROR_LOADING_RECORDS, errors);
     }
   }
 
@@ -294,13 +311,13 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   }
 
   get paginationLabel() {
-    return `Page ${this._currentPage} of ${this.totalPages}`;
+    return formatLabel(PAGE, this._currentPage, this.totalPages);
   }
 
   get recordCountLabel() {
     const start = (this._currentPage - 1) * this.pageSize + 1;
     const end = Math.min(this._currentPage * this.pageSize, this._totalRecordCount);
-    return `Showing ${start}\u2013${end} of ${this._totalRecordCount} records`;
+    return formatLabel(RECORD_COUNT, start, end, this._totalRecordCount);
   }
 
   get computedRowNumberOffset() {
@@ -417,14 +434,14 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
       const results = await Promise.all(event.detail.draftValues.map((draft) => this._updateRecordMutation(draft)));
       const errors = results.flatMap((r) => r?.errors ?? []);
       if (errors.length) {
-        showErrorToast(this, 'Error updating records', errors);
+        showErrorToast(this, ERROR_UPDATING_RECORDS, errors);
         return;
       }
-      this.showToast('Success', 'Records updated', 'success');
+      this.showToast(SUCCESS, RECORDS_UPDATED, 'success');
       await this._refreshData();
       this.draftValues = [];
     } catch (error) {
-      showErrorToast(this, 'Error updating records', error);
+      showErrorToast(this, ERROR_UPDATING_RECORDS, error);
     }
   }
 
@@ -438,13 +455,13 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
       const results = await Promise.all(this.selectedRecords.map((record) => this._deleteRecordMutation(record.Id)));
       const errors = results.flatMap((r) => r?.errors ?? []);
       if (errors.length) {
-        showErrorToast(this, 'Error deleting records', errors);
+        showErrorToast(this, ERROR_DELETING_RECORDS, errors);
         return;
       }
-      this.showToast('Success', 'Records deleted', 'success');
+      this.showToast(SUCCESS, RECORDS_DELETED, 'success');
       await this._refreshData();
     } catch (error) {
-      showErrorToast(this, 'Error deleting records', error);
+      showErrorToast(this, ERROR_DELETING_RECORDS, error);
     } finally {
       this.isLoading = false;
     }
@@ -455,13 +472,13 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     try {
       const result = await this._deleteRecordMutation(recordId);
       if (result?.errors?.length) {
-        showErrorToast(this, 'Error deleting record', result.errors);
+        showErrorToast(this, ERROR_DELETING_RECORD, result.errors);
         return;
       }
-      this.showToast('Success', 'Record deleted', 'success');
+      this.showToast(SUCCESS, RECORD_DELETED, 'success');
       await this._refreshData();
     } catch (error) {
-      showErrorToast(this, 'Error deleting record', error);
+      showErrorToast(this, ERROR_DELETING_RECORD, error);
     } finally {
       this.isLoading = false;
     }

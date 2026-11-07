@@ -1,5 +1,24 @@
+import COLUMN from '@salesforce/label/c.CsvImporterMapping_Column';
+import DONT_IMPORT from '@salesforce/label/c.CsvImporterMapping_DontImport';
+import DOWNLOAD_MAPPING from '@salesforce/label/c.CsvImporterMapping_DownloadMapping';
+import DUPLICATES from '@salesforce/label/c.CsvImporterMapping_Duplicates';
+import EXAMPLE from '@salesforce/label/c.CsvImporterMapping_Example';
+import FIELD_FOR from '@salesforce/label/c.CsvImporterMapping_FieldFor';
+import IMPORTING_INTO from '@salesforce/label/c.CsvImporterMapping_ImportingInto';
+import MAPPING_ERROR from '@salesforce/label/c.CsvImporterMapping_MappingError';
+import MISSING_FIELDS from '@salesforce/label/c.CsvImporterMapping_MissingFields';
+import NO_MAPPING from '@salesforce/label/c.CsvImporterMapping_NoMapping';
+import OBJECT from '@salesforce/label/c.CsvImporterMapping_Object';
+import OBJECT_API_NAME from '@salesforce/label/c.CsvImporterMapping_ObjectApiName';
+import OBJECT_ERROR from '@salesforce/label/c.CsvImporterMapping_ObjectError';
+import OBJECT_HELP from '@salesforce/label/c.CsvImporterMapping_ObjectHelp';
+import OBJECT_PLACEHOLDER from '@salesforce/label/c.CsvImporterMapping_ObjectPlaceholder';
+import OTHER_OBJECT from '@salesforce/label/c.CsvImporterMapping_OtherObject';
+import SALESFORCE_FIELD from '@salesforce/label/c.CsvImporterMapping_SalesforceField';
+import UPLOAD_MAPPING from '@salesforce/label/c.CsvImporterMapping_UploadMapping';
 import { isRequired } from 'c/csvValidator';
 import { getErrorMessage } from 'c/errorUtils';
+import { formatLabel } from 'c/labelUtils';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { api, LightningElement, wire } from 'lwc';
 
@@ -63,6 +82,17 @@ export default class CsvImporterMapping extends LightningElement {
    */
   @api keyFieldApiName;
 
+  labels = {
+    column: COLUMN,
+    downloadMapping: DOWNLOAD_MAPPING,
+    example: EXAMPLE,
+    object: OBJECT,
+    objectApiName: OBJECT_API_NAME,
+    objectHelp: OBJECT_HELP,
+    objectPlaceholder: OBJECT_PLACEHOLDER,
+    salesforceField: SALESFORCE_FIELD,
+    uploadMapping: UPLOAD_MAPPING
+  };
   objectApiName;
   objectInfo;
   objectError = '';
@@ -85,7 +115,7 @@ export default class CsvImporterMapping extends LightningElement {
       }
     } else if (error) {
       this.objectInfo = undefined;
-      this.objectError = `The object ${this.objectApiName} can't be used: ${getErrorMessage(error)}`;
+      this.objectError = formatLabel(OBJECT_ERROR, this.objectApiName, getErrorMessage(error));
       this.notify();
     }
   }
@@ -96,6 +126,10 @@ export default class CsvImporterMapping extends LightningElement {
 
   get objectLabel() {
     return this.objectInfo?.label;
+  }
+
+  get importingInto() {
+    return formatLabel(IMPORTING_INTO, this.objectLabel);
   }
 
   /** The fields a column can be mapped to: the ones records can be created with, and the upsert field. */
@@ -110,7 +144,7 @@ export default class CsvImporterMapping extends LightningElement {
     const fields = this.importableFields
       .map((field) => ({ label: `${field.label} (${field.apiName})`, value: field.apiName }))
       .sort((a, b) => a.label.localeCompare(b.label));
-    return [{ label: "Don't import", value: SKIP }, ...fields];
+    return [{ label: DONT_IMPORT, value: SKIP }, ...fields];
   }
 
   get duplicateFields() {
@@ -120,7 +154,7 @@ export default class CsvImporterMapping extends LightningElement {
 
   get duplicateMessage() {
     const labels = this.duplicateFields.map((field) => this.objectInfo.fields[field].label);
-    return labels.length ? `More than one column is mapped to: ${labels.join(', ')}.` : '';
+    return labels.length ? formatLabel(DUPLICATES, labels.join(', ')) : '';
   }
 
   /** The labels of the fields records can't be imported without, when no column is mapped to them. Needs the object. */
@@ -137,7 +171,7 @@ export default class CsvImporterMapping extends LightningElement {
 
   get missingMessage() {
     const labels = this.missingFields;
-    return labels.length ? `Map a column to every required field: ${labels.join(', ')}.` : '';
+    return labels.length ? formatLabel(MISSING_FIELDS, labels.join(', ')) : '';
   }
 
   get isValid() {
@@ -154,7 +188,7 @@ export default class CsvImporterMapping extends LightningElement {
       column,
       sample: this.sampleRow?.[column] ?? '',
       field: this.mapping[column],
-      label: `Field for ${column}`
+      label: formatLabel(FIELD_FOR, column)
     }));
   }
 
@@ -208,10 +242,10 @@ export default class CsvImporterMapping extends LightningElement {
     try {
       const { objectApiName, mapping } = JSON.parse(await file.text());
       if (typeof mapping !== 'object' || mapping === null) {
-        throw new Error('it has no mapping');
+        throw new Error(NO_MAPPING);
       }
       if (this.isObjectFixed && objectApiName !== this.fixedObjectApiName) {
-        throw new Error(`it is for ${objectApiName}, not for ${this.fixedObjectApiName}`);
+        throw new Error(formatLabel(OTHER_OBJECT, objectApiName, this.fixedObjectApiName));
       }
       if (!this.isObjectFixed && objectApiName && objectApiName !== this.objectApiName) {
         // the fields of the other object are checked once they are loaded
@@ -223,7 +257,7 @@ export default class CsvImporterMapping extends LightningElement {
       }
       this.applyMapping(mapping);
     } catch (e) {
-      this.importError = `The mapping could not be used: ${getErrorMessage(e)}`;
+      this.importError = formatLabel(MAPPING_ERROR, getErrorMessage(e));
     }
   }
 

@@ -14,10 +14,8 @@
     </div>
     <div class={cardBodyClass}>
       <c-error-alert lwc:if={errorMessage} class="slds-show slds-m-bottom_small" message={errorMessage}></c-error-alert>
-      <p lwc:if={noRecordFiles} class="slds-text-color_weak slds-p-around_small">
-        No images are attached to this record.
-      </p>
-      <section class="carousel" aria-roledescription="carousel" aria-label="Image carousel">
+      <p lwc:if={noRecordFiles} class="slds-text-color_weak slds-p-around_small">{labels.noImages}</p>
+      <section class="carousel" aria-roledescription={labels.carousel} aria-label={labels.imageCarousel}>
         <div class="slds-is-relative container" style={maxWidth}>
           <div
             class={viewportClass}
@@ -54,16 +52,16 @@
               class="prev"
               variant="border-filled"
               icon-name="utility:chevronleft"
-              alternative-text="Previous slide"
-              title="Previous slide"
+              alternative-text={labels.previousSlide}
+              title={labels.previousSlide}
               onclick={slideBackward}
             ></lightning-button-icon>
             <lightning-button-icon
               class="next"
               variant="border-filled"
               icon-name="utility:chevronright"
-              alternative-text="Next slide"
-              title="Next slide"
+              alternative-text={labels.nextSlide}
+              title={labels.nextSlide}
               onclick={slideForward}
             ></lightning-button-icon>
           </div>

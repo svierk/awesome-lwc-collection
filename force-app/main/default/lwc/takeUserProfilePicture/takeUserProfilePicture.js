@@ -1,3 +1,12 @@
+import CAPTURE_PHOTO from '@salesforce/label/c.TakeUserProfilePicture_CapturePhoto';
+import ERROR_SAVING from '@salesforce/label/c.TakeUserProfilePicture_ErrorSaving';
+import NEW_PROFILE_PREVIEW from '@salesforce/label/c.TakeUserProfilePicture_NewProfilePreview';
+import START_CAMERA from '@salesforce/label/c.TakeUserProfilePicture_StartCamera';
+import STOP_CAMERA from '@salesforce/label/c.TakeUserProfilePicture_StopCamera';
+import SUCCESS from '@salesforce/label/c.TakeUserProfilePicture_Success';
+import TITLE from '@salesforce/label/c.TakeUserProfilePicture_Title';
+import UPDATED from '@salesforce/label/c.TakeUserProfilePicture_Updated';
+import UPDATE_PROFILE from '@salesforce/label/c.TakeUserProfilePicture_UpdateProfile';
 import updateProfilePicture from '@salesforce/apex/UserProfilePictureController.updateProfilePicture';
 import { showErrorToast } from 'c/errorUtils';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
@@ -13,6 +22,15 @@ import { api, LightningElement } from 'lwc';
  * <c-take-user-profile-picture default-camera="front"></c-take-user-profile-picture>
  */
 export default class TakeUserProfilePicture extends LightningElement {
+  labels = {
+    title: TITLE,
+    newProfilePreview: NEW_PROFILE_PREVIEW,
+    startCamera: START_CAMERA,
+    stopCamera: STOP_CAMERA,
+    capturePhoto: CAPTURE_PHOTO,
+    updateProfile: UPDATE_PROFILE
+  };
+
   /**
    * The camera to start with, front or back. Devices with only one camera use that one.
    * @type {string}
@@ -52,14 +70,10 @@ export default class TakeUserProfilePicture extends LightningElement {
 
     updateProfilePicture({ base64: base64 })
       .then(() => {
-        this.showToast(
-          'Success',
-          'Profile picture has been updated, it takes some time until the change is visible',
-          'success'
-        );
+        this.showToast(SUCCESS, UPDATED, 'success');
       })
       .catch((error) => {
-        showErrorToast(this, 'Error saving the profile picture', error);
+        showErrorToast(this, ERROR_SAVING, error);
       });
   }
 

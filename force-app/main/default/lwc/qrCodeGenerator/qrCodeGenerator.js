@@ -1,3 +1,26 @@
+import DARK_COLOR from '@salesforce/label/c.QrCodeGenerator_DarkColor';
+import ENTER_URL from '@salesforce/label/c.QrCodeGenerator_EnterUrl';
+import ERROR_SAVING from '@salesforce/label/c.QrCodeGenerator_ErrorSaving';
+import FILE_NOT_READ from '@salesforce/label/c.QrCodeGenerator_FileNotRead';
+import FILE_TITLE from '@salesforce/label/c.QrCodeGenerator_FileTitle';
+import GENERATE from '@salesforce/label/c.QrCodeGenerator_Generate';
+import GENERATED_CODE from '@salesforce/label/c.QrCodeGenerator_GeneratedCode';
+import GENERATING from '@salesforce/label/c.QrCodeGenerator_Generating';
+import GENERATION_FAILED from '@salesforce/label/c.QrCodeGenerator_GenerationFailed';
+import HARD_TO_SCAN from '@salesforce/label/c.QrCodeGenerator_HardToScan';
+import LIBRARY_MISSING from '@salesforce/label/c.QrCodeGenerator_LibraryMissing';
+import LIBRARY_NOT_LOADED from '@salesforce/label/c.QrCodeGenerator_LibraryNotLoaded';
+import LIGHT_COLOR from '@salesforce/label/c.QrCodeGenerator_LightColor';
+import LOGO from '@salesforce/label/c.QrCodeGenerator_Logo';
+import LOGO_PREVIEW from '@salesforce/label/c.QrCodeGenerator_LogoPreview';
+import REMOVE_LOGO from '@salesforce/label/c.QrCodeGenerator_RemoveLogo';
+import SAVE from '@salesforce/label/c.QrCodeGenerator_Save';
+import SAVED from '@salesforce/label/c.QrCodeGenerator_Saved';
+import SUCCESS from '@salesforce/label/c.QrCodeGenerator_Success';
+import TARGET_URL from '@salesforce/label/c.QrCodeGenerator_TargetUrl';
+import TITLE from '@salesforce/label/c.QrCodeGenerator_Title';
+import URL_PLACEHOLDER from '@salesforce/label/c.QrCodeGenerator_UrlPlaceholder';
+import { formatLabel } from 'c/labelUtils';
 import CONTENT_DOCUMENT_ID from '@salesforce/schema/ContentVersion.ContentDocumentId';
 import qrcodejs from '@salesforce/resourceUrl/qrcodejs';
 import { getErrorMessage, showErrorToast } from 'c/errorUtils';
@@ -47,6 +70,22 @@ function getLuminance(color) {
  * <c-qr-code-generator size="300" onqrcodegenerate={handleGenerate}></c-qr-code-generator>
  */
 export default class QrCodeGenerator extends LightningElement {
+  labels = {
+    title: TITLE,
+    targetUrl: TARGET_URL,
+    urlPlaceholder: URL_PLACEHOLDER,
+    darkColor: DARK_COLOR,
+    lightColor: LIGHT_COLOR,
+    logo: LOGO,
+    logoPreview: LOGO_PREVIEW,
+    removeLogo: REMOVE_LOGO,
+    generate: GENERATE,
+    hardToScan: HARD_TO_SCAN,
+    generating: GENERATING,
+    generatedCode: GENERATED_CODE,
+    save: SAVE
+  };
+
   /**
    * The initial color of the dark modules of the code, as any CSS color. Users can change it.
    * @type {string}
@@ -164,7 +203,7 @@ export default class QrCodeGenerator extends LightningElement {
         this.qrLibLoaded = true;
       })
       .catch((err) => {
-        this.errorMessage = `Failed to load QR code library: ${getErrorMessage(err)}`;
+        this.errorMessage = formatLabel(LIBRARY_NOT_LOADED, getErrorMessage(err));
       });
   }
 
@@ -219,7 +258,7 @@ export default class QrCodeGenerator extends LightningElement {
       this.logoDataUrl = e.target.result;
     };
     reader.onerror = () => {
-      this.errorMessage = 'Failed to read the selected file.';
+      this.errorMessage = FILE_NOT_READ;
     };
     reader.readAsDataURL(file);
   }
@@ -235,12 +274,12 @@ export default class QrCodeGenerator extends LightningElement {
 
   async generateCode() {
     if (!this.url) {
-      this.errorMessage = 'Please enter a URL.';
+      this.errorMessage = ENTER_URL;
       return;
     }
 
     if (!this.qrLibLoaded || globalThis.QRCodeWithLogo === undefined) {
-      this.errorMessage = 'QR code library not loaded. Please try again.';
+      this.errorMessage = LIBRARY_MISSING;
       return;
     }
 
@@ -253,7 +292,7 @@ export default class QrCodeGenerator extends LightningElement {
       this.setCode(dataUrl);
       this.dispatchEvent(new CustomEvent('qrcodegenerate', { detail: { dataUrl, value: this.url } }));
     } catch (err) {
-      this.errorMessage = `Failed to generate QR code: ${getErrorMessage(err)}`;
+      this.errorMessage = formatLabel(GENERATION_FAILED, getErrorMessage(err));
     } finally {
       this.isLoading = false;
     }
@@ -293,7 +332,7 @@ export default class QrCodeGenerator extends LightningElement {
       const { id } = await createRecord({
         apiName: 'ContentVersion',
         fields: {
-          Title: 'QR Code',
+          Title: FILE_TITLE,
           PathOnClient: 'qr-code.png',
           VersionData: this._qrCodeDataUrl.split(',')[1],
           FirstPublishLocationId: this.recordId
@@ -310,14 +349,12 @@ export default class QrCodeGenerator extends LightningElement {
     this._contentDocumentId = contentDocumentId;
     this.dispatchEvent(new CustomEvent('qrcodesave', { detail: { contentDocumentId } }));
     this.dispatchEvent(new FlowAttributeChangeEvent('contentDocumentId', contentDocumentId));
-    this.dispatchEvent(
-      new ShowToastEvent({ title: 'Success', message: 'The QR code has been saved.', variant: 'success' })
-    );
+    this.dispatchEvent(new ShowToastEvent({ title: SUCCESS, message: SAVED, variant: 'success' }));
   }
 
   failSave(error) {
     this.isSaving = false;
-    showErrorToast(this, 'Error saving the QR code', error);
+    showErrorToast(this, ERROR_SAVING, error);
   }
 
   get isHardToScan() {

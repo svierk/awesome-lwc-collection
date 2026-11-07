@@ -120,6 +120,82 @@ In a Flow screen, the attributes are inputs of the component, and the result of 
 
 [`data/csv-importer/contacts.csv`](https://github.com/svierk/awesome-lwc-collection/blob/main/data/csv-importer/contacts.csv) has 50 contacts to try the importer with the object `Contact`. Its columns match the fields automatically, and three rows have errors on purpose: row 12 an invalid email, row 27 a date that isn't in `YYYY-MM-DD`, and row 42 no last name. Correct them in the review to import all 50 contacts.
 
+## Custom Labels
+
+The texts users see are Custom Labels, so they can be translated in Setup with the Translation Workbench. Copy them together with the component.
+
+| Name                                 | Value                                                                                               |
+| ------------------------------------ | --------------------------------------------------------------------------------------------------- |
+| CsvImporter_Back                     | Back                                                                                                |
+| CsvImporter_Comma                    | Comma (,)                                                                                           |
+| CsvImporter_CommaName                | comma                                                                                               |
+| CsvImporter_CsvFile                  | CSV file                                                                                            |
+| CsvImporter_Delimiter                | Delimiter                                                                                           |
+| CsvImporter_DetectAutomatically      | Detect automatically                                                                                |
+| CsvImporter_Encoding                 | Encoding                                                                                            |
+| CsvImporter_FileNotRead              | The file could not be read: {0}                                                                     |
+| CsvImporter_FileTooLarge             | The file is larger than {0} MB.                                                                     |
+| CsvImporter_NewImport                | New import                                                                                          |
+| CsvImporter_Next                     | Next                                                                                                |
+| CsvImporter_Semicolon                | Semicolon (;)                                                                                       |
+| CsvImporter_SemicolonName            | semicolon                                                                                           |
+| CsvImporter_StepImport               | Import                                                                                              |
+| CsvImporter_StepMapFields            | Map Fields                                                                                          |
+| CsvImporter_StepReview               | Review                                                                                              |
+| CsvImporter_StepUpload               | Upload                                                                                              |
+| CsvImporter_Summary                  | {0}: showing {1} of {2} rows, separated by {3}.                                                     |
+| CsvImporter_Tab                      | Tab                                                                                                 |
+| CsvImporter_TabName                  | tab                                                                                                 |
+| CsvImporter_Title                    | CSV Importer                                                                                        |
+| CsvImporter_TooManyRows              | The file has more than {0} rows.                                                                    |
+| CsvImporterImport_Done               | Done: {0} created, {1} updated, {2} failed.                                                         |
+| CsvImporterImport_DownloadFailedRows | Download failed rows                                                                                |
+| CsvImporterImport_Error              | Error                                                                                               |
+| CsvImporterImport_ErrorColumn        | Import Error                                                                                        |
+| CsvImporterImport_Import             | Import                                                                                              |
+| CsvImporterImport_Insert             | Every row creates a new record.                                                                     |
+| CsvImporterImport_Progress           | Processed {0} of {1} rows.                                                                          |
+| CsvImporterImport_Ready              | {0} rows are ready to be imported into {1}. {2}                                                     |
+| CsvImporterImport_Row                | Row                                                                                                 |
+| CsvImporterImport_Upsert             | Rows with the {0} of an existing record update it, the others create new records.                   |
+| CsvImporterMapping_Column            | Column                                                                                              |
+| CsvImporterMapping_DontImport        | Don't import                                                                                        |
+| CsvImporterMapping_DownloadMapping   | Download mapping                                                                                    |
+| CsvImporterMapping_Duplicates        | More than one column is mapped to: {0}.                                                             |
+| CsvImporterMapping_Example           | Example                                                                                             |
+| CsvImporterMapping_FieldFor          | Field for {0}                                                                                       |
+| CsvImporterMapping_ImportingInto     | Importing into {0}.                                                                                 |
+| CsvImporterMapping_MappingError      | The mapping could not be used: {0}                                                                  |
+| CsvImporterMapping_MissingFields     | Map a column to every required field: {0}.                                                          |
+| CsvImporterMapping_NoMapping         | it has no mapping                                                                                   |
+| CsvImporterMapping_Object            | Object                                                                                              |
+| CsvImporterMapping_ObjectApiName     | Object API Name                                                                                     |
+| CsvImporterMapping_ObjectError       | The object {0} can't be used: {1}                                                                   |
+| CsvImporterMapping_ObjectHelp        | The API name of the object to import into, e.g. Contact or Invoice__c.                              |
+| CsvImporterMapping_ObjectPlaceholder | e.g. Contact                                                                                        |
+| CsvImporterMapping_OtherObject       | it is for {0}, not for {1}                                                                          |
+| CsvImporterMapping_SalesforceField   | Salesforce field                                                                                    |
+| CsvImporterMapping_UploadMapping     | Upload a mapping                                                                                    |
+| CsvImporterReview_Errors             | Rows with errors: {0} of {1} ({2}). Correct them in the table, or fix the file and upload it again. |
+| CsvImporterReview_NoErrors           | Rows with errors: {0} of {1}.                                                                       |
+| CsvImporterReview_OnlyErrors         | Only rows with errors                                                                               |
+| CsvImporterReview_PicklistError      | The picklist values could not be loaded, so they aren't checked: {0}                                |
+| CsvImporterReview_Row                | Row                                                                                                 |
+| CsvParser_Column                     | Column {0}                                                                                          |
+| CsvParser_UnclosedQuote              | Invalid CSV: the quoted field starting on line {0} is never closed.                                 |
+| CsvValidator_NotBoolean              | {0}: "{1}" isn't true or false.                                                                     |
+| CsvValidator_NotDate                 | {0}: "{1}" isn't a date. Use YYYY-MM-DD.                                                            |
+| CsvValidator_NotDateTime             | {0}: "{1}" isn't a date and time. Use YYYY-MM-DDThh:mm:ssZ.                                         |
+| CsvValidator_NotEmail                | {0}: "{1}" isn't an email address.                                                                  |
+| CsvValidator_NotInPicklist           | {0}: "{1}" isn't a value of the picklist.                                                           |
+| CsvValidator_NotNumber               | {0}: "{1}" isn't a number. Use a dot for decimals, e.g. 1234.5.                                     |
+| CsvValidator_NotWholeNumber          | {0}: "{1}" isn't a whole number.                                                                    |
+| CsvValidator_Required                | {0} is required.                                                                                    |
+| CsvValidator_RowError                | This row has an error.                                                                              |
+| CsvValidator_RowErrors               | This row has {0} errors.                                                                            |
+| ErrorAlert_Error                     | Error                                                                                               |
+| ErrorUtils_UnknownError              | Unknown error                                                                                       |
+
 ## Component Dependencies
 
 | Name                    | Type | Description                                                                             |
@@ -133,3 +209,4 @@ In a Flow screen, the attributes are inputs of the component, and the result of 
 | csvValidator            | LWC  | Shared checks for CSV values against the fields of a Salesforce object.                 |
 | errorAlert              | LWC  | Inline alert that shows error messages to the user.                                     |
 | errorUtils              | LWC  | Shared functions to read error messages and show error toasts.                          |
+| labelUtils              | LWC  | Shared function to fill the placeholders of Custom Labels.                              |

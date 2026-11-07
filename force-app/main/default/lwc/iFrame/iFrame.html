@@ -2,11 +2,11 @@
   <template lwc:if={showCard}>
     <lightning-card title={cardTitle} icon-name={cardIcon}>
       <div class="slds-p-horizontal_medium">
-        <iframe src={url} height={height} width={width} title="iFrame"></iframe>
+        <iframe src={url} height={height} width={width} title={labels.frameTitle}></iframe>
       </div>
     </lightning-card>
   </template>
   <template lwc:else>
-    <iframe src={url} height={height} width={width} title="iFrame"></iframe>
+    <iframe src={url} height={height} width={width} title={labels.frameTitle}></iframe>
   </template>
 </template>

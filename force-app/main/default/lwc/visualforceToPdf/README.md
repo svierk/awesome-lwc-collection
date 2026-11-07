@@ -32,3 +32,11 @@ Wrap it in a Lightning Card to match the cards around it on a page:
 ```
 
 The url attribute takes the relative address of a Visualforce page that is rendered as PDF (`renderAs="pdf"`).
+
+## Custom Labels
+
+The texts users see are Custom Labels, so they can be translated in Setup with the Translation Workbench. Copy them together with the component.
+
+| Name                        | Value              |
+| --------------------------- | ------------------ |
+| VisualforceToPdf_FrameTitle | Visualforce to PDF |

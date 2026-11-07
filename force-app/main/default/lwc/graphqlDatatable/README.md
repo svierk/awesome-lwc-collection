@@ -65,6 +65,35 @@ A custom datatable powered by the GraphQL wire adapter (`lightning/graphql`) ins
 
 All attributes are also configurable in the Lightning App Builder, so no code is required to use the component.
 
+## Custom Labels
+
+The texts users see are Custom Labels, so they can be translated in Setup with the Translation Workbench. Copy them together with the component.
+
+| Name                                  | Value                          |
+| ------------------------------------- | ------------------------------ |
+| DatatablePagination_First             | First                          |
+| DatatablePagination_Last              | Last                           |
+| DatatablePagination_Next              | Next                           |
+| DatatablePagination_Previous          | Previous                       |
+| DatatableUtils_Delete                 | Delete                         |
+| DatatableUtils_Edit                   | Edit                           |
+| DatatableUtils_View                   | View                           |
+| ErrorUtils_UnknownError               | Unknown error                  |
+| GraphqlDatatable_Delete               | Delete                         |
+| GraphqlDatatable_ErrorDeletingRecord  | Error deleting record          |
+| GraphqlDatatable_ErrorDeletingRecords | Error deleting records         |
+| GraphqlDatatable_ErrorLoadingRecords  | Error loading records          |
+| GraphqlDatatable_ErrorUpdatingRecords | Error updating records         |
+| GraphqlDatatable_Loading              | Loading                        |
+| GraphqlDatatable_Page                 | Page {0} of {1}                |
+| GraphqlDatatable_RecordCount          | Showing {0}–{1} of {2} records |
+| GraphqlDatatable_RecordDeleted        | Record deleted                 |
+| GraphqlDatatable_RecordsDeleted       | Records deleted                |
+| GraphqlDatatable_RecordsUpdated       | Records updated                |
+| GraphqlDatatable_Search               | Search                         |
+| GraphqlDatatable_SearchPlaceholder    | Search all fields...           |
+| GraphqlDatatable_Success              | Success                        |
+
 ## Component Dependencies
 
 | Name                | Type | Description                                                                            |
@@ -74,3 +103,4 @@ All attributes are also configurable in the Lightning App Builder, so no code is
 | datatablePagination | LWC  | Reusable pagination navigation bar with First, Previous, Next, and Last buttons.       |
 | datatableUtils      | LWC  | Shared utility functions for row actions, CRUD operations, and datatable properties.   |
 | errorUtils          | LWC  | Shared functions to read error messages and show error toasts.                         |
+| labelUtils          | LWC  | Shared function to fill the placeholders of Custom Labels.                             |

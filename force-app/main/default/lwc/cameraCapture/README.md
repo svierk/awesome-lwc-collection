@@ -30,6 +30,20 @@ A live camera view that takes photos with the Media Capture and Streams API, to 
 
 What happens with the photo is up to you. Take User Profile Picture uses it for the profile of the current user, and the camera stops by itself when the component is removed or hidden, for example when the user moves on to another page in Lightning.
 
+## Custom Labels
+
+The texts users see are Custom Labels, so they can be translated in Setup with the Translation Workbench. Copy them together with the component.
+
+| Name                               | Value                                         |
+| ---------------------------------- | --------------------------------------------- |
+| CameraCapture_CapturePhoto         | Capture Photo                                 |
+| CameraCapture_Error                | Error                                         |
+| CameraCapture_ErrorAccessingCamera | Error accessing camera                        |
+| CameraCapture_NotSupported         | getUserMedia is not supported in this browser |
+| CameraCapture_StartCamera          | Start Camera                                  |
+| CameraCapture_StopCamera           | Stop Camera                                   |
+| ErrorUtils_UnknownError            | Unknown error                                 |
+
 ## Component Dependencies
 
 | Name       | Type | Description                                                    |

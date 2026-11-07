@@ -1,6 +1,6 @@
 <template>
   <template lwc:if={isLoading}>
-    <lightning-spinner alternative-text="Loading" variant="brand"></lightning-spinner>
+    <lightning-spinner alternative-text={labels.loading} variant="brand"></lightning-spinner>
   </template>
   <template lwc:if={showCard}>
     <lightning-card icon-name={cardIcon} title={cardTitle}>

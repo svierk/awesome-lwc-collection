@@ -1,3 +1,18 @@
+import DELETE from '@salesforce/label/c.CustomDatatable_Delete';
+import ERROR_DELETING_RECORD from '@salesforce/label/c.CustomDatatable_ErrorDeletingRecord';
+import ERROR_DELETING_RECORDS from '@salesforce/label/c.CustomDatatable_ErrorDeletingRecords';
+import ERROR_LOADING_RECORDS from '@salesforce/label/c.CustomDatatable_ErrorLoadingRecords';
+import ERROR_UPDATING_RECORDS from '@salesforce/label/c.CustomDatatable_ErrorUpdatingRecords';
+import LOADING from '@salesforce/label/c.CustomDatatable_Loading';
+import PAGE from '@salesforce/label/c.CustomDatatable_Page';
+import RECORDS_DELETED from '@salesforce/label/c.CustomDatatable_RecordsDeleted';
+import RECORDS_UPDATED from '@salesforce/label/c.CustomDatatable_RecordsUpdated';
+import RECORD_COUNT from '@salesforce/label/c.CustomDatatable_RecordCount';
+import RECORD_DELETED from '@salesforce/label/c.CustomDatatable_RecordDeleted';
+import SEARCH from '@salesforce/label/c.CustomDatatable_Search';
+import SEARCH_PLACEHOLDER from '@salesforce/label/c.CustomDatatable_SearchPlaceholder';
+import SUCCESS from '@salesforce/label/c.CustomDatatable_Success';
+import { formatLabel } from 'c/labelUtils';
 import { refreshApex } from '@salesforce/apex';
 import getColumns from '@salesforce/apex/CustomDatatableUtil.convertFieldSetToColumns';
 import getRecordCount from '@salesforce/apex/CustomDatatableUtil.getRecordCount';
@@ -32,6 +47,8 @@ import { LightningElement, api, track, wire } from 'lwc';
  * ></c-custom-datatable>
  */
 export default class CustomDatatable extends NavigationMixin(LightningElement) {
+  labels = { loading: LOADING, delete: DELETE, search: SEARCH, searchPlaceholder: SEARCH_PLACEHOLDER };
+
   /**
    * If show card option is active, the card icon is displayed in the header before the card title.
    * It should contain the SLDS name of the icon.
@@ -289,7 +306,7 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
     if (result.data) {
       this.records = result.data;
     } else if (result.error) {
-      showErrorToast(this, 'Error loading records', result.error);
+      showErrorToast(this, ERROR_LOADING_RECORDS, result.error);
     }
   }
 
@@ -342,13 +359,13 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   }
 
   get paginationLabel() {
-    return `Page ${this._currentPage} of ${this.totalPages}`;
+    return formatLabel(PAGE, this._currentPage, this.totalPages);
   }
 
   get recordCountLabel() {
     const start = (this._currentPage - 1) * this.pageSize + 1;
     const end = Math.min(this._currentPage * this.pageSize, this._totalRecordCount);
-    return `Showing ${start}\u2013${end} of ${this._totalRecordCount} records`;
+    return formatLabel(RECORD_COUNT, start, end, this._totalRecordCount);
   }
 
   get computedRowNumberOffset() {
@@ -419,11 +436,11 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
     const recordInputs = event.detail.draftValues.slice().map((draft) => ({ fields: { ...draft } }));
     try {
       await Promise.all(recordInputs.map((recordInput) => updateRecord(recordInput)));
-      this.showToast('Success', 'Records updated', 'success');
+      this.showToast(SUCCESS, RECORDS_UPDATED, 'success');
       await refreshApex(this.wiredRecords);
       this.draftValues = [];
     } catch (error) {
-      showErrorToast(this, 'Error updating records', error);
+      showErrorToast(this, ERROR_UPDATING_RECORDS, error);
     }
   }
 
@@ -435,10 +452,10 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
     this.isLoading = true;
     try {
       await Promise.all(this.selectedRecords.map((record) => deleteRecord(record.Id)));
-      this.showToast('Success', 'Records deleted', 'success');
+      this.showToast(SUCCESS, RECORDS_DELETED, 'success');
       await refreshApex(this.wiredRecords);
     } catch (error) {
-      showErrorToast(this, 'Error deleting records', error);
+      showErrorToast(this, ERROR_DELETING_RECORDS, error);
     } finally {
       this.isLoading = false;
     }
@@ -448,10 +465,10 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
     this.isLoading = true;
     try {
       await deleteRecord(recordId);
-      this.showToast('Success', 'Record deleted', 'success');
+      this.showToast(SUCCESS, RECORD_DELETED, 'success');
       await refreshApex(this.wiredRecords);
     } catch (error) {
-      showErrorToast(this, 'Error deleting record', error);
+      showErrorToast(this, ERROR_DELETING_RECORD, error);
     } finally {
       this.isLoading = false;
     }

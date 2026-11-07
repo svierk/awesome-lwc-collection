@@ -1,11 +1,11 @@
 <template>
-  <lightning-card title="QR Code Generator" icon-name="utility:scan">
+  <lightning-card title={labels.title} icon-name="utility:scan">
     <div class="slds-var-p-horizontal_medium slds-var-p-bottom_medium">
       <lightning-input
         data-id="url"
         type="url"
-        label="Target URL"
-        placeholder="https://example.com"
+        label={labels.targetUrl}
+        placeholder={labels.urlPlaceholder}
         value={url}
         onchange={handleUrlChange}
         class="slds-var-m-bottom_small"
@@ -16,7 +16,7 @@
           <lightning-input
             data-id="color-dark"
             type="color"
-            label="Dark Color"
+            label={labels.darkColor}
             value={colorDark}
             onchange={handleColorDarkChange}
             onblur={handleColorDarkBlur}
@@ -26,7 +26,7 @@
           <lightning-input
             data-id="color-light"
             type="color"
-            label="Light Color"
+            label={labels.lightColor}
             value={colorLight}
             onchange={handleColorLightChange}
             onblur={handleColorLightBlur}
@@ -37,17 +37,17 @@
       <lightning-input
         data-id="file-input"
         type="file"
-        label="Logo (optional)"
+        label={labels.logo}
         onchange={handleFileUpload}
         class="slds-var-m-bottom_small"
       ></lightning-input>
 
       <template lwc:if={hasLogo}>
         <div class="logo-preview slds-theme_shade slds-var-p-around_x-small slds-var-m-bottom_medium">
-          <img src={logoDataUrl} alt="Logo preview" class="logo-preview-image" />
+          <img src={logoDataUrl} alt={labels.logoPreview} class="logo-preview-image" />
           <lightning-button-icon
             icon-name="utility:close"
-            alternative-text="Remove logo"
+            alternative-text={labels.removeLogo}
             variant="bare"
             size="small"
             onclick={handleRemoveLogo}
@@ -59,7 +59,7 @@
       <div>
         <lightning-button
           variant="brand"
-          label="Generate QR Code"
+          label={labels.generate}
           onclick={generateCode}
           disabled={isGenerateDisabled}
           class="slds-var-m-bottom_medium"
@@ -72,13 +72,13 @@
           data-id="contrast-hint"
           class="slds-show slds-text-color_weak slds-var-m-bottom_small"
         >
-          These colors may be hard to scan.
+          {labels.hardToScan}
         </span>
       </output>
 
       <template lwc:if={isLoading}>
         <div class="slds-grid slds-grid_align-center slds-var-p-vertical_x-large">
-          <lightning-spinner alternative-text="Generating..." size="medium"></lightning-spinner>
+          <lightning-spinner alternative-text={labels.generating} size="medium"></lightning-spinner>
         </div>
       </template>
 
@@ -90,14 +90,14 @@
 
       <template lwc:if={hasQRCode}>
         <div class="qr-code-container slds-grid slds-grid_align-center slds-var-m-top_medium">
-          <img src={qrCodeDataUrl} alt="Generated QR Code" class="qr-code-image" style={imageStyle} />
+          <img src={qrCodeDataUrl} alt={labels.generatedCode} class="qr-code-image" style={imageStyle} />
         </div>
         <lightning-button
           lwc:if={showSave}
           data-id="save"
           class="slds-show slds-var-m-top_small"
           variant="brand"
-          label="Save"
+          label={labels.save}
           icon-name="utility:save"
           onclick={handleSave}
           disabled={isSaveDisabled}

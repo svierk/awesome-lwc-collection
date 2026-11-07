@@ -36,8 +36,25 @@ A drag and drop building block based on the HTML Drag and Drop API.
 
 Drag an item into the dropzone and it moves to the datatable there. New items start over with an empty dropzone. If a string is not valid JSON, the component shows an error message.
 
+## Custom Labels
+
+The texts users see are Custom Labels, so they can be translated in Setup with the Translation Workbench. Copy them together with the component.
+
+| Name                          | Value                                                             |
+| ----------------------------- | ----------------------------------------------------------------- |
+| DragAndDrop_Drag              | Drag                                                              |
+| DragAndDrop_DraggableElements | Draggable Elements                                                |
+| DragAndDrop_Drop              | Drop                                                              |
+| DragAndDrop_Dropzone          | Dropzone                                                          |
+| DragAndDrop_Element           | Element {0}                                                       |
+| DragAndDrop_Id                | Id                                                                |
+| DragAndDrop_InvalidItems      | The items could not be displayed because they are not valid JSON. |
+| DragAndDrop_Label             | Label                                                             |
+| ErrorAlert_Error              | Error                                                             |
+
 ## Component Dependencies
 
-| Name       | Type | Description                                         |
-| ---------- | ---- | --------------------------------------------------- |
-| errorAlert | LWC  | Inline alert that shows error messages to the user. |
+| Name       | Type | Description                                                |
+| ---------- | ---- | ---------------------------------------------------------- |
+| errorAlert | LWC  | Inline alert that shows error messages to the user.        |
+| labelUtils | LWC  | Shared function to fill the placeholders of Custom Labels. |

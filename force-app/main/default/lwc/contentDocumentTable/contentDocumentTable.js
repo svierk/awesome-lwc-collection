@@ -1,3 +1,14 @@
+import CREATED from '@salesforce/label/c.ContentDocumentTable_Created';
+import DELETE from '@salesforce/label/c.ContentDocumentTable_Delete';
+import DOWNLOAD from '@salesforce/label/c.ContentDocumentTable_Download';
+import ERROR_DELETING_FILE from '@salesforce/label/c.ContentDocumentTable_ErrorDeletingFile';
+import ERROR_DOWNLOADING_FILE from '@salesforce/label/c.ContentDocumentTable_ErrorDownloadingFile';
+import FILE_DELETED from '@salesforce/label/c.ContentDocumentTable_FileDeleted';
+import LOADING from '@salesforce/label/c.ContentDocumentTable_Loading';
+import SIZE from '@salesforce/label/c.ContentDocumentTable_Size';
+import SUCCESS from '@salesforce/label/c.ContentDocumentTable_Success';
+import TITLE from '@salesforce/label/c.ContentDocumentTable_Title';
+import VIEW from '@salesforce/label/c.ContentDocumentTable_View';
 import { refreshApex } from '@salesforce/apex';
 import getDocuments from '@salesforce/apex/ContentDocumentController.getDocuments';
 import getLatestVersion from '@salesforce/apex/ContentDocumentController.getLatestVersion';
@@ -32,20 +43,20 @@ const COLUMNS = [
     fixedWidth: 40
   },
   {
-    label: 'Title',
+    label: TITLE,
     fieldName: 'preview',
     type: 'contentDocumentPreview',
     hideDefaultActions: true
   },
   {
-    label: 'Size',
+    label: SIZE,
     fieldName: 'ContentSize',
     hideDefaultActions: true,
     initialWidth: 80,
     cellAttributes: { alignment: 'right' }
   },
   {
-    label: 'Created',
+    label: CREATED,
     fieldName: 'CreatedDate',
     type: 'date',
     hideDefaultActions: true,
@@ -63,6 +74,8 @@ const COLUMNS = [
  * <c-content-document-table library="Documents" record-id={recordid}></c-content-document-table>
  */
 export default class ContentDocumentTable extends NavigationMixin(LightningElement) {
+  labels = { loading: LOADING };
+
   /**
    * If show card option is active,, the card icon is displayed in the header before the card title.
    * It should contain the SLDS name of the icon.
@@ -166,9 +179,9 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
 
   addRowActions() {
     const actions = [];
-    if (this.showDownloadAction) actions.push({ label: 'Download', name: 'download' });
-    if (this.showViewAction) actions.push({ label: 'View', name: 'view' });
-    if (this.showDeleteAction) actions.push({ label: 'Delete', name: 'delete' });
+    if (this.showDownloadAction) actions.push({ label: DOWNLOAD, name: 'download' });
+    if (this.showViewAction) actions.push({ label: VIEW, name: 'view' });
+    if (this.showDeleteAction) actions.push({ label: DELETE, name: 'delete' });
     if (actions.length) {
       this.columns.push({ type: 'action', typeAttributes: { rowActions: actions, menuAlignment: 'right' } });
     }
@@ -198,7 +211,7 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
         globalThis.open(`/sfc/servlet.shepherd/version/download/${version}`);
       })
       .catch((error) => {
-        showErrorToast(this, 'Error downloading file', error);
+        showErrorToast(this, ERROR_DOWNLOADING_FILE, error);
       });
   }
 
@@ -217,10 +230,10 @@ export default class ContentDocumentTable extends NavigationMixin(LightningEleme
     this.isLoading = true;
     try {
       await deleteRecord(row.Id);
-      this.showToast('Success', 'File deleted', 'success');
+      this.showToast(SUCCESS, FILE_DELETED, 'success');
       await refreshApex(this.wiredRecords);
     } catch (error) {
-      showErrorToast(this, 'Error deleting file', error);
+      showErrorToast(this, ERROR_DELETING_FILE, error);
     } finally {
       this.isLoading = false;
     }

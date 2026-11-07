@@ -66,9 +66,28 @@ Each option requires a `label` and a `value`. If a string is not valid JSON, the
 | change | The selected options as an array, or a single option object if `single-select` is set. | Fired when the selection changes.  |
 | close  | -                                                                                      | Fired when the dropdown is closed. |
 
+## Custom Labels
+
+The texts users see are Custom Labels, so they can be translated in Setup with the Translation Workbench. Copy them together with the component.
+
+| Name                                  | Value                                                               |
+| ------------------------------------- | ------------------------------------------------------------------- |
+| ErrorAlert_Error                      | Error                                                               |
+| MultiSelectCombobox_ClickHere         | Click here                                                          |
+| MultiSelectCombobox_InvalidOptions    | The options could not be displayed because they are not valid JSON. |
+| MultiSelectCombobox_OpenDropdown      | Click to open the dropdown                                          |
+| MultiSelectCombobox_OptionsSelected   | {0} Options Selected                                                |
+| MultiSelectCombobox_Required          | required                                                            |
+| MultiSelectCombobox_Search            | Search                                                              |
+| MultiSelectCombobox_SearchPlaceholder | Search...                                                           |
+| MultiSelectCombobox_SelectValue       | Please select a value.                                              |
+| MultiSelectCombobox_SelectValueFor    | Please select a value for {0}.                                      |
+| MultiSelectComboboxItem_Selected      | Selected                                                            |
+
 ## Component Dependencies
 
 | Name                    | Type | Description                                                                              |
 | ----------------------- | ---- | ---------------------------------------------------------------------------------------- |
+| labelUtils              | LWC  | Shared function to fill the placeholders of Custom Labels.                               |
 | multiSelectComboboxItem | LWC  | Child component that represents an item within the multiSelectCombobox parent component. |
 | errorAlert              | LWC  | Inline alert that shows error messages to the user.                                      |

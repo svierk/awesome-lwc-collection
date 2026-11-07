@@ -50,10 +50,42 @@ The image includes the empty border that scanners need, in the light color, so a
 
 Saving creates the file directly through Lightning Data Service, so no Apex is involved and the permissions of the user apply.
 
+## Custom Labels
+
+The texts users see are Custom Labels, so they can be translated in Setup with the Translation Workbench. Copy them together with the component.
+
+| Name                             | Value                                         |
+| -------------------------------- | --------------------------------------------- |
+| ErrorAlert_Error                 | Error                                         |
+| ErrorUtils_UnknownError          | Unknown error                                 |
+| QrCodeGenerator_DarkColor        | Dark Color                                    |
+| QrCodeGenerator_EnterUrl         | Please enter a URL.                           |
+| QrCodeGenerator_ErrorSaving      | Error saving the QR code                      |
+| QrCodeGenerator_FileNotRead      | Failed to read the selected file.             |
+| QrCodeGenerator_FileTitle        | QR Code                                       |
+| QrCodeGenerator_Generate         | Generate QR Code                              |
+| QrCodeGenerator_GeneratedCode    | Generated QR Code                             |
+| QrCodeGenerator_Generating       | Generating...                                 |
+| QrCodeGenerator_GenerationFailed | Failed to generate QR code: {0}               |
+| QrCodeGenerator_HardToScan       | These colors may be hard to scan.             |
+| QrCodeGenerator_LibraryMissing   | QR code library not loaded. Please try again. |
+| QrCodeGenerator_LibraryNotLoaded | Failed to load QR code library: {0}           |
+| QrCodeGenerator_LightColor       | Light Color                                   |
+| QrCodeGenerator_Logo             | Logo (optional)                               |
+| QrCodeGenerator_LogoPreview      | Logo preview                                  |
+| QrCodeGenerator_RemoveLogo       | Remove logo                                   |
+| QrCodeGenerator_Save             | Save                                          |
+| QrCodeGenerator_Saved            | The QR code has been saved.                   |
+| QrCodeGenerator_Success          | Success                                       |
+| QrCodeGenerator_TargetUrl        | Target URL                                    |
+| QrCodeGenerator_Title            | QR Code Generator                             |
+| QrCodeGenerator_UrlPlaceholder   | https://example.com                           |
+
 ## Component Dependencies
 
 | Name       | Type            | Description                                                              |
 | ---------- | --------------- | ------------------------------------------------------------------------ |
+| labelUtils | LWC             | Shared function to fill the placeholders of Custom Labels.               |
 | qrcodejs   | Static Resource | QRCode.js - JavaScript Library for generating QRCodes with Logo Support. |
 | errorAlert | LWC             | Inline alert that shows error messages to the user.                      |
 | errorUtils | LWC             | Shared functions to read error messages and show error toasts.           |

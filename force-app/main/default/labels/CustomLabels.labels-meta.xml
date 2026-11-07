@@ -1,0 +1,1812 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>Base64ToPdf_Download</fullName>
+        <categories>base64ToPdf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Base64 To Pdf: Download</shortDescription>
+        <value>Download PDF File</value>
+    </labels>
+    <labels>
+        <fullName>Base64ToPdf_Title</fullName>
+        <categories>base64ToPdf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Base64 To Pdf: Title</shortDescription>
+        <value>Base64 To PDF</value>
+    </labels>
+    <labels>
+        <fullName>CameraCapture_CapturePhoto</fullName>
+        <categories>cameraCapture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Camera Capture: Capture Photo</shortDescription>
+        <value>Capture Photo</value>
+    </labels>
+    <labels>
+        <fullName>CameraCapture_Error</fullName>
+        <categories>cameraCapture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Camera Capture: Error</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>CameraCapture_ErrorAccessingCamera</fullName>
+        <categories>cameraCapture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Camera Capture: Error Accessing Camera</shortDescription>
+        <value>Error accessing camera</value>
+    </labels>
+    <labels>
+        <fullName>CameraCapture_NotSupported</fullName>
+        <categories>cameraCapture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Camera Capture: Not Supported</shortDescription>
+        <value>getUserMedia is not supported in this browser</value>
+    </labels>
+    <labels>
+        <fullName>CameraCapture_StartCamera</fullName>
+        <categories>cameraCapture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Camera Capture: Start Camera</shortDescription>
+        <value>Start Camera</value>
+    </labels>
+    <labels>
+        <fullName>CameraCapture_StopCamera</fullName>
+        <categories>cameraCapture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Camera Capture: Stop Camera</shortDescription>
+        <value>Stop Camera</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_Created</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Created</shortDescription>
+        <value>Created</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_Delete</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Delete</shortDescription>
+        <value>Delete</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_Download</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Download</shortDescription>
+        <value>Download</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_ErrorDeletingFile</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Error Deleting File</shortDescription>
+        <value>Error deleting file</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_ErrorDownloadingFile</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Error Downloading File</shortDescription>
+        <value>Error downloading file</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_FileDeleted</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: File Deleted</shortDescription>
+        <value>File deleted</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_Loading</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Loading</shortDescription>
+        <value>Loading</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_Size</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Size</shortDescription>
+        <value>Size</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_Success</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Success</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_Title</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Title</shortDescription>
+        <value>Title</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_View</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: View</shortDescription>
+        <value>View</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_Back</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Back</shortDescription>
+        <value>Back</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_Comma</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Comma</shortDescription>
+        <value>Comma (,)</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_CommaName</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Comma Name</shortDescription>
+        <value>comma</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_CsvFile</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Csv File</shortDescription>
+        <value>CSV file</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_Delimiter</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Delimiter</shortDescription>
+        <value>Delimiter</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_DetectAutomatically</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Detect Automatically</shortDescription>
+        <value>Detect automatically</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_Encoding</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Encoding</shortDescription>
+        <value>Encoding</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_FileNotRead</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: File Not Read</shortDescription>
+        <value>The file could not be read: {0}</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_FileTooLarge</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: File Too Large</shortDescription>
+        <value>The file is larger than {0} MB.</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_NewImport</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: New Import</shortDescription>
+        <value>New import</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_Next</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Next</shortDescription>
+        <value>Next</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_Semicolon</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Semicolon</shortDescription>
+        <value>Semicolon (;)</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_SemicolonName</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Semicolon Name</shortDescription>
+        <value>semicolon</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_StepImport</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Step Import</shortDescription>
+        <value>Import</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_StepMapFields</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Step Map Fields</shortDescription>
+        <value>Map Fields</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_StepReview</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Step Review</shortDescription>
+        <value>Review</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_StepUpload</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Step Upload</shortDescription>
+        <value>Upload</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_Summary</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Summary</shortDescription>
+        <value>{0}: showing {1} of {2} rows, separated by {3}.</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_Tab</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Tab</shortDescription>
+        <value>Tab</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_TabName</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Tab Name</shortDescription>
+        <value>tab</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_Title</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Title</shortDescription>
+        <value>CSV Importer</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporter_TooManyRows</fullName>
+        <categories>csvImporter</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer: Too Many Rows</shortDescription>
+        <value>The file has more than {0} rows.</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterImport_Done</fullName>
+        <categories>csvImporterImport</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Import: Done</shortDescription>
+        <value>Done: {0} created, {1} updated, {2} failed.</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterImport_DownloadFailedRows</fullName>
+        <categories>csvImporterImport</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Import: Download Failed Rows</shortDescription>
+        <value>Download failed rows</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterImport_Error</fullName>
+        <categories>csvImporterImport</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Import: Error</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterImport_ErrorColumn</fullName>
+        <categories>csvImporterImport</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Import: Error Column</shortDescription>
+        <value>Import Error</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterImport_Import</fullName>
+        <categories>csvImporterImport</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Import: Import</shortDescription>
+        <value>Import</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterImport_Insert</fullName>
+        <categories>csvImporterImport</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Import: Insert</shortDescription>
+        <value>Every row creates a new record.</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterImport_Progress</fullName>
+        <categories>csvImporterImport</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Import: Progress</shortDescription>
+        <value>Processed {0} of {1} rows.</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterImport_Ready</fullName>
+        <categories>csvImporterImport</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Import: Ready</shortDescription>
+        <value>{0} rows are ready to be imported into {1}. {2}</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterImport_Row</fullName>
+        <categories>csvImporterImport</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Import: Row</shortDescription>
+        <value>Row</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterImport_Upsert</fullName>
+        <categories>csvImporterImport</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Import: Upsert</shortDescription>
+        <value>Rows with the {0} of an existing record update it, the others create new records.</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_Column</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: Column</shortDescription>
+        <value>Column</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_DontImport</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: Dont Import</shortDescription>
+        <value>Don&apos;t import</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_DownloadMapping</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: Download Mapping</shortDescription>
+        <value>Download mapping</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_Duplicates</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: Duplicates</shortDescription>
+        <value>More than one column is mapped to: {0}.</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_Example</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: Example</shortDescription>
+        <value>Example</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_FieldFor</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: Field For</shortDescription>
+        <value>Field for {0}</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_ImportingInto</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: Importing Into</shortDescription>
+        <value>Importing into {0}.</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_MappingError</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: Mapping Error</shortDescription>
+        <value>The mapping could not be used: {0}</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_MissingFields</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: Missing Fields</shortDescription>
+        <value>Map a column to every required field: {0}.</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_NoMapping</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: No Mapping</shortDescription>
+        <value>it has no mapping</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_Object</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: Object</shortDescription>
+        <value>Object</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_ObjectApiName</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: Object Api Name</shortDescription>
+        <value>Object API Name</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_ObjectError</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: Object Error</shortDescription>
+        <value>The object {0} can&apos;t be used: {1}</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_ObjectHelp</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: Object Help</shortDescription>
+        <value>The API name of the object to import into, e.g. Contact or Invoice__c.</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_ObjectPlaceholder</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: Object Placeholder</shortDescription>
+        <value>e.g. Contact</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_OtherObject</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: Other Object</shortDescription>
+        <value>it is for {0}, not for {1}</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_SalesforceField</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: Salesforce Field</shortDescription>
+        <value>Salesforce field</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterMapping_UploadMapping</fullName>
+        <categories>csvImporterMapping</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Mapping: Upload Mapping</shortDescription>
+        <value>Upload a mapping</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterReview_Errors</fullName>
+        <categories>csvImporterReview</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Review: Errors</shortDescription>
+        <value
+    >Rows with errors: {0} of {1} ({2}). Correct them in the table, or fix the file and upload it again.</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterReview_NoErrors</fullName>
+        <categories>csvImporterReview</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Review: No Errors</shortDescription>
+        <value>Rows with errors: {0} of {1}.</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterReview_OnlyErrors</fullName>
+        <categories>csvImporterReview</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Review: Only Errors</shortDescription>
+        <value>Only rows with errors</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterReview_PicklistError</fullName>
+        <categories>csvImporterReview</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Review: Picklist Error</shortDescription>
+        <value>The picklist values could not be loaded, so they aren&apos;t checked: {0}</value>
+    </labels>
+    <labels>
+        <fullName>CsvImporterReview_Row</fullName>
+        <categories>csvImporterReview</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Importer Review: Row</shortDescription>
+        <value>Row</value>
+    </labels>
+    <labels>
+        <fullName>CsvParser_Column</fullName>
+        <categories>csvParser</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Parser: Column</shortDescription>
+        <value>Column {0}</value>
+    </labels>
+    <labels>
+        <fullName>CsvParser_UnclosedQuote</fullName>
+        <categories>csvParser</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Parser: Unclosed Quote</shortDescription>
+        <value>Invalid CSV: the quoted field starting on line {0} is never closed.</value>
+    </labels>
+    <labels>
+        <fullName>CsvValidator_NotBoolean</fullName>
+        <categories>csvValidator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Validator: Not Boolean</shortDescription>
+        <value>{0}: &quot;{1}&quot; isn&apos;t true or false.</value>
+    </labels>
+    <labels>
+        <fullName>CsvValidator_NotDate</fullName>
+        <categories>csvValidator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Validator: Not Date</shortDescription>
+        <value>{0}: &quot;{1}&quot; isn&apos;t a date. Use YYYY-MM-DD.</value>
+    </labels>
+    <labels>
+        <fullName>CsvValidator_NotDateTime</fullName>
+        <categories>csvValidator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Validator: Not Date Time</shortDescription>
+        <value>{0}: &quot;{1}&quot; isn&apos;t a date and time. Use YYYY-MM-DDThh:mm:ssZ.</value>
+    </labels>
+    <labels>
+        <fullName>CsvValidator_NotEmail</fullName>
+        <categories>csvValidator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Validator: Not Email</shortDescription>
+        <value>{0}: &quot;{1}&quot; isn&apos;t an email address.</value>
+    </labels>
+    <labels>
+        <fullName>CsvValidator_NotInPicklist</fullName>
+        <categories>csvValidator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Validator: Not In Picklist</shortDescription>
+        <value>{0}: &quot;{1}&quot; isn&apos;t a value of the picklist.</value>
+    </labels>
+    <labels>
+        <fullName>CsvValidator_NotNumber</fullName>
+        <categories>csvValidator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Validator: Not Number</shortDescription>
+        <value>{0}: &quot;{1}&quot; isn&apos;t a number. Use a dot for decimals, e.g. 1234.5.</value>
+    </labels>
+    <labels>
+        <fullName>CsvValidator_NotWholeNumber</fullName>
+        <categories>csvValidator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Validator: Not Whole Number</shortDescription>
+        <value>{0}: &quot;{1}&quot; isn&apos;t a whole number.</value>
+    </labels>
+    <labels>
+        <fullName>CsvValidator_Required</fullName>
+        <categories>csvValidator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Validator: Required</shortDescription>
+        <value>{0} is required.</value>
+    </labels>
+    <labels>
+        <fullName>CsvValidator_RowError</fullName>
+        <categories>csvValidator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Validator: Row Error</shortDescription>
+        <value>This row has an error.</value>
+    </labels>
+    <labels>
+        <fullName>CsvValidator_RowErrors</fullName>
+        <categories>csvValidator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Csv Validator: Row Errors</shortDescription>
+        <value>This row has {0} errors.</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_Announcement</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Announcement</shortDescription>
+        <value>Slide {0} of {1}</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_AnnouncementWithHeading</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Announcement With Heading</shortDescription>
+        <value>Slide {0} of {1}: {2}</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_Carousel</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Carousel</shortDescription>
+        <value>carousel</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_ImageCarousel</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Image Carousel</shortDescription>
+        <value>Image carousel</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_ImagesNotLoaded</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Images Not Loaded</shortDescription>
+        <value>The images of this record could not be loaded: {0}</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_InvalidSlides</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Invalid Slides</shortDescription>
+        <value>The slides could not be displayed because the slides data is not valid JSON.</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_LearnMore</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Learn More</shortDescription>
+        <value>Learn more</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_NextSlide</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Next Slide</shortDescription>
+        <value>Next slide</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_NoImages</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: No Images</shortDescription>
+        <value>No images are attached to this record.</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_PreviousSlide</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Previous Slide</shortDescription>
+        <value>Previous slide</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_ShowSlide</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Show Slide</shortDescription>
+        <value>Show slide {0}</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_Slide</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Slide</shortDescription>
+        <value>slide</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_SlidePosition</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Slide Position</shortDescription>
+        <value>{0} of {1}</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_StartSlideShow</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Start Slide Show</shortDescription>
+        <value>Start automatic slide show</value>
+    </labels>
+    <labels>
+        <fullName>CustomCarousel_StopSlideShow</fullName>
+        <categories>customCarousel</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Carousel: Stop Slide Show</shortDescription>
+        <value>Stop automatic slide show</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_Delete</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Delete</shortDescription>
+        <value>Delete</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_ErrorDeletingRecord</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Error Deleting Record</shortDescription>
+        <value>Error deleting record</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_ErrorDeletingRecords</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Error Deleting Records</shortDescription>
+        <value>Error deleting records</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_ErrorLoadingRecords</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Error Loading Records</shortDescription>
+        <value>Error loading records</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_ErrorUpdatingRecords</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Error Updating Records</shortDescription>
+        <value>Error updating records</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_Loading</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Loading</shortDescription>
+        <value>Loading</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_Page</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Page</shortDescription>
+        <value>Page {0} of {1}</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_RecordCount</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Record Count</shortDescription>
+        <value>Showing {0}–{1} of {2} records</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_RecordDeleted</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Record Deleted</shortDescription>
+        <value>Record deleted</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_RecordsDeleted</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Records Deleted</shortDescription>
+        <value>Records deleted</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_RecordsUpdated</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Records Updated</shortDescription>
+        <value>Records updated</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_Search</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Search</shortDescription>
+        <value>Search</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_SearchPlaceholder</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Search Placeholder</shortDescription>
+        <value>Search all fields...</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_Success</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Success</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>CustomMapView_ErrorLoadingLocations</fullName>
+        <categories>customMapView</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Map View: Error Loading Locations</shortDescription>
+        <value>Error loading location data</value>
+    </labels>
+    <labels>
+        <fullName>DatatablePagination_First</fullName>
+        <categories>datatablePagination</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Datatable Pagination: First</shortDescription>
+        <value>First</value>
+    </labels>
+    <labels>
+        <fullName>DatatablePagination_Last</fullName>
+        <categories>datatablePagination</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Datatable Pagination: Last</shortDescription>
+        <value>Last</value>
+    </labels>
+    <labels>
+        <fullName>DatatablePagination_Next</fullName>
+        <categories>datatablePagination</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Datatable Pagination: Next</shortDescription>
+        <value>Next</value>
+    </labels>
+    <labels>
+        <fullName>DatatablePagination_Previous</fullName>
+        <categories>datatablePagination</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Datatable Pagination: Previous</shortDescription>
+        <value>Previous</value>
+    </labels>
+    <labels>
+        <fullName>DatatableUtils_Delete</fullName>
+        <categories>datatableUtils</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Datatable Utils: Delete</shortDescription>
+        <value>Delete</value>
+    </labels>
+    <labels>
+        <fullName>DatatableUtils_Edit</fullName>
+        <categories>datatableUtils</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Datatable Utils: Edit</shortDescription>
+        <value>Edit</value>
+    </labels>
+    <labels>
+        <fullName>DatatableUtils_View</fullName>
+        <categories>datatableUtils</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Datatable Utils: View</shortDescription>
+        <value>View</value>
+    </labels>
+    <labels>
+        <fullName>DragAndDrop_Drag</fullName>
+        <categories>dragAndDrop</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Drag And Drop: Drag</shortDescription>
+        <value>Drag</value>
+    </labels>
+    <labels>
+        <fullName>DragAndDrop_DraggableElements</fullName>
+        <categories>dragAndDrop</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Drag And Drop: Draggable Elements</shortDescription>
+        <value>Draggable Elements</value>
+    </labels>
+    <labels>
+        <fullName>DragAndDrop_Drop</fullName>
+        <categories>dragAndDrop</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Drag And Drop: Drop</shortDescription>
+        <value>Drop</value>
+    </labels>
+    <labels>
+        <fullName>DragAndDrop_Dropzone</fullName>
+        <categories>dragAndDrop</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Drag And Drop: Dropzone</shortDescription>
+        <value>Dropzone</value>
+    </labels>
+    <labels>
+        <fullName>DragAndDrop_Element</fullName>
+        <categories>dragAndDrop</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Drag And Drop: Element</shortDescription>
+        <value>Element {0}</value>
+    </labels>
+    <labels>
+        <fullName>DragAndDrop_Id</fullName>
+        <categories>dragAndDrop</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Drag And Drop: Id</shortDescription>
+        <value>Id</value>
+    </labels>
+    <labels>
+        <fullName>DragAndDrop_InvalidItems</fullName>
+        <categories>dragAndDrop</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Drag And Drop: Invalid Items</shortDescription>
+        <value>The items could not be displayed because they are not valid JSON.</value>
+    </labels>
+    <labels>
+        <fullName>DragAndDrop_Label</fullName>
+        <categories>dragAndDrop</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Drag And Drop: Label</shortDescription>
+        <value>Label</value>
+    </labels>
+    <labels>
+        <fullName>ErrorAlert_Error</fullName>
+        <categories>errorAlert</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Error Alert: Error</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>ErrorUtils_UnknownError</fullName>
+        <categories>errorUtils</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Error Utils: Unknown Error</shortDescription>
+        <value>Unknown error</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_Delete</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Delete</shortDescription>
+        <value>Delete</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_ErrorDeletingRecord</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Error Deleting Record</shortDescription>
+        <value>Error deleting record</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_ErrorDeletingRecords</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Error Deleting Records</shortDescription>
+        <value>Error deleting records</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_ErrorLoadingRecords</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Error Loading Records</shortDescription>
+        <value>Error loading records</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_ErrorUpdatingRecords</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Error Updating Records</shortDescription>
+        <value>Error updating records</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_Loading</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Loading</shortDescription>
+        <value>Loading</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_Page</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Page</shortDescription>
+        <value>Page {0} of {1}</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_RecordCount</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Record Count</shortDescription>
+        <value>Showing {0}–{1} of {2} records</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_RecordDeleted</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Record Deleted</shortDescription>
+        <value>Record deleted</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_RecordsDeleted</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Records Deleted</shortDescription>
+        <value>Records deleted</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_RecordsUpdated</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Records Updated</shortDescription>
+        <value>Records updated</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_Search</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Search</shortDescription>
+        <value>Search</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_SearchPlaceholder</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Search Placeholder</shortDescription>
+        <value>Search all fields...</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_Success</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Success</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlMapView_ErrorLoadingLocations</fullName>
+        <categories>graphqlMapView</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Map View: Error Loading Locations</shortDescription>
+        <value>Error loading location data</value>
+    </labels>
+    <labels>
+        <fullName>IFrame_FrameTitle</fullName>
+        <categories>iFrame</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>IFrame: Frame Title</shortDescription>
+        <value>iFrame</value>
+    </labels>
+    <labels>
+        <fullName>MultiSelectCombobox_ClickHere</fullName>
+        <categories>multiSelectCombobox</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Multi Select Combobox: Click Here</shortDescription>
+        <value>Click here</value>
+    </labels>
+    <labels>
+        <fullName>MultiSelectCombobox_InvalidOptions</fullName>
+        <categories>multiSelectCombobox</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Multi Select Combobox: Invalid Options</shortDescription>
+        <value>The options could not be displayed because they are not valid JSON.</value>
+    </labels>
+    <labels>
+        <fullName>MultiSelectCombobox_OpenDropdown</fullName>
+        <categories>multiSelectCombobox</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Multi Select Combobox: Open Dropdown</shortDescription>
+        <value>Click to open the dropdown</value>
+    </labels>
+    <labels>
+        <fullName>MultiSelectCombobox_OptionsSelected</fullName>
+        <categories>multiSelectCombobox</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Multi Select Combobox: Options Selected</shortDescription>
+        <value>{0} Options Selected</value>
+    </labels>
+    <labels>
+        <fullName>MultiSelectCombobox_Required</fullName>
+        <categories>multiSelectCombobox</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Multi Select Combobox: Required</shortDescription>
+        <value>required</value>
+    </labels>
+    <labels>
+        <fullName>MultiSelectCombobox_Search</fullName>
+        <categories>multiSelectCombobox</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Multi Select Combobox: Search</shortDescription>
+        <value>Search</value>
+    </labels>
+    <labels>
+        <fullName>MultiSelectCombobox_SearchPlaceholder</fullName>
+        <categories>multiSelectCombobox</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Multi Select Combobox: Search Placeholder</shortDescription>
+        <value>Search...</value>
+    </labels>
+    <labels>
+        <fullName>MultiSelectCombobox_SelectValue</fullName>
+        <categories>multiSelectCombobox</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Multi Select Combobox: Select Value</shortDescription>
+        <value>Please select a value.</value>
+    </labels>
+    <labels>
+        <fullName>MultiSelectCombobox_SelectValueFor</fullName>
+        <categories>multiSelectCombobox</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Multi Select Combobox: Select Value For</shortDescription>
+        <value>Please select a value for {0}.</value>
+    </labels>
+    <labels>
+        <fullName>MultiSelectComboboxItem_Selected</fullName>
+        <categories>multiSelectComboboxItem</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Multi Select Combobox Item: Selected</shortDescription>
+        <value>Selected</value>
+    </labels>
+    <labels>
+        <fullName>OpenRecordPageFlowAction_Loading</fullName>
+        <categories>openRecordPageFlowAction</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Open Record Page Flow Action: Loading</shortDescription>
+        <value>Loading</value>
+    </labels>
+    <labels>
+        <fullName>OrgChartViewer_CollapseAll</fullName>
+        <categories>orgChartViewer</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Org Chart Viewer: Collapse All</shortDescription>
+        <value>Collapse All</value>
+    </labels>
+    <labels>
+        <fullName>OrgChartViewer_ExpandAll</fullName>
+        <categories>orgChartViewer</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Org Chart Viewer: Expand All</shortDescription>
+        <value>Expand All</value>
+    </labels>
+    <labels>
+        <fullName>OrgChartViewer_ExportPng</fullName>
+        <categories>orgChartViewer</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Org Chart Viewer: Export Png</shortDescription>
+        <value>Export PNG</value>
+    </labels>
+    <labels>
+        <fullName>OrgChartViewer_FitToScreen</fullName>
+        <categories>orgChartViewer</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Org Chart Viewer: Fit To Screen</shortDescription>
+        <value>Fit to Screen</value>
+    </labels>
+    <labels>
+        <fullName>OrgChartViewer_LibraryNotLoaded</fullName>
+        <categories>orgChartViewer</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Org Chart Viewer: Library Not Loaded</shortDescription>
+        <value>Failed to load chart library: {0}</value>
+    </labels>
+    <labels>
+        <fullName>OrgChartViewer_Loading</fullName>
+        <categories>orgChartViewer</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Org Chart Viewer: Loading</shortDescription>
+        <value>Loading the org chart...</value>
+    </labels>
+    <labels>
+        <fullName>OrgChartViewer_NodeCount</fullName>
+        <categories>orgChartViewer</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Org Chart Viewer: Node Count</shortDescription>
+        <value>Showing {0} of {1} nodes</value>
+    </labels>
+    <labels>
+        <fullName>OrgChartViewer_NoRecords</fullName>
+        <categories>orgChartViewer</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Org Chart Viewer: No Records</shortDescription>
+        <value>No records found.</value>
+    </labels>
+    <labels>
+        <fullName>OrgChartViewer_OnlyFirstRecords</fullName>
+        <categories>orgChartViewer</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Org Chart Viewer: Only First Records</shortDescription>
+        <value>Only the first {0} records are shown.</value>
+    </labels>
+    <labels>
+        <fullName>OrgChartViewer_OpenRecord</fullName>
+        <categories>orgChartViewer</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Org Chart Viewer: Open Record</shortDescription>
+        <value>Open {0}</value>
+    </labels>
+    <labels>
+        <fullName>OrgChartViewer_RecordsNotLoaded</fullName>
+        <categories>orgChartViewer</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Org Chart Viewer: Records Not Loaded</shortDescription>
+        <value>The records could not be loaded: {0}</value>
+    </labels>
+    <labels>
+        <fullName>OrgChartViewer_Search</fullName>
+        <categories>orgChartViewer</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Org Chart Viewer: Search</shortDescription>
+        <value>Search</value>
+    </labels>
+    <labels>
+        <fullName>OrgChartViewer_SearchPlaceholder</fullName>
+        <categories>orgChartViewer</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Org Chart Viewer: Search Placeholder</shortDescription>
+        <value>Search by name...</value>
+    </labels>
+    <labels>
+        <fullName>OrgChartViewer_Title</fullName>
+        <categories>orgChartViewer</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Org Chart Viewer: Title</shortDescription>
+        <value>Org Chart Viewer</value>
+    </labels>
+    <labels>
+        <fullName>OrgChartViewer_Unknown</fullName>
+        <categories>orgChartViewer</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Org Chart Viewer: Unknown</shortDescription>
+        <value>Unknown</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_DarkColor</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Dark Color</shortDescription>
+        <value>Dark Color</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_EnterUrl</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Enter Url</shortDescription>
+        <value>Please enter a URL.</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_ErrorSaving</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Error Saving</shortDescription>
+        <value>Error saving the QR code</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_FileNotRead</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: File Not Read</shortDescription>
+        <value>Failed to read the selected file.</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_FileTitle</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: File Title</shortDescription>
+        <value>QR Code</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_Generate</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Generate</shortDescription>
+        <value>Generate QR Code</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_GeneratedCode</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Generated Code</shortDescription>
+        <value>Generated QR Code</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_Generating</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Generating</shortDescription>
+        <value>Generating...</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_GenerationFailed</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Generation Failed</shortDescription>
+        <value>Failed to generate QR code: {0}</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_HardToScan</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Hard To Scan</shortDescription>
+        <value>These colors may be hard to scan.</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_LibraryMissing</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Library Missing</shortDescription>
+        <value>QR code library not loaded. Please try again.</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_LibraryNotLoaded</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Library Not Loaded</shortDescription>
+        <value>Failed to load QR code library: {0}</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_LightColor</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Light Color</shortDescription>
+        <value>Light Color</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_Logo</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Logo</shortDescription>
+        <value>Logo (optional)</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_LogoPreview</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Logo Preview</shortDescription>
+        <value>Logo preview</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_RemoveLogo</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Remove Logo</shortDescription>
+        <value>Remove logo</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_Save</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Save</shortDescription>
+        <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_Saved</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Saved</shortDescription>
+        <value>The QR code has been saved.</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_Success</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Success</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_TargetUrl</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Target Url</shortDescription>
+        <value>Target URL</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_Title</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Title</shortDescription>
+        <value>QR Code Generator</value>
+    </labels>
+    <labels>
+        <fullName>QrCodeGenerator_UrlPlaceholder</fullName>
+        <categories>qrCodeGenerator</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Qr Code Generator: Url Placeholder</shortDescription>
+        <value>https://example.com</value>
+    </labels>
+    <labels>
+        <fullName>Render3DElementsThreeJS_ErrorWithoutReason</fullName>
+        <categories>render3DElementsThreeJS</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Render3 DElements Three JS: Error Without Reason</shortDescription>
+        <value>{0}.</value>
+    </labels>
+    <labels>
+        <fullName>Render3DElementsThreeJS_ErrorWithReason</fullName>
+        <categories>render3DElementsThreeJS</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Render3 DElements Three JS: Error With Reason</shortDescription>
+        <value>{0}: {1}</value>
+    </labels>
+    <labels>
+        <fullName>Render3DElementsThreeJS_ModelNotLoaded</fullName>
+        <categories>render3DElementsThreeJS</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Render3 DElements Three JS: Model Not Loaded</shortDescription>
+        <value>The 3D model could not be loaded</value>
+    </labels>
+    <labels>
+        <fullName>Render3DElementsThreeJS_SceneNotDisplayed</fullName>
+        <categories>render3DElementsThreeJS</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Render3 DElements Three JS: Scene Not Displayed</shortDescription>
+        <value>The 3D scene could not be displayed</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Clear</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Clear</shortDescription>
+        <value>Clear</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Download</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Download</shortDescription>
+        <value>Download</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_ErrorSaving</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Error Saving</shortDescription>
+        <value>Error saving the signature</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_FileTitle</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: File Title</shortDescription>
+        <value>Signature</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_PenColor</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Pen Color</shortDescription>
+        <value>Pen Color</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Placeholder</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Placeholder</shortDescription>
+        <value>Draw your signature here</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_ProvideSignature</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Provide Signature</shortDescription>
+        <value>Please provide a signature.</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Save</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Save</shortDescription>
+        <value>Save</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Saved</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Saved</shortDescription>
+        <value>The signature has been saved.</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_SaveSignature</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Save Signature</shortDescription>
+        <value>Please save your signature.</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Saving</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Saving</shortDescription>
+        <value>Saving</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_StrokeWidth</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Stroke Width</shortDescription>
+        <value>Stroke Width ({0}px)</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Success</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Success</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Title</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Title</shortDescription>
+        <value>Signature Pad</value>
+    </labels>
+    <labels>
+        <fullName>SignaturePad_Undo</fullName>
+        <categories>signaturePad</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Signature Pad: Undo</shortDescription>
+        <value>Undo</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_CapturePhoto</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: Capture Photo</shortDescription>
+        <value>Capture Photo</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_ErrorSaving</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: Error Saving</shortDescription>
+        <value>Error saving the profile picture</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_NewProfilePreview</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: New Profile Preview</shortDescription>
+        <value>Preview of the new profile</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_StartCamera</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: Start Camera</shortDescription>
+        <value>Start Camera</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_StopCamera</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: Stop Camera</shortDescription>
+        <value>Stop Camera</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_Success</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: Success</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_Title</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: Title</shortDescription>
+        <value>Take User Profile Picture</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_Updated</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: Updated</shortDescription>
+        <value>Profile picture has been updated, it takes some time until the change is visible</value>
+    </labels>
+    <labels>
+        <fullName>TakeUserProfilePicture_UpdateProfile</fullName>
+        <categories>takeUserProfilePicture</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Take User Profile Picture: Update Profile</shortDescription>
+        <value>Update Profile Picture</value>
+    </labels>
+    <labels>
+        <fullName>VisualforceToPdf_FrameTitle</fullName>
+        <categories>visualforceToPdf</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Visualforce To Pdf: Frame Title</shortDescription>
+        <value>Visualforce to PDF</value>
+    </labels>
+</CustomLabels>

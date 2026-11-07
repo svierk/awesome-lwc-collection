@@ -1,3 +1,4 @@
+import SELECTED from '@salesforce/label/c.MultiSelectComboboxItem_Selected';
 import { api, LightningElement } from 'lwc';
 
 /**
@@ -15,6 +16,8 @@ export default class MultiSelectComboboxItem extends LightningElement {
    * @type {Object}
    */
   @api item;
+
+  labels = { selected: SELECTED };
 
   get itemClass() {
     return `slds-listbox__item ${this.item.selected ? 'slds-is-selected' : ''}`;

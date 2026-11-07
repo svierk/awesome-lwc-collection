@@ -1,3 +1,4 @@
+import FRAME_TITLE from '@salesforce/label/c.VisualforceToPdf_FrameTitle';
 import { api, LightningElement } from 'lwc';
 
 /**
@@ -10,6 +11,8 @@ import { api, LightningElement } from 'lwc';
  * <c-visualforce-to-pdf url="/apex/AccountDetails" height="500px" width="100%"></c-visualforce-to-pdf>
  */
 export default class VisualforceToPdf extends LightningElement {
+  labels = { frameTitle: FRAME_TITLE };
+
   /**
    * If show card option is active, the card icon is displayed in the header before the card title.
    * It should contain the SLDS name of the icon.

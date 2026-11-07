@@ -54,6 +54,15 @@ Configurable map component for displaying locations via Google Maps API using LW
 
 The component is designed for Lightning record pages: drop it onto the page in the Lightning App Builder and map the address fields of the current object. The record-id and object-api-name attributes are set automatically by the record page.
 
+## Custom Labels
+
+The texts users see are Custom Labels, so they can be translated in Setup with the Translation Workbench. Copy them together with the component.
+
+| Name                                 | Value                       |
+| ------------------------------------ | --------------------------- |
+| ErrorUtils_UnknownError              | Unknown error               |
+| GraphqlMapView_ErrorLoadingLocations | Error loading location data |
+
 ## Component Dependencies
 
 | Name       | Type | Description                                                    |

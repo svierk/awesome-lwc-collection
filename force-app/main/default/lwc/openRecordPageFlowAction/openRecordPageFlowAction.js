@@ -1,3 +1,4 @@
+import LOADING from '@salesforce/label/c.OpenRecordPageFlowAction_Loading';
 import { api, LightningElement } from 'lwc';
 
 /**
@@ -10,6 +11,8 @@ import { api, LightningElement } from 'lwc';
  * <c-open-record-page-flow-action record-id={recordId} target="_blank"></c-open-record-page-flow-action>
  */
 export default class OpenRecordPageFlowAction extends LightningElement {
+  labels = { loading: LOADING };
+
   /**
    * Record Id of the record page to which the action should forward.
    * @type {string}

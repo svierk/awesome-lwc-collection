@@ -1,9 +1,9 @@
 <template>
-  <lightning-card title="Org Chart Viewer" icon-name="utility:org_chart">
+  <lightning-card title={labels.title} icon-name="utility:org_chart">
     <lightning-button
       slot="actions"
       data-id="expand-all"
-      label="Expand All"
+      label={labels.expandAll}
       icon-name="utility:expand_all"
       onclick={handleExpandAll}
       disabled={isToolbarDisabled}
@@ -11,7 +11,7 @@
     <lightning-button
       slot="actions"
       data-id="collapse-all"
-      label="Collapse All"
+      label={labels.collapseAll}
       icon-name="utility:collapse_all"
       onclick={handleCollapseAll}
       disabled={isToolbarDisabled}
@@ -19,7 +19,7 @@
     <lightning-button
       slot="actions"
       data-id="fit"
-      label="Fit to Screen"
+      label={labels.fitToScreen}
       icon-name="utility:full_width_view"
       onclick={handleFit}
       disabled={isToolbarDisabled}
@@ -28,7 +28,7 @@
       slot="actions"
       data-id="export-png"
       variant="brand"
-      label="Export PNG"
+      label={labels.exportPng}
       icon-name="utility:download"
       onclick={handleExportPng}
       disabled={isToolbarDisabled}
@@ -37,9 +37,9 @@
     <lightning-input
       data-id="search-input"
       type="search"
-      label="Search"
+      label={labels.search}
       variant="label-hidden"
-      placeholder="Search by name..."
+      placeholder={labels.searchPlaceholder}
       value={searchTerm}
       onchange={handleSearchChange}
       disabled={isToolbarDisabled}
@@ -72,7 +72,7 @@
           <div
             class="loading-overlay slds-is-absolute slds-grid slds-grid_align-center slds-grid_vertical-align-center"
           >
-            <lightning-spinner alternative-text="Loading the org chart..." size="medium"></lightning-spinner>
+            <lightning-spinner alternative-text={labels.loading} size="medium"></lightning-spinner>
           </div>
         </template>
         <div
@@ -80,7 +80,7 @@
           data-id="empty-state"
           class="loading-overlay slds-is-absolute slds-grid slds-grid_align-center slds-grid_vertical-align-center"
         >
-          <p>No records found.</p>
+          <p>{labels.noRecords}</p>
         </div>
       </div>
     </div>

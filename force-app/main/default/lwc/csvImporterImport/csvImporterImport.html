@@ -4,7 +4,7 @@
       <p class="intro slds-m-bottom_small">{intro}</p>
       <lightning-button
         variant="brand"
-        label="Import"
+        label={labels.import}
         icon-name="utility:upload"
         disabled={isImportDisabled}
         onclick={handleImport}
@@ -18,7 +18,7 @@
         <lightning-button
           lwc:if={hasFailures}
           class="slds-show slds-m-top_small"
-          label="Download failed rows"
+          label={labels.downloadFailedRows}
           icon-name="utility:download"
           onclick={handleDownload}
         ></lightning-button>

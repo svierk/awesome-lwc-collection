@@ -62,10 +62,24 @@ globalThis.THREE = { ...three, GLTFLoader, OrbitControls };
 npx esbuild entry.js --bundle --minify --format=iife --target=es2020 --legal-comments=none --outfile=threejs.js
 ```
 
+## Custom Labels
+
+The texts users see are Custom Labels, so they can be translated in Setup with the Translation Workbench. Copy them together with the component.
+
+| Name                                       | Value                               |
+| ------------------------------------------ | ----------------------------------- |
+| ErrorAlert_Error                           | Error                               |
+| ErrorUtils_UnknownError                    | Unknown error                       |
+| Render3DElementsThreeJS_ErrorWithoutReason | {0}.                                |
+| Render3DElementsThreeJS_ErrorWithReason    | {0}: {1}                            |
+| Render3DElementsThreeJS_ModelNotLoaded     | The 3D model could not be loaded    |
+| Render3DElementsThreeJS_SceneNotDisplayed  | The 3D scene could not be displayed |
+
 ## Component Dependencies
 
 | Name          | Type            | Description                                                                                             |
 | ------------- | --------------- | ------------------------------------------------------------------------------------------------------- |
+| labelUtils    | LWC             | Shared function to fill the placeholders of Custom Labels.                                              |
 | threejs       | Static Resource | Three.js 0.186.1 with GLTFLoader and OrbitControls - Lightweight, cross-browser 3D library using WebGL. |
 | crateMaterial | Static Resource | Texture of the crate shown without a model.                                                             |
 | errorAlert    | LWC             | Inline alert that shows error messages to the user.                                                     |

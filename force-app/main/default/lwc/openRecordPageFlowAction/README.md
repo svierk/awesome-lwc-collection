@@ -30,3 +30,11 @@ Component to forward to a record page from flow.
 ```
 
 Add the component to a screen element in the Flow Builder and set the record-id input attribute to the Id of the target record. As soon as the screen is displayed, the component navigates to the record page - in the same tab ('\_self') or a new tab ('\_blank') depending on the target attribute.
+
+## Custom Labels
+
+The texts users see are Custom Labels, so they can be translated in Setup with the Translation Workbench. Copy them together with the component.
+
+| Name                             | Value   |
+| -------------------------------- | ------- |
+| OpenRecordPageFlowAction_Loading | Loading |

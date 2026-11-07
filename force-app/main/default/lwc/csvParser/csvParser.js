@@ -1,3 +1,7 @@
+import COLUMN from '@salesforce/label/c.CsvParser_Column';
+import UNCLOSED_QUOTE from '@salesforce/label/c.CsvParser_UnclosedQuote';
+import { formatLabel } from 'c/labelUtils';
+
 const QUOTE = '"';
 const DELIMITERS = [',', ';', '\t'];
 
@@ -20,7 +24,7 @@ function readQuotedField(text, start) {
       return { value, end: index + 1 };
     }
   }
-  throw new Error(`Invalid CSV: the quoted field starting on line ${lineOf(text, start)} is never closed.`);
+  throw new Error(formatLabel(UNCLOSED_QUOTE, lineOf(text, start)));
 }
 
 function lineBreakLength(text, index) {
@@ -66,7 +70,7 @@ function isBlank(record) {
 function toUniqueHeaders(rawHeaders) {
   const used = new Set();
   return rawHeaders.map((rawHeader, index) => {
-    const base = rawHeader.trim() === '' ? `Column ${index + 1}` : rawHeader;
+    const base = rawHeader.trim() === '' ? formatLabel(COLUMN, index + 1) : rawHeader;
     let header = base;
     let count = 1;
     while (used.has(header)) {

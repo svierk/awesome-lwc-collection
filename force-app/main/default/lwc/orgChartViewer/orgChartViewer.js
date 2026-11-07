@@ -1,3 +1,19 @@
+import COLLAPSE_ALL from '@salesforce/label/c.OrgChartViewer_CollapseAll';
+import EXPAND_ALL from '@salesforce/label/c.OrgChartViewer_ExpandAll';
+import EXPORT_PNG from '@salesforce/label/c.OrgChartViewer_ExportPng';
+import FIT_TO_SCREEN from '@salesforce/label/c.OrgChartViewer_FitToScreen';
+import LIBRARY_NOT_LOADED from '@salesforce/label/c.OrgChartViewer_LibraryNotLoaded';
+import NODE_COUNT from '@salesforce/label/c.OrgChartViewer_NodeCount';
+import LOADING from '@salesforce/label/c.OrgChartViewer_Loading';
+import NO_RECORDS from '@salesforce/label/c.OrgChartViewer_NoRecords';
+import ONLY_FIRST_RECORDS from '@salesforce/label/c.OrgChartViewer_OnlyFirstRecords';
+import OPEN_RECORD from '@salesforce/label/c.OrgChartViewer_OpenRecord';
+import RECORDS_NOT_LOADED from '@salesforce/label/c.OrgChartViewer_RecordsNotLoaded';
+import SEARCH from '@salesforce/label/c.OrgChartViewer_Search';
+import SEARCH_PLACEHOLDER from '@salesforce/label/c.OrgChartViewer_SearchPlaceholder';
+import TITLE from '@salesforce/label/c.OrgChartViewer_Title';
+import UNKNOWN from '@salesforce/label/c.OrgChartViewer_Unknown';
+import { formatLabel } from 'c/labelUtils';
 import d3orgchart from '@salesforce/resourceUrl/d3orgchart';
 import { getErrorMessage } from 'c/errorUtils';
 import { graphql } from 'lightning/graphql';
@@ -52,7 +68,7 @@ function getNodeId(record) {
 }
 
 function getNodeName(record) {
-  return record.name || record.Name || 'Unknown';
+  return record.name || record.Name || UNKNOWN;
 }
 
 /**
@@ -66,6 +82,18 @@ function getNodeName(record) {
  * <c-org-chart-viewer chart-object-api-name="User" parent-field-api-name="ManagerId" title-field="Title"></c-org-chart-viewer>
  */
 export default class OrgChartViewer extends NavigationMixin(LightningElement) {
+  labels = {
+    title: TITLE,
+    expandAll: EXPAND_ALL,
+    collapseAll: COLLAPSE_ALL,
+    fitToScreen: FIT_TO_SCREEN,
+    exportPng: EXPORT_PNG,
+    search: SEARCH,
+    searchPlaceholder: SEARCH_PLACEHOLDER,
+    noRecords: NO_RECORDS,
+    loading: LOADING
+  };
+
   /**
    * API name of the object whose records the chart loads, e.g. 'User' or 'Contact'. Used together with
    * parent-field-api-name; records set from outside take precedence. It isn't called objectApiName, because record
@@ -154,7 +182,7 @@ export default class OrgChartViewer extends NavigationMixin(LightningElement) {
     }
     if (errors) {
       this._loaded = { tree: [], hasMore: false };
-      this.errorMessage = `The records could not be loaded: ${getErrorMessage(errors)}`;
+      this.errorMessage = formatLabel(RECORDS_NOT_LOADED, getErrorMessage(errors));
     } else if (data) {
       const { records, label, hasMore } = toChartRecords(data, {
         objectApiName: this.chartObjectApiName,
@@ -176,7 +204,7 @@ export default class OrgChartViewer extends NavigationMixin(LightningElement) {
         this.isLibraryLoaded = true;
       })
       .catch((err) => {
-        this.errorMessage = `Failed to load chart library: ${getErrorMessage(err)}`;
+        this.errorMessage = formatLabel(LIBRARY_NOT_LOADED, getErrorMessage(err));
       });
   }
 
@@ -221,7 +249,7 @@ export default class OrgChartViewer extends NavigationMixin(LightningElement) {
   }
 
   get moreRecordsLabel() {
-    return `Only the first ${MAX_RECORDS} records are shown.`;
+    return formatLabel(ONLY_FIRST_RECORDS, MAX_RECORDS);
   }
 
   get isToolbarDisabled() {
@@ -229,7 +257,7 @@ export default class OrgChartViewer extends NavigationMixin(LightningElement) {
   }
 
   get nodeCountLabel() {
-    return `Showing ${this.visibleNodeCount} of ${this.totalNodeCount} nodes`;
+    return formatLabel(NODE_COUNT, this.visibleNodeCount, this.totalNodeCount);
   }
 
   initChart() {
@@ -327,7 +355,7 @@ export default class OrgChartViewer extends NavigationMixin(LightningElement) {
     const isHighlighted = Boolean(record._highlighted || record._upToTheRootHighlighted);
     // a node that opens its record is a link the keyboard can reach, see handleNodeKeydown
     const link = this.opensRecord(record)
-      ? ` tabindex="0" role="link" aria-label="Open ${escapeHtml(name)}" data-record-id="${escapeHtml(record.id)}"`
+      ? ` tabindex="0" role="link" aria-label="${escapeHtml(formatLabel(OPEN_RECORD, name))}" data-record-id="${escapeHtml(record.id)}"`
       : '';
     const cursor = link ? 'cursor:pointer;' : '';
     const imageUrl = this._exporting ? undefined : safeImageUrl(record.imageUrl);
