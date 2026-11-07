@@ -47,6 +47,12 @@
         default="5000"
       />
       <property
+        name="aspectRatio"
+        type="String"
+        label="Aspect Ratio"
+        description="Fixed aspect ratio of the slides, e.g. '16:9' or '4/3'. The images then fill the slides and are cropped where needed. Takes precedence over Custom Height."
+      />
+      <property
         name="transition"
         type="String"
         label="Transition"
@@ -81,6 +87,26 @@
         label="Hide Slide Text"
         description="Hide the text overlay with heading and description"
         default="false"
+      />
+      <property
+        name="showCard"
+        type="Boolean"
+        label="Show Lightning Card"
+        description="If present, the carousel is wrapped in a lightning card to fit better into the overall page layout."
+        default="false"
+      />
+      <property
+        name="cardIcon"
+        type="String"
+        label="Card Icon"
+        description="If show card option is active, the card icon is displayed in the header before the card title. It should contain the SLDS name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category and 'down' the icon to be displayed."
+        default="utility:image"
+      />
+      <property
+        name="cardTitle"
+        type="String"
+        label="Card Title"
+        description="If show card option is active, the card title can include text and is displayed in the header above the carousel."
       />
       </targetConfig>
     </targetConfigs>

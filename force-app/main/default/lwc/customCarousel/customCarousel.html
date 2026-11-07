@@ -1,76 +1,91 @@
 <template>
-  <c-error-alert lwc:if={errorMessage} class="slds-show slds-m-bottom_small" message={errorMessage}></c-error-alert>
-  <section class="carousel" aria-roledescription="carousel" aria-label="Image carousel">
-    <div class="slds-is-relative container" style={maxWidth}>
-      <div
-        class="carousel-viewport"
-        onpointerdown={handlePointerDown}
-        onpointerup={handlePointerUp}
-        onpointercancel={handlePointerCancel}
-      >
-        <div class={trackClass} style={trackStyle}>
-          <template for:each={slidesData} for:item="slide">
-            <div key={slide.index} class={slide.slideClass} lwc:spread={slide.slideAria}>
-              <div lwc:if={showSlideNumber} class="slideNumbers slds-is-absolute">
-                {slide.index}/{slidesData.length}
-              </div>
-              <img src={slide.image} alt={slide.description} style={maxHeight} draggable="false" />
-              <div
-                lwc:if={showSlideText}
-                class="text-section slds-var-p-around_medium slds-is-absolute slds-size_full slds-text-align_center"
-              >
-                <h3 class="slds-text-heading_large">{slide.heading}</h3>
-                <div class="slds-text-heading_small">{slide.description}</div>
-              </div>
+  <div class={cardClass}>
+    <div lwc:if={showCard} class="slds-card__header slds-grid">
+      <header class="slds-media slds-media_center slds-has-flexi-truncate">
+        <div class="slds-media__figure">
+          <lightning-icon icon-name={cardIcon} size="small"></lightning-icon>
+        </div>
+        <div class="slds-media__body">
+          <h2 lwc:if={cardTitle} class="slds-card__header-title">
+            <span class="slds-truncate" title={cardTitle}>{cardTitle}</span>
+          </h2>
+        </div>
+      </header>
+    </div>
+    <div class={cardBodyClass}>
+      <c-error-alert lwc:if={errorMessage} class="slds-show slds-m-bottom_small" message={errorMessage}></c-error-alert>
+      <section class="carousel" aria-roledescription="carousel" aria-label="Image carousel">
+        <div class="slds-is-relative container" style={maxWidth}>
+          <div
+            class={viewportClass}
+            style={viewportStyle}
+            onpointerdown={handlePointerDown}
+            onpointerup={handlePointerUp}
+            onpointercancel={handlePointerCancel}
+          >
+            <div class={trackClass} style={trackStyle}>
+              <template for:each={slidesData} for:item="slide">
+                <div key={slide.index} class={slide.slideClass} lwc:spread={slide.slideAria}>
+                  <div lwc:if={showSlideNumber} class="slideNumbers slds-is-absolute">
+                    {slide.index}/{slidesData.length}
+                  </div>
+                  <img src={slide.image} alt={slide.description} style={maxHeight} draggable="false" />
+                  <div
+                    lwc:if={showSlideText}
+                    class="text-section slds-var-p-around_medium slds-is-absolute slds-size_full slds-text-align_center"
+                  >
+                    <h3 class="slds-text-heading_large">{slide.heading}</h3>
+                    <div class="slds-text-heading_small">{slide.description}</div>
+                  </div>
+                </div>
+              </template>
             </div>
+          </div>
+          <div lwc:if={showNavigationButtons} class="carousel-arrows">
+            <lightning-button-icon
+              class="prev"
+              variant="border-filled"
+              icon-name="utility:chevronleft"
+              alternative-text="Previous slide"
+              title="Previous slide"
+              onclick={slideBackward}
+            ></lightning-button-icon>
+            <lightning-button-icon
+              class="next"
+              variant="border-filled"
+              icon-name="utility:chevronright"
+              alternative-text="Next slide"
+              title="Next slide"
+              onclick={slideForward}
+            ></lightning-button-icon>
+          </div>
+        </div>
+        <div lwc:if={showControls} class="carousel-controls slds-text-align_center slds-var-p-around_medium">
+          <lightning-button-icon
+            lwc:if={showPlaybackButton}
+            class="carousel-playback slds-m-right_x-small"
+            variant="bare"
+            icon-name={playbackIcon}
+            alternative-text={playbackLabel}
+            title={playbackLabel}
+            onclick={togglePlayback}
+          ></lightning-button-icon>
+          <template lwc:if={showNavigationDots}>
+            <template for:each={slidesData} for:item="slide">
+              <button
+                key={slide.index}
+                type="button"
+                class={slide.dotClass}
+                data-id={slide.index}
+                aria-label={slide.dotLabel}
+                lwc:spread={slide.dotAria}
+                onclick={showSlide}
+              ></button>
+            </template>
           </template>
         </div>
-      </div>
-      <button
-        lwc:if={showNavigationButtons}
-        type="button"
-        class="prev slds-is-absolute"
-        title="Previous slide"
-        aria-label="Previous slide"
-        onclick={slideBackward}
-      >
-        &#10094;
-      </button>
-      <button
-        lwc:if={showNavigationButtons}
-        type="button"
-        class="next slds-is-absolute"
-        title="Next slide"
-        aria-label="Next slide"
-        onclick={slideForward}
-      >
-        &#10095;
-      </button>
+        <output class="slds-assistive-text">{announcement}</output>
+      </section>
     </div>
-    <div lwc:if={showControls} class="carousel-controls slds-text-align_center slds-var-p-around_medium">
-      <lightning-button-icon
-        lwc:if={showPlaybackButton}
-        class="carousel-playback slds-m-right_x-small"
-        variant="bare"
-        icon-name={playbackIcon}
-        alternative-text={playbackLabel}
-        title={playbackLabel}
-        onclick={togglePlayback}
-      ></lightning-button-icon>
-      <template lwc:if={showNavigationDots}>
-        <template for:each={slidesData} for:item="slide">
-          <button
-            key={slide.index}
-            type="button"
-            class={slide.dotClass}
-            data-id={slide.index}
-            aria-label={slide.dotLabel}
-            lwc:spread={slide.dotAria}
-            onclick={showSlide}
-          ></button>
-        </template>
-      </template>
-    </div>
-    <output class="slds-assistive-text">{announcement}</output>
-  </section>
+  </div>
 </template>

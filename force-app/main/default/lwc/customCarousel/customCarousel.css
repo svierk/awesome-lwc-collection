@@ -2,67 +2,6 @@
   margin: auto;
 }
 
-/* the overlay, the slide numbers and the arrows sit on the slide image, so they keep fixed light-on-dark colors in every theme */
-.text-section {
-  color: #f2f2f2;
-  font-size: 15px;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
-.prev,
-.next {
-  top: 50%;
-  width: auto;
-  padding: var(--slds-g-spacing-4, 1rem);
-  color: #fff;
-  font: inherit;
-  font-weight: var(--slds-g-font-weight-bold, bold);
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  border-radius: 0 3px 3px 0;
-}
-
-.next {
-  right: 0;
-  border-radius: 3px 0 0 3px;
-}
-
-.prev:hover,
-.next:hover {
-  background-color: rgba(0, 0, 0, 0.8);
-}
-
-.slideNumbers {
-  font-size: var(--slds-g-font-scale-neg-1, 0.75rem);
-  padding: var(--slds-g-spacing-2, 0.5rem) var(--slds-g-spacing-3, 0.75rem);
-  top: 0;
-  color: #f2f2f2;
-}
-
-.dot {
-  height: 15px;
-  width: 15px;
-  border-radius: var(--slds-g-radius-border-circle, 100%);
-  cursor: pointer;
-  background-color: var(--slds-g-color-neutral-base-80, #c9c9c9);
-  margin: 0 2px;
-  padding: 0;
-  border: none;
-  display: inline-block;
-}
-
-.dot:focus-visible {
-  outline: var(--slds-g-sizing-border-2, 2px) solid var(--slds-g-color-neutral-base-50, #757575);
-  outline-offset: 2px;
-}
-
-.active,
-.dot:hover {
-  background-color: var(--slds-g-color-neutral-base-50, #757575);
-}
-
 .carousel-viewport {
   overflow: hidden;
   touch-action: pan-y;
@@ -78,13 +17,99 @@
   flex: 0 0 100%;
 }
 
+/* with a fixed aspect ratio, every slide fills the viewport and crops its image */
+.carousel-fill .carousel-track,
+.carousel-fill .fade,
+.carousel-fill .carousel-slide {
+  height: 100%;
+}
+
+.carousel-fill img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* overlay, slide number and arrows sit on the image: background and text use a dark and light pair of the same
+   palette, so they keep their contrast in both themes */
+.text-section {
+  bottom: 0;
+  padding-top: var(--slds-g-spacing-6, 2rem);
+  color: var(--slds-g-color-palette-neutral-100, #fff);
+  /* nearly opaque behind the text, fading out only in the top padding, so the text stays readable on light images */
+  background: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--slds-g-color-palette-neutral-10, #181818) 85%, transparent),
+    color-mix(in srgb, var(--slds-g-color-palette-neutral-10, #181818) 75%, transparent)
+      calc(100% - var(--slds-g-spacing-6, 2rem)),
+    transparent
+  );
+}
+
+.slideNumbers {
+  top: var(--slds-g-spacing-2, 0.5rem);
+  left: var(--slds-g-spacing-2, 0.5rem);
+  padding: var(--slds-g-spacing-1, 0.25rem) var(--slds-g-spacing-2, 0.5rem);
+  font-size: var(--slds-g-font-scale-neg-1, 0.75rem);
+  color: var(--slds-g-color-palette-neutral-100, #fff);
+  background-color: color-mix(in srgb, var(--slds-g-color-palette-neutral-10, #181818) 70%, transparent);
+  border-radius: var(--slds-g-radius-border-pill, 15rem);
+}
+
+.carousel-arrows {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--slds-g-spacing-2, 0.5rem);
+  pointer-events: none;
+}
+
+.carousel-arrows lightning-button-icon {
+  pointer-events: auto;
+}
+
 .carousel-playback {
   vertical-align: middle;
+}
+
+.dot {
+  height: var(--slds-g-sizing-5, 1rem);
+  width: var(--slds-g-sizing-5, 1rem);
+  border-radius: var(--slds-g-radius-border-circle, 100%);
+  cursor: pointer;
+  background-color: var(--slds-g-color-neutral-base-80, #c9c9c9);
+  margin: 0 var(--slds-g-spacing-1, 0.25rem);
+  padding: 0;
+  border: none;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.dot:focus-visible {
+  outline: var(--slds-g-sizing-border-2, 2px) solid var(--slds-g-color-neutral-base-50, #757575);
+  outline-offset: var(--slds-g-sizing-border-2, 2px);
+}
+
+.active,
+.dot:hover {
+  background-color: var(--slds-g-color-neutral-base-50, #757575);
 }
 
 .fade {
   animation-name: fade;
   animation-duration: 1.5s;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -94,14 +119,5 @@
 
   .carousel-track-slide {
     transition: none;
-  }
-}
-
-@keyframes fade {
-  from {
-    opacity: 0.4;
-  }
-  to {
-    opacity: 1;
   }
 }

@@ -1,6 +1,7 @@
 import { api, LightningElement } from 'lwc';
 
 const SWIPE_DISTANCE = 50;
+const ASPECT_RATIO = /^\s*(\d+(?:\.\d+)?)\s*(?:[:/]\s*(\d+(?:\.\d+)?))?\s*$/;
 
 /**
  * A simple custom carousel with different configuration options.
@@ -18,9 +19,20 @@ const SWIPE_DISTANCE = 50;
  *   hide-slide-text
  *   hide-slide-number
  *   transition="slide"
+ *   aspect-ratio="16:9"
+ *   show-card
+ *   card-title="Highlights"
  * ></c-custom-carousel>
  */
 export default class CustomCarousel extends LightningElement {
+  /**
+   * Set a fixed aspect ratio for the slides, e.g. '16:9' or '4/3'. The images then fill the slides and are cropped
+   * where needed. Takes precedence over custom-height.
+   * @type {string}
+   * @default ''
+   */
+  @api aspectRatio = '';
+
   /**
    * If present, automatic slide scrolling will be enabled.
    * @type {boolean}
@@ -36,6 +48,23 @@ export default class CustomCarousel extends LightningElement {
     this.isPlaying = true;
     this.restartTimer();
   }
+
+  /**
+   * If show card option is active, the card icon is displayed in the header before the card title.
+   * It should contain the SLDS name of the icon.
+   * Specify the name in the format 'utility:down' where 'utility' is the category and 'down' the icon to be displayed.
+   * @type {string}
+   * @default 'utility:image'
+   * @example 'utility:image'
+   */
+  @api cardIcon = 'utility:image';
+
+  /**
+   * If show card option is active, the card title can include text and is displayed in the header above the carousel.
+   * @type {string}
+   * @default ''
+   */
+  @api cardTitle = '';
 
   /**
    * Set maximum height of the carousel in percent or pixels.
@@ -78,6 +107,13 @@ export default class CustomCarousel extends LightningElement {
    * @default false
    */
   @api hideSlideText = false;
+
+  /**
+   * If present, the carousel is wrapped in a lightning card to fit better into the overall page layout.
+   * @type {boolean}
+   * @default false
+   */
+  @api showCard = false;
 
   /**
    * Set the duration in milliseconds after which the next slide should be displayed.
@@ -129,7 +165,32 @@ export default class CustomCarousel extends LightningElement {
   }
 
   get maxHeight() {
-    return `height: ${this.customHeight}`;
+    return this.ratio ? '' : `height: ${this.customHeight}`;
+  }
+
+  /** The aspect ratio as CSS value, or an empty string if none or an invalid one is set. */
+  get ratio() {
+    const match = ASPECT_RATIO.exec(String(this.aspectRatio));
+    if (!match || Number(match[1]) === 0 || Number(match[2] ?? 1) === 0) {
+      return '';
+    }
+    return match[2] ? `${match[1]} / ${match[2]}` : match[1];
+  }
+
+  get viewportClass() {
+    return this.ratio ? 'carousel-viewport carousel-fill' : 'carousel-viewport';
+  }
+
+  get viewportStyle() {
+    return this.ratio ? `aspect-ratio: ${this.ratio}` : '';
+  }
+
+  get cardClass() {
+    return this.showCard ? 'slds-card' : '';
+  }
+
+  get cardBodyClass() {
+    return this.showCard ? 'slds-card__body slds-card__body_inner' : '';
   }
 
   get showNavigationButtons() {
