@@ -1,3 +1,4 @@
+import ERROR_LOADING_LOCATIONS from '@salesforce/label/c.GraphqlMapView_ErrorLoadingLocations';
 import { showErrorToast } from 'c/errorUtils';
 import { gql, graphql } from 'lightning/graphql';
 import { api, LightningElement, track, wire } from 'lwc';
@@ -183,7 +184,7 @@ export default class GraphqlMapView extends LightningElement {
         }
       ];
     } else if (errors) {
-      showErrorToast(this, 'Error loading location data', errors);
+      showErrorToast(this, ERROR_LOADING_LOCATIONS, errors);
     }
   }
 

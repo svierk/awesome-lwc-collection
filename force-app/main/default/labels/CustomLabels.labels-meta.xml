@@ -1,6 +1,94 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
     <labels>
+        <fullName>ContentDocumentTable_Created</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Created</shortDescription>
+        <value>Created</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_Delete</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Delete</shortDescription>
+        <value>Delete</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_Download</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Download</shortDescription>
+        <value>Download</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_ErrorDeletingFile</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Error Deleting File</shortDescription>
+        <value>Error deleting file</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_ErrorDownloadingFile</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Error Downloading File</shortDescription>
+        <value>Error downloading file</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_FileDeleted</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: File Deleted</shortDescription>
+        <value>File deleted</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_Loading</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Loading</shortDescription>
+        <value>Loading</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_Size</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Size</shortDescription>
+        <value>Size</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_Success</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Success</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_Title</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: Title</shortDescription>
+        <value>Title</value>
+    </labels>
+    <labels>
+        <fullName>ContentDocumentTable_View</fullName>
+        <categories>contentDocumentTable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Content Document Table: View</shortDescription>
+        <value>View</value>
+    </labels>
+    <labels>
         <fullName>CsvImporter_Back</fullName>
         <categories>csvImporter</categories>
         <language>en_US</language>
@@ -538,6 +626,126 @@
         <value>This row has {0} errors.</value>
     </labels>
     <labels>
+        <fullName>CustomDatatable_Delete</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Delete</shortDescription>
+        <value>Delete</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_ErrorDeletingRecord</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Error Deleting Record</shortDescription>
+        <value>Error deleting record</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_ErrorDeletingRecords</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Error Deleting Records</shortDescription>
+        <value>Error deleting records</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_ErrorLoadingRecords</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Error Loading Records</shortDescription>
+        <value>Error loading records</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_ErrorUpdatingRecords</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Error Updating Records</shortDescription>
+        <value>Error updating records</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_Loading</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Loading</shortDescription>
+        <value>Loading</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_Page</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Page</shortDescription>
+        <value>Page {0} of {1}</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_RecordCount</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Record Count</shortDescription>
+        <value>Showing {0}–{1} of {2} records</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_RecordDeleted</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Record Deleted</shortDescription>
+        <value>Record deleted</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_RecordsDeleted</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Records Deleted</shortDescription>
+        <value>Records deleted</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_RecordsUpdated</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Records Updated</shortDescription>
+        <value>Records updated</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_Search</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Search</shortDescription>
+        <value>Search</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_SearchPlaceholder</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Search Placeholder</shortDescription>
+        <value>Search all fields...</value>
+    </labels>
+    <labels>
+        <fullName>CustomDatatable_Success</fullName>
+        <categories>customDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Datatable: Success</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>CustomMapView_ErrorLoadingLocations</fullName>
+        <categories>customMapView</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Custom Map View: Error Loading Locations</shortDescription>
+        <value>Error loading location data</value>
+    </labels>
+    <labels>
         <fullName>DatatablePagination_First</fullName>
         <categories>datatablePagination</categories>
         <language>en_US</language>
@@ -570,6 +778,30 @@
         <value>Previous</value>
     </labels>
     <labels>
+        <fullName>DatatableUtils_Delete</fullName>
+        <categories>datatableUtils</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Datatable Utils: Delete</shortDescription>
+        <value>Delete</value>
+    </labels>
+    <labels>
+        <fullName>DatatableUtils_Edit</fullName>
+        <categories>datatableUtils</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Datatable Utils: Edit</shortDescription>
+        <value>Edit</value>
+    </labels>
+    <labels>
+        <fullName>DatatableUtils_View</fullName>
+        <categories>datatableUtils</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Datatable Utils: View</shortDescription>
+        <value>View</value>
+    </labels>
+    <labels>
         <fullName>ErrorAlert_Error</fullName>
         <categories>errorAlert</categories>
         <language>en_US</language>
@@ -584,6 +816,126 @@
         <protected>false</protected>
         <shortDescription>Error Utils: Unknown Error</shortDescription>
         <value>Unknown error</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_Delete</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Delete</shortDescription>
+        <value>Delete</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_ErrorDeletingRecord</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Error Deleting Record</shortDescription>
+        <value>Error deleting record</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_ErrorDeletingRecords</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Error Deleting Records</shortDescription>
+        <value>Error deleting records</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_ErrorLoadingRecords</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Error Loading Records</shortDescription>
+        <value>Error loading records</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_ErrorUpdatingRecords</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Error Updating Records</shortDescription>
+        <value>Error updating records</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_Loading</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Loading</shortDescription>
+        <value>Loading</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_Page</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Page</shortDescription>
+        <value>Page {0} of {1}</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_RecordCount</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Record Count</shortDescription>
+        <value>Showing {0}–{1} of {2} records</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_RecordDeleted</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Record Deleted</shortDescription>
+        <value>Record deleted</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_RecordsDeleted</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Records Deleted</shortDescription>
+        <value>Records deleted</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_RecordsUpdated</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Records Updated</shortDescription>
+        <value>Records updated</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_Search</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Search</shortDescription>
+        <value>Search</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_SearchPlaceholder</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Search Placeholder</shortDescription>
+        <value>Search all fields...</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlDatatable_Success</fullName>
+        <categories>graphqlDatatable</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Datatable: Success</shortDescription>
+        <value>Success</value>
+    </labels>
+    <labels>
+        <fullName>GraphqlMapView_ErrorLoadingLocations</fullName>
+        <categories>graphqlMapView</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Graphql Map View: Error Loading Locations</shortDescription>
+        <value>Error loading location data</value>
     </labels>
     <labels>
         <fullName>MultiSelectComboboxItem_Selected</fullName>

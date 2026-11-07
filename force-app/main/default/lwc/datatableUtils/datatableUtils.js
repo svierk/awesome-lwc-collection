@@ -1,3 +1,6 @@
+import DELETE from '@salesforce/label/c.DatatableUtils_Delete';
+import EDIT from '@salesforce/label/c.DatatableUtils_Edit';
+import VIEW from '@salesforce/label/c.DatatableUtils_View';
 import { NavigationMixin } from 'lightning/navigation';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
@@ -34,9 +37,9 @@ export function navigateToRecord(component, recordId, actionName) {
  */
 export function addRowActions(columns, showView, showEdit, showDelete) {
   const actions = [];
-  if (showView) actions.push({ label: 'View', name: 'view' });
-  if (showEdit) actions.push({ label: 'Edit', name: 'edit' });
-  if (showDelete) actions.push({ label: 'Delete', name: 'delete' });
+  if (showView) actions.push({ label: VIEW, name: 'view' });
+  if (showEdit) actions.push({ label: EDIT, name: 'edit' });
+  if (showDelete) actions.push({ label: DELETE, name: 'delete' });
   if (actions.length) {
     columns.push({ type: 'action', typeAttributes: { rowActions: actions, menuAlignment: 'right' } });
   }
