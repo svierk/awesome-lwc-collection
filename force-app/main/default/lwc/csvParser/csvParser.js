@@ -104,7 +104,7 @@ export function detectDelimiter(text) {
       counts.set(char, counts.get(char) + 1);
     }
   }
-  return DELIMITERS.reduce((best, delimiter) => (counts.get(delimiter) > counts.get(best) ? delimiter : best));
+  return DELIMITERS.reduce((best, delimiter) => (counts.get(delimiter) > counts.get(best) ? delimiter : best), ',');
 }
 
 /**
