@@ -52,7 +52,9 @@ let element;
 describe('c-custom-datatable', () => {
   beforeEach(() => {
     element = createElement('c-custom-datatable', { is: CustomDatatable });
-    element.objectApiName = mockData.objectApiName;
+    element.tableObjectApiName = mockData.objectApiName;
+    // as on record pages, which set objectApiName to the object of the page
+    element.objectApiName = 'Account';
     element.fieldSetApiName = mockData.fieldSetApiName;
   });
 
@@ -371,5 +373,18 @@ describe('c-custom-datatable', () => {
     // then
     expect(pagination.paginationLabel).toContain('Page 1 of');
     expect(pagination.isFirstPage).toBe(true);
+  });
+
+  it('should load the table object even when a record page sets objectApiName to the object of the page', async () => {
+    // when
+    document.body.appendChild(element);
+    await flushPromises();
+
+    // then
+    expect([getColumns, getRecordCount, getRecords].map((wire) => wire.getLastConfig().objectName)).toEqual([
+      mockData.objectApiName,
+      mockData.objectApiName,
+      mockData.objectApiName
+    ]);
   });
 });

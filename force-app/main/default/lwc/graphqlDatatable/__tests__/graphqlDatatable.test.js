@@ -15,9 +15,8 @@ const updateMutation = (recordId, fields) =>
   expect.objectContaining({ variables: { input: { Id: recordId, Contact: fields } } });
 
 function cloneResponse(overrides = {}) {
-  const resp = JSON.parse(JSON.stringify(mockGraphqlResponse));
-  Object.assign(resp.uiapi.query.Contact, overrides);
-  return resp;
+  const resp = structuredClone(mockGraphqlResponse);
+  return { ...resp, uiapi: { ...resp.uiapi, query: { Contact: { ...resp.uiapi.query.Contact, ...overrides } } } };
 }
 
 const flushPromises = () => new Promise((r) => setTimeout(r, 0));
@@ -25,9 +24,11 @@ const flushPromises = () => new Promise((r) => setTimeout(r, 0));
 let element;
 
 describe('c-graphql-datatable', () => {
+  // record pages set objectApiName to the object of the page, which must not change the table
   beforeEach(() => {
     element = createElement('c-graphql-datatable', { is: GraphqlDatatable });
-    element.objectApiName = 'Contact';
+    element.tableObjectApiName = 'Contact';
+    element.objectApiName = 'Account';
     element.fields = 'Name,Email,Phone,CreatedDate,AccountId,UnknownField';
     executeMutation.mockResolvedValue({ data: {} });
   });

@@ -27,7 +27,7 @@ A basic custom datatable with different configuration options.
 | max-column-width                | number  | 1000    | The maximum width for all columns. The default is 1000px.                                                                                                                                                                                                      |
 | max-row-selection               | number  | 50      | The maximum number of rows that can be selected. Checkboxes are used for selection by default, and radio buttons are used when maxRowSelection is 1.                                                                                                           |
 | min-column-width                | number  | 50      | The minimum width for all columns. The default is 50px.                                                                                                                                                                                                        |
-| object-api-name                 | string  | ''      | API name of the object that will be displayed in the table.                                                                                                                                                                                                    |
+| table-object-api-name           | string  | ''      | API name of the object that will be displayed in the table.                                                                                                                                                                                                    |
 | page-size                       | number  | 10      | The number of records displayed per page when pagination is enabled. The default is 10.                                                                                                                                                                        |
 | read-only                       | boolean | false   | If present, then all datatable fields are not editable.                                                                                                                                                                                                        |
 | resize-column-disabled          | boolean | false   | If present, column resizing is disabled.                                                                                                                                                                                                                       |
@@ -45,7 +45,7 @@ A basic custom datatable with different configuration options.
 
 ```html
 <c-custom-datatable
-  object-api-name="Case"
+  table-object-api-name="Case"
   field-set-api-name="CaseFieldSet"
   where-conditions="Status = 'New'"
   show-card

@@ -22,7 +22,7 @@ import { LightningElement, api, track, wire } from 'lwc';
  *
  * @example
  * <c-custom-datatable
- *   object-api-name="Case"
+ *   table-object-api-name="Case"
  *   field-set-api-name="CaseFieldSet"
  *   where-conditions="Status = 'New'"
  *   hide-checkbox-column
@@ -142,10 +142,11 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   @api minColumnWidth = 50;
 
   /**
-   * API name of the object that will be displayed in the table.
+   * API name of the object that will be displayed in the table. It isn't called objectApiName, because record pages
+   * set that property to the object of the page.
    * @type {string}
    */
-  @api objectApiName = '';
+  @api tableObjectApiName = '';
 
   /**
    * The number of records displayed per page when pagination is enabled.
@@ -249,7 +250,7 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   _sortDirection = 'asc';
 
   @wire(getColumns, {
-    objectName: '$objectApiName',
+    objectName: '$tableObjectApiName',
     fieldSetName: '$fieldSetApiName',
     readOnly: '$readOnly',
     enableSorting: '$enableSorting'
@@ -263,7 +264,7 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   }
 
   @wire(getRecordCount, {
-    objectName: '$objectApiName',
+    objectName: '$tableObjectApiName',
     whereConditions: '$whereConditions',
     searchTerm: '$currentSearchTerm'
   })
@@ -274,7 +275,7 @@ export default class CustomDatatable extends NavigationMixin(LightningElement) {
   }
 
   @wire(getRecords, {
-    objectName: '$objectApiName',
+    objectName: '$tableObjectApiName',
     fieldSetName: '$fieldSetApiName',
     whereConditions: '$whereConditions',
     pageSize: '$currentPageSize',
