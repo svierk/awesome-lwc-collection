@@ -4,7 +4,7 @@ A simple custom carousel with different configuration options.
 
 **Type:** Component
 
-**Available in:** App Page · Home Page · Record Page
+**Available in:** App Page · Home Page · Record Page · Flow Screen
 
 <img src="../../../../../images/custom-carousel.png" alt="custom-carousel" width="500"/>
 
@@ -22,19 +22,24 @@ A simple custom carousel with different configuration options.
 | hide-navigation-dots    | boolean | false           | If present, the navigation dots below the carousel will be hidden.                                                                                                                                                                                             |
 | hide-slide-number       | boolean | false           | If present, the current slide number will be hidden.                                                                                                                                                                                                           |
 | hide-slide-text         | boolean | false           | If present, the text overlay with heading and description will be hidden.                                                                                                                                                                                      |
+| record-id               | string  |                 | The Id of the record whose images are shown when use-record-files is set. Filled automatically on record pages.                                                                                                                                                |
 | scroll-duration         | number  | 5000            | Set the duration in milliseconds after which the next slide should be displayed.                                                                                                                                                                               |
 | show-card               | boolean | false           | If present, the carousel is wrapped in a lightning card to fit better into the overall page layout.                                                                                                                                                            |
-| slides-data             | Array   |                 | JSON array of slides that are displayed in the custom carousel. Each slide has the following attributes: image, heading and description.                                                                                                                       |
+| show-thumbnails         | boolean | false           | If present, small previews of the images replace the navigation dots.                                                                                                                                                                                          |
+| slides-data             | Array   |                 | JSON array of slides that are displayed in the custom carousel. Each slide has the following attributes: image, heading and description, and optionally link and linkLabel for a call to action. Ignored when use-record-files shows the images of a record.   |
 | transition              | string  | 'fade'          | Set how the carousel moves to another slide: 'fade' blends the new slide in, 'slide' moves it in from the side. Both are switched off when the user prefers reduced motion.                                                                                    |
+| use-record-files        | boolean | false           | If present, the images attached to the record are the slides instead of slides-data. Works where record-id is set, e.g. on record pages.                                                                                                                       |
 
-### Example slides-data JSON array;
+### Example slides-data JSON array
 
 ```
 [
   {
     "image": "https://example.com/image1.jpg",
     "heading": "Slide 1",
-    "description": "Description for slide 1"
+    "description": "Description for slide 1",
+    "link": "https://example.com/offer",
+    "linkLabel": "See the offer"
   },
   {
     "image": "https://example.com/image2.jpg",
@@ -66,6 +71,22 @@ When adding the component to a page in the Lightning App Builder, paste a slides
 If the slides-data value is a string that is not valid JSON, the component shows an error message instead of the slides. Without slides, the navigation is hidden.
 
 Changes to auto-scroll and scroll-duration take effect immediately, and new slides-data starts again at the first slide.
+
+With the slide transition, every slide keeps the height of its image, so the carousel is as high as its highest image. For slides of the same size, set an aspect-ratio.
+
+### Call to action
+
+A slide with a `link` shows a button with its `linkLabel`, or "Learn more" without one, below the description. Only `http://`, `https://` and relative links like `/lightning/page/home` are shown, other links are ignored. The button is part of the text overlay, so hide-slide-text hides it too.
+
+### Images of a record
+
+On a record page, set use-record-files to show the images attached to the record (PNG, JPEG, GIF and WebP) instead of slides-data, with the file title as description. They are loaded with GraphQL, so no Apex is involved and users only see files they have access to. Without images, the carousel says so; if they can't be loaded, it shows an error.
+
+```html
+<c-custom-carousel record-id={recordId} use-record-files aspect-ratio="4:3" show-thumbnails></c-custom-carousel>
+```
+
+In a Flow screen, pass the record Id to the Record ID input.
 
 ## Keyboard, touch and screen readers
 

@@ -8,6 +8,7 @@
         <target>lightning__AppPage</target>
         <target>lightning__HomePage</target>
         <target>lightning__RecordPage</target>
+        <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
       <targetConfig targets="lightning__AppPage,lightning__HomePage,lightning__RecordPage">
@@ -15,8 +16,21 @@
         name="slidesData"
         type="String"
         label="Slides Data (JSON)"
-        description="JSON array of slides with image, heading, and description properties. Example: [{'image':'url','heading':'Title','description':'Text'}]"
-        required="true"
+        description="JSON array of slides with image, heading and description, and optionally link and linkLabel for a call to action. Example: [{'image':'url','heading':'Title','description':'Text','link':'https://example.com','linkLabel':'Read more'}]. Not needed with Use Record Files."
+      />
+      <property
+        name="useRecordFiles"
+        type="Boolean"
+        label="Use Record Files"
+        description="On record pages, show the images attached to the record instead of the slides data."
+        default="false"
+      />
+      <property
+        name="showThumbnails"
+        type="Boolean"
+        label="Show Thumbnails"
+        description="Show small previews of the images instead of the navigation dots."
+        default="false"
       />
       <property
         name="customHeight"
@@ -58,6 +72,124 @@
         label="Transition"
         description="How the carousel moves to another slide: 'fade' blends the new slide in, 'slide' moves it in from the side. Both are switched off when the user prefers reduced motion."
         datasource="fade,slide"
+        default="fade"
+      />
+      <property
+        name="hideNavigationButtons"
+        type="Boolean"
+        label="Hide Navigation Buttons"
+        description="Hide the 'next' and 'prev' navigation buttons"
+        default="false"
+      />
+      <property
+        name="hideNavigationDots"
+        type="Boolean"
+        label="Hide Navigation Dots"
+        description="Hide the navigation dots below the carousel"
+        default="false"
+      />
+      <property
+        name="hideSlideNumber"
+        type="Boolean"
+        label="Hide Slide Number"
+        description="Hide the current slide number indicator"
+        default="false"
+      />
+      <property
+        name="hideSlideText"
+        type="Boolean"
+        label="Hide Slide Text"
+        description="Hide the text overlay with heading and description"
+        default="false"
+      />
+      <property
+        name="showCard"
+        type="Boolean"
+        label="Show Lightning Card"
+        description="If present, the carousel is wrapped in a lightning card to fit better into the overall page layout."
+        default="false"
+      />
+      <property
+        name="cardIcon"
+        type="String"
+        label="Card Icon"
+        description="If show card option is active, the card icon is displayed in the header before the card title. It should contain the SLDS name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category and 'down' the icon to be displayed."
+        default="utility:image"
+      />
+      <property
+        name="cardTitle"
+        type="String"
+        label="Card Title"
+        description="If show card option is active, the card title can include text and is displayed in the header above the carousel."
+      />
+      </targetConfig>
+      <targetConfig targets="lightning__FlowScreen">
+      <property
+        name="slidesData"
+        type="String"
+        label="Slides Data (JSON)"
+        description="JSON array of slides with image, heading and description, and optionally link and linkLabel for a call to action. Example: [{'image':'url','heading':'Title','description':'Text','link':'https://example.com','linkLabel':'Read more'}]. Not needed with Use Record Files."
+      />
+      <property
+        name="recordId"
+        type="String"
+        label="Record ID"
+        description="The record whose images are shown with Use Record Files."
+        role="inputOnly"
+      />
+      <property
+        name="useRecordFiles"
+        type="Boolean"
+        label="Use Record Files"
+        description="Show the images attached to the record of Record ID instead of the slides data."
+        default="false"
+      />
+      <property
+        name="showThumbnails"
+        type="Boolean"
+        label="Show Thumbnails"
+        description="Show small previews of the images instead of the navigation dots."
+        default="false"
+      />
+      <property
+        name="customHeight"
+        type="String"
+        label="Custom Height"
+        description="Maximum height of the carousel (e.g., '500px', '80vh')"
+        default=""
+      />
+      <property
+        name="customWidth"
+        type="String"
+        label="Custom Width"
+        description="Maximum width of the carousel (e.g., '600px', '100%')"
+        default="600px"
+      />
+      <property
+        name="autoScroll"
+        type="Boolean"
+        label="Auto Scroll"
+        description="Enable automatic slide scrolling"
+        default="false"
+      />
+      <property
+        name="scrollDuration"
+        type="Integer"
+        label="Scroll Duration (ms)"
+        description="Duration in milliseconds after which the next slide is displayed"
+        default="5000"
+      />
+      <property
+        name="aspectRatio"
+        type="String"
+        label="Aspect Ratio"
+        description="Fixed aspect ratio of the slides, e.g. '16:9' or '4/3'. The images then fill the slides and are cropped where needed. Takes precedence over Custom Height."
+      />
+      <property
+        name="transition"
+        type="String"
+        label="Transition"
+        description="How the carousel moves to another slide: 'fade' blends the new slide in, 'slide' moves it in from the side. Both are switched off when the user prefers reduced motion."
         default="fade"
       />
       <property

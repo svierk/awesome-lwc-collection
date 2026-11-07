@@ -1,7 +1,9 @@
-import { api, LightningElement } from 'lwc';
+import { getErrorMessage } from 'c/errorUtils';
+import { graphql } from 'lightning/graphql';
+import { api, LightningElement, wire } from 'lwc';
+import { parseSlides, RECORD_FILES_QUERY, toCssRatio, toImageSlides, toSlideState } from './carouselUtils';
 
 const SWIPE_DISTANCE = 50;
-const POSITIVE_NUMBER = /^\d+(\.\d+)?$/;
 
 /**
  * A simple custom carousel with different configuration options.
@@ -22,6 +24,7 @@ const POSITIVE_NUMBER = /^\d+(\.\d+)?$/;
  *   aspect-ratio="16:9"
  *   show-card
  *   card-title="Highlights"
+ *   show-thumbnails
  * ></c-custom-carousel>
  */
 export default class CustomCarousel extends LightningElement {
@@ -109,11 +112,32 @@ export default class CustomCarousel extends LightningElement {
   @api hideSlideText = false;
 
   /**
+   * The Id of the record whose images are shown when use-record-files is set. Filled automatically on record pages.
+   * @type {string}
+   */
+  @api recordId;
+
+  /**
    * If present, the carousel is wrapped in a lightning card to fit better into the overall page layout.
    * @type {boolean}
    * @default false
    */
   @api showCard = false;
+
+  /**
+   * If present, small previews of the images replace the navigation dots.
+   * @type {boolean}
+   * @default false
+   */
+  @api
+  get showThumbnails() {
+    return this._showThumbnails;
+  }
+
+  set showThumbnails(value) {
+    this._showThumbnails = value;
+    this.refreshSlides();
+  }
 
   /**
    * Set the duration in milliseconds after which the next slide should be displayed.
@@ -143,14 +167,23 @@ export default class CustomCarousel extends LightningElement {
 
   set transition(value) {
     this._transition = value;
-    this.slides = this.slides.map((slide) => this.withSlideState(slide));
+    this.refreshSlides();
   }
+
+  /**
+   * If present, the images attached to the record are the slides instead of slides-data. Works where record-id is set,
+   * e.g. on record pages.
+   * @type {boolean}
+   * @default false
+   */
+  @api useRecordFiles = false;
 
   announcement = '';
   errorMessage = '';
   focusActiveDot = false;
   isHovered = false;
   isPlaying = true;
+  noRecordFiles = false;
   pointerStart;
   pointerUsed = false;
   slides = [];
@@ -158,6 +191,7 @@ export default class CustomCarousel extends LightningElement {
   timer;
   _autoScroll = false;
   _scrollDuration = 5000;
+  _showThumbnails = false;
   _transition = 'fade';
 
   get maxWidth() {
@@ -170,11 +204,7 @@ export default class CustomCarousel extends LightningElement {
 
   /** The aspect ratio as CSS value, or an empty string if none or an invalid one is set. */
   get ratio() {
-    const parts = String(this.aspectRatio)
-      .split(/[:/]/)
-      .map((part) => part.trim());
-    const valid = parts.length <= 2 && parts.every((part) => POSITIVE_NUMBER.test(part) && Number(part) > 0);
-    return valid ? parts.join(' / ') : '';
+    return toCssRatio(this.aspectRatio);
   }
 
   get viewportClass() {
@@ -239,7 +269,8 @@ export default class CustomCarousel extends LightningElement {
 
   /**
    * A list of slides that are displayed in the custom carousel.
-   * Each slide has the following attributes: image, heading and description.
+   * Each slide has the following attributes: image, heading and description, and optionally link and linkLabel for a
+   * call to action. Ignored when use-record-files shows the images of a record.
    * @type {Array}
    * @example
    * slideData = [
@@ -261,25 +292,41 @@ export default class CustomCarousel extends LightningElement {
   }
 
   set slidesData(data) {
-    let parsedData = data;
-    this.errorMessage = '';
+    if (!this.usesRecordFiles) {
+      this.applySlides(data);
+    }
+  }
+
+  get usesRecordFiles() {
+    return Boolean(this.useRecordFiles && this.recordId);
+  }
+
+  get recordFilesQuery() {
+    return this.usesRecordFiles ? RECORD_FILES_QUERY : undefined;
+  }
+
+  get recordFilesVariables() {
+    return { recordId: this.recordId };
+  }
+
+  @wire(graphql, { query: '$recordFilesQuery', variables: '$recordFilesVariables' })
+  wiredRecordFiles({ data, errors }) {
+    if (errors) {
+      this.applySlides([]);
+      this.errorMessage = `The images of this record could not be loaded: ${getErrorMessage(errors)}`;
+    } else if (data) {
+      const images = toImageSlides(data);
+      this.applySlides(images);
+      this.noRecordFiles = images.length === 0;
+    }
+  }
+
+  applySlides(data) {
+    const { slides, error } = parseSlides(data);
+    this.errorMessage = error;
+    this.noRecordFiles = false;
     this.slideIndex = 1;
-
-    if (typeof data === 'string') {
-      try {
-        parsedData = JSON.parse(data);
-      } catch {
-        this.errorMessage = 'The slides could not be displayed because the slides data is not valid JSON.';
-        parsedData = [];
-      }
-    }
-
-    if (!parsedData || !Array.isArray(parsedData)) {
-      this.slides = [];
-      return;
-    }
-
-    this.slides = parsedData.map((slide, i) => this.withSlideState({ ...slide, index: i + 1 }, parsedData.length));
+    this.refreshSlides(slides.map((slide, i) => ({ ...slide, index: i + 1 })));
   }
 
   constructor() {
@@ -304,7 +351,7 @@ export default class CustomCarousel extends LightningElement {
   renderedCallback() {
     if (this.focusActiveDot) {
       this.focusActiveDot = false;
-      this.template.querySelector('.dot.active')?.focus();
+      this.template.querySelector('.active[data-id]')?.focus();
     }
   }
 
@@ -348,7 +395,7 @@ export default class CustomCarousel extends LightningElement {
       return;
     }
     event.preventDefault();
-    this.focusActiveDot = event.target.classList.contains('dot');
+    this.focusActiveDot = Boolean(event.target.dataset?.id);
     this.selectByUser(this.slideIndex + step);
   };
 
@@ -422,25 +469,17 @@ export default class CustomCarousel extends LightningElement {
       this.slideIndex = index;
     }
 
-    this.slides = this.slides.map((slide) => this.withSlideState(slide));
+    this.refreshSlides();
   }
 
-  withSlideState(slide, total = this.slides.length) {
-    const isCurrent = this.slideIndex === slide.index;
-    const fadeClass = isCurrent ? 'fade slds-show' : 'fade slds-hide';
-    return {
-      ...slide,
-      slideClass: this.isSlideTransition ? 'carousel-slide' : fadeClass,
-      // role and description follow the WAI-ARIA carousel pattern, a <fieldset> as Sonar suggests would not fit
-      slideAria: {
-        role: 'group',
-        ariaRoleDescription: 'slide',
-        ariaLabel: `${slide.index} of ${total}`,
-        ariaHidden: String(!isCurrent)
-      },
-      dotClass: isCurrent ? 'dot active' : 'dot',
-      dotLabel: `Show slide ${slide.index}`,
-      dotAria: { ariaCurrent: isCurrent ? 'true' : 'false' }
+  /** Recomputes classes and ARIA state of all slides for the current slide and settings. */
+  refreshSlides(slides = this.slides) {
+    const options = {
+      current: this.slideIndex,
+      total: slides.length,
+      slideTransition: this.isSlideTransition,
+      thumbnails: this.showThumbnails
     };
+    this.slides = slides.map((slide) => toSlideState(slide, options));
   }
 }
