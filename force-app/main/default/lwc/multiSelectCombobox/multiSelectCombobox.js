@@ -1,3 +1,13 @@
+import CLICK_HERE from '@salesforce/label/c.MultiSelectCombobox_ClickHere';
+import INVALID_OPTIONS from '@salesforce/label/c.MultiSelectCombobox_InvalidOptions';
+import OPEN_DROPDOWN from '@salesforce/label/c.MultiSelectCombobox_OpenDropdown';
+import OPTIONS_SELECTED from '@salesforce/label/c.MultiSelectCombobox_OptionsSelected';
+import SEARCH from '@salesforce/label/c.MultiSelectCombobox_Search';
+import REQUIRED from '@salesforce/label/c.MultiSelectCombobox_Required';
+import SEARCH_PLACEHOLDER from '@salesforce/label/c.MultiSelectCombobox_SearchPlaceholder';
+import SELECT_VALUE from '@salesforce/label/c.MultiSelectCombobox_SelectValue';
+import SELECT_VALUE_FOR from '@salesforce/label/c.MultiSelectCombobox_SelectValueFor';
+import { formatLabel } from 'c/labelUtils';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import { api, LightningElement, track } from 'lwc';
 
@@ -11,6 +21,14 @@ import { api, LightningElement, track } from 'lwc';
  * <c-multi-select-combobox label="Products" name="products" options={options} ... required></c-multi-select-combobox>
  */
 export default class MultiSelectCombobox extends LightningElement {
+  labels = {
+    openDropdown: OPEN_DROPDOWN,
+    clickHere: CLICK_HERE,
+    search: SEARCH,
+    searchPlaceholder: SEARCH_PLACEHOLDER,
+    required: REQUIRED
+  };
+
   /**
    * If present, the combobox is disabled and users cannot interact with it.
    * @type {boolean}
@@ -133,8 +151,8 @@ export default class MultiSelectCombobox extends LightningElement {
   @api
   validate() {
     if (!this.required || this.getSelectedItems().length > 0) return { isValid: true };
-    const target = this.label ? ` for ${this.label}` : '';
-    return { isValid: false, errorMessage: `Please select a value${target}.` };
+    const errorMessage = this.label ? formatLabel(SELECT_VALUE_FOR, this.label) : SELECT_VALUE;
+    return { isValid: false, errorMessage };
   }
 
   connectedCallback() {
@@ -370,7 +388,7 @@ export default class MultiSelectCombobox extends LightningElement {
     try {
       return JSON.parse(value);
     } catch {
-      this.errorMessage = 'The options could not be displayed because they are not valid JSON.';
+      this.errorMessage = INVALID_OPTIONS;
       return [];
     }
   }
@@ -382,7 +400,7 @@ export default class MultiSelectCombobox extends LightningElement {
       selection = this.placeholder;
       this.selectedOptions = [];
     } else if (selectedItems.length > 2) {
-      selection = `${selectedItems.length} Options Selected`;
+      selection = formatLabel(OPTIONS_SELECTED, selectedItems.length);
 
       this.selectedOptions = this.getSelectedItems();
     } else {

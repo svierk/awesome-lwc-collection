@@ -1,19 +1,28 @@
+import DRAG from '@salesforce/label/c.DragAndDrop_Drag';
+import DRAGGABLE_ELEMENTS from '@salesforce/label/c.DragAndDrop_DraggableElements';
+import DROP from '@salesforce/label/c.DragAndDrop_Drop';
+import DROPZONE from '@salesforce/label/c.DragAndDrop_Dropzone';
+import ELEMENT from '@salesforce/label/c.DragAndDrop_Element';
+import ID from '@salesforce/label/c.DragAndDrop_Id';
+import INVALID_ITEMS from '@salesforce/label/c.DragAndDrop_InvalidItems';
+import LABEL from '@salesforce/label/c.DragAndDrop_Label';
+import { formatLabel } from 'c/labelUtils';
 import { api, LightningElement } from 'lwc';
 
 const COLUMNS = [
   {
-    label: 'Id',
+    label: ID,
     fieldName: 'id',
     hideDefaultActions: true
   },
   {
-    label: 'Label',
+    label: LABEL,
     fieldName: 'label',
     hideDefaultActions: true
   }
 ];
 
-const DEMO_ITEMS = Array.from({ length: 12 }, (_, i) => ({ id: i + 1, label: `Element ${i + 1}` }));
+const DEMO_ITEMS = Array.from({ length: 12 }, (_, i) => ({ id: i + 1, label: formatLabel(ELEMENT, i + 1) }));
 
 /**
  * A drag and drop building block based on the HTML Drag and Drop API.
@@ -27,6 +36,8 @@ const DEMO_ITEMS = Array.from({ length: 12 }, (_, i) => ({ id: i + 1, label: `El
  * <c-drag-and-drop items={items} onitemdrop={handleItemDrop}></c-drag-and-drop>
  */
 export default class DragAndDrop extends LightningElement {
+  labels = { draggableElements: DRAGGABLE_ELEMENTS, dropzone: DROPZONE, drag: DRAG, drop: DROP };
+
   columns = COLUMNS;
   data = [];
   elements = DEMO_ITEMS.map((item) => ({ ...item }));
@@ -61,7 +72,7 @@ export default class DragAndDrop extends LightningElement {
     try {
       return JSON.parse(value);
     } catch {
-      this.errorMessage = 'The items could not be displayed because they are not valid JSON.';
+      this.errorMessage = INVALID_ITEMS;
       return [];
     }
   }
