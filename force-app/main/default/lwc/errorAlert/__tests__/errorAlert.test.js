@@ -20,6 +20,7 @@ describe('c-error-alert', () => {
     const alert = element.shadowRoot.querySelector('[role="alert"]');
     expect(alert.classList).toContain('slds-alert_error');
     expect(alert.textContent).toBe('Something went wrong.');
+    expect(alert.querySelector('lightning-icon').alternativeText).toBe('Error');
     await expect(element).toBeAccessible();
   });
 });

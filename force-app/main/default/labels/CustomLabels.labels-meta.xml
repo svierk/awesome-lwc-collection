@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<CustomLabels xmlns="http://soap.sforce.com/2006/04/metadata">
+    <labels>
+        <fullName>DatatablePagination_First</fullName>
+        <categories>datatablePagination</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Datatable Pagination: First</shortDescription>
+        <value>First</value>
+    </labels>
+    <labels>
+        <fullName>DatatablePagination_Last</fullName>
+        <categories>datatablePagination</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Datatable Pagination: Last</shortDescription>
+        <value>Last</value>
+    </labels>
+    <labels>
+        <fullName>DatatablePagination_Next</fullName>
+        <categories>datatablePagination</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Datatable Pagination: Next</shortDescription>
+        <value>Next</value>
+    </labels>
+    <labels>
+        <fullName>DatatablePagination_Previous</fullName>
+        <categories>datatablePagination</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Datatable Pagination: Previous</shortDescription>
+        <value>Previous</value>
+    </labels>
+    <labels>
+        <fullName>ErrorAlert_Error</fullName>
+        <categories>errorAlert</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Error Alert: Error</shortDescription>
+        <value>Error</value>
+    </labels>
+    <labels>
+        <fullName>ErrorUtils_UnknownError</fullName>
+        <categories>errorUtils</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Error Utils: Unknown Error</shortDescription>
+        <value>Unknown error</value>
+    </labels>
+    <labels>
+        <fullName>MultiSelectComboboxItem_Selected</fullName>
+        <categories>multiSelectComboboxItem</categories>
+        <language>en_US</language>
+        <protected>false</protected>
+        <shortDescription>Multi Select Combobox Item: Selected</shortDescription>
+        <value>Selected</value>
+    </labels>
+</CustomLabels>

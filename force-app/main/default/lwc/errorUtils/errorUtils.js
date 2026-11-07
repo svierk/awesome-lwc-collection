@@ -1,3 +1,4 @@
+import UNKNOWN_ERROR from '@salesforce/label/c.ErrorUtils_UnknownError';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 const messagesOf = (errors) => errors.map((error) => error.message);
@@ -30,7 +31,7 @@ function messagesFromError(error) {
  * @param {string} fallback - The message to use if the error has none
  * @returns {string} The unique messages, separated by commas
  */
-export function getErrorMessage(error, fallback = 'Unknown error') {
+export function getErrorMessage(error, fallback = UNKNOWN_ERROR) {
   const messages = messagesFromError(error).filter(Boolean);
   return [...new Set(messages)].join(', ') || fallback;
 }
