@@ -21,11 +21,13 @@ const DELIMITER_NAMES = { ',': 'comma', ';': 'semicolon', '\t': 'tab' };
 
 const STEPS = [
   { label: 'Upload', value: 'upload' },
-  { label: 'Map Fields', value: 'map' }
+  { label: 'Map Fields', value: 'map' },
+  { label: 'Review', value: 'review' }
 ];
 
 /**
- * Imports CSV files into Salesforce in steps: the file is read and previewed, then its columns are mapped to fields.
+ * Imports CSV files into Salesforce in steps: the file is read and previewed, its columns are mapped to fields, and
+ * the rows are checked against these fields.
  * @alias CsvImporter
  * @extends LightningElement
  * @hideconstructor
@@ -67,6 +69,9 @@ export default class CsvImporter extends LightningElement {
   fileName = '';
   headers = [];
   keyField = 'id';
+  mapping = {};
+  mappingObjectApiName;
+  mappingValid = false;
   rows = [];
   steps = STEPS;
   usedDelimiter = ',';
@@ -88,33 +93,50 @@ export default class CsvImporter extends LightningElement {
     return this.rows[0];
   }
 
-  get isUploadStep() {
-    return this.currentStep === 'upload';
+  get stepIndex() {
+    return STEPS.findIndex((step) => step.value === this.currentStep);
   }
 
   // the steps stay in the page while hidden, so going back doesn't lose what was entered
+  stepClass(step) {
+    return this.currentStep === step ? '' : 'slds-hide';
+  }
+
   get uploadClass() {
-    return this.isUploadStep ? '' : 'slds-hide';
+    return this.stepClass('upload');
   }
 
   get mapClass() {
-    return this.isUploadStep ? 'slds-hide' : '';
+    return this.stepClass('map');
+  }
+
+  get reviewClass() {
+    return this.stepClass('review');
+  }
+
+  get backClass() {
+    return this.stepIndex === 0 ? 'slds-hide' : '';
   }
 
   get nextClass() {
-    return `slds-col_bump-left ${this.uploadClass}`;
+    return `slds-col_bump-left ${this.stepIndex === STEPS.length - 1 ? 'slds-hide' : ''}`;
   }
 
   get isNextDisabled() {
-    return !this.hasRows;
+    return this.currentStep === 'map' ? !this.mappingValid : !this.hasRows;
   }
 
   handleNext() {
-    this.currentStep = 'map';
+    this.currentStep = STEPS[this.stepIndex + 1].value;
   }
 
   handleBack() {
-    this.currentStep = 'upload';
+    this.currentStep = STEPS[this.stepIndex - 1].value;
+  }
+
+  handleMappingChange(event) {
+    const { objectApiName, mapping, valid } = event.detail;
+    Object.assign(this, { mappingObjectApiName: objectApiName, mapping, mappingValid: valid });
   }
 
   get summary() {

@@ -1,6 +1,6 @@
 # CSV Importer
 
-Imports CSV files into Salesforce in steps: the file is read and previewed, then its columns are mapped to the fields of an object.
+Imports CSV files into Salesforce in steps: the file is read and previewed, its columns are mapped to the fields of an object, and the rows are checked against these fields.
 
 **Type:** Component
 
@@ -59,6 +59,7 @@ The next step maps every column to a field of the object set in import-object-ap
 
 - Columns are matched automatically when they equal a field's label or API name, ignoring case, spaces and punctuation: `First Name`, `first_name` and `FirstName` all match `FirstName`.
 - Only fields records can be created with are offered. Columns without a field are skipped, and a field can't be chosen for two columns.
+- Every required field needs a column, unless Salesforce fills it in on its own, such as the owner or a checkbox.
 - **Download mapping** saves the mapping as JSON to use it again; **Upload a mapping** applies a saved one, skipping fields the object doesn't have:
 
 ```json
@@ -71,11 +72,30 @@ The next step maps every column to a field of the object set in import-object-ap
 
 Going back to the upload keeps the mapping; a new file keeps the fields of the columns it still has.
 
+### Review
+
+The last step checks every row against the mapped fields before anything is written:
+
+| Field type                         | Valid values                                                                     |
+| ---------------------------------- | -------------------------------------------------------------------------------- |
+| Required                           | Any value that isn't empty                                                       |
+| Number, Currency, Percent          | Digits with a dot for decimals, e.g. `1234.5`                                    |
+| Whole number                       | Digits without decimals                                                          |
+| Date                               | `YYYY-MM-DD`, e.g. `2026-11-07`                                                  |
+| Date/Time                          | ISO 8601, e.g. `2026-11-07T10:30:00Z`                                            |
+| Checkbox                           | `true`, `false`, `yes`, `no`, `1` or `0`, ignoring case                          |
+| Email                              | An address with one `@` and a domain such as `example.com`                       |
+| Picklist and multi-select picklist | The API names of the values of the default record type; several separated by `;` |
+
+Rows with errors are marked, and the cells with errors are highlighted; the error icon of a row lists its messages. The table shows 50 rows at a time and loads more when users scroll down. Values can be corrected in the table and are checked again on save. **Only rows with errors** hides the valid rows and adds a column with each row's number in the file. Corrections are kept when the mapping changes and dropped for a new file.
+
 ## Component Dependencies
 
 | Name               | Type | Description                                                                             |
 | ------------------ | ---- | --------------------------------------------------------------------------------------- |
 | csvImporterMapping | LWC  | Maps the columns of a CSV file to the fields of a Salesforce object.                    |
+| csvImporterReview  | LWC  | Checks the rows of a CSV file against the mapped fields and lets users correct them.    |
 | csvParser          | LWC  | Shared module that parses comma, semicolon or tab separated text according to RFC 4180. |
+| csvValidator       | LWC  | Shared checks for CSV values against the fields of a Salesforce object.                 |
 | errorAlert         | LWC  | Inline alert that shows error messages to the user.                                     |
 | errorUtils         | LWC  | Shared functions to read error messages and show error toasts.                          |

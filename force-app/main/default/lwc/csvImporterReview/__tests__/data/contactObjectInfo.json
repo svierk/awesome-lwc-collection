@@ -1,0 +1,19 @@
+{
+  "apiName": "Contact",
+  "label": "Contact",
+  "defaultRecordTypeId": "012000000000000AAA",
+  "fields": {
+    "LastName": {
+      "apiName": "LastName",
+      "label": "Last Name",
+      "dataType": "String",
+      "createable": true,
+      "required": true,
+      "defaultedOnCreate": false
+    },
+    "Email": { "apiName": "Email", "label": "Email", "dataType": "Email", "createable": true },
+    "Birthdate": { "apiName": "Birthdate", "label": "Birthdate", "dataType": "Date", "createable": true },
+    "LeadSource": { "apiName": "LeadSource", "label": "Lead Source", "dataType": "Picklist", "createable": true },
+    "Score__c": { "apiName": "Score__c", "label": "Rating", "dataType": "Double", "createable": true }
+  }
+}
