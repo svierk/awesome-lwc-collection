@@ -1,4 +1,5 @@
 import CustomCarousel from 'c/customCarousel';
+import { graphql } from 'lightning/graphql';
 import { createElement } from 'lwc';
 
 const mockData = require('./data/customCarousel.json');
@@ -13,7 +14,7 @@ const query = (selector) => element.shadowRoot.querySelector(selector);
 
 const queryAll = (selector) => element.shadowRoot.querySelectorAll(selector);
 
-const activeDotId = () => query('.dot.active').dataset.id;
+const activeDotId = () => query('.active[data-id]').dataset.id;
 
 const errorMessage = () => query('c-error-alert')?.message;
 
@@ -30,13 +31,32 @@ const pressKey = (target, key) => {
   return event;
 };
 
-const swipe = (fromX, toX, toY = 0) => {
-  const viewport = query('.carousel-viewport');
-  viewport.dispatchEvent(new MouseEvent('pointerdown', { clientX: fromX, clientY: 0, bubbles: true }));
-  viewport.dispatchEvent(new MouseEvent('pointerup', { clientX: toX, clientY: toY, bubbles: true }));
-};
+// e.g. 'down 200, up 100': pointer events on the slides with their clientX and clientY
+const pointer = (events) =>
+  events.match(/[a-z]+( \d+)*/g)?.forEach((event) => {
+    const [type, clientX = 0, clientY = 0] = event.split(' ');
+    const init = { clientX: Number(clientX), clientY: Number(clientY), bubbles: true };
+    query('.carousel-viewport').dispatchEvent(new MouseEvent(`pointer${type}`, init));
+  });
 
-const region = () => query('section.carousel');
+const file = (...values) => ({
+  node: {
+    ContentDocument: Object.fromEntries(
+      ['Title', 'FileExtension', 'LatestPublishedVersionId'].map((key, i) => [key, { value: values[i] }])
+    )
+  }
+});
+
+const emitFiles = (...edges) => graphql.emit({ uiapi: { query: { ContentDocumentLink: { edges } } } });
+
+const recordFiles = { useRecordFiles: true, recordId: '001000000000001' };
+
+const linkedSlides = [
+  { image: 'a', heading: 'A', link: 'https://example.com/a', linkLabel: 'Read more' },
+  { image: 'b', heading: 'B', link: '/lightning/page/home' },
+  { image: 'c', heading: 'C', link: 'data:text/html,<p>c</p>' },
+  { image: 'd', link: '//example.com/d' }
+];
 
 describe('c-custom-carousel', () => {
   beforeEach(() => {
@@ -55,9 +75,9 @@ describe('c-custom-carousel', () => {
     jest.clearAllMocks();
   });
 
-  it('should render the slides of a json string and show the first one', () => {
+  it('should render the slides of a json string without a record id and show the first one', () => {
     // when
-    mount({ slidesData: JSON.stringify(mockData.slideData) });
+    mount({ slidesData: JSON.stringify(mockData.slideData), useRecordFiles: true });
 
     // then
     expect(queryAll('.fade').length).toBe(mockData.slideData.length);
@@ -65,24 +85,24 @@ describe('c-custom-carousel', () => {
     expect(activeDotId()).toBe('1');
     expect(errorMessage()).toBeUndefined();
     expect(query('.slds-card')).toBeNull();
+    expect(query('.carousel-link')).toBeNull();
     expect(query('.prev').iconName).toBe('utility:chevronleft');
     expect(query('.next').iconName).toBe('utility:chevronright');
   });
 
-  it('should apply the configured custom width and height', () => {
+  it('should hide all optional ui elements with the hide flags and a single slide', () => {
     // when
-    mount({ customWidth: '800px', customHeight: '400px' });
+    const hideFlags = {
+      hideNavigationButtons: true,
+      hideNavigationDots: true,
+      hideSlideText: true,
+      hideSlideNumber: true
+    };
+    mount({ ...hideFlags, slidesData: [mockData.slideData[0]], autoScroll: true });
 
     // then
-    expect(query('.slds-is-relative.container').style.width).toBe('800px');
-    expect(query('img').style.height).toBe('400px');
-  });
-
-  it('should hide all optional ui elements when the hide flags are set', () => {
-    // when
-    mount({ hideNavigationButtons: true, hideNavigationDots: true, hideSlideText: true, hideSlideNumber: true });
-
-    // then
+    expect(query('.carousel-playback')).toBeNull();
+    expect(query('.carousel-controls')).toBeNull();
     expect(query('.prev')).toBeNull();
     expect(query('.next')).toBeNull();
     expect(queryAll('.dot').length).toBe(0);
@@ -94,7 +114,8 @@ describe('c-custom-carousel', () => {
     ['fade', {}],
     ['slide with auto-scroll', { transition: 'slide', autoScroll: true }],
     ['a card, a title and an aspect ratio', { showCard: true, cardTitle: 'Highlights', aspectRatio: '16:9' }],
-    ['a card without title', { showCard: true }]
+    ['a card without title', { showCard: true }],
+    ['thumbnails and links', { showThumbnails: true, slidesData: linkedSlides }]
   ])('should be accessible with %s', async (_label, props) => {
     // given
     jest.useRealTimers();
@@ -124,34 +145,27 @@ describe('c-custom-carousel', () => {
     expect(query('.slideNumbers').textContent).toBe(`${expected}/${mockData.slideData.length}`);
   });
 
-  it('should advance slides automatically when auto-scroll is enabled', async () => {
-    // given
-    mount({ autoScroll: true, scrollDuration: 2000 });
-
-    // when
-    jest.advanceTimersByTime(2000);
-    await flushPromises();
-
-    // then
-    expect(queryAll('.fade.slds-show').length).toBe(1);
-    expect(activeDotId()).toBe('2');
-    expect(announcement()).toBe('');
-  });
-
   it.each([
     [true, true],
     [false, false]
-  ])('should clear the interval on disconnect only when auto-scroll is %s', (autoScroll, cleared) => {
-    // given
-    mount({ autoScroll, scrollDuration: 2000 });
-    const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
+  ])(
+    'should start no timer before connecting and clear it on disconnect only when auto-scroll is %s',
+    (autoScroll, cleared) => {
+      // given
+      const setIntervalSpy = jest.spyOn(global, 'setInterval');
+      Object.assign(element, { autoScroll, scrollDuration: 2000 });
+      const startedBeforeConnect = setIntervalSpy.mock.calls.length;
+      mount();
+      const clearIntervalSpy = jest.spyOn(global, 'clearInterval');
 
-    // when
-    document.body.removeChild(element);
+      // when
+      document.body.removeChild(element);
 
-    // then
-    expect(clearIntervalSpy).toHaveBeenCalledTimes(cleared ? 1 : 0);
-  });
+      // then
+      expect(startedBeforeConnect).toBe(0);
+      expect(clearIntervalSpy).toHaveBeenCalledTimes(cleared ? 1 : 0);
+    }
+  );
 
   it.each([
     ['a valid JSON string', JSON.stringify(mockData.slideData), mockData.slideData.length],
@@ -168,21 +182,26 @@ describe('c-custom-carousel', () => {
     expect(element.slidesData.length).toBe(expected);
   });
 
-  it('should show an error for invalid json and remove it when valid slides data arrives', async () => {
+  it('should show an error for invalid json and start again at the first slide when valid slides data arrives', async () => {
     // given
     jest.useRealTimers();
-    mount({ slidesData: '{ not json' });
+    mount();
+    queryAll('.dot')[1].click();
+    element.slidesData = '{ not json';
+    await flushPromises();
     const shown = errorMessage();
     await expect(element).toBeAccessible();
 
     // when
-    element.slidesData = mockData.slideData;
+    element.slidesData = [...mockData.slideData];
+    await flushPromises();
+    query('.next').click();
     await flushPromises();
 
     // then
     expect(shown).toBe('The slides could not be displayed because the slides data is not valid JSON.');
     expect(errorMessage()).toBeUndefined();
-    expect(element.slidesData.length).toBe(mockData.slideData.length);
+    expect(activeDotId()).toBe('2');
   });
 
   it('should hide the navigation without slides and keep its position while auto-scroll runs', async () => {
@@ -202,23 +221,8 @@ describe('c-custom-carousel', () => {
     expect(activeDotId()).toBe('2');
   });
 
-  it('should start at the first slide when new slides arrive', async () => {
-    // given
-    mount();
-    queryAll('.dot')[1].click();
-    await flushPromises();
-
-    // when
-    element.slidesData = [...mockData.slideData];
-    await flushPromises();
-    query('.next').click();
-    await flushPromises();
-
-    // then
-    expect(activeDotId()).toBe('2');
-  });
-
   it.each([
+    ['the initial settings', { autoScroll: true, scrollDuration: 1000 }, {}, '2'],
     ['enabling auto-scroll', { scrollDuration: 1000 }, { autoScroll: true }, '2'],
     ['disabling auto-scroll', { autoScroll: true, scrollDuration: 1000 }, { autoScroll: false }, '1'],
     ['a new duration', { autoScroll: true, scrollDuration: 5000 }, { scrollDuration: 1000 }, '2'],
@@ -234,6 +238,8 @@ describe('c-custom-carousel', () => {
 
     // then
     expect(activeDotId()).toBe(expected);
+    expect(queryAll('.fade.slds-show').length).toBe(1);
+    expect(announcement()).toBe('');
     expect(element.scrollDuration).toBe(changes.scrollDuration ?? initial.scrollDuration);
   });
 
@@ -246,79 +252,39 @@ describe('c-custom-carousel', () => {
     ['wide', '']
   ])('should apply the aspect ratio %p as %p', (aspectRatio, expected) => {
     // when
-    mount({ aspectRatio, customHeight: '400px' });
+    mount({ aspectRatio, customHeight: '400px', customWidth: '800px' });
 
     // then
     const viewport = query('.carousel-viewport');
     expect(viewport.getAttribute('style') ?? '').toBe(expected ? `aspect-ratio: ${expected}` : '');
     expect(viewport.classList.contains('carousel-fill')).toBe(expected !== '');
     expect(query('img').style.height).toBe(expected ? '' : '400px');
+    expect(query('.slds-is-relative.container').style.width).toBe('800px');
   });
 
-  it('should wrap the carousel in a card with icon and title', () => {
-    // when
-    mount({ showCard: true, cardIcon: 'standard:feed', cardTitle: 'Highlights' });
-
-    // then
-    expect(query('.slds-card__header lightning-icon').iconName).toBe('standard:feed');
-    expect(query('.slds-card__header-title').textContent).toBe('Highlights');
-    expect(query('.slds-card .slds-card__body section.carousel')).toBeTruthy();
-  });
-
-  it('should not start a timer before it is connected', () => {
+  it('should mark the carousel, its slides and dots for screen readers', async () => {
     // given
-    const setIntervalSpy = jest.spyOn(global, 'setInterval');
-
-    // when
-    element.autoScroll = true;
-    element.scrollDuration = 1000;
-
-    // then
-    expect(setIntervalSpy).not.toHaveBeenCalled();
-  });
-
-  it('should render dots as labelled buttons that mark the current slide', async () => {
-    // given
-    mount();
-
-    // when
+    mount({ slidesData: threeSlides });
     const dots = queryAll('.dot');
+
+    // when
     dots[1].click();
     await flushPromises();
 
     // then
-    expect(dots[1].tagName).toBe('BUTTON');
-    expect(dots[1].type).toBe('button');
-    expect(dots[1].getAttribute('aria-label')).toBe('Show slide 2');
-    expect(dots[1].getAttribute('aria-current')).toBe('true');
-    expect(dots[0].getAttribute('aria-current')).toBe('false');
-  });
-
-  it('should mark the carousel and its slides for screen readers', () => {
-    // when
-    mount({ slidesData: threeSlides });
-
-    // then
-    expect(region().getAttribute('aria-roledescription')).toBe('carousel');
-    const slides = queryAll('.fade');
-    expect([...slides].map((slide) => slide.getAttribute('role'))).toEqual(['group', 'group', 'group']);
-    expect([...slides].map((slide) => slide.getAttribute('aria-roledescription'))).toEqual(['slide', 'slide', 'slide']);
-    expect([...slides].map((slide) => slide.getAttribute('aria-label'))).toEqual(['1 of 3', '2 of 3', '3 of 3']);
-    expect([...slides].map((slide) => slide.getAttribute('aria-hidden'))).toEqual(['false', 'true', 'true']);
-  });
-
-  it('should move a track with all slides when the transition is slide', async () => {
-    // given
-    mount({ slidesData: threeSlides, transition: 'slide' });
-
-    // when
-    query('.next').click();
-    await flushPromises();
-
-    // then
-    expect(queryAll('.carousel-slide').length).toBe(3);
-    expect(query('.fade')).toBeNull();
-    expect(query('.carousel-track-slide').style.transform).toBe('translateX(-100%)');
+    expect(query('section.carousel').getAttribute('aria-roledescription')).toBe('carousel');
+    const slides = [...queryAll('.fade')];
+    const attribute = (name) => slides.map((slide) => slide.getAttribute(name));
+    expect(attribute('role')).toEqual(['group', 'group', 'group']);
+    expect(attribute('aria-roledescription')).toEqual(['slide', 'slide', 'slide']);
+    expect(attribute('aria-label')).toEqual(['1 of 3', '2 of 3', '3 of 3']);
+    expect(attribute('aria-hidden')).toEqual(['true', 'false', 'true']);
+    expect([dots[1].tagName, dots[1].type, dots[1].getAttribute('aria-label')]).toEqual([
+      'BUTTON',
+      'button',
+      'Show slide 2'
+    ]);
+    expect([dots[0], dots[1]].map((dot) => dot.getAttribute('aria-current'))).toEqual(['false', 'true']);
   });
 
   it.each([
@@ -356,76 +322,52 @@ describe('c-custom-carousel', () => {
     expect(announcement()).toBe(announced);
   });
 
-  it('should move the focus to the new dot when an arrow key is pressed on a dot', async () => {
+  it.each([
+    ['dot', {}, '.dot'],
+    ['thumbnail', { showThumbnails: true }, '.carousel-thumbnail']
+  ])('should move the focus to the new %s when an arrow key is pressed on it', async (_label, props, selector) => {
     // given
-    mount({ slidesData: threeSlides });
-    const dots = queryAll('.dot');
-    dots[0].focus();
+    mount({ slidesData: threeSlides, ...props });
+    const buttons = queryAll(selector);
+    buttons[0].focus();
 
     // when
-    pressKey(dots[0], 'ArrowRight');
+    pressKey(buttons[0], 'ArrowRight');
     await flushPromises();
 
     // then
-    expect(element.shadowRoot.activeElement).toBe(dots[1]);
+    expect(element.shadowRoot.activeElement).toBe(buttons[1]);
     expect(announcement()).toBe('Slide 2 of 3: Slide 2');
   });
 
   it.each([
-    ['to the left', 200, 100, 0, '2'],
-    ['to the right', 100, 200, 0, '3'],
-    ['too short', 100, 130, 0, '1'],
-    ['mostly vertical', 100, 160, 120, '1']
-  ])('should follow a swipe %s', async (_label, fromX, toX, toY, expected) => {
+    ['a swipe to the left', 'down 200, up 100', '2'],
+    ['a swipe to the right', 'down 100, up 200', '3'],
+    ['a too short swipe', 'down 100, up 130', '1'],
+    ['a mostly vertical swipe', 'down 100, up 160 120', '1'],
+    ['a pointer up without pointer down', 'up 0', '1'],
+    ['a cancelled swipe', 'down 200, cancel, up 0', '1']
+  ])('should follow %s', async (_label, events, expected) => {
     // given
     mount({ slidesData: threeSlides });
 
     // when
-    swipe(fromX, toX, toY);
+    pointer(events);
     await flushPromises();
 
     // then
     expect(activeDotId()).toBe(expected);
   });
 
-  it('should ignore a pointer up without a pointer down and a cancelled swipe', async () => {
-    // given
-    mount({ slidesData: threeSlides });
-    const viewport = query('.carousel-viewport');
-
-    // when
-    viewport.dispatchEvent(new MouseEvent('pointerup', { clientX: 0, bubbles: true }));
-    viewport.dispatchEvent(new MouseEvent('pointerdown', { clientX: 200, bubbles: true }));
-    viewport.dispatchEvent(new MouseEvent('pointercancel', { bubbles: true }));
-    viewport.dispatchEvent(new MouseEvent('pointerup', { clientX: 0, bubbles: true }));
-    await flushPromises();
-
-    // then
-    expect(activeDotId()).toBe('1');
-  });
-
-  it('should pause auto-scroll while the mouse is over the carousel', async () => {
+  it('should pause auto-scroll on hover and stop and start it with the playback button', async () => {
     // given
     mount({ autoScroll: true, scrollDuration: 1000 });
-
-    // when
+    const button = query('.carousel-playback');
     element.dispatchEvent(new MouseEvent('mouseenter'));
     jest.advanceTimersByTime(3000);
     await flushPromises();
     const whileHovered = activeDotId();
     element.dispatchEvent(new MouseEvent('mouseleave'));
-    jest.advanceTimersByTime(1000);
-    await flushPromises();
-
-    // then
-    expect(whileHovered).toBe('1');
-    expect(activeDotId()).toBe('2');
-  });
-
-  it('should stop and start auto-scroll with the playback button', async () => {
-    // given
-    mount({ autoScroll: true, scrollDuration: 1000 });
-    const button = query('.carousel-playback');
 
     // when
     button.click();
@@ -437,47 +379,21 @@ describe('c-custom-carousel', () => {
     await flushPromises();
 
     // then
+    expect(whileHovered).toBe('1');
     expect(stopped).toEqual({ slide: '1', icon: 'utility:play', label: 'Start automatic slide show' });
     expect(activeDotId()).toBe('2');
     expect(button.iconName).toBe('utility:pause');
     expect(button.alternativeText).toBe('Stop automatic slide show');
   });
 
-  it('should show the playback button only with auto-scroll and more than one slide', () => {
-    // when
-    mount({ slidesData: [mockData.slideData[0]], autoScroll: true, hideNavigationDots: true });
-
-    // then
-    expect(query('.carousel-playback')).toBeNull();
-    expect(query('.carousel-controls')).toBeNull();
-  });
-
   it.each([
-    ['keyboard focus stops it', false, '1'],
-    ['focus after a pointer press keeps it running', true, '2']
-  ])('should treat focus inside the carousel so that %s', async (_label, pointer, expected) => {
+    ['keyboard focus stops it', '', '1'],
+    ['focus during a pointer press keeps it running', 'down', '2'],
+    ['focus after a released pointer press stops it', 'down, up', '1']
+  ])('should treat focus inside the carousel so that %s', async (_label, events, expected) => {
     // given
     mount({ autoScroll: true, scrollDuration: 1000 });
-    const dot = queryAll('.dot')[0];
-
-    // when
-    if (pointer) {
-      query('.carousel-viewport').dispatchEvent(new MouseEvent('pointerdown', { bubbles: true }));
-    }
-    dot.dispatchEvent(new FocusEvent('focusin', { bubbles: true, composed: true }));
-    jest.advanceTimersByTime(1000);
-    await flushPromises();
-
-    // then
-    expect(activeDotId()).toBe(expected);
-  });
-
-  it('should forget a pointer press once it is released', async () => {
-    // given
-    mount({ autoScroll: true, scrollDuration: 1000 });
-    const viewport = query('.carousel-viewport');
-    viewport.dispatchEvent(new MouseEvent('pointerdown', { bubbles: true }));
-    viewport.dispatchEvent(new MouseEvent('pointerup', { bubbles: true }));
+    pointer(events);
 
     // when
     queryAll('.dot')[0].dispatchEvent(new FocusEvent('focusin', { bubbles: true, composed: true }));
@@ -485,6 +401,95 @@ describe('c-custom-carousel', () => {
     await flushPromises();
 
     // then
-    expect(activeDotId()).toBe('1');
+    expect(activeDotId()).toBe(expected);
+  });
+
+  it('should wrap the carousel in a card and show image thumbnails instead of dots', async () => {
+    // given
+    mount({ slidesData: threeSlides, showCard: true, cardIcon: 'standard:feed', cardTitle: 'Highlights' });
+
+    // when
+    element.showThumbnails = true;
+    await flushPromises();
+
+    // then
+    const thumbnails = [...queryAll('.carousel-thumbnail')];
+    expect(query('.dot')).toBeNull();
+    const sources = thumbnails.map((thumbnail) => thumbnail.querySelector('img').getAttribute('src'));
+    expect(sources.join()).toBe('some link,another link,third link');
+    expect(thumbnails.map((thumbnail) => thumbnail.classList.contains('active'))).toEqual([true, false, false]);
+    expect(query('.slds-card__header lightning-icon').iconName).toBe('standard:feed');
+    expect(query('.slds-card__header-title').textContent).toBe('Highlights');
+    expect(query('.slds-card .slds-card__body section.carousel')).toBeTruthy();
+  });
+
+  it.each([
+    [0, 'https://example.com/a', 'Read more'],
+    [1, '/lightning/page/home', 'Learn more'],
+    [2, undefined, undefined],
+    [3, undefined, undefined]
+  ])('should show the call to action of slide %p only for a safe link', (index, href, label) => {
+    // when
+    mount({ slidesData: linkedSlides });
+
+    // then
+    const link = queryAll('.text-section')[index].querySelector('a');
+    expect(link?.getAttribute('href')).toBe(href);
+    expect(link?.textContent).toBe(label);
+  });
+
+  it('should move a track with all slides and keep the links of hidden slides out of the tab order', async () => {
+    // given
+    mount({ slidesData: linkedSlides, transition: 'slide' });
+
+    // when
+    query('.next').click();
+    await flushPromises();
+
+    // then
+    expect(queryAll('.carousel-slide').length).toBe(linkedSlides.length);
+    expect(query('.fade')).toBeNull();
+    expect(query('.carousel-track-slide').style.transform).toBe('translateX(-100%)');
+    expect([...queryAll('.carousel-link')].map((link) => link.tabIndex)).toEqual([-1, 0]);
+  });
+
+  it('should show the images attached to the record instead of the slides data', async () => {
+    // given
+    mount(recordFiles);
+
+    // when
+    emitFiles(file('Beach', 'JPG', '068A'), file('Terms', 'pdf', '068B'), file('Logo', 'png', '068C'));
+    await flushPromises();
+    element.slidesData = threeSlides;
+    await flushPromises();
+
+    // then
+    expect([...queryAll('.carousel-viewport img')].map((img) => [img.getAttribute('src'), img.alt])).toEqual([
+      ['/sfc/servlet.shepherd/version/download/068A', 'Beach'],
+      ['/sfc/servlet.shepherd/version/download/068C', 'Logo']
+    ]);
+    expect(query('p')).toBeNull();
+  });
+
+  it.each([
+    ['no images', () => emitFiles(file('Terms', 'pdf', '068B')), 'No images are attached to this record.'],
+    [
+      'an error',
+      () => graphql.emitErrors([{ message: 'No access' }]),
+      'The images of this record could not be loaded: No access'
+    ]
+  ])('should show a message when the record has %s', async (_label, emit, message) => {
+    // given
+    jest.useRealTimers();
+    mount(recordFiles);
+
+    // when
+    emit();
+    await flushPromises();
+
+    // then
+    expect(query('p')?.textContent ?? errorMessage()).toBe(message);
+    expect(query('.fade')).toBeNull();
+    await expect(element).toBeAccessible();
   });
 });

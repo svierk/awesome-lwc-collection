@@ -14,6 +14,9 @@
     </div>
     <div class={cardBodyClass}>
       <c-error-alert lwc:if={errorMessage} class="slds-show slds-m-bottom_small" message={errorMessage}></c-error-alert>
+      <p lwc:if={noRecordFiles} class="slds-text-color_weak slds-p-around_small">
+        No images are attached to this record.
+      </p>
       <section class="carousel" aria-roledescription="carousel" aria-label="Image carousel">
         <div class="slds-is-relative container" style={maxWidth}>
           <div
@@ -26,13 +29,20 @@
             <div class={trackClass} style={trackStyle}>
               <template for:each={slidesData} for:item="slide">
                 <div key={slide.index} class={slide.slideClass} lwc:spread={slide.slideAria}>
-                  <img src={slide.image} alt={slide.description} style={maxHeight} draggable="false" />
+                  <img src={slide.image} alt={slide.altText} style={maxHeight} draggable="false" />
                   <div
                     lwc:if={showSlideText}
                     class="text-section slds-var-p-around_medium slds-is-absolute slds-size_full slds-text-align_center"
                   >
                     <h3 class="slds-text-heading_large">{slide.heading}</h3>
                     <div class="slds-text-heading_small">{slide.description}</div>
+                    <a
+                      lwc:if={slide.link}
+                      href={slide.link}
+                      class="carousel-link slds-button slds-button_brand slds-m-top_small"
+                      lwc:spread={slide.linkAttributes}
+                      >{slide.linkLabel}</a
+                    >
                   </div>
                 </div>
               </template>
@@ -78,7 +88,9 @@
                 aria-label={slide.dotLabel}
                 lwc:spread={slide.dotAria}
                 onclick={showSlide}
-              ></button>
+              >
+                <img lwc:if={showThumbnails} src={slide.image} alt="" draggable="false" />
+              </button>
             </template>
           </template>
         </div>
