@@ -2,7 +2,9 @@
 const INTEGER = /^[+-]?\d+$/;
 const DECIMAL = /^[+-]?\d+(\.\d+)?$/;
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
-const DATE_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d{1,3})?)?(Z|[+-]\d{2}:?\d{2})?$/;
+// a date/time is checked in parts: the date, the time zone at the end, and the time in between
+const TIME = /^T\d{2}:\d{2}(:\d{2}(\.\d{1,3})?)?$/;
+const ZONE = /(Z|[+-]\d{2}:?\d{2})$/;
 const BOOLEANS = new Set(['true', 'false', 'yes', 'no', '1', '0']);
 
 /** Whether a real calendar date starts the text, e.g. not 2026-02-30. */
@@ -11,6 +13,12 @@ const isCalendarDate = (text) => {
   const date = new Date(Date.UTC(year, month - 1, day));
   return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
 };
+
+const isDateTime = (text) =>
+  DATE.test(text.slice(0, 10)) &&
+  TIME.test(text.slice(10).replace(ZONE, '')) &&
+  isCalendarDate(text) &&
+  !Number.isNaN(Date.parse(text));
 
 const isEmail = (text) => {
   const at = text.indexOf('@');
@@ -35,9 +43,7 @@ const CHECKS = {
   Int: (text) => !INTEGER.test(text) && "isn't a whole number.",
   Double: (text) => !DECIMAL.test(text) && "isn't a number. Use a dot for decimals, e.g. 1234.5.",
   Date: (text) => !(DATE.test(text) && isCalendarDate(text)) && "isn't a date. Use YYYY-MM-DD.",
-  DateTime: (text) =>
-    !(DATE_TIME.test(text) && isCalendarDate(text) && !Number.isNaN(Date.parse(text))) &&
-    "isn't a date and time. Use YYYY-MM-DDThh:mm:ssZ.",
+  DateTime: (text) => !isDateTime(text) && "isn't a date and time. Use YYYY-MM-DDThh:mm:ssZ.",
   Boolean: (text) => !BOOLEANS.has(text.toLowerCase()) && "isn't true or false.",
   Email: (text) => !isEmail(text) && "isn't an email address."
 };
