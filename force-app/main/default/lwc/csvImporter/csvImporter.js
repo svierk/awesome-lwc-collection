@@ -1,5 +1,6 @@
 import { detectDelimiter, parseCsv } from 'c/csvParser';
 import { getErrorMessage } from 'c/errorUtils';
+import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import { api, LightningElement } from 'lwc';
 
 const PREVIEW_ROWS = 20;
@@ -69,6 +70,37 @@ export default class CsvImporter extends LightningElement {
    * @default ''
    */
   @api externalIdFieldApiName = '';
+
+  /**
+   * Read-only. The number of rows that created or updated a record in the last import. Also available as a Flow output.
+   * @type {number}
+   */
+  @api
+  get successCount() {
+    return this._successCount;
+  }
+
+  /**
+   * Read-only. The number of rows that failed in the last import. Also available as a Flow output.
+   * @type {number}
+   */
+  @api
+  get failedCount() {
+    return this._failedCount;
+  }
+
+  /**
+   * Read-only. The ids of the records the last import created. Also available as a Flow output.
+   * @type {string[]}
+   */
+  @api
+  get createdRecordIds() {
+    return this._createdRecordIds;
+  }
+
+  _successCount = 0;
+  _failedCount = 0;
+  _createdRecordIds = [];
 
   currentStep = 'upload';
   delimiter = 'auto';
@@ -190,16 +222,31 @@ export default class CsvImporter extends LightningElement {
       reviewRows: [],
       reviewValid: false
     });
+    this.setOutputs(0, 0, []);
+  }
+
+  /** Keeps the result of the import and passes it on to a Flow. */
+  setOutputs(successCount, failedCount, createdRecordIds) {
+    Object.assign(this, {
+      _successCount: successCount,
+      _failedCount: failedCount,
+      _createdRecordIds: createdRecordIds
+    });
+    this.dispatchEvent(new FlowAttributeChangeEvent('successCount', successCount));
+    this.dispatchEvent(new FlowAttributeChangeEvent('failedCount', failedCount));
+    this.dispatchEvent(new FlowAttributeChangeEvent('createdRecordIds', createdRecordIds));
   }
 
   handleImportFinish(event) {
+    const { created, updated, failed, createdRecordIds } = event.detail;
     this.importFinished = true;
+    this.setOutputs(created + updated, failed, [...createdRecordIds]);
     /**
      * Fired when the import is done.
      * @event CsvImporter#imported
      * @type {CustomEvent}
      * @property {Object} detail - objectApiName; created, updated and failed: the number of rows; recordIds: the ids
-     * of the saved records
+     * of the saved records; createdRecordIds: the ids of the new records
      */
     this.dispatchEvent(
       new CustomEvent('imported', { detail: { objectApiName: this.mappingObjectApiName, ...event.detail } })

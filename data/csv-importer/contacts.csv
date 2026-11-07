@@ -1,0 +1,51 @@
+First Name,Last Name,Email,Phone,Title,Birthdate,Lead Source,Mailing City
+Anna,Berg,anna.berg@example.com,+49 30 5550100,CEO,1960-01-01,Web,Berlin
+Ben,Kaya,ben.kaya@example.com,+49 30 5550101,"Head of Sales, EMEA",1967-02-04,Phone Inquiry,Munich
+Clara,Diaz,clara.diaz@example.com,+49 30 5550102,Buyer,1974-03-07,Partner Referral,Hamburg
+David,Evans,david.evans@example.com,+49 30 5550103,CFO,1981-04-10,Purchased List,Vienna
+Emma,Fischer,emma.fischer@example.com,+49 30 5550104,IT Manager,1988-05-13,Other,Zurich
+Felix,Gruber,felix.gruber@example.com,+49 30 5550105,Marketing Lead,1995-06-16,Web,Cologne
+Greta,Hall,greta.hall@example.com,+49 30 5550106,Procurement,1962-07-19,Phone Inquiry,Frankfurt
+Hugo,Ivanova,hugo.ivanova@example.com,+49 30 5550107,Operations,1969-08-22,Partner Referral,Leipzig
+Ida,Jones,ida.jones@example.com,+49 30 5550108,Consultant,1976-09-25,Purchased List,Stuttgart
+Jonas,King,jonas.king@example.com,+49 30 5550109,Project Manager,1983-10-28,Other,Dresden
+Klara,Lang,klara.lang@example.com,+49 30 5550110,CEO,1990-11-03,Web,Berlin
+Leon,Meyer,leon.meyer(at)example.com,+49 30 5550111,"Head of Sales, EMEA",1997-12-06,Phone Inquiry,Munich
+Mia,Novak,mia.novak@example.com,+49 30 5550112,Buyer,1964-01-09,Partner Referral,Hamburg
+Noah,Olsen,noah.olsen@example.com,+49 30 5550113,CFO,1971-02-12,Purchased List,Vienna
+Olivia,Park,olivia.park@example.com,+49 30 5550114,IT Manager,1978-03-15,Other,Zurich
+Paul,Quint,paul.quint@example.com,+49 30 5550115,Marketing Lead,1985-04-18,Web,Cologne
+Quinn,Ross,quinn.ross@example.com,+49 30 5550116,Procurement,1992-05-21,Phone Inquiry,Frankfurt
+Rosa,Silva,rosa.silva@example.com,+49 30 5550117,Operations,1999-06-24,Partner Referral,Leipzig
+Samuel,Tanaka,samuel.tanaka@example.com,+49 30 5550118,Consultant,1966-07-27,Purchased List,Stuttgart
+Tara,Ueda,tara.ueda@example.com,+49 30 5550119,Project Manager,1973-08-02,Other,Dresden
+Uma,Vogel,uma.vogel@example.com,+49 30 5550120,CEO,1980-09-05,Web,Berlin
+Victor,Weber,victor.weber@example.com,+49 30 5550121,"Head of Sales, EMEA",1987-10-08,Phone Inquiry,Munich
+Wanda,Xu,wanda.xu@example.com,+49 30 5550122,Buyer,1994-11-11,Partner Referral,Hamburg
+Xaver,Young,xaver.young@example.com,+49 30 5550123,CFO,1961-12-14,Purchased List,Vienna
+Yara,Zimmer,yara.zimmer@example.com,+49 30 5550124,IT Manager,1968-01-17,Other,Zurich
+Zoe,Arnold,zoe.arnold@example.com,+49 30 5550125,Marketing Lead,1975-02-20,Web,Cologne
+Adam,Brandt,adam.brandt@example.com,+49 30 5550126,Procurement,24.12.1985,Phone Inquiry,Frankfurt
+Bianca,Costa,bianca.costa@example.com,+49 30 5550127,Operations,1989-04-26,Partner Referral,Leipzig
+Carl,Dietrich,carl.dietrich@example.com,+49 30 5550128,Consultant,1996-05-01,Purchased List,Stuttgart
+Dora,Engel,dora.engel@example.com,+49 30 5550129,Project Manager,1963-06-04,Other,Dresden
+Elias,Fuchs,elias.fuchs@example.com,+49 30 5550130,CEO,1970-07-07,Web,Berlin
+Frida,Graf,frida.graf@example.com,+49 30 5550131,"Head of Sales, EMEA",1977-08-10,Phone Inquiry,Munich
+Gabriel,Hahn,gabriel.hahn@example.com,+49 30 5550132,Buyer,1984-09-13,Partner Referral,Hamburg
+Hanna,Iqbal,hanna.iqbal@example.com,+49 30 5550133,CFO,1991-10-16,Purchased List,Vienna
+Ivan,Jansen,ivan.jansen@example.com,+49 30 5550134,IT Manager,1998-11-19,Other,Zurich
+Julia,Keller,julia.keller@example.com,+49 30 5550135,Marketing Lead,1965-12-22,Web,Cologne
+Kai,Lorenz,kai.lorenz@example.com,+49 30 5550136,Procurement,1972-01-25,Phone Inquiry,Frankfurt
+Lena,Martin,lena.martin@example.com,+49 30 5550137,Operations,1979-02-28,Partner Referral,Leipzig
+Moritz,Nguyen,moritz.nguyen@example.com,+49 30 5550138,Consultant,1986-03-03,Purchased List,Stuttgart
+Nora,Otto,nora.otto@example.com,+49 30 5550139,Project Manager,1993-04-06,Other,Dresden
+Oskar,Peters,oskar.peters@example.com,+49 30 5550140,CEO,1960-05-09,Web,Berlin
+Pia,,pia.richter@example.com,+49 30 5550141,"Head of Sales, EMEA",1967-06-12,Phone Inquiry,Munich
+Raphael,Schulz,raphael.schulz@example.com,+49 30 5550142,Buyer,1974-07-15,Partner Referral,Hamburg
+Sophie,Thomas,sophie.thomas@example.com,+49 30 5550143,CFO,1981-08-18,Purchased List,Vienna
+Theo,Ulrich,theo.ulrich@example.com,+49 30 5550144,IT Manager,1988-09-21,Other,Zurich
+Ursula,Vasquez,ursula.vasquez@example.com,+49 30 5550145,Marketing Lead,1995-10-24,Web,Cologne
+Valentin,Wolf,valentin.wolf@example.com,+49 30 5550146,Procurement,1962-11-27,Phone Inquiry,Frankfurt
+Wilma,Yilmaz,wilma.yilmaz@example.com,+49 30 5550147,Operations,1969-12-02,Partner Referral,Leipzig
+Yusuf,Zeller,yusuf.zeller@example.com,+49 30 5550148,Consultant,1976-01-05,Purchased List,Stuttgart
+Zara,Becker,zara.becker@example.com,+49 30 5550149,Project Manager,1983-02-08,Other,Dresden

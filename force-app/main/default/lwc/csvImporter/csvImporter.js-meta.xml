@@ -9,6 +9,7 @@
         <target>lightning__AppPage</target>
         <target>lightning__HomePage</target>
         <target>lightning__RecordPage</target>
+        <target>lightning__FlowScreen</target>
     </targets>
     <targetConfigs>
         <targetConfig targets="lightning__AppPage,lightning__HomePage,lightning__RecordPage">
@@ -37,6 +38,59 @@
         type="String"
         label="External ID Field"
         description="Upserts the rows by this field, e.g. an external ID field or Id: rows with the value of an existing record update it, the others create new records. Without it, every row creates a new record."
+      />
+        </targetConfig>
+        <targetConfig targets="lightning__FlowScreen">
+            <property
+        name="importObjectApiName"
+        type="String"
+        label="Object API Name"
+        description="The object the rows are imported into, e.g. Contact. Without it, users enter the object in the wizard."
+        role="inputOnly"
+      />
+            <property
+        name="maxFileSizeMb"
+        type="Integer"
+        label="Maximum File Size (MB)"
+        description="The largest file in megabytes that can be read."
+        default="5"
+        role="inputOnly"
+      />
+            <property
+        name="maxRows"
+        type="Integer"
+        label="Maximum Rows"
+        description="The most rows a file may have, not counting the header."
+        default="10000"
+        role="inputOnly"
+      />
+            <property
+        name="externalIdFieldApiName"
+        type="String"
+        label="External ID Field"
+        description="Upserts the rows by this field, e.g. an external ID field or Id: rows with the value of an existing record update it, the others create new records. Without it, every row creates a new record."
+        role="inputOnly"
+      />
+            <property
+        name="successCount"
+        type="Integer"
+        label="Successful Rows"
+        description="The number of rows that created or updated a record."
+        role="outputOnly"
+      />
+            <property
+        name="failedCount"
+        type="Integer"
+        label="Failed Rows"
+        description="The number of rows that failed."
+        role="outputOnly"
+      />
+            <property
+        name="createdRecordIds"
+        type="String[]"
+        label="Created Record Ids"
+        description="The ids of the records the import created."
+        role="outputOnly"
       />
         </targetConfig>
     </targetConfigs>

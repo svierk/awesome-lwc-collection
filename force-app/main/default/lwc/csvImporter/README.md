@@ -4,7 +4,7 @@ Imports CSV files into Salesforce in steps: the file is read and previewed, its 
 
 **Type:** Component
 
-**Available in:** App Page · Home Page · Record Page
+**Available in:** App Page · Home Page · Record Page · Flow Screen
 
 <img src="../../../../../images/csv-importer.png" alt="csv-importer" width="500"/>
 
@@ -18,19 +18,22 @@ Imports CSV files into Salesforce in steps: the file is read and previewed, its 
 
 ## Attributes
 
-| Name                       | Type   | Default | Description                                                                                                                                                                                          |
-| -------------------------- | ------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| external-id-field-api-name | string | ''      | The field the rows are upserted by, e.g. an external ID field or Id: rows with the value of an existing record update it, the others create new records. Without it, every row creates a new record. |
-| import-object-api-name     | string | ''      | The object the rows are imported into, e.g. 'Contact'. Without it, users enter the object in the wizard.                                                                                             |
-| max-file-size-mb           | number | 5       | The largest file in megabytes that can be read.                                                                                                                                                      |
-| max-rows                   | number | 10000   | The most rows a file may have, not counting the header.                                                                                                                                              |
+| Name                       | Type     | Default | Description                                                                                                                                                                                          |
+| -------------------------- | -------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| external-id-field-api-name | string   | ''      | The field the rows are upserted by, e.g. an external ID field or Id: rows with the value of an existing record update it, the others create new records. Without it, every row creates a new record. |
+| import-object-api-name     | string   | ''      | The object the rows are imported into, e.g. 'Contact'. Without it, users enter the object in the wizard.                                                                                             |
+| max-file-size-mb           | number   | 5       | The largest file in megabytes that can be read.                                                                                                                                                      |
+| max-rows                   | number   | 10000   | The most rows a file may have, not counting the header.                                                                                                                                              |
+| success-count              | number   | 0       | Read-only. The number of rows that created or updated a record in the last import. Also available as a Flow output.                                                                                  |
+| failed-count               | number   | 0       | Read-only. The number of rows that failed in the last import. Also available as a Flow output.                                                                                                       |
+| created-record-ids         | string[] | []      | Read-only. The ids of the records the last import created. Also available as a Flow output.                                                                                                          |
 
 ## Events
 
-| Name     | Detail                                                                                                            | Description                                                                         |
-| -------- | ----------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
-| imported | `objectApiName`; `created`, `updated` and `failed`: the number of rows; `recordIds`: the ids of the saved records | Fired when the import is done.                                                      |
-| parsed   | A copy of the result: `fileName`, `headers`, `keyField`, `rows` and `delimiter`                                   | Fired when a file was parsed. `keyField` names the property holding each row's key. |
+| Name     | Detail                                                                                                                                                            | Description                                                                         |
+| -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------- |
+| imported | `objectApiName`; `created`, `updated` and `failed`: the number of rows; `recordIds`: the ids of the saved records; `createdRecordIds`: the ids of the new records | Fired when the import is done.                                                      |
+| parsed   | A copy of the result: `fileName`, `headers`, `keyField`, `rows` and `delimiter`                                                                                   | Fired when a file was parsed. `keyField` names the property holding each row's key. |
 
 ## Usage
 
@@ -108,6 +111,14 @@ The rows can be imported once none of them has an error.
 - Lookups are not resolved by name: a lookup column needs record ids.
 
 At the end, the importer shows how many records were created and updated, and lists the failed rows with the reason. **Download failed rows** saves them as a CSV file with the delimiter of the uploaded file and an additional `Import Error` column, so they can be fixed and imported again. Going back is no longer possible once the import started, so the rows can't be imported twice by accident. **New import** starts over with the upload and keeps the chosen encoding and delimiter.
+
+### Flow screens
+
+In a Flow screen, the attributes are inputs of the component, and the result of the import is passed on as outputs: **Successful Rows** (`successCount`, created or updated), **Failed Rows** (`failedCount`) and **Created Record Ids** (`createdRecordIds`), for example to show a summary on the next screen or to loop over the new records. **New import** sets the outputs back to 0 and an empty list.
+
+### Demo data
+
+[`data/csv-importer/contacts.csv`](https://github.com/svierk/awesome-lwc-collection/blob/main/data/csv-importer/contacts.csv) has 50 contacts to try the importer with the object `Contact`. Its columns match the fields automatically, and three rows have errors on purpose: row 12 an invalid email, row 27 a date that isn't in `YYYY-MM-DD`, and row 42 no last name. Correct them in the review to import all 50 contacts.
 
 ## Component Dependencies
 
