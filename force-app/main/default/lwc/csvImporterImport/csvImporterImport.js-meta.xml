@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>68.0</apiVersion>
+    <isExposed>false</isExposed>
+    <description
+  >Imports the checked rows of a CSV file in chunks and shows the result of each row. Used by the CSV Importer.</description>
+</LightningComponentBundle>

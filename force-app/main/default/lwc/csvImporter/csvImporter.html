@@ -14,12 +14,15 @@
           class="slds-show slds-m-bottom_small"
           message={errorMessage}
         ></c-error-alert>
-        <lightning-input
-          type="file"
-          label="CSV file"
-          accept=".csv,.txt,text/csv"
-          onchange={handleFileUpload}
-        ></lightning-input>
+        <template for:each={fileInputKeys} for:item="key">
+          <lightning-input
+            key={key}
+            type="file"
+            label="CSV file"
+            accept=".csv,.txt,text/csv"
+            onchange={handleFileUpload}
+          ></lightning-input>
+        </template>
         <div class="slds-grid slds-gutters slds-wrap slds-m-top_small">
           <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
             <lightning-combobox
@@ -60,6 +63,7 @@
           headers={headers}
           sample-row={sampleRow}
           fixed-object-api-name={importObjectApiName}
+          key-field-api-name={externalIdFieldApiName}
           onmappingchange={handleMappingChange}
         ></c-csv-importer-mapping>
       </div>
@@ -70,7 +74,22 @@
         object-api-name={mappingObjectApiName}
         mapping={mapping}
         rows={rows}
+        onreviewchange={handleReviewChange}
       ></c-csv-importer-review>
+    </div>
+    <div class={importClass} data-id="import-step">
+      <c-csv-importer-import
+        lwc:if={reviewValid}
+        object-api-name={mappingObjectApiName}
+        mapping={mapping}
+        rows={reviewRows}
+        headers={headers}
+        delimiter={usedDelimiter}
+        file-name={fileName}
+        external-id-field-api-name={externalIdFieldApiName}
+        onimportstart={handleImportStart}
+        onimportfinish={handleImportFinish}
+      ></c-csv-importer-import>
     </div>
     <div slot="footer" class="slds-grid slds-size_full">
       <lightning-button data-id="back" class={backClass} label="Back" onclick={handleBack}></lightning-button>
@@ -81,6 +100,14 @@
         label="Next"
         disabled={isNextDisabled}
         onclick={handleNext}
+      ></lightning-button>
+      <lightning-button
+        lwc:if={importFinished}
+        data-id="new-import"
+        class="slds-col_bump-left"
+        variant="brand"
+        label="New import"
+        onclick={handleNewImport}
       ></lightning-button>
     </div>
   </lightning-card>

@@ -22,17 +22,19 @@ const DELIMITER_NAMES = { ',': 'comma', ';': 'semicolon', '\t': 'tab' };
 const STEPS = [
   { label: 'Upload', value: 'upload' },
   { label: 'Map Fields', value: 'map' },
-  { label: 'Review', value: 'review' }
+  { label: 'Review', value: 'review' },
+  { label: 'Import', value: 'import' }
 ];
 
 /**
- * Imports CSV files into Salesforce in steps: the file is read and previewed, its columns are mapped to fields, and
- * the rows are checked against these fields.
+ * Imports CSV files into Salesforce in steps: the file is read and previewed, its columns are mapped to fields, the
+ * rows are checked against these fields, and then inserted or upserted.
  * @alias CsvImporter
  * @extends LightningElement
  * @hideconstructor
  *
  * @fires CsvImporter#parsed
+ * @fires CsvImporter#imported
  *
  * @example
  * <c-csv-importer import-object-api-name="Contact" max-file-size-mb="10" onparsed={handleParsed}></c-csv-importer>
@@ -60,6 +62,14 @@ export default class CsvImporter extends LightningElement {
    */
   @api maxRows = 10000;
 
+  /**
+   * The field the rows are upserted by, e.g. an external ID field or Id: rows with the value of an existing record
+   * update it, the others create new records. Without it, every row creates a new record.
+   * @type {string}
+   * @default ''
+   */
+  @api externalIdFieldApiName = '';
+
   currentStep = 'upload';
   delimiter = 'auto';
   delimiterOptions = DELIMITER_OPTIONS;
@@ -68,10 +78,15 @@ export default class CsvImporter extends LightningElement {
   errorMessage = '';
   fileName = '';
   headers = [];
+  importCount = 0;
+  importFinished = false;
+  importStarted = false;
   keyField = 'id';
   mapping = {};
   mappingObjectApiName;
   mappingValid = false;
+  reviewRows = [];
+  reviewValid = false;
   rows = [];
   steps = STEPS;
   usedDelimiter = ',';
@@ -114,8 +129,13 @@ export default class CsvImporter extends LightningElement {
     return this.stepClass('review');
   }
 
+  get importClass() {
+    return this.stepClass('import');
+  }
+
+  // once the import started, going back could import the rows twice
   get backClass() {
-    return this.stepIndex === 0 ? 'slds-hide' : '';
+    return this.stepIndex === 0 || this.importStarted ? 'slds-hide' : '';
   }
 
   get nextClass() {
@@ -123,7 +143,8 @@ export default class CsvImporter extends LightningElement {
   }
 
   get isNextDisabled() {
-    return this.currentStep === 'map' ? !this.mappingValid : !this.hasRows;
+    const ready = { upload: this.hasRows, map: this.mappingValid, review: this.reviewValid };
+    return !ready[this.currentStep];
   }
 
   handleNext() {
@@ -137,6 +158,52 @@ export default class CsvImporter extends LightningElement {
   handleMappingChange(event) {
     const { objectApiName, mapping, valid } = event.detail;
     Object.assign(this, { mappingObjectApiName: objectApiName, mapping, mappingValid: valid });
+  }
+
+  handleReviewChange(event) {
+    const { rows, valid } = event.detail;
+    Object.assign(this, { reviewRows: rows, reviewValid: valid });
+  }
+
+  handleImportStart() {
+    this.importStarted = true;
+  }
+
+  // a new key renders a new file input, which also takes the same file again
+  get fileInputKeys() {
+    return [`file-${this.importCount}`];
+  }
+
+  /** Starts over with the upload, keeping the encoding and delimiter users chose. */
+  handleNewImport() {
+    this.reset();
+    Object.assign(this, {
+      buffer: undefined,
+      currentStep: 'upload',
+      fileName: '',
+      importCount: this.importCount + 1,
+      importFinished: false,
+      importStarted: false,
+      mapping: {},
+      mappingObjectApiName: undefined,
+      mappingValid: false,
+      reviewRows: [],
+      reviewValid: false
+    });
+  }
+
+  handleImportFinish(event) {
+    this.importFinished = true;
+    /**
+     * Fired when the import is done.
+     * @event CsvImporter#imported
+     * @type {CustomEvent}
+     * @property {Object} detail - objectApiName; created, updated and failed: the number of rows; recordIds: the ids
+     * of the saved records
+     */
+    this.dispatchEvent(
+      new CustomEvent('imported', { detail: { objectApiName: this.mappingObjectApiName, ...event.detail } })
+    );
   }
 
   get summary() {

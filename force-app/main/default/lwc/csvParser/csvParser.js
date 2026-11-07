@@ -134,3 +134,24 @@ export function parseCsv(text, { delimiter = ',' } = {}) {
     );
   return { headers, rows, keyField };
 }
+
+/** Quotes a value when it contains the delimiter, a quote or a line break, and doubles its quotes. */
+function formatField(value, delimiter) {
+  const text = String(value ?? '');
+  const needsQuotes = [delimiter, QUOTE, '\n', '\r'].some((character) => text.includes(character));
+  return needsQuotes ? `${QUOTE}${text.replaceAll(QUOTE, QUOTE + QUOTE)}${QUOTE}` : text;
+}
+
+/**
+ * Writes rows as CSV text according to RFC 4180, so parseCsv reads them back unchanged.
+ * @param {string[]} headers - The columns, in their order in the file
+ * @param {Object[]} rows - The rows, with their values under the column names; missing values stay empty
+ * @param {Object} [options]
+ * @param {string} [options.delimiter=','] - The character between the fields
+ * @returns {string} The header line and one line per row, separated by CRLF
+ */
+export function formatCsv(headers, rows, { delimiter = ',' } = {}) {
+  return [headers, ...rows.map((row) => headers.map((header) => row[header]))]
+    .map((values) => values.map((value) => formatField(value, delimiter)).join(delimiter))
+    .join('\r\n');
+}

@@ -1,4 +1,4 @@
-import { detectDelimiter, parseCsv } from 'c/csvParser';
+import { detectDelimiter, formatCsv, parseCsv } from 'c/csvParser';
 
 describe('c-csv-parser', () => {
   it('should parse headers and rows', () => {
@@ -176,5 +176,25 @@ describe('c-csv-parser', () => {
     // then
     expect(headers).toEqual(['Name', 'City']);
     expect(rows[0]).toMatchObject({ Name: 'Doe; John', City: 'Berlin, Germany' });
+  });
+
+  it('should write rows as CSV that is read back unchanged', () => {
+    // given
+    const headers = ['Name', 'Note', 'Empty'];
+    const rows = [
+      { Name: 'Doe; John', Note: 'Says "hi"\nTwice' },
+      { Name: 'Jane', Note: 'plain', Empty: null }
+    ];
+
+    // when
+    const text = formatCsv(headers, rows, { delimiter: ';' });
+
+    // then
+    expect(text).toBe('Name;Note;Empty\r\n"Doe; John";"Says ""hi""\nTwice";\r\nJane;plain;');
+    expect(parseCsv(text, { delimiter: ';' }).rows).toMatchObject([
+      { Name: 'Doe; John', Note: 'Says "hi"\nTwice', Empty: '' },
+      { Name: 'Jane', Note: 'plain', Empty: '' }
+    ]);
+    expect(formatCsv(['A'], [{ A: 'x,y' }])).toBe('A\r\n"x,y"');
   });
 });

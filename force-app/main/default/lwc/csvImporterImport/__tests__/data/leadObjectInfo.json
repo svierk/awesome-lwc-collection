@@ -1,0 +1,22 @@
+{
+  "apiName": "Lead",
+  "label": "Lead",
+  "labelPlural": "Leads",
+  "fields": {
+    "LastName": { "apiName": "LastName", "label": "Last Name", "dataType": "String", "createable": true },
+    "Company": { "apiName": "Company", "label": "Company", "dataType": "String", "createable": true },
+    "NumberOfEmployees": {
+      "apiName": "NumberOfEmployees",
+      "label": "Employees",
+      "dataType": "Int",
+      "createable": true
+    },
+    "IsUnreadByOwner": {
+      "apiName": "IsUnreadByOwner",
+      "label": "Unread By Owner",
+      "dataType": "Boolean",
+      "createable": true
+    },
+    "Key__c": { "apiName": "Key__c", "label": "Lead Key", "dataType": "String", "createable": true }
+  }
+}

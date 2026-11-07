@@ -6,6 +6,7 @@ const DATE = /^\d{4}-\d{2}-\d{2}$/;
 const TIME = /^T\d{2}:\d{2}(:\d{2}(\.\d{1,3})?)?$/;
 const ZONE = /(Z|[+-]\d{2}:?\d{2})$/;
 const BOOLEANS = new Set(['true', 'false', 'yes', 'no', '1', '0']);
+const TRUE_VALUES = new Set(['true', 'yes', '1']);
 
 /** Whether a real calendar date starts the text, e.g. not 2026-02-30. */
 const isCalendarDate = (text) => {
@@ -49,6 +50,37 @@ const CHECKS = {
 };
 CHECKS.Currency = CHECKS.Double;
 CHECKS.Percent = CHECKS.Double;
+
+// how a checked value becomes the JSON value Apex reads into the field; other values stay text
+const CONVERSIONS = {
+  Int: (text) => Number.parseInt(text, 10),
+  Double: Number,
+  Currency: Number,
+  Percent: Number,
+  Boolean: (text) => TRUE_VALUES.has(text.toLowerCase()),
+  // a date/time without a time zone is taken as the time of the browser
+  DateTime: (text) => new Date(text).toISOString(),
+  MultiPicklist: (text) =>
+    text
+      .split(';')
+      .map((part) => part.trim())
+      .join(';')
+};
+
+/**
+ * Turns a value that passed checkValue into the value of the field, e.g. a number or a boolean.
+ * @param {string} value - The value, surrounding spaces are ignored
+ * @param {Object} field - A field of the UI API object info
+ * @returns {*} The converted value, or undefined for an empty value, so the field isn't set
+ */
+export function convertValue(value, field) {
+  const text = String(value ?? '').trim();
+  if (!text) {
+    return undefined;
+  }
+  const convert = CONVERSIONS[field.dataType];
+  return convert ? convert(text) : text;
+}
 
 /**
  * Whether a record can't be created without a value for the field. Fields Salesforce fills in on its own, such as

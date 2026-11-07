@@ -3,7 +3,8 @@
     <apiVersion>68.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>CSV Importer</masterLabel>
-    <description>Imports CSV files into Salesforce: upload and preview, then map columns to fields.</description>
+    <description
+  >Imports CSV files into Salesforce: upload and preview, map columns to fields, review the rows and import them.</description>
     <targets>
         <target>lightning__AppPage</target>
         <target>lightning__HomePage</target>
@@ -30,6 +31,12 @@
         label="Maximum Rows"
         description="The most rows a file may have, not counting the header."
         default="10000"
+      />
+            <property
+        name="externalIdFieldApiName"
+        type="String"
+        label="External ID Field"
+        description="Upserts the rows by this field, e.g. an external ID field or Id: rows with the value of an existing record update it, the others create new records. Without it, every row creates a new record."
       />
         </targetConfig>
     </targetConfigs>

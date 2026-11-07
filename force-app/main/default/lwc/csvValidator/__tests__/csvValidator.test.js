@@ -1,4 +1,4 @@
-import { checkValue, isRequired, picklistValues, validateRecords } from 'c/csvValidator';
+import { checkValue, convertValue, isRequired, picklistValues, validateRecords } from 'c/csvValidator';
 
 const field = (dataType, props = {}) => ({ apiName: 'Field', label: 'Field', dataType, ...props });
 
@@ -103,5 +103,23 @@ describe('c-csv-validator', () => {
     // then
     expect(picklistValues(data)).toEqual({ LeadSource: ['Web'] });
     expect(picklistValues(undefined)).toEqual({});
+  });
+
+  it.each([
+    ['Int', ' +42 ', 42],
+    ['Double', '-0.5', -0.5],
+    ['Currency', '1234.56', 1234.56],
+    ['Percent', '12.5', 12.5],
+    ['Boolean', 'Yes', true],
+    ['Boolean', '0', false],
+    ['DateTime', '2026-11-07T10:30:00+01:00', '2026-11-07T09:30:00.000Z'],
+    ['MultiPicklist', 'Web ; Phone Inquiry', 'Web;Phone Inquiry'],
+    ['Date', '2026-11-07', '2026-11-07'],
+    ['String', ' Anna ', 'Anna'],
+    ['String', '  ', undefined],
+    ['String', undefined, undefined]
+  ])('should convert a value of a %s field', (dataType, value, expected) => {
+    // then
+    expect(convertValue(value, field(dataType))).toEqual(expected);
   });
 });

@@ -1,0 +1,36 @@
+<template>
+  <div class="slds-var-p-horizontal_medium">
+    <template lwc:if={isReady}>
+      <p class="intro slds-m-bottom_small">{intro}</p>
+      <lightning-button
+        variant="brand"
+        label="Import"
+        icon-name="utility:upload"
+        disabled={isImportDisabled}
+        onclick={handleImport}
+      ></lightning-button>
+    </template>
+    <template lwc:else>
+      <p class="progress-text slds-m-bottom_x-small">{progressText}</p>
+      <lightning-progress-bar value={progress} size="large"></lightning-progress-bar>
+      <template lwc:if={isDone}>
+        <p class="summary slds-m-top_small">{summary}</p>
+        <lightning-button
+          lwc:if={hasFailures}
+          class="slds-show slds-m-top_small"
+          label="Download failed rows"
+          icon-name="utility:download"
+          onclick={handleDownload}
+        ></lightning-button>
+      </template>
+    </template>
+  </div>
+  <div lwc:if={hasFailures} class="import-failures slds-m-top_small">
+    <lightning-datatable
+      key-field="rowNumber"
+      data={failures}
+      columns={failureColumns}
+      hide-checkbox-column
+    ></lightning-datatable>
+  </div>
+</template>
