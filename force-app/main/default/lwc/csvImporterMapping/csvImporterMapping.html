@@ -4,22 +4,20 @@
       <lightning-input
         lwc:if={isObjectFixed}
         data-id="object"
-        label="Object"
+        label={labels.object}
         value={fixedObjectApiName}
         read-only
       ></lightning-input>
       <lightning-input
         lwc:else
         data-id="object"
-        label="Object API Name"
-        placeholder="e.g. Contact"
-        field-level-help="The API name of the object to import into, e.g. Contact or Invoice__c."
+        label={labels.objectApiName}
+        placeholder={labels.objectPlaceholder}
+        field-level-help={labels.objectHelp}
         value={objectApiName}
         oncommit={handleObjectChange}
       ></lightning-input>
-      <p lwc:if={objectLabel} class="object-label slds-text-color_weak slds-m-top_xx-small">
-        Importing into {objectLabel}.
-      </p>
+      <p lwc:if={objectLabel} class="object-label slds-text-color_weak slds-m-top_xx-small">{importingInto}</p>
     </div>
   </div>
   <c-error-alert lwc:if={objectError} class="slds-show slds-m-bottom_small" message={objectError}></c-error-alert>
@@ -27,9 +25,9 @@
     <table class="slds-table slds-table_bordered slds-table_cell-buffer">
       <thead>
         <tr class="slds-line-height_reset">
-          <th scope="col"><div class="slds-truncate" title="Column">Column</div></th>
-          <th scope="col"><div class="slds-truncate" title="Example">Example</div></th>
-          <th scope="col"><div class="slds-truncate" title="Salesforce field">Salesforce field</div></th>
+          <th scope="col"><div class="slds-truncate" title={labels.column}>{labels.column}</div></th>
+          <th scope="col"><div class="slds-truncate" title={labels.example}>{labels.example}</div></th>
+          <th scope="col"><div class="slds-truncate" title={labels.salesforceField}>{labels.salesforceField}</div></th>
         </tr>
       </thead>
       <tbody>
@@ -58,14 +56,14 @@
     <lightning-button
       lwc:if={hasObject}
       class="slds-m-right_medium slds-m-bottom_x-small"
-      label="Download mapping"
+      label={labels.downloadMapping}
       icon-name="utility:download"
       onclick={handleExport}
     ></lightning-button>
     <lightning-input
       data-id="mapping-file"
       type="file"
-      label="Upload a mapping"
+      label={labels.uploadMapping}
       accept=".json,application/json"
       onchange={handleImport}
     ></lightning-input>

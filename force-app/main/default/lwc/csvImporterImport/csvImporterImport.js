@@ -1,17 +1,27 @@
 import importRecords from '@salesforce/apex/CsvImportController.importRecords';
+import DONE from '@salesforce/label/c.CsvImporterImport_Done';
+import DOWNLOAD_FAILED_ROWS from '@salesforce/label/c.CsvImporterImport_DownloadFailedRows';
+import ERROR from '@salesforce/label/c.CsvImporterImport_Error';
+import ERROR_COLUMN from '@salesforce/label/c.CsvImporterImport_ErrorColumn';
+import IMPORT from '@salesforce/label/c.CsvImporterImport_Import';
+import INSERT from '@salesforce/label/c.CsvImporterImport_Insert';
+import PROGRESS from '@salesforce/label/c.CsvImporterImport_Progress';
+import READY from '@salesforce/label/c.CsvImporterImport_Ready';
+import ROW from '@salesforce/label/c.CsvImporterImport_Row';
+import UPSERT from '@salesforce/label/c.CsvImporterImport_Upsert';
 import { formatCsv } from 'c/csvParser';
 import { convertValue } from 'c/csvValidator';
 import { getErrorMessage } from 'c/errorUtils';
+import { formatLabel } from 'c/labelUtils';
 import { getObjectInfo } from 'lightning/uiObjectInfoApi';
 import { api, LightningElement, wire } from 'lwc';
 
 // the most records Salesforce saves in one DML call without splitting the triggers into batches
 const CHUNK_SIZE = 200;
-const ERROR_COLUMN = 'Import Error';
 
 const FAILURE_COLUMNS = [
-  { label: 'Row', fieldName: 'rowNumber', type: 'number', initialWidth: 80, cellAttributes: { alignment: 'left' } },
-  { label: 'Error', fieldName: 'message', wrapText: true }
+  { label: ROW, fieldName: 'rowNumber', type: 'number', initialWidth: 80, cellAttributes: { alignment: 'left' } },
+  { label: ERROR, fieldName: 'message', wrapText: true }
 ];
 
 /**
@@ -68,6 +78,7 @@ export default class CsvImporterImport extends LightningElement {
   @api externalIdFieldApiName;
 
   failureColumns = FAILURE_COLUMNS;
+  labels = { downloadFailedRows: DOWNLOAD_FAILED_ROWS, import: IMPORT };
   objectInfo;
   results = [];
   status = 'ready';
@@ -95,10 +106,8 @@ export default class CsvImporterImport extends LightningElement {
   get intro() {
     const objectLabel = this.objectInfo?.labelPlural ?? this.objectApiName;
     const keyLabel = this.objectInfo?.fields[this.externalIdFieldApiName]?.label ?? this.externalIdFieldApiName;
-    const mode = this.externalIdFieldApiName
-      ? `Rows with the ${keyLabel} of an existing record update it, the others create new records.`
-      : 'Every row creates a new record.';
-    return `${this.rows.length} rows are ready to be imported into ${objectLabel}. ${mode}`;
+    const mode = this.externalIdFieldApiName ? formatLabel(UPSERT, keyLabel) : INSERT;
+    return formatLabel(READY, this.rows.length, objectLabel, mode);
   }
 
   get progress() {
@@ -106,7 +115,7 @@ export default class CsvImporterImport extends LightningElement {
   }
 
   get progressText() {
-    return `Processed ${this.results.length} of ${this.rows.length} rows.`;
+    return formatLabel(PROGRESS, this.results.length, this.rows.length);
   }
 
   get failures() {
@@ -120,7 +129,7 @@ export default class CsvImporterImport extends LightningElement {
   get summary() {
     const created = this.results.filter((result) => result.created).length;
     const updated = this.results.filter((result) => result.success && !result.created).length;
-    return `Done: ${created} created, ${updated} updated, ${this.failures.length} failed.`;
+    return formatLabel(DONE, created, updated, this.failures.length);
   }
 
   /** The values of the mapped fields of each row, converted to the types of the fields. */

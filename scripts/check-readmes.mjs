@@ -35,7 +35,7 @@ const lwcDir = join(root, 'force-app', 'main', 'default', 'lwc');
 const exceptions = JSON.parse(readFileSync(join(root, 'scripts', 'readme-exceptions.json'), 'utf-8'));
 const labelsFile = join(root, 'force-app', 'main', 'default', 'labels', 'CustomLabels.labels-meta.xml');
 const definedLabels = existsSync(labelsFile)
-  ? [...readFileSync(labelsFile, 'utf-8').matchAll(/<fullName>([^<]+)<\/fullName>/g)].map((match) => match[1])
+  ? [...readFileSync(labelsFile, 'utf-8').matchAll(/<fullName\s*>([^<]+)<\/fullName\s*>/g)].map((match) => match[1])
   : [];
 
 const TARGET_LABELS = new Map([

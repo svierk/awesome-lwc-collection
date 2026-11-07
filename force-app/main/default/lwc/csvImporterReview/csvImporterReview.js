@@ -1,5 +1,11 @@
+import ERRORS from '@salesforce/label/c.CsvImporterReview_Errors';
+import NO_ERRORS from '@salesforce/label/c.CsvImporterReview_NoErrors';
+import ONLY_ERRORS from '@salesforce/label/c.CsvImporterReview_OnlyErrors';
+import PICKLIST_ERROR from '@salesforce/label/c.CsvImporterReview_PicklistError';
+import ROW from '@salesforce/label/c.CsvImporterReview_Row';
 import { picklistValues, validateRecords } from 'c/csvValidator';
 import { getErrorMessage } from 'c/errorUtils';
+import { formatLabel } from 'c/labelUtils';
 import { getObjectInfo, getPicklistValuesByRecordType } from 'lightning/uiObjectInfoApi';
 import { api, LightningElement, wire } from 'lwc';
 
@@ -71,6 +77,7 @@ export default class CsvImporterReview extends LightningElement {
 
   objectInfo;
   recordTypeId;
+  labels = { onlyErrors: ONLY_ERRORS };
   picklists = {};
   picklistsLoaded = false;
   picklistError = '';
@@ -104,7 +111,7 @@ export default class CsvImporterReview extends LightningElement {
     } else if (error) {
       this.picklists = {};
       this.picklistsLoaded = true;
-      this.picklistError = `The picklist values could not be loaded, so they aren't checked: ${getErrorMessage(error)}`;
+      this.picklistError = formatLabel(PICKLIST_ERROR, getErrorMessage(error));
       this.notify();
     }
   }
@@ -124,7 +131,7 @@ export default class CsvImporterReview extends LightningElement {
       editable: true
     }));
     // the datatable numbers the rows it shows, so the filtered rows also need their row in the file
-    return this.onlyErrors ? [{ label: 'Row', fieldName: KEY, initialWidth: 80 }, ...fields] : fields;
+    return this.onlyErrors ? [{ label: ROW, fieldName: KEY, initialWidth: 80 }, ...fields] : fields;
   }
 
   get filteredRecords() {
@@ -153,12 +160,11 @@ export default class CsvImporterReview extends LightningElement {
 
   get summary() {
     const keys = this.errorKeys;
-    const total = `Rows with errors: ${keys.length} of ${this.records.length}`;
     if (!keys.length) {
-      return `${total}.`;
+      return formatLabel(NO_ERRORS, 0, this.records.length);
     }
     const listed = keys.slice(0, LISTED_ROWS).join(', ') + (keys.length > LISTED_ROWS ? ', …' : '');
-    return `${total} (${listed}). Correct them in the table, or fix the file and upload it again.`;
+    return formatLabel(ERRORS, keys.length, this.records.length, listed);
   }
 
   handleOnlyErrorsChange(event) {

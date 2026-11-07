@@ -1,5 +1,5 @@
 <template>
-  <lightning-card title="CSV Importer" icon-name="doctype:csv">
+  <lightning-card title={labels.title} icon-name="doctype:csv">
     <div class="slds-var-p-horizontal_medium slds-m-bottom_medium">
       <lightning-progress-indicator current-step={currentStep} type="path" variant="base">
         <template for:each={steps} for:item="step">
@@ -18,7 +18,7 @@
           <lightning-input
             key={key}
             type="file"
-            label="CSV file"
+            label={labels.csvFile}
             accept=".csv,.txt,text/csv"
             onchange={handleFileUpload}
           ></lightning-input>
@@ -28,7 +28,7 @@
             <lightning-combobox
               name="encoding"
               data-id="encoding"
-              label="Encoding"
+              label={labels.encoding}
               value={encoding}
               options={encodingOptions}
               onchange={handleEncodingChange}
@@ -38,7 +38,7 @@
             <lightning-combobox
               name="delimiter"
               data-id="delimiter"
-              label="Delimiter"
+              label={labels.delimiter}
               value={delimiter}
               options={delimiterOptions}
               onchange={handleDelimiterChange}
@@ -92,12 +92,12 @@
       ></c-csv-importer-import>
     </div>
     <div slot="footer" class="slds-grid slds-size_full">
-      <lightning-button data-id="back" class={backClass} label="Back" onclick={handleBack}></lightning-button>
+      <lightning-button data-id="back" class={backClass} label={labels.back} onclick={handleBack}></lightning-button>
       <lightning-button
         data-id="next"
         class={nextClass}
         variant="brand"
-        label="Next"
+        label={labels.next}
         disabled={isNextDisabled}
         onclick={handleNext}
       ></lightning-button>
@@ -106,7 +106,7 @@
         data-id="new-import"
         class="slds-col_bump-left"
         variant="brand"
-        label="New import"
+        label={labels.newImport}
         onclick={handleNewImport}
       ></lightning-button>
     </div>

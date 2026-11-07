@@ -1,3 +1,15 @@
+import NOT_BOOLEAN from '@salesforce/label/c.CsvValidator_NotBoolean';
+import NOT_DATE from '@salesforce/label/c.CsvValidator_NotDate';
+import NOT_DATE_TIME from '@salesforce/label/c.CsvValidator_NotDateTime';
+import NOT_EMAIL from '@salesforce/label/c.CsvValidator_NotEmail';
+import NOT_IN_PICKLIST from '@salesforce/label/c.CsvValidator_NotInPicklist';
+import NOT_NUMBER from '@salesforce/label/c.CsvValidator_NotNumber';
+import NOT_WHOLE_NUMBER from '@salesforce/label/c.CsvValidator_NotWholeNumber';
+import REQUIRED from '@salesforce/label/c.CsvValidator_Required';
+import ROW_ERROR from '@salesforce/label/c.CsvValidator_RowError';
+import ROW_ERRORS from '@salesforce/label/c.CsvValidator_RowErrors';
+import { formatLabel } from 'c/labelUtils';
+
 // each pattern can match a text in one way only, so a failing check doesn't backtrack
 const INTEGER = /^[+-]?\d+$/;
 const DECIMAL = /^[+-]?\d+(\.\d+)?$/;
@@ -36,17 +48,17 @@ const isEmail = (text) => {
 
 const checkPicklist = (texts, field, values) => {
   const unknown = values ? texts.find((text) => !values.includes(text)) : undefined;
-  return unknown === undefined ? '' : `${field.label}: "${unknown}" isn't a value of the picklist.`;
+  return unknown === undefined ? '' : formatLabel(NOT_IN_PICKLIST, field.label, unknown);
 };
 
-// a check per UI API data type; it returns the message for a value that doesn't fit, or nothing
+// a check per UI API data type; it returns the label of the message for a value that doesn't fit, or nothing
 const CHECKS = {
-  Int: (text) => !INTEGER.test(text) && "isn't a whole number.",
-  Double: (text) => !DECIMAL.test(text) && "isn't a number. Use a dot for decimals, e.g. 1234.5.",
-  Date: (text) => !(DATE.test(text) && isCalendarDate(text)) && "isn't a date. Use YYYY-MM-DD.",
-  DateTime: (text) => !isDateTime(text) && "isn't a date and time. Use YYYY-MM-DDThh:mm:ssZ.",
-  Boolean: (text) => !BOOLEANS.has(text.toLowerCase()) && "isn't true or false.",
-  Email: (text) => !isEmail(text) && "isn't an email address."
+  Int: (text) => !INTEGER.test(text) && NOT_WHOLE_NUMBER,
+  Double: (text) => !DECIMAL.test(text) && NOT_NUMBER,
+  Date: (text) => !(DATE.test(text) && isCalendarDate(text)) && NOT_DATE,
+  DateTime: (text) => !isDateTime(text) && NOT_DATE_TIME,
+  Boolean: (text) => !BOOLEANS.has(text.toLowerCase()) && NOT_BOOLEAN,
+  Email: (text) => !isEmail(text) && NOT_EMAIL
 };
 CHECKS.Currency = CHECKS.Double;
 CHECKS.Percent = CHECKS.Double;
@@ -102,7 +114,7 @@ export function isRequired(field) {
 export function checkValue(value, field, values) {
   const text = String(value ?? '').trim();
   if (!text) {
-    return isRequired(field) ? `${field.label} is required.` : '';
+    return isRequired(field) ? formatLabel(REQUIRED, field.label) : '';
   }
   if (field.dataType === 'Picklist') {
     return checkPicklist([text], field, values);
@@ -115,7 +127,7 @@ export function checkValue(value, field, values) {
     );
   }
   const message = CHECKS[field.dataType]?.(text);
-  return message ? `${field.label}: "${text}" ${message}` : '';
+  return message ? formatLabel(message, field.label, text) : '';
 }
 
 /**
@@ -139,7 +151,7 @@ export function validateRecords(records, fields, keyField, picklists = {}) {
       }
     });
     if (messages.length) {
-      const title = messages.length === 1 ? 'This row has an error.' : `This row has ${messages.length} errors.`;
+      const title = messages.length === 1 ? ROW_ERROR : formatLabel(ROW_ERRORS, messages.length);
       errors[record[keyField]] = { title, messages, fieldNames };
     }
   });

@@ -1,5 +1,28 @@
+import BACK from '@salesforce/label/c.CsvImporter_Back';
+import COMMA from '@salesforce/label/c.CsvImporter_Comma';
+import COMMA_NAME from '@salesforce/label/c.CsvImporter_CommaName';
+import CSV_FILE from '@salesforce/label/c.CsvImporter_CsvFile';
+import DELIMITER from '@salesforce/label/c.CsvImporter_Delimiter';
+import DETECT_AUTOMATICALLY from '@salesforce/label/c.CsvImporter_DetectAutomatically';
+import ENCODING from '@salesforce/label/c.CsvImporter_Encoding';
+import FILE_NOT_READ from '@salesforce/label/c.CsvImporter_FileNotRead';
+import FILE_TOO_LARGE from '@salesforce/label/c.CsvImporter_FileTooLarge';
+import NEXT from '@salesforce/label/c.CsvImporter_Next';
+import NEW_IMPORT from '@salesforce/label/c.CsvImporter_NewImport';
+import SEMICOLON from '@salesforce/label/c.CsvImporter_Semicolon';
+import SEMICOLON_NAME from '@salesforce/label/c.CsvImporter_SemicolonName';
+import STEP_IMPORT from '@salesforce/label/c.CsvImporter_StepImport';
+import STEP_MAP_FIELDS from '@salesforce/label/c.CsvImporter_StepMapFields';
+import STEP_REVIEW from '@salesforce/label/c.CsvImporter_StepReview';
+import STEP_UPLOAD from '@salesforce/label/c.CsvImporter_StepUpload';
+import SUMMARY from '@salesforce/label/c.CsvImporter_Summary';
+import TAB from '@salesforce/label/c.CsvImporter_Tab';
+import TAB_NAME from '@salesforce/label/c.CsvImporter_TabName';
+import TITLE from '@salesforce/label/c.CsvImporter_Title';
+import TOO_MANY_ROWS from '@salesforce/label/c.CsvImporter_TooManyRows';
 import { detectDelimiter, parseCsv } from 'c/csvParser';
 import { getErrorMessage } from 'c/errorUtils';
+import { formatLabel } from 'c/labelUtils';
 import { FlowAttributeChangeEvent } from 'lightning/flowSupport';
 import { api, LightningElement } from 'lwc';
 
@@ -7,10 +30,10 @@ const PREVIEW_ROWS = 20;
 const BYTES_PER_MB = 1024 * 1024;
 
 const DELIMITER_OPTIONS = [
-  { label: 'Detect automatically', value: 'auto' },
-  { label: 'Comma (,)', value: ',' },
-  { label: 'Semicolon (;)', value: ';' },
-  { label: 'Tab', value: '\t' }
+  { label: DETECT_AUTOMATICALLY, value: 'auto' },
+  { label: COMMA, value: ',' },
+  { label: SEMICOLON, value: ';' },
+  { label: TAB, value: '\t' }
 ];
 
 const ENCODING_OPTIONS = [
@@ -18,13 +41,13 @@ const ENCODING_OPTIONS = [
   { label: 'Windows-1252', value: 'windows-1252' }
 ];
 
-const DELIMITER_NAMES = { ',': 'comma', ';': 'semicolon', '\t': 'tab' };
+const DELIMITER_NAMES = { ',': COMMA_NAME, ';': SEMICOLON_NAME, '\t': TAB_NAME };
 
 const STEPS = [
-  { label: 'Upload', value: 'upload' },
-  { label: 'Map Fields', value: 'map' },
-  { label: 'Review', value: 'review' },
-  { label: 'Import', value: 'import' }
+  { label: STEP_UPLOAD, value: 'upload' },
+  { label: STEP_MAP_FIELDS, value: 'map' },
+  { label: STEP_REVIEW, value: 'review' },
+  { label: STEP_IMPORT, value: 'import' }
 ];
 
 /**
@@ -120,6 +143,15 @@ export default class CsvImporter extends LightningElement {
   reviewRows = [];
   reviewValid = false;
   rows = [];
+  labels = {
+    back: BACK,
+    csvFile: CSV_FILE,
+    delimiter: DELIMITER,
+    encoding: ENCODING,
+    newImport: NEW_IMPORT,
+    next: NEXT,
+    title: TITLE
+  };
   steps = STEPS;
   usedDelimiter = ',';
   buffer;
@@ -255,7 +287,7 @@ export default class CsvImporter extends LightningElement {
 
   get summary() {
     const shown = Math.min(this.rows.length, PREVIEW_ROWS);
-    return `${this.fileName}: showing ${shown} of ${this.rows.length} rows, separated by ${DELIMITER_NAMES[this.usedDelimiter]}.`;
+    return formatLabel(SUMMARY, this.fileName, shown, this.rows.length, DELIMITER_NAMES[this.usedDelimiter]);
   }
 
   async handleFileUpload(event) {
@@ -268,13 +300,13 @@ export default class CsvImporter extends LightningElement {
     this.fileName = file.name;
 
     if (file.size > this.limit(this.maxFileSizeMb, 5) * BYTES_PER_MB) {
-      this.errorMessage = `The file is larger than ${this.limit(this.maxFileSizeMb, 5)} MB.`;
+      this.errorMessage = formatLabel(FILE_TOO_LARGE, this.limit(this.maxFileSizeMb, 5));
       return;
     }
     try {
       this.buffer = await file.arrayBuffer();
     } catch (e) {
-      this.errorMessage = `The file could not be read: ${getErrorMessage(e)}`;
+      this.errorMessage = formatLabel(FILE_NOT_READ, getErrorMessage(e));
       return;
     }
     this.parse();
@@ -314,7 +346,7 @@ export default class CsvImporter extends LightningElement {
       const { headers, rows, keyField } = parseCsv(text, { delimiter: this.usedDelimiter });
       const maxRows = this.limit(this.maxRows, 10000);
       if (rows.length > maxRows) {
-        this.errorMessage = `The file has more than ${maxRows} rows.`;
+        this.errorMessage = formatLabel(TOO_MANY_ROWS, maxRows);
         return;
       }
       Object.assign(this, { headers, rows, keyField });

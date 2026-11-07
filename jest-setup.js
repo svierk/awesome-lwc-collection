@@ -14,7 +14,10 @@ registerSa11yMatcher();
 const XML_ENTITIES = { '&lt;': '<', '&gt;': '>', '&quot;': '"', '&apos;': "'", '&amp;': '&' };
 const labelsFile = readFileSync(join(__dirname, 'force-app/main/default/labels/CustomLabels.labels-meta.xml'), 'utf8');
 for (const [, label] of labelsFile.matchAll(/<labels>([\s\S]*?)<\/labels>/g)) {
-  const name = /<fullName>(.*?)<\/fullName>/.exec(label)[1];
-  const value = /<value>([\s\S]*?)<\/value>/.exec(label)[1].replace(/&(lt|gt|quot|apos|amp);/g, (e) => XML_ENTITIES[e]);
+  // Prettier may break long tags, e.g. "<value\n    >text</value>"
+  const name = /<fullName\s*>(.*?)<\/fullName\s*>/.exec(label)[1];
+  const value = /<value\s*>([\s\S]*?)<\/value\s*>/
+    .exec(label)[1]
+    .replace(/&(lt|gt|quot|apos|amp);/g, (e) => XML_ENTITIES[e]);
   jest.doMock(`@salesforce/label/c.${name}`, () => ({ default: value }), { virtual: true });
 }
