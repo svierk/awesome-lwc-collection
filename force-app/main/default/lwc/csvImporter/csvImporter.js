@@ -19,8 +19,13 @@ const ENCODING_OPTIONS = [
 
 const DELIMITER_NAMES = { ',': 'comma', ';': 'semicolon', '\t': 'tab' };
 
+const STEPS = [
+  { label: 'Upload', value: 'upload' },
+  { label: 'Map Fields', value: 'map' }
+];
+
 /**
- * Imports CSV files into Salesforce. The first step reads the file and shows a preview of its rows.
+ * Imports CSV files into Salesforce in steps: the file is read and previewed, then its columns are mapped to fields.
  * @alias CsvImporter
  * @extends LightningElement
  * @hideconstructor
@@ -28,9 +33,17 @@ const DELIMITER_NAMES = { ',': 'comma', ';': 'semicolon', '\t': 'tab' };
  * @fires CsvImporter#parsed
  *
  * @example
- * <c-csv-importer max-file-size-mb="10" max-rows="5000" onparsed={handleParsed}></c-csv-importer>
+ * <c-csv-importer import-object-api-name="Contact" max-file-size-mb="10" onparsed={handleParsed}></c-csv-importer>
  */
 export default class CsvImporter extends LightningElement {
+  /**
+   * The object the rows are imported into, e.g. 'Contact'. Without it, users enter the object in the wizard. It
+   * isn't called objectApiName, because record pages set that property to the object of the page.
+   * @type {string}
+   * @default ''
+   */
+  @api importObjectApiName = '';
+
   /**
    * The largest file in megabytes that can be read.
    * @type {number}
@@ -45,6 +58,7 @@ export default class CsvImporter extends LightningElement {
    */
   @api maxRows = 10000;
 
+  currentStep = 'upload';
   delimiter = 'auto';
   delimiterOptions = DELIMITER_OPTIONS;
   encoding = 'utf-8';
@@ -54,6 +68,7 @@ export default class CsvImporter extends LightningElement {
   headers = [];
   keyField = 'id';
   rows = [];
+  steps = STEPS;
   usedDelimiter = ',';
   buffer;
 
@@ -67,6 +82,39 @@ export default class CsvImporter extends LightningElement {
 
   get hasRows() {
     return this.rows.length > 0;
+  }
+
+  get sampleRow() {
+    return this.rows[0];
+  }
+
+  get isUploadStep() {
+    return this.currentStep === 'upload';
+  }
+
+  // the steps stay in the page while hidden, so going back doesn't lose what was entered
+  get uploadClass() {
+    return this.isUploadStep ? '' : 'slds-hide';
+  }
+
+  get mapClass() {
+    return this.isUploadStep ? 'slds-hide' : '';
+  }
+
+  get nextClass() {
+    return `slds-col_bump-left ${this.uploadClass}`;
+  }
+
+  get isNextDisabled() {
+    return !this.hasRows;
+  }
+
+  handleNext() {
+    this.currentStep = 'map';
+  }
+
+  handleBack() {
+    this.currentStep = 'upload';
   }
 
   get summary() {

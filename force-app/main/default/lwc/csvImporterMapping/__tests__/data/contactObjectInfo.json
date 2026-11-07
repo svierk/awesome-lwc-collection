@@ -1,0 +1,12 @@
+{
+  "apiName": "Contact",
+  "label": "Contact",
+  "fields": {
+    "FirstName": { "apiName": "FirstName", "label": "First Name", "createable": true },
+    "LastName": { "apiName": "LastName", "label": "Last Name", "createable": true },
+    "Email": { "apiName": "Email", "label": "Email", "createable": true },
+    "Phone": { "apiName": "Phone", "label": "Business Phone", "createable": true },
+    "Name": { "apiName": "Name", "label": "Full Name", "createable": false },
+    "Score__c": { "apiName": "Score__c", "label": "Rating", "createable": true }
+  }
+}
