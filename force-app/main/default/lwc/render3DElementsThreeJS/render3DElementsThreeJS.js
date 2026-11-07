@@ -19,6 +19,7 @@ const ROTATION_SPEED = 0.01;
  *   enable-controls
  *   background-color="#f3f3f3"
  *   height="500px"
+ *   show-card
  * ></c-render3-d-elements-three-j-s>
  */
 export default class Render3DElementsThreeJS extends LightningElement {
@@ -28,6 +29,23 @@ export default class Render3DElementsThreeJS extends LightningElement {
    * @default ''
    */
   @api backgroundColor = '';
+
+  /**
+   * If show card option is active, the card icon is displayed in the header before the card title.
+   * It should contain the SLDS name of the icon.
+   * Specify the name in the format 'utility:down' where 'utility' is the category and 'down' the icon to be displayed.
+   * @type {string}
+   * @default 'custom:custom57'
+   * @example 'custom:custom57'
+   */
+  @api cardIcon = 'custom:custom57';
+
+  /**
+   * If show card option is active, the card title can include text and is displayed in the header above the viewer.
+   * @type {string}
+   * @default '3D Viewer'
+   */
+  @api cardTitle = '3D Viewer';
 
   /**
    * If present, the model doesn't rotate on its own.
@@ -58,10 +76,25 @@ export default class Render3DElementsThreeJS extends LightningElement {
    */
   @api modelUrl = '';
 
+  /**
+   * If present, the viewer is wrapped in a lightning card to fit better into the overall page layout.
+   * @type {boolean}
+   * @default false
+   */
+  @api showCard = false;
+
   errorMessage = '';
 
   get containerStyle() {
     return `height: ${this.height}`;
+  }
+
+  get cardClass() {
+    return this.showCard ? 'slds-card' : '';
+  }
+
+  get cardBodyClass() {
+    return this.showCard ? 'slds-card__body slds-card__body_inner' : '';
   }
 
   connectedCallback() {
@@ -99,6 +132,8 @@ export default class Render3DElementsThreeJS extends LightningElement {
 
     if (this.enableControls) {
       this.controls = new THREE.OrbitControls(camera, renderer.domElement);
+      // a hand shows that the model can be turned, and closes while it is dragged
+      this.controls.cursorStyle = 'grab';
     }
     if (this.modelUrl) {
       this.loadModel();

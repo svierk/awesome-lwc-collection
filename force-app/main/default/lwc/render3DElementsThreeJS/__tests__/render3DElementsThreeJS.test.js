@@ -103,6 +103,23 @@ describe('c-render3-d-elements-three-j-s', () => {
     expect(container().querySelector('canvas')).toBe(mocks.renderer.domElement);
     expect(THREE.GLTFLoader).not.toHaveBeenCalled();
     expect(THREE.OrbitControls).not.toHaveBeenCalled();
+    expect(element.shadowRoot.querySelector('.slds-card')).toBeNull();
+    await expect(element).toBeAccessible();
+  });
+
+  it.each([
+    ['the default icon and title', {}, 'custom:custom57', '3D Viewer'],
+    ['a custom icon and title', { cardIcon: 'standard:product', cardTitle: 'Product' }, 'standard:product', 'Product'],
+    ['no title', { cardTitle: '' }, 'custom:custom57', undefined]
+  ])('should wrap the viewer in a card with %s', async (_label, props, icon, title) => {
+    // when
+    await mount({ showCard: true, ...props });
+
+    // then
+    const card = element.shadowRoot.querySelector('.slds-card');
+    expect(card.querySelector('lightning-icon').iconName).toBe(icon);
+    expect(card.querySelector('.slds-card__header-title')?.textContent.trim()).toBe(title);
+    expect(card.querySelector('.slds-card__body .container canvas')).toBe(mocks.renderer.domElement);
     await expect(element).toBeAccessible();
   });
 
@@ -141,6 +158,7 @@ describe('c-render3-d-elements-three-j-s', () => {
     // then
     expect(mocks.scene.background).toEqual({ value: '#f3f3f3' });
     expect(THREE.OrbitControls).toHaveBeenCalledWith(mocks.camera, mocks.renderer.domElement);
+    expect(mocks.controls.cursorStyle).toBe('grab');
     expect(mocks.controls.update).toHaveBeenCalled();
     expect(mocks.crate.rotation).toEqual({ x: 0, y: 0 });
   });

@@ -45,6 +45,27 @@
         description="Stop the model from rotating on its own."
         default="false"
       />
+        <property
+        name="showCard"
+        type="Boolean"
+        label="Show Lightning Card"
+        description="If present, the viewer is wrapped in a lightning card to fit better into the overall page layout."
+        default="false"
+      />
+        <property
+        name="cardIcon"
+        type="String"
+        label="Card Icon"
+        description="If show card option is active, the card icon is displayed in the header before the card title. It should contain the SLDS name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category and 'down' the icon to be displayed."
+        default="custom:custom57"
+      />
+        <property
+        name="cardTitle"
+        type="String"
+        label="Card Title"
+        description="If show card option is active, the card title can include text and is displayed in the header above the viewer."
+        default="3D Viewer"
+      />
       </targetConfig>
     </targetConfigs>
 </LightningComponentBundle>

@@ -1,10 +1,20 @@
 <template>
-  <lightning-card title="3D Elements Demo (Three.js)" icon-name="custom:custom57">
-    <div lwc:if={errorMessage} class="slds-var-p-horizontal_medium slds-m-bottom_small">
-      <c-error-alert message={errorMessage}></c-error-alert>
+  <div class={cardClass}>
+    <div lwc:if={showCard} class="slds-card__header slds-grid">
+      <header class="slds-media slds-media_center slds-has-flexi-truncate">
+        <div class="slds-media__figure">
+          <lightning-icon icon-name={cardIcon} size="small"></lightning-icon>
+        </div>
+        <div class="slds-media__body">
+          <h2 lwc:if={cardTitle} class="slds-card__header-title">
+            <span class="slds-truncate" title={cardTitle}>{cardTitle}</span>
+          </h2>
+        </div>
+      </header>
     </div>
-    <div class="slds-var-p-horizontal_medium">
+    <div class={cardBodyClass}>
+      <c-error-alert lwc:if={errorMessage} class="slds-show slds-m-bottom_small" message={errorMessage}></c-error-alert>
       <div class="container" style={containerStyle} lwc:dom="manual"></div>
     </div>
-  </lightning-card>
+  </div>
 </template>
