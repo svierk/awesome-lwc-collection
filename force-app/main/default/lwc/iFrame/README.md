@@ -41,3 +41,11 @@ Wrap it in a Lightning Card to match the cards around it on a page:
 ```
 
 Note that the target site must allow itself to be embedded in an iframe (X-Frame-Options / frame-ancestors). All attributes are also configurable in the Lightning App Builder, so no code is required to use the component.
+
+## Custom Labels
+
+The texts users see are Custom Labels, so they can be translated in Setup with the Translation Workbench. Copy them together with the component.
+
+| Name              | Value  |
+| ----------------- | ------ |
+| IFrame_FrameTitle | iFrame |

@@ -57,6 +57,30 @@ Or pass your own hierarchy:
 | ---------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | nodeselect | `{ record }` - the record of the clicked node | Fired whenever a node in the chart is clicked, so a parent component can react to the selection. It is cancelable: `preventDefault()` keeps a loaded record from opening. |
 
+## Custom Labels
+
+The texts users see are Custom Labels, so they can be translated in Setup with the Translation Workbench. Copy them together with the component.
+
+| Name                             | Value                                 |
+| -------------------------------- | ------------------------------------- |
+| ErrorAlert_Error                 | Error                                 |
+| ErrorUtils_UnknownError          | Unknown error                         |
+| OrgChartViewer_CollapseAll       | Collapse All                          |
+| OrgChartViewer_ExpandAll         | Expand All                            |
+| OrgChartViewer_ExportPng         | Export PNG                            |
+| OrgChartViewer_FitToScreen       | Fit to Screen                         |
+| OrgChartViewer_LibraryNotLoaded  | Failed to load chart library: {0}     |
+| OrgChartViewer_Loading           | Loading the org chart...              |
+| OrgChartViewer_NodeCount         | Showing {0} of {1} nodes              |
+| OrgChartViewer_NoRecords         | No records found.                     |
+| OrgChartViewer_OnlyFirstRecords  | Only the first {0} records are shown. |
+| OrgChartViewer_OpenRecord        | Open {0}                              |
+| OrgChartViewer_RecordsNotLoaded  | The records could not be loaded: {0}  |
+| OrgChartViewer_Search            | Search                                |
+| OrgChartViewer_SearchPlaceholder | Search by name...                     |
+| OrgChartViewer_Title             | Org Chart Viewer                      |
+| OrgChartViewer_Unknown           | Unknown                               |
+
 ## Component Dependencies
 
 | Name       | Type            | Description                                                                                   |
@@ -64,3 +88,4 @@ Or pass your own hierarchy:
 | d3orgchart | Static Resource | d3 v7 + d3-flextree + d3-org-chart - Libraries for rendering interactive organization charts. |
 | errorAlert | LWC             | Inline alert that shows error messages to the user.                                           |
 | errorUtils | LWC             | Shared functions to read error messages and show error toasts.                                |
+| labelUtils | LWC             | Shared function to fill the placeholders of Custom Labels.                                    |

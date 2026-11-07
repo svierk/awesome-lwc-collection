@@ -30,3 +30,12 @@ A simple utility for Base64 encoded strings to decode and download them as PDF f
 ```
 
 The content is offered as a PDF download. Without the `base64` attribute, the component offers an example file (see `example.js`). If `base64` is set but empty, for example while your data is loading, it offers no download at all.
+
+## Custom Labels
+
+The texts users see are Custom Labels, so they can be translated in Setup with the Translation Workbench. Copy them together with the component.
+
+| Name                 | Value             |
+| -------------------- | ----------------- |
+| Base64ToPdf_Download | Download PDF File |
+| Base64ToPdf_Title    | Base64 To PDF     |

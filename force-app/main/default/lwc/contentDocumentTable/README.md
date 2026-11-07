@@ -44,6 +44,25 @@ A generic table to show shared documents from a Salesforce Files library.
 
 All attributes are also configurable in the Lightning App Builder, so no code is required to use the component.
 
+## Custom Labels
+
+The texts users see are Custom Labels, so they can be translated in Setup with the Translation Workbench. Copy them together with the component.
+
+| Name                                      | Value                  |
+| ----------------------------------------- | ---------------------- |
+| ContentDocumentTable_Created              | Created                |
+| ContentDocumentTable_Delete               | Delete                 |
+| ContentDocumentTable_Download             | Download               |
+| ContentDocumentTable_ErrorDeletingFile    | Error deleting file    |
+| ContentDocumentTable_ErrorDownloadingFile | Error downloading file |
+| ContentDocumentTable_FileDeleted          | File deleted           |
+| ContentDocumentTable_Loading              | Loading                |
+| ContentDocumentTable_Size                 | Size                   |
+| ContentDocumentTable_Success              | Success                |
+| ContentDocumentTable_Title                | Title                  |
+| ContentDocumentTable_View                 | View                   |
+| ErrorUtils_UnknownError                   | Unknown error          |
+
 ## Component Dependencies
 
 | Name                          | Type | Description                                                                                   |

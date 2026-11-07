@@ -58,6 +58,35 @@ A basic custom datatable with different configuration options.
 
 The displayed columns are driven by a field set on the object, so the table can be reconfigured without code changes. All attributes are also configurable in the Lightning App Builder, so no code is required to use the component.
 
+## Custom Labels
+
+The texts users see are Custom Labels, so they can be translated in Setup with the Translation Workbench. Copy them together with the component.
+
+| Name                                 | Value                          |
+| ------------------------------------ | ------------------------------ |
+| CustomDatatable_Delete               | Delete                         |
+| CustomDatatable_ErrorDeletingRecord  | Error deleting record          |
+| CustomDatatable_ErrorDeletingRecords | Error deleting records         |
+| CustomDatatable_ErrorLoadingRecords  | Error loading records          |
+| CustomDatatable_ErrorUpdatingRecords | Error updating records         |
+| CustomDatatable_Loading              | Loading                        |
+| CustomDatatable_Page                 | Page {0} of {1}                |
+| CustomDatatable_RecordCount          | Showing {0}–{1} of {2} records |
+| CustomDatatable_RecordDeleted        | Record deleted                 |
+| CustomDatatable_RecordsDeleted       | Records deleted                |
+| CustomDatatable_RecordsUpdated       | Records updated                |
+| CustomDatatable_Search               | Search                         |
+| CustomDatatable_SearchPlaceholder    | Search all fields...           |
+| CustomDatatable_Success              | Success                        |
+| DatatablePagination_First            | First                          |
+| DatatablePagination_Last             | Last                           |
+| DatatablePagination_Next             | Next                           |
+| DatatablePagination_Previous         | Previous                       |
+| DatatableUtils_Delete                | Delete                         |
+| DatatableUtils_Edit                  | Edit                           |
+| DatatableUtils_View                  | View                           |
+| ErrorUtils_UnknownError              | Unknown error                  |
+
 ## Component Dependencies
 
 | Name                    | Type | Description                                                                            |
@@ -69,3 +98,4 @@ The displayed columns are driven by a field set on the object, so the table can 
 | CustomDatatableUtil     | Apex | Controller class for handling the columns configuration and data provisioning.         |
 | CustomDatatableUtilTest | Apex | Test class for CustomDatatableUtil.                                                    |
 | errorUtils              | LWC  | Shared functions to read error messages and show error toasts.                         |
+| labelUtils              | LWC  | Shared function to fill the placeholders of Custom Labels.                             |

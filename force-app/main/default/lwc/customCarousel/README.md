@@ -95,8 +95,34 @@ In a Flow screen, pass the record Id to the Record ID input.
 - With auto-scroll, a play/pause button next to the dots stops and starts the slide show. The slide show pauses while the mouse is over the carousel, and it stops when the keyboard focus moves into it, until the user starts it again.
 - Screen readers announce the carousel as a carousel and each slide with its position, e.g. "2 of 3". When the user switches slides, the new slide is announced; automatic changes are not.
 
+## Custom Labels
+
+The texts users see are Custom Labels, so they can be translated in Setup with the Translation Workbench. Copy them together with the component.
+
+| Name                                   | Value                                                                        |
+| -------------------------------------- | ---------------------------------------------------------------------------- |
+| CustomCarousel_Announcement            | Slide {0} of {1}                                                             |
+| CustomCarousel_AnnouncementWithHeading | Slide {0} of {1}: {2}                                                        |
+| CustomCarousel_Carousel                | carousel                                                                     |
+| CustomCarousel_ImageCarousel           | Image carousel                                                               |
+| CustomCarousel_ImagesNotLoaded         | The images of this record could not be loaded: {0}                           |
+| CustomCarousel_InvalidSlides           | The slides could not be displayed because the slides data is not valid JSON. |
+| CustomCarousel_LearnMore               | Learn more                                                                   |
+| CustomCarousel_NextSlide               | Next slide                                                                   |
+| CustomCarousel_NoImages                | No images are attached to this record.                                       |
+| CustomCarousel_PreviousSlide           | Previous slide                                                               |
+| CustomCarousel_ShowSlide               | Show slide {0}                                                               |
+| CustomCarousel_Slide                   | slide                                                                        |
+| CustomCarousel_SlidePosition           | {0} of {1}                                                                   |
+| CustomCarousel_StartSlideShow          | Start automatic slide show                                                   |
+| CustomCarousel_StopSlideShow           | Stop automatic slide show                                                    |
+| ErrorAlert_Error                       | Error                                                                        |
+| ErrorUtils_UnknownError                | Unknown error                                                                |
+
 ## Component Dependencies
 
-| Name       | Type | Description                                         |
-| ---------- | ---- | --------------------------------------------------- |
-| errorAlert | LWC  | Inline alert that shows error messages to the user. |
+| Name       | Type | Description                                                    |
+| ---------- | ---- | -------------------------------------------------------------- |
+| errorAlert | LWC  | Inline alert that shows error messages to the user.            |
+| errorUtils | LWC  | Shared functions to read error messages and show error toasts. |
+| labelUtils | LWC  | Shared function to fill the placeholders of Custom Labels.     |

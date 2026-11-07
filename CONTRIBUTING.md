@@ -47,10 +47,12 @@ New components are welcome when they cover a distinct, reusable need. A componen
   - a `## Usage` section with an ` ```html ` snippet embedding the component tag,
   - a `## Attributes` table covering all `@api` properties (if the component has any),
   - a `## Events` table covering all dispatched custom events (if the component fires any),
+  - a `## Custom Labels` table listing the labels the component and its LWC dependencies use, with their values,
   - any component/Apex dependencies.
 
   `npm run lint:readme` verifies these conventions against the component source and also runs in CI.
 
+- **Custom Labels** for every text users see, so it can be translated in an org: one label per text in [`CustomLabels.labels-meta.xml`](force-app/main/default/labels/CustomLabels.labels-meta.xml), named `<ComponentName>_<Text>` (e.g. `CsvImporter_Next`) with the component name as category. Texts with values become one label with placeholders, e.g. `Showing {0} of {1} rows`, filled by `formatLabel` from `c/labelUtils`. Texts admins set through `@api` properties stay properties. In Jest tests, every label has its English value.
 - **Visible errors.** Read messages with `getErrorMessage` from `c/errorUtils`. Show `c-error-alert` inline if the error makes the component unusable, and a toast through `showErrorToast` if only an action failed.
 - **Unit tests** in a `__tests__/` folder using [sfdx-lwc-jest](https://github.com/salesforce/sfdx-lwc-jest), including an accessibility assertion via `await expect(element).toBeAccessible()`.
 - **A category** entry for the component in [`scripts/docs/site.config.json`](scripts/docs/site.config.json) so it is grouped correctly in the catalog sidebar (uncategorized components fall back to an "Other" group).

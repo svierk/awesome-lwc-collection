@@ -32,6 +32,29 @@ A simple component that makes use of the Media Capture and Streams API to allow 
 
 The component is self-contained: it asks for camera access, takes a photo and updates the profile picture of the current user. To use the camera for something else, see Camera Capture.
 
+## Custom Labels
+
+The texts users see are Custom Labels, so they can be translated in Setup with the Translation Workbench. Copy them together with the component.
+
+| Name                                     | Value                                                                            |
+| ---------------------------------------- | -------------------------------------------------------------------------------- |
+| CameraCapture_CapturePhoto               | Capture Photo                                                                    |
+| CameraCapture_Error                      | Error                                                                            |
+| CameraCapture_ErrorAccessingCamera       | Error accessing camera                                                           |
+| CameraCapture_NotSupported               | getUserMedia is not supported in this browser                                    |
+| CameraCapture_StartCamera                | Start Camera                                                                     |
+| CameraCapture_StopCamera                 | Stop Camera                                                                      |
+| ErrorUtils_UnknownError                  | Unknown error                                                                    |
+| TakeUserProfilePicture_CapturePhoto      | Capture Photo                                                                    |
+| TakeUserProfilePicture_ErrorSaving       | Error saving the profile picture                                                 |
+| TakeUserProfilePicture_NewProfilePreview | Preview of the new profile                                                       |
+| TakeUserProfilePicture_StartCamera       | Start Camera                                                                     |
+| TakeUserProfilePicture_StopCamera        | Stop Camera                                                                      |
+| TakeUserProfilePicture_Success           | Success                                                                          |
+| TakeUserProfilePicture_Title             | Take User Profile Picture                                                        |
+| TakeUserProfilePicture_Updated           | Profile picture has been updated, it takes some time until the change is visible |
+| TakeUserProfilePicture_UpdateProfile     | Update Profile Picture                                                           |
+
 ## Component Dependencies
 
 | Name                             | Type | Description                                                    |
