@@ -35,7 +35,7 @@ A custom datatable powered by the GraphQL wire adapter (`lightning/graphql`) ins
 | max-column-width                | number  | 1000    | The maximum width for all columns. The default is 1000px.                                                                                                                                                                                                      |
 | max-row-selection               | number  | 50      | The maximum number of rows that can be selected. Checkboxes are used for selection by default, and radio buttons are used when maxRowSelection is 1.                                                                                                           |
 | min-column-width                | number  | 50      | The minimum width for all columns. The default is 50px.                                                                                                                                                                                                        |
-| object-api-name                 | string  | ''      | API name of the object that will be displayed in the table.                                                                                                                                                                                                    |
+| table-object-api-name           | string  | ''      | API name of the object that will be displayed in the table.                                                                                                                                                                                                    |
 | page-size                       | number  | 10      | The number of records displayed per page when pagination is enabled. The default is 10.                                                                                                                                                                        |
 | read-only                       | boolean | false   | If present, then all datatable fields are not editable.                                                                                                                                                                                                        |
 | resize-column-disabled          | boolean | false   | If present, column resizing is disabled.                                                                                                                                                                                                                       |
@@ -53,7 +53,7 @@ A custom datatable powered by the GraphQL wire adapter (`lightning/graphql`) ins
 
 ```html
 <c-graphql-datatable
-  object-api-name="Contact"
+  table-object-api-name="Contact"
   fields="Name,Email,Phone"
   show-card
   card-title="Contacts"

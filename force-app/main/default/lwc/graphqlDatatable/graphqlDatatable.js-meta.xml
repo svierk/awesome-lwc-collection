@@ -13,7 +13,7 @@
     <targetConfigs>
       <targetConfig targets="lightning__AppPage, lightning__FlowScreen, lightning__HomePage, lightning__RecordPage">
       <property
-        name="objectApiName"
+        name="tableObjectApiName"
         label="Object API Name"
         type="String"
         description="API name of the object that will be displayed in the table."

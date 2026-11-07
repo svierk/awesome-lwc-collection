@@ -46,7 +46,7 @@ const RAW_VALUE_DATA_TYPES = new Set(['Date', 'DateTime', 'Currency', 'Percent',
  *
  * @example
  * <c-graphql-datatable
- *   object-api-name="Contact"
+ *   table-object-api-name="Contact"
  *   fields="Name,Email,Phone"
  *   enable-pagination
  *   page-size="25"
@@ -68,7 +68,6 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   @api maxColumnWidth = 1000;
   @api maxRowSelection = 50;
   @api minColumnWidth = 50;
-  @api objectApiName = '';
   @api pageSize = 10;
   @api readOnly = false;
   @api resizeColumnDisabled = false;
@@ -80,6 +79,8 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   @api showRowNumberColumn = false;
   @api showViewRowAction = false;
   @api suppressBottomBar = false;
+  // not called objectApiName, because record pages set that property to the object of the page
+  @api tableObjectApiName = '';
   @api whereConditions = '';
 
   @track columns = [];
@@ -109,7 +110,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
       : [];
   }
 
-  @wire(getObjectInfo, { objectApiName: '$objectApiName' })
+  @wire(getObjectInfo, { objectApiName: '$tableObjectApiName' })
   wiredObjectInfo({ data }) {
     if (data) {
       this._objectInfo = data;
@@ -142,7 +143,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
         column.typeAttributes = {
           disabled: !isEditable,
           fieldName,
-          objectName: this.objectApiName,
+          objectName: this.tableObjectApiName,
           recordId: { fieldName: 'Id' }
         };
       }
@@ -168,7 +169,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
   }
 
   get graphqlQuery() {
-    if (!this.objectApiName || !this.fieldList.length) return undefined;
+    if (!this.tableObjectApiName || !this.fieldList.length) return undefined;
     const fieldNodes = this.fieldList.map((f) => `${f} { value displayValue }`).join('\n            ');
     const firstVal = this.enablePagination ? this.pageSize : 2000;
     // the pagination cursor is never part of the query string either, it is passed as variable
@@ -182,7 +183,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
       .join(', ');
     const operation = variableDeclarations ? `query getRecords(${variableDeclarations})` : 'query';
     const queryString = `${operation} { uiapi { query {
-      ${this.objectApiName}(first: ${firstVal}${afterParam}${whereClause}${orderByClause}) {
+      ${this.tableObjectApiName}(first: ${firstVal}${afterParam}${whereClause}${orderByClause}) {
         edges { node { Id ${fieldNodes} } }
         totalCount
         pageInfo { hasNextPage endCursor }
@@ -226,7 +227,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     this._graphqlRefresh = refresh;
     if (data) {
       if (!this._navigatingToLast) this.isLoading = false;
-      const queryResult = data.uiapi.query[this.objectApiName];
+      const queryResult = data.uiapi.query[this.tableObjectApiName];
       this._totalRecordCount = queryResult.totalCount;
       this.records = queryResult.edges.map(({ node }) => {
         const record = { Id: node.Id };
@@ -383,7 +384,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
       query: gql`
         mutation DeleteRecord($input: RecordDeleteInput!) {
           uiapi {
-            ${this.objectApiName}Delete(input: $input) {
+            ${this.tableObjectApiName}Delete(input: $input) {
               Id
             }
           }
@@ -397,9 +398,9 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
     const { Id, ...fields } = draft;
     return executeMutation({
       query: gql`
-        mutation UpdateRecord($input: ${this.objectApiName}UpdateInput!) {
+        mutation UpdateRecord($input: ${this.tableObjectApiName}UpdateInput!) {
           uiapi {
-            ${this.objectApiName}Update(input: $input) {
+            ${this.tableObjectApiName}Update(input: $input) {
               Record {
                 Id
               }
@@ -407,7 +408,7 @@ export default class GraphqlDatatable extends NavigationMixin(LightningElement) 
           }
         }
       `,
-      variables: { input: { Id, [this.objectApiName]: fields } }
+      variables: { input: { Id, [this.tableObjectApiName]: fields } }
     });
   }
 
