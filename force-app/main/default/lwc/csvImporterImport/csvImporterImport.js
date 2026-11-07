@@ -164,7 +164,7 @@ export default class CsvImporterImport extends LightningElement {
      * @event CsvImporterImport#importfinish
      * @type {CustomEvent}
      * @property {Object} detail - created, updated and failed: the number of rows; recordIds: the ids of the saved
-     * records
+     * records; createdRecordIds: the ids of the new records
      */
     this.dispatchEvent(
       new CustomEvent('importfinish', {
@@ -172,7 +172,8 @@ export default class CsvImporterImport extends LightningElement {
           created: this.results.filter((result) => result.created).length,
           updated: this.results.filter((result) => result.success && !result.created).length,
           failed: this.failures.length,
-          recordIds: this.results.filter((result) => result.success).map((result) => result.recordId)
+          recordIds: this.results.filter((result) => result.success).map((result) => result.recordId),
+          createdRecordIds: this.results.filter((result) => result.created).map((result) => result.recordId)
         }
       })
     );

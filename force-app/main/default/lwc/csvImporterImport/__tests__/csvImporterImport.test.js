@@ -132,6 +132,8 @@ describe('c-csv-importer-import', () => {
     expect(events.map(([name]) => name)).toEqual(['importstart', 'importfinish']);
     expect(events[1][1]).toMatchObject({ created: 447, updated: 3, failed: 0 });
     expect(events[1][1].recordIds).toHaveLength(450);
+    expect(events[1][1].createdRecordIds).toHaveLength(447);
+    expect(events[1][1].createdRecordIds).not.toContain('00Q0');
   });
 
   it('should list the failed rows, also of a call that failed as a whole, and be accessible', async () => {

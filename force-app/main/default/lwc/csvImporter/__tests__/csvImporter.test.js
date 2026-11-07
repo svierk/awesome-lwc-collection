@@ -1,5 +1,19 @@
 import CsvImporter from 'c/csvImporter';
+import { FlowAttributeChangeEventName } from 'lightning/flowSupport';
 import { createElement } from 'lwc';
+
+// the stub of the event drops the attribute, so this one keeps it in the detail
+jest.mock('lightning/flowSupport', () => {
+  const name = 'lightning__flowattributechange';
+  return {
+    FlowAttributeChangeEventName: name,
+    FlowAttributeChangeEvent: class extends CustomEvent {
+      constructor(attribute, value) {
+        super(name, { bubbles: true, composed: true, detail: { attribute, value } });
+      }
+    }
+  };
+});
 import { TextDecoder, TextEncoder } from 'node:util';
 
 // jsdom has no text encoding API, browsers do
@@ -321,7 +335,17 @@ describe('c-csv-importer', () => {
     const onImportStep = [query('[data-id="import-step"]').className, next().className, back().className];
     await send('c-csv-importer-import', 'importstart');
     const backAfterStart = back().className;
-    await send('c-csv-importer-import', 'importfinish', { created: 1, updated: 0, failed: 0, recordIds: ['003x'] });
+    const flowChanges = {};
+    element.addEventListener(FlowAttributeChangeEventName, (event) => {
+      flowChanges[event.detail.attribute] = event.detail.value;
+    });
+    await send('c-csv-importer-import', 'importfinish', {
+      created: 1,
+      updated: 1,
+      failed: 2,
+      recordIds: ['003x', '003y'],
+      createdRecordIds: ['003x']
+    });
 
     // then
     expect(disabled).toEqual({ map: true, review: true });
@@ -342,10 +366,13 @@ describe('c-csv-importer', () => {
     expect(imported.mock.calls[0][0].detail).toEqual({
       objectApiName: 'Contact',
       created: 1,
-      updated: 0,
-      failed: 0,
-      recordIds: ['003x']
+      updated: 1,
+      failed: 2,
+      recordIds: ['003x', '003y'],
+      createdRecordIds: ['003x']
     });
+    expect(flowChanges).toEqual({ successCount: 2, failedCount: 2, createdRecordIds: ['003x'] });
+    expect([element.successCount, element.failedCount, element.createdRecordIds]).toEqual([2, 2, ['003x']]);
     await expect(element).toBeAccessible();
   });
 
@@ -364,7 +391,15 @@ describe('c-csv-importer', () => {
     await go();
     const fileInput = query('lightning-input');
     await send('c-csv-importer-import', 'importstart');
-    await send('c-csv-importer-import', 'importfinish', { created: 1, updated: 0, failed: 0, recordIds: ['00Qx'] });
+    await send('c-csv-importer-import', 'importfinish', {
+      created: 1,
+      updated: 0,
+      failed: 0,
+      recordIds: ['00Qx'],
+      createdRecordIds: ['00Qx']
+    });
+    const flowChanges = [];
+    element.addEventListener(FlowAttributeChangeEventName, (event) => flowChanges.push(event.detail.attribute));
 
     // when
     query('lightning-button[data-id="new-import"]').click();
@@ -377,6 +412,8 @@ describe('c-csv-importer', () => {
     expect([datatable(), query('c-csv-importer-mapping'), query('c-csv-importer-import')]).toEqual([null, null, null]);
     expect([next().disabled, back().className]).toEqual([true, 'slds-hide']);
     expect(query('lightning-button[data-id="new-import"]')).toBeNull();
+    expect([element.successCount, element.failedCount, element.createdRecordIds]).toEqual([0, 0, []]);
+    expect(flowChanges).toEqual(['successCount', 'failedCount', 'createdRecordIds']);
     await expect(element).toBeAccessible();
   });
 });
