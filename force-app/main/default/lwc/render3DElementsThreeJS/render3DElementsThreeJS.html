@@ -3,6 +3,8 @@
     <div lwc:if={errorMessage} class="slds-var-p-horizontal_medium slds-m-bottom_small">
       <c-error-alert message={errorMessage}></c-error-alert>
     </div>
-    <div class="container slds-var-p-horizontal_medium" lwc:dom="manual"></div>
+    <div class="slds-var-p-horizontal_medium">
+      <div class="container" style={containerStyle} lwc:dom="manual"></div>
+    </div>
   </lightning-card>
 </template>

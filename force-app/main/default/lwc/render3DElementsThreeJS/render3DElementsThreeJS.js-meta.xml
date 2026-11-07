@@ -3,11 +3,48 @@
     <apiVersion>68.0</apiVersion>
     <isExposed>true</isExposed>
     <masterLabel>Render 3D Objects (Three.js)</masterLabel>
-    <description>Render 3D objects using the JS library Three.js</description>
+    <description>3D viewer for glTF and GLB models using the JS library Three.js</description>
     <targets>
       <target>lightning__AppPage</target>
       <target>lightning__HomePage</target>
       <target>lightning__FlowScreen</target>
       <target>lightning__RecordPage</target>
     </targets>
+    <targetConfigs>
+      <targetConfig targets="lightning__AppPage,lightning__HomePage,lightning__FlowScreen,lightning__RecordPage">
+        <property
+        name="modelUrl"
+        type="String"
+        label="Model URL"
+        description="URL of a glTF or GLB model, e.g. of a static resource: /resource/carModel. Without it, the viewer shows a crate."
+      />
+        <property
+        name="height"
+        type="String"
+        label="Height"
+        description="Height of the viewer, e.g. 400px. The width follows the container."
+        default="400px"
+      />
+        <property
+        name="backgroundColor"
+        type="String"
+        label="Background Color"
+        description="Background color of the scene as a CSS color, e.g. #f3f3f3 or white. Without it, the background is black."
+      />
+        <property
+        name="enableControls"
+        type="Boolean"
+        label="Enable Controls"
+        description="Rotate the model with the mouse or touch, zoom with the wheel and move it with the right mouse button."
+        default="false"
+      />
+        <property
+        name="disableRotation"
+        type="Boolean"
+        label="Disable Rotation"
+        description="Stop the model from rotating on its own."
+        default="false"
+      />
+      </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>
