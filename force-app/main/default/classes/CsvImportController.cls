@@ -16,15 +16,64 @@ public with sharing class CsvImportController {
   @AuraEnabled
   public static List<RowResult> importRecords(String objectApiName, String recordsJson, String externalIdField) {
     Schema.DescribeSObjectResult objectDescribe = describeObject(objectApiName);
-    Map<String, Schema.SObjectField> fields = objectDescribe.fields.getMap();
-    Schema.SObjectField upsertField = String.isBlank(externalIdField) ? null : lookupField(fields, externalIdField);
+    Schema.SObjectField upsertField = String.isBlank(externalIdField)
+      ? null
+      : lookupField(objectDescribe.fields.getMap(), externalIdField);
 
-    List<Object> rows = (List<Object>) JSON.deserializeUntyped(recordsJson);
     List<RowResult> results = new List<RowResult>();
+    List<SObject> records = toRecords(recordsJson, objectDescribe, results);
+    // the rows that became records, in the same order; the others already have their message
+    List<RowResult> pending = new List<RowResult>();
+    for (RowResult result : results) {
+      if (result.message == null) {
+        pending.add(result);
+      }
+    }
+
+    if (upsertField == null) {
+      insertRecords(records, pending);
+    } else {
+      upsertRecords(records, upsertField, pending);
+    }
+    return results;
+  }
+
+  private static void insertRecords(List<SObject> records, List<RowResult> pending) {
+    Database.SaveResult[] saveResults = Database.insert(records, false, AccessLevel.USER_MODE);
+    for (Integer i = 0; i < saveResults.size(); i++) {
+      Database.SaveResult saveResult = saveResults[i];
+      if (saveResult.isSuccess()) {
+        pending[i].markCreated(saveResult.getId());
+      } else {
+        pending[i].markFailed(saveResult.getErrors());
+      }
+    }
+  }
+
+  private static void upsertRecords(List<SObject> records, Schema.SObjectField upsertField, List<RowResult> pending) {
+    Database.UpsertResult[] upsertResults = Database.upsert(records, upsertField, false, AccessLevel.USER_MODE);
+    for (Integer i = 0; i < upsertResults.size(); i++) {
+      Database.UpsertResult upsertResult = upsertResults[i];
+      if (!upsertResult.isSuccess()) {
+        pending[i].markFailed(upsertResult.getErrors());
+      } else if (upsertResult.isCreated()) {
+        pending[i].markCreated(upsertResult.getId());
+      } else {
+        pending[i].markUpdated(upsertResult.getId());
+      }
+    }
+  }
+
+  // turns the rows into records and adds a result for each row; a row that can't become a record gets its message
+  private static List<SObject> toRecords(
+    String recordsJson,
+    Schema.DescribeSObjectResult objectDescribe,
+    List<RowResult> results
+  ) {
+    Map<String, Schema.SObjectField> fields = objectDescribe.fields.getMap();
     // upserts by a field need a list of the concrete object type
     List<SObject> records = (List<SObject>) Type.forName('List<' + objectDescribe.getName() + '>').newInstance();
-    List<RowResult> pending = new List<RowResult>();
-    for (Object row : rows) {
+    for (Object row : (List<Object>) JSON.deserializeUntyped(recordsJson)) {
       RowResult result = new RowResult();
       results.add(result);
       Map<String, Object> values = (Map<String, Object>) row;
@@ -35,25 +84,12 @@ public with sharing class CsvImportController {
       } else {
         try {
           records.add(toRecord(values, objectDescribe.getName()));
-          pending.add(result);
         } catch (JSONException e) {
           result.message = e.getMessage();
         }
       }
     }
-
-    if (upsertField == null) {
-      Database.SaveResult[] saveResults = Database.insert(records, false, AccessLevel.USER_MODE);
-      for (Integer i = 0; i < saveResults.size(); i++) {
-        pending[i].applyInsert(saveResults[i]);
-      }
-    } else {
-      Database.UpsertResult[] upsertResults = Database.upsert(records, upsertField, false, AccessLevel.USER_MODE);
-      for (Integer i = 0; i < upsertResults.size(); i++) {
-        pending[i].applyUpsert(upsertResults[i]);
-      }
-    }
-    return results;
+    return records;
   }
 
   private static Schema.DescribeSObjectResult describeObject(String objectApiName) {
@@ -108,33 +144,34 @@ public with sharing class CsvImportController {
     public String message;
 
     /**
-     * @description Takes the result of an insert.
-     * @param result the save result of the record
+     * @description Marks the row as saved in a new record.
+     * @param recordId id of the new record
      */
-    public void applyInsert(Database.SaveResult result) {
-      this.success = result.isSuccess();
-      this.created = result.isSuccess();
-      this.recordId = result.getId();
-      this.message = joinMessages(result.getErrors());
+    public void markCreated(Id recordId) {
+      this.success = true;
+      this.created = true;
+      this.recordId = recordId;
     }
 
     /**
-     * @description Takes the result of an upsert.
-     * @param result the upsert result of the record
+     * @description Marks the row as saved in an existing record.
+     * @param recordId id of the updated record
      */
-    public void applyUpsert(Database.UpsertResult result) {
-      this.success = result.isSuccess();
-      this.created = result.isSuccess() && result.isCreated();
-      this.recordId = result.getId();
-      this.message = joinMessages(result.getErrors());
+    public void markUpdated(Id recordId) {
+      this.success = true;
+      this.recordId = recordId;
     }
 
-    private String joinMessages(List<Database.Error> errors) {
+    /**
+     * @description Marks the row as failed.
+     * @param errors why the record was not saved
+     */
+    public void markFailed(List<Database.Error> errors) {
       List<String> messages = new List<String>();
       for (Database.Error error : errors) {
         messages.add(error.getMessage());
       }
-      return messages.isEmpty() ? null : String.join(messages, ' ');
+      this.message = String.join(messages, ' ');
     }
   }
 }

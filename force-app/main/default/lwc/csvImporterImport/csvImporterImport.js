@@ -207,7 +207,8 @@ export default class CsvImporterImport extends LightningElement {
     const text = formatCsv([...this.headers, ERROR_COLUMN], rows, { delimiter: this.delimiter });
     const link = document.createElement('a');
     // the byte order mark makes Excel read the file as UTF-8; the importer ignores it
-    link.href = `data:text/csv;charset=utf-8,${encodeURIComponent(`\uFEFF${text}`)}`;
+    const content = `\uFEFF${text}`;
+    link.href = `data:text/csv;charset=utf-8,${encodeURIComponent(content)}`;
     link.download = `${this.fileName.replace(/\.[^.]*$/, '') || 'import'}-failed.csv`;
     link.click();
   }

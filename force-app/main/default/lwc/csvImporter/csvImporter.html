@@ -14,12 +14,15 @@
           class="slds-show slds-m-bottom_small"
           message={errorMessage}
         ></c-error-alert>
-        <lightning-input
-          type="file"
-          label="CSV file"
-          accept=".csv,.txt,text/csv"
-          onchange={handleFileUpload}
-        ></lightning-input>
+        <template for:each={fileInputKeys} for:item="key">
+          <lightning-input
+            key={key}
+            type="file"
+            label="CSV file"
+            accept=".csv,.txt,text/csv"
+            onchange={handleFileUpload}
+          ></lightning-input>
+        </template>
         <div class="slds-grid slds-gutters slds-wrap slds-m-top_small">
           <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
             <lightning-combobox
@@ -97,6 +100,14 @@
         label="Next"
         disabled={isNextDisabled}
         onclick={handleNext}
+      ></lightning-button>
+      <lightning-button
+        lwc:if={importFinished}
+        data-id="new-import"
+        class="slds-col_bump-left"
+        variant="brand"
+        label="New import"
+        onclick={handleNewImport}
       ></lightning-button>
     </div>
   </lightning-card>

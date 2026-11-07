@@ -78,6 +78,8 @@ export default class CsvImporter extends LightningElement {
   errorMessage = '';
   fileName = '';
   headers = [];
+  importCount = 0;
+  importFinished = false;
   importStarted = false;
   keyField = 'id';
   mapping = {};
@@ -167,7 +169,31 @@ export default class CsvImporter extends LightningElement {
     this.importStarted = true;
   }
 
+  // a new key renders a new file input, which also takes the same file again
+  get fileInputKeys() {
+    return [`file-${this.importCount}`];
+  }
+
+  /** Starts over with the upload, keeping the encoding and delimiter users chose. */
+  handleNewImport() {
+    this.reset();
+    Object.assign(this, {
+      buffer: undefined,
+      currentStep: 'upload',
+      fileName: '',
+      importCount: this.importCount + 1,
+      importFinished: false,
+      importStarted: false,
+      mapping: {},
+      mappingObjectApiName: undefined,
+      mappingValid: false,
+      reviewRows: [],
+      reviewValid: false
+    });
+  }
+
   handleImportFinish(event) {
+    this.importFinished = true;
     /**
      * Fired when the import is done.
      * @event CsvImporter#imported

@@ -107,7 +107,7 @@ The rows can be imported once none of them has an error.
 - The controller runs `with sharing` and in user mode, so the sharing rules, object and field permissions of the running user apply. A row that fails doesn't stop the others.
 - Lookups are not resolved by name: a lookup column needs record ids.
 
-At the end, the importer shows how many records were created and updated, and lists the failed rows with the reason. **Download failed rows** saves them as a CSV file with the delimiter of the uploaded file and an additional `Import Error` column, so they can be fixed and imported again. Going back is no longer possible once the import started, so the rows can't be imported twice by accident.
+At the end, the importer shows how many records were created and updated, and lists the failed rows with the reason. **Download failed rows** saves them as a CSV file with the delimiter of the uploaded file and an additional `Import Error` column, so they can be fixed and imported again. Going back is no longer possible once the import started, so the rows can't be imported twice by accident. **New import** starts over with the upload and keeps the chosen encoding and delimiter.
 
 ## Component Dependencies
 

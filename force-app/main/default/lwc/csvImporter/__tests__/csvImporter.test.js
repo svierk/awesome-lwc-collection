@@ -33,6 +33,20 @@ const upload = async (file) => {
   await flushPromises();
 };
 
+const next = () => query('lightning-button[data-id="next"]');
+
+const back = () => query('lightning-button[data-id="back"]');
+
+const go = async () => {
+  next().click();
+  await flushPromises();
+};
+
+const send = async (selector, name, detail) => {
+  query(selector).dispatchEvent(new CustomEvent(name, { detail }));
+  await flushPromises();
+};
+
 const choose = async (name, value) => {
   query(`lightning-combobox[data-id="${name}"]`).dispatchEvent(new CustomEvent('change', { detail: { value } }));
   await flushPromises();
@@ -260,20 +274,18 @@ describe('c-csv-importer', () => {
   it('should go to the mapping step only with rows and back again', async () => {
     // given
     element.importObjectApiName = 'Contact';
-    const next = () => query('lightning-button[data-id="next"]');
     const disabledWithoutRows = next().disabled;
     await upload(createFile('Name,Email\nJohn,john@example.com'));
 
     // when
-    next().click();
-    await flushPromises();
+    await go();
     const onMapStep = {
       step: query('lightning-progress-indicator').currentStep,
       upload: query('[data-id="upload-step"]').className,
       map: query('[data-id="map-step"]').className
     };
     const mapping = query('c-csv-importer-mapping');
-    query('lightning-button[data-id="back"]').click();
+    back().click();
     await flushPromises();
 
     // then
@@ -290,16 +302,6 @@ describe('c-csv-importer', () => {
   it('should go through the review to the import and pass on what each step needs', async () => {
     // given
     element.externalIdFieldApiName = 'Email';
-    const next = () => query('lightning-button[data-id="next"]');
-    const back = () => query('lightning-button[data-id="back"]');
-    const send = async (selector, name, detail) => {
-      query(selector).dispatchEvent(new CustomEvent(name, { detail }));
-      await flushPromises();
-    };
-    const go = async () => {
-      next().click();
-      await flushPromises();
-    };
     const imported = jest.fn();
     element.addEventListener('imported', imported);
     await upload(createFile('Name;Email\nJohn;john@example.com', 'leads.csv'));
@@ -344,6 +346,37 @@ describe('c-csv-importer', () => {
       failed: 0,
       recordIds: ['003x']
     });
+    await expect(element).toBeAccessible();
+  });
+
+  it('should start over with the upload after an import and keep the chosen encoding', async () => {
+    // given
+    await upload(createFile('Name\nJohn'));
+    await choose('encoding', 'windows-1252');
+    await go();
+    await send('c-csv-importer-mapping', 'mappingchange', {
+      objectApiName: 'Lead',
+      mapping: { Name: 'LastName' },
+      valid: true
+    });
+    await go();
+    await send('c-csv-importer-review', 'reviewchange', { rows: [{ Name: 'John' }], valid: true });
+    await go();
+    const fileInput = query('lightning-input');
+    await send('c-csv-importer-import', 'importstart');
+    await send('c-csv-importer-import', 'importfinish', { created: 1, updated: 0, failed: 0, recordIds: ['00Qx'] });
+
+    // when
+    query('lightning-button[data-id="new-import"]').click();
+    await flushPromises();
+
+    // then
+    expect(query('lightning-progress-indicator').currentStep).toBe('upload');
+    expect(query('lightning-input')).not.toBe(fileInput);
+    expect(query('lightning-combobox[data-id="encoding"]').value).toBe('windows-1252');
+    expect([datatable(), query('c-csv-importer-mapping'), query('c-csv-importer-import')]).toEqual([null, null, null]);
+    expect([next().disabled, back().className]).toEqual([true, 'slds-hide']);
+    expect(query('lightning-button[data-id="new-import"]')).toBeNull();
     await expect(element).toBeAccessible();
   });
 });

@@ -46,7 +46,8 @@ private class CsvImportControllerTest {
     String recordsJson = JSON.serialize(
       new List<Object>{
         new Map<String, Object>{ 'Email' => 'existing@example.com', 'Title' => 'CEO' },
-        new Map<String, Object>{ 'Email' => 'new@example.com', 'LastName' => 'New' }
+        new Map<String, Object>{ 'Email' => 'new@example.com', 'LastName' => 'New' },
+        new Map<String, Object>{ 'Email' => 'nameless@example.com' }
       }
     );
 
@@ -63,6 +64,8 @@ private class CsvImportControllerTest {
     Assert.areEqual('CEO', [SELECT Title FROM Contact WHERE LastName = 'Existing'].Title, 'The title should be set.');
     Assert.isTrue(results[1].success && results[1].created, 'The new contact should be created.');
     Assert.isNull(results[1].message, 'A saved row should have no message.');
+    Assert.isFalse(results[2].success, 'A new contact without a last name should fail.');
+    Assert.isTrue(results[2].message.contains('LastName'), 'The message should name the missing field.');
   }
 
   @IsTest
