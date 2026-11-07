@@ -48,13 +48,14 @@ Or pass your own hierarchy:
 - The chart needs one root. Records whose parent isn't loaded are roots; several roots get a shared top node named after the object, e.g. "Users". Records that can't be reached from a root, like those in a cycle, are left out.
 - At most 2000 records are loaded; if there are more, the chart says so. Set a Root Record Id to show a part of a larger hierarchy.
 - While the records load, a spinner shows; without records the chart says so, and errors are shown above it.
+- A click on a loaded record, or Enter when it has the keyboard focus, opens its record page; the shared top node, the demo data and records set from outside don't navigate.
 - Images are shown only from `https://` or relative URLs. The PNG export shows the initials instead, because Salesforce doesn't allow reading images from its file domain for the export.
 
 ## Events
 
-| Name       | Detail                                        | Description                                                                                      |
-| ---------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| nodeselect | `{ record }` - the record of the clicked node | Fired whenever a node in the chart is clicked, so a parent component can react to the selection. |
+| Name       | Detail                                        | Description                                                                                                                                                               |
+| ---------- | --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| nodeselect | `{ record }` - the record of the clicked node | Fired whenever a node in the chart is clicked, so a parent component can react to the selection. It is cancelable: `preventDefault()` keeps a loaded record from opening. |
 
 ## Component Dependencies
 

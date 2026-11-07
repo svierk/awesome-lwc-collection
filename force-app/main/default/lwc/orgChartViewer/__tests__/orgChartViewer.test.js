@@ -1,5 +1,6 @@
 import OrgChartViewer from 'c/orgChartViewer';
 import { gql, graphql } from 'lightning/graphql';
+import { getNavigateCalledWith } from 'lightning/navigation';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { createElement } from 'lwc';
 
@@ -246,6 +247,7 @@ describe('c-org-chart-viewer', () => {
 
     // then
     expect(handler.mock.calls.map(([event]) => event.detail)).toEqual([{ record }, { record: rawRecord }]);
+    expect(getNavigateCalledWith().pageReference).toBeUndefined();
   });
 
   it('should render both schemas with initials and highlight styling, and escape untrusted values', async () => {
@@ -298,21 +300,7 @@ describe('c-org-chart-viewer', () => {
     expect([nodeWidth(), nodeHeight(), childrenMargin()]).toEqual([220, 80, 50]);
   });
 
-  it('should expose records through the public api getter and fall back to an empty array', () => {
-    // given
-    const records = [{ id: 'a', parentId: null, name: 'Custom Root' }];
-
-    // when
-    element.records = records;
-    const exposed = element.records;
-    element.records = null;
-
-    // then
-    expect(exposed).toEqual(records);
-    expect(element.records).toEqual([]);
-  });
-
-  it('should update the chart and node count label when records are set after the initial render', async () => {
+  it('should update the chart, the node count and the records getter when records are set after rendering', async () => {
     // given
     await mount();
     chart.data.mockClear();
@@ -327,6 +315,9 @@ describe('c-org-chart-viewer', () => {
     expect(chart.data).toHaveBeenCalledWith([{ id: 'a', parentId: null, name: 'Custom Root' }]);
     expect(chart.render).toHaveBeenCalled();
     expect(nodeCountLabel()).toBe('Showing 1 of 1 nodes');
+    expect(element.records).toEqual([{ id: 'a', parentId: null, name: 'Custom Root' }]);
+    element.records = null;
+    expect(element.records).toEqual([]);
   });
 
   it('should update the node count label when a node is expanded or collapsed directly in the chart', async () => {
@@ -387,18 +378,21 @@ describe('c-org-chart-viewer', () => {
     expect(chart.data.mock.calls.at(-1)[0][0].name).toBe(rootName);
   });
 
-  it('should update the chart when the records are loaded again', async () => {
+  it('should say when there are more records and update the chart when the records are loaded again', async () => {
     // given - record pages set objectApiName to the object of the page
     Object.assign(element, { ...contacts, objectApiName: 'Account' });
     await mount();
-    emitContacts(hierarchy);
+    emitContacts(hierarchy, true);
     await flushPromises();
+    const moreRecords = query('[data-id="more-records"]').textContent.trim();
 
     // when - without object info this time
     graphql.emit({ uiapi: { query: { Contact: { edges: [contact('A', null, 'Ann Lee')] } } } });
     await flushPromises();
 
     // then
+    expect(moreRecords).toBe('Only the first 2000 records are shown.');
+    expect(query('[data-id="more-records"]')).toBeNull();
     expect(global.d3.OrgChart).toHaveBeenCalledTimes(1);
     expect(chart.data.mock.calls.at(-1)[0]).toEqual([
       { id: 'A', parentId: null, name: 'Ann Lee', title: null, imageUrl: null }
@@ -428,19 +422,6 @@ describe('c-org-chart-viewer', () => {
     expect(global.d3.OrgChart).not.toHaveBeenCalled();
     expect(query('lightning-spinner')).toBeNull();
     await expect(element).toBeAccessible();
-  });
-
-  it('should say when there are more records than were loaded', async () => {
-    // given
-    Object.assign(element, contacts);
-    await mount();
-
-    // when
-    emitContacts([contact('A', null, 'Ann Lee')], true);
-    await flushPromises();
-
-    // then
-    expect(query('[data-id="more-records"]').textContent.trim()).toBe('Only the first 2000 records are shown.');
   });
 
   it.each([
@@ -475,5 +456,39 @@ describe('c-org-chart-viewer', () => {
     expect(photoNode()).toContain('<img src="/photo"');
     expect(result).toBe('data:image/png;base64,x');
     expect(chart.render.mock.calls.length).toBeGreaterThanOrEqual(3);
+  });
+
+  const opened = { type: 'standard__recordPage', attributes: { recordId: 'B', actionName: 'view' } };
+
+  it.each([
+    ['a click on a loaded record opens it', 'B', 'click', opened],
+    ['Enter on a loaded record opens it', 'B', 'Enter', opened],
+    ['another key leaves it to the chart', 'B', 'Tab', undefined],
+    ['a click on the shared root opens nothing', 'org-chart-root', 'click', undefined],
+    ['a parent can cancel the navigation', 'B', 'cancel', undefined]
+  ])('should handle nodes so that %s', async (_label, id, action, expected) => {
+    // given
+    Object.assign(element, contacts);
+    await mount();
+    emitContacts(hierarchy);
+    await flushPromises();
+    element.addEventListener('nodeselect', (event) => action === 'cancel' && event.preventDefault());
+    const node = chart.data.mock.calls.at(-1)[0].find((record) => record.id === id);
+    const html = chart.callbacks.nodeContent({ data: node, width: 220, height: 80 });
+
+    // when - keys go to the rendered node inside the chart container
+    if (['click', 'cancel'].includes(action)) {
+      chart.callbacks.onNodeClick({ data: node });
+    } else {
+      const link = Object.assign(document.createElement('div'), { tabIndex: 0 });
+      link.dataset.recordId = id;
+      query('[data-id="chart-container"]').appendChild(link);
+      link.dispatchEvent(new KeyboardEvent('keydown', { key: action, bubbles: true }));
+    }
+
+    // then
+    expect(getNavigateCalledWith().pageReference).toEqual(expected);
+    expect(html.includes('cursor:pointer')).toBe(id === 'B');
+    expect(html.includes('tabindex="0" role="link" aria-label="Open Name B" data-record-id="B"')).toBe(id === 'B');
   });
 });

@@ -1,6 +1,7 @@
 import d3orgchart from '@salesforce/resourceUrl/d3orgchart';
 import { getErrorMessage } from 'c/errorUtils';
 import { graphql } from 'lightning/graphql';
+import { NavigationMixin } from 'lightning/navigation';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { LightningElement, api, wire } from 'lwc';
 import { buildQuery, isApiName, MAX_RECORDS, safeImageUrl, toChartRecords, toTree } from './orgChartData';
@@ -64,7 +65,7 @@ function getNodeName(record) {
  * <c-org-chart-viewer records={employees} onnodeselect={handleNodeSelect}></c-org-chart-viewer>
  * <c-org-chart-viewer chart-object-api-name="User" parent-field-api-name="ManagerId" title-field="Title"></c-org-chart-viewer>
  */
-export default class OrgChartViewer extends LightningElement {
+export default class OrgChartViewer extends NavigationMixin(LightningElement) {
   /**
    * API name of the object whose records the chart loads, e.g. 'User' or 'Contact'. Used together with
    * parent-field-api-name; records set from outside take precedence. It isn't called objectApiName, because record
@@ -236,7 +237,21 @@ export default class OrgChartViewer extends LightningElement {
 
     this._resizeObserver = new ResizeObserver(() => this.syncChartSize());
     this._resizeObserver.observe(container);
+    // a listener on an element of the own template needs no cleanup; the same function is only added once
+    container.addEventListener('keydown', this.handleNodeKeydown, true);
   }
+
+  // d3-org-chart turns Enter on a node into expand or collapse, so Enter on a record link, caught before the library,
+  // opens the record instead
+  handleNodeKeydown = (event) => {
+    const id = event.target.dataset?.recordId;
+    if (event.key !== 'Enter' || !id) {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    this.handleNodeClick(this.chartData.find((record) => String(record.id) === id));
+  };
 
   // d3-org-chart defaults svgHeight to window.innerHeight and only ever re-measures
   // svgWidth from the container, so the actual container size must be applied explicitly
@@ -310,6 +325,11 @@ export default class OrgChartViewer extends LightningElement {
     const name = getNodeName(record);
     const title = record.title || record.Title || '';
     const isHighlighted = Boolean(record._highlighted || record._upToTheRootHighlighted);
+    // a node that opens its record is a link the keyboard can reach, see handleNodeKeydown
+    const link = this.opensRecord(record)
+      ? ` tabindex="0" role="link" aria-label="Open ${escapeHtml(name)}" data-record-id="${escapeHtml(record.id)}"`
+      : '';
+    const cursor = link ? 'cursor:pointer;' : '';
     const imageUrl = this._exporting ? undefined : safeImageUrl(record.imageUrl);
     const initials = name
       .split(' ')
@@ -319,7 +339,7 @@ export default class OrgChartViewer extends LightningElement {
       .join('');
 
     return `
-      <div style="width:${d.width}px;height:${d.height}px;padding:4px;box-sizing:border-box;font-family:${NODE_STYLES.font};">
+      <div${link} style="width:${d.width}px;height:${d.height}px;padding:4px;box-sizing:border-box;${cursor}font-family:${NODE_STYLES.font};">
         <div style="display:flex;align-items:center;gap:10px;height:100%;background:${NODE_STYLES.surface};border:1px solid ${isHighlighted ? NODE_STYLES.accent : NODE_STYLES.border};border-left:4px solid ${NODE_STYLES.accent};border-radius:6px;padding:0 12px;box-shadow:${isHighlighted ? `0 0 0 2px ${NODE_STYLES.highlight}` : NODE_STYLES.shadow};box-sizing:border-box;">
           <div style="flex:0 0 36px;width:36px;height:36px;border-radius:50%;background:${NODE_STYLES.avatar};color:${NODE_STYLES.onAvatar};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;overflow:hidden;">${imageUrl ? `<img src="${escapeHtml(imageUrl)}" alt="" style="width:100%;height:100%;object-fit:cover;">` : escapeHtml(initials)}</div>
           <div style="overflow:hidden;">
@@ -330,9 +350,20 @@ export default class OrgChartViewer extends LightningElement {
       </div>`;
   }
 
+  /** A loaded record opens its record page, unless a parent cancels the nodeselect event. */
   handleNodeClick(node) {
     const record = node?.data ? node.data : node;
-    this.dispatchEvent(new CustomEvent('nodeselect', { detail: { record } }));
+    const notCancelled = this.dispatchEvent(new CustomEvent('nodeselect', { detail: { record }, cancelable: true }));
+    if (notCancelled && this.opensRecord(record)) {
+      this[NavigationMixin.Navigate]({
+        type: 'standard__recordPage',
+        attributes: { recordId: record.id, actionName: 'view' }
+      });
+    }
+  }
+
+  opensRecord(record) {
+    return this.loadsRecords && !record.group;
   }
 
   handleSearchChange(event) {

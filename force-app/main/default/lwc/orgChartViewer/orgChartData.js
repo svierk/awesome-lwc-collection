@@ -69,7 +69,7 @@ export function toChartRecords(data, { objectApiName, parentField, nameField, ti
  * Turns the records into one tree, as d3-org-chart needs exactly one root. With a start record that is among the
  * records, the tree is that record and everything below it. Otherwise every record without a loaded parent is a
  * root, and several roots get a shared root node. Records that can't be reached from a root, like those in a cycle,
- * are left out.
+ * are left out. The shared root node is marked with group: true.
  * @param {Object[]} records - The chart records with id and parentId
  * @param {string} startId - The id of the record to start from, optional
  * @param {string} label - The name of the shared root node
@@ -87,7 +87,7 @@ export function toTree(records, startId, label) {
   if (roots.length === 0) {
     roots = records.filter((record) => !ids.has(record.parentId));
   }
-  const shared = roots.length > 1 ? { id: ROOT_ID, parentId: null, name: label, title: '' } : undefined;
+  const shared = roots.length > 1 ? { id: ROOT_ID, parentId: null, name: label, title: '', group: true } : undefined;
   const tree = shared ? [shared] : [];
   const queue = roots.map((root) => ({ ...root, parentId: shared?.id ?? null }));
   const visited = new Set();
