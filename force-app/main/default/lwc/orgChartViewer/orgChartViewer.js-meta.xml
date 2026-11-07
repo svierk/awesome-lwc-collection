@@ -10,4 +10,45 @@
         <target>lightning__HomePage</target>
         <target>lightning__RecordPage</target>
     </targets>
+    <targetConfigs>
+      <targetConfig targets="lightning__AppPage,lightning__HomePage,lightning__RecordPage">
+        <property
+        name="chartObjectApiName"
+        type="String"
+        label="Object API Name"
+        description="API name of the object whose records the chart shows, e.g. User or Contact. Without it, the chart shows demo data."
+      />
+        <property
+        name="parentFieldApiName"
+        type="String"
+        label="Parent Field API Name"
+        description="API name of the field with the parent record, e.g. ManagerId for User, ReportsToId for Contact or ParentId for Account."
+      />
+        <property
+        name="nameField"
+        type="String"
+        label="Name Field"
+        description="API name of the field shown as the name of a node."
+        default="Name"
+      />
+        <property
+        name="titleField"
+        type="String"
+        label="Title Field"
+        description="API name of the field shown below the name, e.g. Title."
+      />
+        <property
+        name="imageField"
+        type="String"
+        label="Image Field"
+        description="API name of the field with an image URL shown instead of the initials, e.g. SmallPhotoUrl for User."
+      />
+        <property
+        name="rootRecordId"
+        type="String"
+        label="Root Record Id"
+        description="Id of the record the chart starts from. Without it, a record page starts from its own record if it is among the loaded records; otherwise the chart shows all of them."
+      />
+      </targetConfig>
+    </targetConfigs>
 </LightningComponentBundle>

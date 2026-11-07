@@ -1,4 +1,6 @@
 import OrgChartViewer from 'c/orgChartViewer';
+import { gql, graphql } from 'lightning/graphql';
+import { getNavigateCalledWith } from 'lightning/navigation';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { createElement } from 'lwc';
 
@@ -6,25 +8,15 @@ jest.mock('lightning/platformResourceLoader', () => ({ loadScript: jest.fn() }),
 
 const flushPromises = () => new Promise(process.nextTick);
 
-const CHAINABLE_METHODS = [
-  'container',
-  'svgWidth',
-  'svgHeight',
-  'data',
-  'compact',
-  'render',
-  'fit',
-  'expandAll',
-  'collapseAll',
-  'clearHighlighting',
-  'setUpToTheRootHighlighted',
-  'setCentered',
-  'exportImg'
-];
+const CHAINABLE_METHODS = 'container svgWidth svgHeight data compact render fit expandAll collapseAll'.split(' ');
+const ACTION_METHODS = 'clearHighlighting setUpToTheRootHighlighted setCentered exportImg'.split(' ');
 
 // chainable methods that receive a configuration callback the component logic lives in
-const CALLBACK_METHODS = ['nodeId', 'parentNodeId', 'nodeWidth', 'nodeHeight', 'childrenMargin'];
+const CALLBACK_METHODS =
+  'nodeId parentNodeId nodeWidth nodeHeight childrenMargin onNodeClick nodeContent onExpandOrCollapse';
 
+let element;
+let chart;
 let activeResizeObserver;
 
 class MockResizeObserver {
@@ -39,66 +31,84 @@ class MockResizeObserver {
   unobserve() {}
 }
 
-function stubContainerSize(el, width = 760, height = 480) {
-  const container = el.shadowRoot.querySelector('[data-id="chart-container"]');
+const query = (selector) => element.shadowRoot.querySelector(selector);
+
+const nodeCountLabel = () => query('.slds-text-color_weak')?.textContent.trim();
+
+function stubContainerSize(width = 760, height = 480) {
+  const container = query('[data-id="chart-container"]');
   Object.defineProperty(container, 'clientWidth', { value: width, configurable: true });
   Object.defineProperty(container, 'clientHeight', { value: height, configurable: true });
   return container;
 }
 
-function createMockChartInstance() {
-  const instance = {
-    onNodeClickCallback: null,
-    nodeContentCallback: null,
-    onExpandOrCollapseCallback: null,
-    callbacks: {},
-    _chartState: { visibleCount: 4, totalCount: 12 }
-  };
-  CHAINABLE_METHODS.forEach((method) => {
+function createMockChart() {
+  const instance = { callbacks: {}, state: { visibleCount: 4, totalCount: 12 } };
+  [...CHAINABLE_METHODS, ...ACTION_METHODS].forEach((method) => {
     instance[method] = jest.fn(() => instance);
   });
   // capture the configuration callbacks d3-org-chart is given so the tests can invoke them
-  CALLBACK_METHODS.forEach((method) => {
+  CALLBACK_METHODS.split(' ').forEach((method) => {
     instance[method] = jest.fn((callback) => {
       instance.callbacks[method] = callback;
       return instance;
     });
   });
-  instance.onNodeClick = jest.fn((callback) => {
-    instance.onNodeClickCallback = callback;
-    return instance;
-  });
-  instance.nodeContent = jest.fn((callback) => {
-    instance.nodeContentCallback = callback;
-    return instance;
-  });
-  instance.onExpandOrCollapse = jest.fn((callback) => {
-    instance.onExpandOrCollapseCallback = callback;
-    return instance;
-  });
   instance.getChartState = jest.fn(() => ({
-    root: { descendants: () => new Array(instance._chartState.visibleCount) },
-    allNodes: new Array(instance._chartState.totalCount)
+    root: { descendants: () => new Array(instance.state.visibleCount) },
+    allNodes: new Array(instance.state.totalCount)
   }));
   return instance;
 }
 
-// mounts the component, resolves the library load and gives the container a measurable size,
-// which is the precondition under which the chart is actually built
-async function renderChart(el) {
-  loadScript.mockResolvedValue();
-  document.body.appendChild(el);
-  stubContainerSize(el);
+// mounts the component with the library load resolved, rejected or pending, and optionally gives the container a
+// measurable size, which is the precondition under which the chart is actually built
+async function mount({ load = Promise.resolve(), sized = true } = {}) {
+  loadScript.mockReturnValue(load);
+  document.body.appendChild(element);
+  if (sized) {
+    stubContainerSize();
+  }
+  await flushPromises();
+}
+
+const contacts = { chartObjectApiName: 'Contact', parentFieldApiName: 'ReportsToId', titleField: 'Title' };
+
+const contact = (Id, parent, Name) => ({ node: { Id, ReportsToId: { value: parent }, Name: { value: Name } } });
+
+// A and C are roots with one child each, E and F form a cycle
+const hierarchy = [
+  ['A', null],
+  ['B', 'A'],
+  ['C', null],
+  ['D', 'C'],
+  ['E', 'F'],
+  ['F', 'E']
+].map(([id, parent]) => contact(id, parent, `Name ${id}`));
+
+const emitContacts = (edges, hasNextPage = false) =>
+  graphql.emit({
+    uiapi: { query: { Contact: { edges, pageInfo: { hasNextPage } } }, objectInfos: [{ labelPlural: 'Contacts' }] }
+  });
+
+// the records the chart got last, as "id<parentId"
+const chartTree = () =>
+  chart.data.mock.calls
+    .at(-1)[0]
+    .map((record) => `${record.id}<${record.parentId ?? ''}`)
+    .join();
+
+async function search(term) {
+  const input = query('[data-id="search-input"]');
+  input.value = term;
+  input.dispatchEvent(new CustomEvent('change'));
   await flushPromises();
 }
 
 describe('c-org-chart-viewer', () => {
-  let element;
-  let mockChartInstance;
-
   beforeEach(() => {
-    mockChartInstance = createMockChartInstance();
-    global.d3 = { OrgChart: jest.fn(() => mockChartInstance) };
+    chart = createMockChart();
+    global.d3 = { OrgChart: jest.fn(() => chart) };
     global.ResizeObserver = MockResizeObserver;
     element = createElement('c-org-chart-viewer', { is: OrgChartViewer });
   });
@@ -113,55 +123,40 @@ describe('c-org-chart-viewer', () => {
     activeResizeObserver = undefined;
   });
 
-  it('should render and be accessible once the library loads', async () => {
+  it('should initialize the chart with the demo dataset and be accessible once the library loads', async () => {
     // when
-    await renderChart(element);
-
-    // then
-    expect(element).toBeTruthy();
-    await expect(element).toBeAccessible();
-  });
-
-  it('should initialize the chart with the demo dataset once the library loads', async () => {
-    // when
-    await renderChart(element);
+    await mount();
 
     // then
     expect(global.d3.OrgChart).toHaveBeenCalledTimes(1);
-    expect(mockChartInstance.svgWidth).toHaveBeenCalledWith(760);
-    expect(mockChartInstance.svgHeight).toHaveBeenCalledWith(480);
-    expect(mockChartInstance.data).toHaveBeenCalledWith(
+    expect(chart.svgWidth).toHaveBeenCalledWith(760);
+    expect(chart.svgHeight).toHaveBeenCalledWith(480);
+    expect(chart.data).toHaveBeenCalledWith(
       expect.arrayContaining([expect.objectContaining({ id: '1', name: 'Jordan Avery' })])
     );
-    expect(mockChartInstance.render).toHaveBeenCalled();
-    expect(mockChartInstance.fit).toHaveBeenCalled();
-
-    const label = element.shadowRoot.querySelector('.slds-text-color_weak');
-    expect(label.textContent.trim()).toBe('Showing 4 of 12 nodes');
+    expect(chart.render).toHaveBeenCalled();
+    expect(chart.fit).toHaveBeenCalled();
+    expect(nodeCountLabel()).toBe('Showing 4 of 12 nodes');
+    await expect(element).toBeAccessible();
   });
 
-  it('should not initialize the chart while the container has no measurable size yet', async () => {
+  it('should neither build the chart nor search while the container has no measurable size yet', async () => {
     // given
-    loadScript.mockResolvedValue();
+    await mount({ sized: false });
 
     // when
-    document.body.appendChild(element);
-    await flushPromises();
+    await search('morgan');
 
     // then
     expect(global.d3.OrgChart).not.toHaveBeenCalled();
+    expect(chart.clearHighlighting).not.toHaveBeenCalled();
   });
 
   it('should re-sync the chart size and re-fit when the container is resized', async () => {
     // given
-    loadScript.mockResolvedValue();
-    document.body.appendChild(element);
-    const container = stubContainerSize(element);
-    await flushPromises();
-    mockChartInstance.svgWidth.mockClear();
-    mockChartInstance.svgHeight.mockClear();
-    mockChartInstance.render.mockClear();
-    mockChartInstance.fit.mockClear();
+    await mount();
+    const container = query('[data-id="chart-container"]');
+    [chart.svgWidth, chart.svgHeight, chart.render, chart.fit].forEach((method) => method.mockClear());
 
     // when
     Object.defineProperty(container, 'clientWidth', { value: 1024, configurable: true });
@@ -170,326 +165,330 @@ describe('c-org-chart-viewer', () => {
 
     // then
     expect(global.d3.OrgChart).toHaveBeenCalledTimes(1);
-    expect(mockChartInstance.svgWidth).toHaveBeenCalledWith(1024);
-    expect(mockChartInstance.svgHeight).toHaveBeenCalledWith(600);
-    expect(mockChartInstance.render).toHaveBeenCalled();
-    expect(mockChartInstance.fit).toHaveBeenCalled();
+    expect(chart.svgWidth).toHaveBeenCalledWith(1024);
+    expect(chart.svgHeight).toHaveBeenCalledWith(600);
+    expect(chart.render).toHaveBeenCalled();
+    expect(chart.fit).toHaveBeenCalled();
   });
 
   it('should show an error message when the library fails to load', async () => {
-    // given
-    loadScript.mockRejectedValue(new Error('network down'));
-
     // when
-    document.body.appendChild(element);
-    stubContainerSize(element);
-    await flushPromises();
+    await mount({ load: Promise.reject(new Error('network down')) });
 
     // then
-    const errorAlert = element.shadowRoot.querySelector('c-error-alert');
-    expect(errorAlert).toBeTruthy();
-    expect(errorAlert.message).toContain('network down');
+    expect(query('c-error-alert').message).toContain('network down');
     expect(global.d3.OrgChart).not.toHaveBeenCalled();
   });
 
-  it('should disable the toolbar until the library has finished loading', async () => {
+  it('should disable the toolbar and hide the node count until the library has finished loading', async () => {
     // given
     let resolveLoad;
-    loadScript.mockReturnValue(
-      new Promise((resolve) => {
-        resolveLoad = resolve;
-      })
-    );
-
-    // when
-    document.body.appendChild(element);
-    stubContainerSize(element);
-    await flushPromises();
-
-    // then
-    expect(element.shadowRoot.querySelector('[data-id="search-input"]').disabled).toBe(true);
-    expect(element.shadowRoot.querySelector('[data-id="expand-all"]').disabled).toBe(true);
+    await mount({ load: new Promise((resolve) => (resolveLoad = resolve)) });
+    const disabled = () => ['search-input', 'expand-all'].map((id) => query(`[data-id="${id}"]`).disabled);
+    const whileLoading = { disabled: disabled(), label: nodeCountLabel() };
 
     // when
     resolveLoad();
     await flushPromises();
 
     // then
-    expect(element.shadowRoot.querySelector('[data-id="search-input"]').disabled).toBe(false);
-    expect(element.shadowRoot.querySelector('[data-id="expand-all"]').disabled).toBe(false);
+    expect(whileLoading).toEqual({ disabled: [true, true], label: undefined });
+    expect(disabled()).toEqual([false, false]);
   });
 
-  it('should expand all nodes when "Expand All" is clicked', async () => {
+  it.each([
+    ['expand-all', 'expandAll', [], { visibleCount: 12, totalCount: 12 }],
+    ['collapse-all', 'collapseAll', [], { visibleCount: 1, totalCount: 12 }],
+    ['fit', 'fit', [], { visibleCount: 4, totalCount: 12 }],
+    ['export-png', 'exportImg', [expect.objectContaining({ full: true })], { visibleCount: 4, totalCount: 12 }]
+  ])('should call %s on the chart and update the node count', async (button, method, args, state) => {
     // given
-    await renderChart(element);
+    await mount();
+    chart[method].mockClear();
+    chart.state = state;
 
     // when
-    element.shadowRoot.querySelector('[data-id="expand-all"]').click();
-
-    // then
-    expect(mockChartInstance.expandAll).toHaveBeenCalled();
-  });
-
-  it('should collapse all nodes when "Collapse All" is clicked', async () => {
-    // given
-    await renderChart(element);
-
-    // when
-    element.shadowRoot.querySelector('[data-id="collapse-all"]').click();
-
-    // then
-    expect(mockChartInstance.collapseAll).toHaveBeenCalled();
-  });
-
-  it('should fit the chart to screen when "Fit to Screen" is clicked', async () => {
-    // given
-    await renderChart(element);
-    mockChartInstance.fit.mockClear();
-
-    // when
-    element.shadowRoot.querySelector('[data-id="fit"]').click();
-
-    // then
-    expect(mockChartInstance.fit).toHaveBeenCalled();
-  });
-
-  it('should export the chart as a PNG when "Export PNG" is clicked', async () => {
-    // given
-    await renderChart(element);
-
-    // when
-    element.shadowRoot.querySelector('[data-id="export-png"]').click();
-
-    // then
-    expect(mockChartInstance.exportImg).toHaveBeenCalledWith(expect.objectContaining({ full: true }));
-  });
-
-  it('should highlight and center the matching node when searching by name', async () => {
-    // given
-    await renderChart(element);
-
-    // when
-    const searchInput = element.shadowRoot.querySelector('[data-id="search-input"]');
-    searchInput.value = 'morgan';
-    searchInput.dispatchEvent(new CustomEvent('change'));
+    query(`[data-id="${button}"]`).click();
     await flushPromises();
 
     // then
-    expect(mockChartInstance.clearHighlighting).toHaveBeenCalled();
-    expect(mockChartInstance.setUpToTheRootHighlighted).toHaveBeenCalledWith('2');
-    expect(mockChartInstance.setCentered).toHaveBeenCalledWith('2');
+    expect(chart[method]).toHaveBeenCalledWith(...args);
+    expect(nodeCountLabel()).toBe(`Showing ${state.visibleCount} of ${state.totalCount} nodes`);
   });
 
-  it('should only clear highlighting when the search has no matching node', async () => {
+  it.each([
+    ['morgan', '2'],
+    ['does-not-exist', undefined],
+    ['', undefined]
+  ])('should clear the highlighting when searching for %p and highlight the match %p', async (term, id) => {
     // given
-    await renderChart(element);
+    await mount();
 
     // when
-    const searchInput = element.shadowRoot.querySelector('[data-id="search-input"]');
-    searchInput.value = 'does-not-exist';
-    searchInput.dispatchEvent(new CustomEvent('change'));
-    await flushPromises();
+    await search(term);
 
     // then
-    expect(mockChartInstance.clearHighlighting).toHaveBeenCalled();
-    expect(mockChartInstance.setUpToTheRootHighlighted).not.toHaveBeenCalled();
-  });
-
-  it('should clear highlighting when the search term is cleared', async () => {
-    // given
-    await renderChart(element);
-
-    // when
-    const searchInput = element.shadowRoot.querySelector('[data-id="search-input"]');
-    searchInput.value = '';
-    searchInput.dispatchEvent(new CustomEvent('change'));
-    await flushPromises();
-
-    // then
-    expect(mockChartInstance.clearHighlighting).toHaveBeenCalled();
-  });
-
-  it('should ignore search input changes while the chart has not been created yet', async () => {
-    // given - library loads but the container never reports a size, so no chart is built
-    loadScript.mockResolvedValue();
-    document.body.appendChild(element);
-    await flushPromises();
-
-    // when
-    const searchInput = element.shadowRoot.querySelector('[data-id="search-input"]');
-    searchInput.value = 'morgan';
-    searchInput.dispatchEvent(new CustomEvent('change'));
-    await flushPromises();
-
-    // then
-    expect(global.d3.OrgChart).not.toHaveBeenCalled();
-    expect(mockChartInstance.clearHighlighting).not.toHaveBeenCalled();
+    expect(chart.clearHighlighting).toHaveBeenCalled();
+    expect(chart.setUpToTheRootHighlighted.mock.calls).toEqual(id ? [[id]] : []);
+    expect(chart.setCentered.mock.calls).toEqual(id ? [[id]] : []);
   });
 
   it('should dispatch a nodeselect event with the record, falling back to the raw node', async () => {
     // given
-    await renderChart(element);
+    await mount();
     const handler = jest.fn();
     element.addEventListener('nodeselect', handler);
-
-    // when - the chart passes a wrapped node
     const record = { id: '2', name: 'Morgan Lee' };
-    mockChartInstance.onNodeClickCallback({ data: record });
-
-    // then
-    expect(handler).toHaveBeenCalledWith(expect.objectContaining({ detail: { record } }));
-
-    // when - a node without a data wrapper falls back to the raw node
     const rawRecord = { id: '5', name: 'Sam Patel' };
-    mockChartInstance.onNodeClickCallback(rawRecord);
+
+    // when - the chart passes a wrapped node, then a node without a data wrapper
+    chart.callbacks.onNodeClick({ data: record });
+    chart.callbacks.onNodeClick(rawRecord);
 
     // then
-    expect(handler).toHaveBeenCalledWith(expect.objectContaining({ detail: { record: rawRecord } }));
+    expect(handler.mock.calls.map(([event]) => event.detail)).toEqual([{ record }, { record: rawRecord }]);
+    expect(getNavigateCalledWith().pageReference).toBeUndefined();
   });
 
   it('should render both schemas with initials and highlight styling, and escape untrusted values', async () => {
     // given
-    await renderChart(element);
-    const renderNode = mockChartInstance.nodeContentCallback;
+    await mount();
+    const renderNode = (data) => chart.callbacks.nodeContent({ data, width: 220, height: 80 });
 
-    // when - salesforce-style fields with an active highlight
+    // when
     const sfHtml = renderNode({
-      data: { Id: '2', Name: 'Morgan Lee', Title: 'VP of Engineering', _upToTheRootHighlighted: true },
-      width: 220,
-      height: 80
+      Id: '2',
+      Name: 'Morgan Lee',
+      Title: 'VP of Engineering',
+      _upToTheRootHighlighted: true
     });
+    const emptyHtml = renderNode({});
+    const maliciousHtml = renderNode({ id: '99', name: '<img src=x onerror=alert(1)>', title: '<b>boss</b>' });
+    const photoHtml = renderNode({ name: 'Ann Lee', imageUrl: '/profilephoto/005/T' });
+    const unsafePhotoHtml = renderNode({ name: 'Ann Lee', imageUrl: 'data:image/svg+xml,<svg/>' });
 
-    // then
+    // then - salesforce-style fields with an active highlight
     expect(sfHtml).toContain('Morgan Lee');
     expect(sfHtml).toContain('VP of Engineering');
     expect(sfHtml).toContain('ML');
     expect(sfHtml).toContain('box-shadow:0 0 0 2px var(--slds-g-color-accent-light-2, #d8e6fe)');
-
-    // when - a record without a name or title falls back to placeholder content
-    const emptyHtml = renderNode({ data: {}, width: 220, height: 80 });
-
-    // then
+    // then - a record without a name or title falls back to placeholder content
     expect(emptyHtml).toContain('Unknown');
     expect(emptyHtml).toContain('U</div>');
     expect(emptyHtml).toContain('box-shadow:var(--slds-g-shadow-1, 0 2px 2px 0 #0000001a)');
-
-    // when - untrusted markup must not survive into the rendered node
-    const maliciousHtml = renderNode({
-      data: { id: '99', name: '<img src=x onerror=alert(1)>', title: '<b>boss</b>' },
-      width: 220,
-      height: 80
-    });
-
-    // then
+    // then - untrusted markup must not survive into the rendered node
     expect(maliciousHtml).not.toContain('<img src=x');
     expect(maliciousHtml).not.toContain('<b>boss</b>');
     expect(maliciousHtml).toContain('&lt;img');
+    // then - only a safe image URL replaces the initials
+    expect(photoHtml).toContain('<img src="/profilephoto/005/T" alt=""');
+    expect(unsafePhotoHtml).not.toContain('<img');
+    expect(unsafePhotoHtml).toContain('AL</div>');
   });
 
   it('should configure id resolvers and fixed node sizing on the chart', async () => {
-    // given
-    await renderChart(element);
+    // when
+    await mount();
 
     // then - the node id resolves from the id/Id/nodeId field variants
-    expect(mockChartInstance.callbacks.nodeId({ id: '1' })).toBe('1');
-    expect(mockChartInstance.callbacks.nodeId({ Id: '2' })).toBe('2');
-    expect(mockChartInstance.callbacks.nodeId({ nodeId: '3' })).toBe('3');
-
+    const { nodeId, parentNodeId, nodeWidth, nodeHeight, childrenMargin } = chart.callbacks;
+    expect([{ id: '1' }, { Id: '2' }, { nodeId: '3' }].map(nodeId)).toEqual(['1', '2', '3']);
     // then - the parent id resolves from parentId/ManagerId/parentNodeId with a null fallback
-    const resolveParent = mockChartInstance.callbacks.parentNodeId;
-    expect(resolveParent({ parentId: 7 })).toBe('7');
-    expect(resolveParent({ ManagerId: '2' })).toBe('2');
-    expect(resolveParent({ parentNodeId: '3' })).toBe('3');
-    expect(resolveParent({ parentId: null })).toBeNull();
-    expect(resolveParent({})).toBeNull();
-
+    const parents = [{ parentId: 7 }, { ManagerId: '2' }, { parentNodeId: '3' }, { parentId: null }, {}];
+    expect(parents.map(parentNodeId)).toEqual(['7', '2', '3', null, null]);
     // then - the layout uses fixed node dimensions
-    expect(mockChartInstance.callbacks.nodeWidth()).toBe(220);
-    expect(mockChartInstance.callbacks.nodeHeight()).toBe(80);
-    expect(mockChartInstance.callbacks.childrenMargin()).toBe(50);
+    expect([nodeWidth(), nodeHeight(), childrenMargin()]).toEqual([220, 80, 50]);
   });
 
-  it('should expose records through the public api getter and fall back to an empty array', () => {
+  it('should update the chart, the node count and the records getter when records are set after rendering', async () => {
     // given
-    const records = [{ id: 'a', parentId: null, name: 'Custom Root' }];
-
-    // when / then
-    element.records = records;
-    expect(element.records).toEqual(records);
-    element.records = null;
-    expect(element.records).toEqual([]);
-  });
-
-  it('should update the chart and node count label when records are set after the initial render', async () => {
-    // given
-    await renderChart(element);
-    mockChartInstance.data.mockClear();
-    mockChartInstance.render.mockClear();
+    await mount();
+    chart.data.mockClear();
+    chart.render.mockClear();
+    chart.state = { visibleCount: 1, totalCount: 1 };
 
     // when
-    mockChartInstance._chartState = { visibleCount: 1, totalCount: 1 };
     element.records = [{ id: 'a', parentId: null, name: 'Custom Root' }];
     await flushPromises();
 
     // then
-    expect(mockChartInstance.data).toHaveBeenCalledWith([{ id: 'a', parentId: null, name: 'Custom Root' }]);
-    expect(mockChartInstance.render).toHaveBeenCalled();
-    const label = element.shadowRoot.querySelector('.slds-text-color_weak');
-    expect(label.textContent.trim()).toBe('Showing 1 of 1 nodes');
-  });
-
-  it('should not display the node count label before the library has loaded', async () => {
-    // given
-    loadScript.mockReturnValue(new Promise(() => {}));
-
-    // when
-    document.body.appendChild(element);
-    stubContainerSize(element);
-    await flushPromises();
-
-    // then
-    expect(element.shadowRoot.querySelector('.slds-text-color_weak')).toBeNull();
-  });
-
-  it('should update the node count label after "Expand All" is clicked', async () => {
-    // given
-    await renderChart(element);
-
-    // when
-    mockChartInstance._chartState = { visibleCount: 12, totalCount: 12 };
-    element.shadowRoot.querySelector('[data-id="expand-all"]').click();
-    await flushPromises();
-
-    // then
-    const label = element.shadowRoot.querySelector('.slds-text-color_weak');
-    expect(label.textContent.trim()).toBe('Showing 12 of 12 nodes');
-  });
-
-  it('should update the node count label after "Collapse All" is clicked', async () => {
-    // given
-    await renderChart(element);
-
-    // when
-    mockChartInstance._chartState = { visibleCount: 1, totalCount: 12 };
-    element.shadowRoot.querySelector('[data-id="collapse-all"]').click();
-    await flushPromises();
-
-    // then
-    const label = element.shadowRoot.querySelector('.slds-text-color_weak');
-    expect(label.textContent.trim()).toBe('Showing 1 of 12 nodes');
+    expect(chart.data).toHaveBeenCalledWith([{ id: 'a', parentId: null, name: 'Custom Root' }]);
+    expect(chart.render).toHaveBeenCalled();
+    expect(nodeCountLabel()).toBe('Showing 1 of 1 nodes');
+    expect(element.records).toEqual([{ id: 'a', parentId: null, name: 'Custom Root' }]);
+    element.records = null;
+    expect(element.records).toEqual([]);
   });
 
   it('should update the node count label when a node is expanded or collapsed directly in the chart', async () => {
     // given
-    await renderChart(element);
+    await mount();
+    chart.state = { visibleCount: 7, totalCount: 12 };
 
     // when
-    mockChartInstance._chartState = { visibleCount: 7, totalCount: 12 };
-    mockChartInstance.onExpandOrCollapseCallback();
+    chart.callbacks.onExpandOrCollapse();
     await flushPromises();
 
     // then
-    const label = element.shadowRoot.querySelector('.slds-text-color_weak');
-    expect(label.textContent.trim()).toBe('Showing 7 of 12 nodes');
+    expect(nodeCountLabel()).toBe('Showing 7 of 12 nodes');
+  });
+
+  it('should load the configured fields and build no chart while the records are loading', async () => {
+    // given
+    Object.assign(element, { ...contacts, imageField: 'Photo Url' });
+
+    // when - the wire reports neither data nor errors yet
+    await mount();
+    graphql.emit(undefined);
+    await flushPromises();
+
+    // then
+    const builtQuery = gql.mock.results.at(-1).value;
+    expect(builtQuery).toContain('Contact(first: 2000)');
+    expect(builtQuery).toContain('Id ReportsToId { value } Name { value } Title { value }');
+    expect(builtQuery).not.toContain('Photo');
+    expect(builtQuery).toContain('objectInfos(apiNames: ["Contact"])');
+    expect(global.d3.OrgChart).not.toHaveBeenCalled();
+    expect(query('lightning-spinner')).toBeTruthy();
+  });
+
+  it.each([
+    ['all records under a shared root', {}, 'org-chart-root<,A<org-chart-root,C<org-chart-root,B<A,D<C', 'Contacts'],
+    ['the root record id', { rootRecordId: 'C', recordId: 'A' }, 'C<,D<C', 'Name C'],
+    ['the record of the record page', { recordId: 'A' }, 'A<,B<A', 'Name A'],
+    [
+      'a start record that is not loaded',
+      { recordId: 'X' },
+      'org-chart-root<,A<org-chart-root,C<org-chart-root,B<A,D<C',
+      'Contacts'
+    ],
+    ['a start record inside a cycle', { rootRecordId: 'E' }, 'E<,F<E', 'Name E']
+  ])('should show %s as one tree', async (_label, start, expected, rootName) => {
+    // given
+    Object.assign(element, { ...contacts, ...start });
+    await mount();
+
+    // when
+    emitContacts(hierarchy);
+    await flushPromises();
+
+    // then
+    expect(global.d3.OrgChart).toHaveBeenCalledTimes(1);
+    expect(chartTree()).toBe(expected);
+    expect(chart.data.mock.calls.at(-1)[0][0].name).toBe(rootName);
+  });
+
+  it('should say when there are more records and update the chart when the records are loaded again', async () => {
+    // given - record pages set objectApiName to the object of the page
+    Object.assign(element, { ...contacts, objectApiName: 'Account' });
+    await mount();
+    emitContacts(hierarchy, true);
+    await flushPromises();
+    const moreRecords = query('[data-id="more-records"]').textContent.trim();
+
+    // when - without object info this time
+    graphql.emit({ uiapi: { query: { Contact: { edges: [contact('A', null, 'Ann Lee')] } } } });
+    await flushPromises();
+
+    // then
+    expect(moreRecords).toBe('Only the first 2000 records are shown.');
+    expect(query('[data-id="more-records"]')).toBeNull();
+    expect(global.d3.OrgChart).toHaveBeenCalledTimes(1);
+    expect(chart.data.mock.calls.at(-1)[0]).toEqual([
+      { id: 'A', parentId: null, name: 'Ann Lee', title: null, imageUrl: null }
+    ]);
+  });
+
+  it.each([
+    ['no records', () => emitContacts([]), 'No records found.', undefined],
+    [
+      'an error',
+      () => graphql.emitErrors([{ message: 'No access' }]),
+      undefined,
+      'The records could not be loaded: No access'
+    ]
+  ])('should show %s without a chart', async (_label, emit, emptyText, error) => {
+    // given
+    Object.assign(element, contacts);
+    await mount();
+
+    // when
+    emit();
+    await flushPromises();
+
+    // then
+    expect(query('[data-id="empty-state"]')?.textContent.trim()).toBe(emptyText);
+    expect(query('c-error-alert')?.message).toBe(error);
+    expect(global.d3.OrgChart).not.toHaveBeenCalled();
+    expect(query('lightning-spinner')).toBeNull();
+    await expect(element).toBeAccessible();
+  });
+
+  it.each([
+    ['records set from outside', { ...contacts, records: [{ id: 'a', parentId: null, name: 'Custom Root' }] }, 'a<'],
+    ['an invalid object name', { ...contacts, chartObjectApiName: 'Contact { Id }' }, expect.stringContaining('1<,2<1')]
+  ])('should load nothing with %s', async (_label, props, expected) => {
+    // given
+    Object.assign(element, props);
+
+    // when
+    await mount();
+
+    // then
+    expect(gql).not.toHaveBeenCalled();
+    expect(chartTree()).toEqual(expected);
+  });
+
+  it('should export photos as initials and show them again afterwards', async () => {
+    // given
+    await mount();
+    const photoNode = () =>
+      chart.callbacks.nodeContent({ data: { name: 'Ann Lee', imageUrl: '/photo' }, width: 220, height: 80 });
+
+    // when
+    query('[data-id="export-png"]').click();
+    const duringExport = photoNode();
+    const { onLoad } = chart.exportImg.mock.calls[0][0];
+    const result = onLoad('data:image/png;base64,x');
+
+    // then
+    expect(duringExport).not.toContain('<img');
+    expect(photoNode()).toContain('<img src="/photo"');
+    expect(result).toBe('data:image/png;base64,x');
+    expect(chart.render.mock.calls.length).toBeGreaterThanOrEqual(3);
+  });
+
+  const opened = { type: 'standard__recordPage', attributes: { recordId: 'B', actionName: 'view' } };
+
+  it.each([
+    ['a click on a loaded record opens it', 'B', 'click', opened],
+    ['Enter on a loaded record opens it', 'B', 'Enter', opened],
+    ['another key leaves it to the chart', 'B', 'Tab', undefined],
+    ['a click on the shared root opens nothing', 'org-chart-root', 'click', undefined],
+    ['a parent can cancel the navigation', 'B', 'cancel', undefined]
+  ])('should handle nodes so that %s', async (_label, id, action, expected) => {
+    // given
+    Object.assign(element, contacts);
+    await mount();
+    emitContacts(hierarchy);
+    await flushPromises();
+    element.addEventListener('nodeselect', (event) => action === 'cancel' && event.preventDefault());
+    const node = chart.data.mock.calls.at(-1)[0].find((record) => record.id === id);
+    const html = chart.callbacks.nodeContent({ data: node, width: 220, height: 80 });
+
+    // when - keys go to the rendered node inside the chart container
+    if (['click', 'cancel'].includes(action)) {
+      chart.callbacks.onNodeClick({ data: node });
+    } else {
+      const link = Object.assign(document.createElement('div'), { tabIndex: 0 });
+      link.dataset.recordId = id;
+      query('[data-id="chart-container"]').appendChild(link);
+      link.dispatchEvent(new KeyboardEvent('keydown', { key: action, bubbles: true }));
+    }
+
+    // then
+    expect(getNavigateCalledWith().pageReference).toEqual(expected);
+    expect(html.includes('cursor:pointer')).toBe(id === 'B');
+    expect(html.includes('tabindex="0" role="link" aria-label="Open Name B" data-record-id="B"')).toBe(id === 'B');
   });
 });
