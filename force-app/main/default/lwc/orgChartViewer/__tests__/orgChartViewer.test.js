@@ -1,4 +1,5 @@
 import OrgChartViewer from 'c/orgChartViewer';
+import { gql, graphql } from 'lightning/graphql';
 import { loadScript } from 'lightning/platformResourceLoader';
 import { createElement } from 'lwc';
 
@@ -69,6 +70,32 @@ async function mount({ load = Promise.resolve(), sized = true } = {}) {
   }
   await flushPromises();
 }
+
+const contacts = { chartObjectApiName: 'Contact', parentFieldApiName: 'ReportsToId', titleField: 'Title' };
+
+const contact = (Id, parent, Name) => ({ node: { Id, ReportsToId: { value: parent }, Name: { value: Name } } });
+
+// A and C are roots with one child each, E and F form a cycle
+const hierarchy = [
+  ['A', null],
+  ['B', 'A'],
+  ['C', null],
+  ['D', 'C'],
+  ['E', 'F'],
+  ['F', 'E']
+].map(([id, parent]) => contact(id, parent, `Name ${id}`));
+
+const emitContacts = (edges, hasNextPage = false) =>
+  graphql.emit({
+    uiapi: { query: { Contact: { edges, pageInfo: { hasNextPage } } }, objectInfos: [{ labelPlural: 'Contacts' }] }
+  });
+
+// the records the chart got last, as "id<parentId"
+const chartTree = () =>
+  chart.data.mock.calls
+    .at(-1)[0]
+    .map((record) => `${record.id}<${record.parentId ?? ''}`)
+    .join();
 
 async function search(term) {
   const input = query('[data-id="search-input"]');
@@ -235,6 +262,8 @@ describe('c-org-chart-viewer', () => {
     });
     const emptyHtml = renderNode({});
     const maliciousHtml = renderNode({ id: '99', name: '<img src=x onerror=alert(1)>', title: '<b>boss</b>' });
+    const photoHtml = renderNode({ name: 'Ann Lee', imageUrl: '/profilephoto/005/T' });
+    const unsafePhotoHtml = renderNode({ name: 'Ann Lee', imageUrl: 'data:image/svg+xml,<svg/>' });
 
     // then - salesforce-style fields with an active highlight
     expect(sfHtml).toContain('Morgan Lee');
@@ -249,6 +278,10 @@ describe('c-org-chart-viewer', () => {
     expect(maliciousHtml).not.toContain('<img src=x');
     expect(maliciousHtml).not.toContain('<b>boss</b>');
     expect(maliciousHtml).toContain('&lt;img');
+    // then - only a safe image URL replaces the initials
+    expect(photoHtml).toContain('<img src="/profilephoto/005/T" alt=""');
+    expect(unsafePhotoHtml).not.toContain('<img');
+    expect(unsafePhotoHtml).toContain('AL</div>');
   });
 
   it('should configure id resolvers and fixed node sizing on the chart', async () => {
@@ -307,5 +340,140 @@ describe('c-org-chart-viewer', () => {
 
     // then
     expect(nodeCountLabel()).toBe('Showing 7 of 12 nodes');
+  });
+
+  it('should load the configured fields and build no chart while the records are loading', async () => {
+    // given
+    Object.assign(element, { ...contacts, imageField: 'Photo Url' });
+
+    // when - the wire reports neither data nor errors yet
+    await mount();
+    graphql.emit(undefined);
+    await flushPromises();
+
+    // then
+    const builtQuery = gql.mock.results.at(-1).value;
+    expect(builtQuery).toContain('Contact(first: 2000)');
+    expect(builtQuery).toContain('Id ReportsToId { value } Name { value } Title { value }');
+    expect(builtQuery).not.toContain('Photo');
+    expect(builtQuery).toContain('objectInfos(apiNames: ["Contact"])');
+    expect(global.d3.OrgChart).not.toHaveBeenCalled();
+    expect(query('lightning-spinner')).toBeTruthy();
+  });
+
+  it.each([
+    ['all records under a shared root', {}, 'org-chart-root<,A<org-chart-root,C<org-chart-root,B<A,D<C', 'Contacts'],
+    ['the root record id', { rootRecordId: 'C', recordId: 'A' }, 'C<,D<C', 'Name C'],
+    ['the record of the record page', { recordId: 'A' }, 'A<,B<A', 'Name A'],
+    [
+      'a start record that is not loaded',
+      { recordId: 'X' },
+      'org-chart-root<,A<org-chart-root,C<org-chart-root,B<A,D<C',
+      'Contacts'
+    ],
+    ['a start record inside a cycle', { rootRecordId: 'E' }, 'E<,F<E', 'Name E']
+  ])('should show %s as one tree', async (_label, start, expected, rootName) => {
+    // given
+    Object.assign(element, { ...contacts, ...start });
+    await mount();
+
+    // when
+    emitContacts(hierarchy);
+    await flushPromises();
+
+    // then
+    expect(global.d3.OrgChart).toHaveBeenCalledTimes(1);
+    expect(chartTree()).toBe(expected);
+    expect(chart.data.mock.calls.at(-1)[0][0].name).toBe(rootName);
+  });
+
+  it('should update the chart when the records are loaded again', async () => {
+    // given - record pages set objectApiName to the object of the page
+    Object.assign(element, { ...contacts, objectApiName: 'Account' });
+    await mount();
+    emitContacts(hierarchy);
+    await flushPromises();
+
+    // when - without object info this time
+    graphql.emit({ uiapi: { query: { Contact: { edges: [contact('A', null, 'Ann Lee')] } } } });
+    await flushPromises();
+
+    // then
+    expect(global.d3.OrgChart).toHaveBeenCalledTimes(1);
+    expect(chart.data.mock.calls.at(-1)[0]).toEqual([
+      { id: 'A', parentId: null, name: 'Ann Lee', title: null, imageUrl: null }
+    ]);
+  });
+
+  it.each([
+    ['no records', () => emitContacts([]), 'No records found.', undefined],
+    [
+      'an error',
+      () => graphql.emitErrors([{ message: 'No access' }]),
+      undefined,
+      'The records could not be loaded: No access'
+    ]
+  ])('should show %s without a chart', async (_label, emit, emptyText, error) => {
+    // given
+    Object.assign(element, contacts);
+    await mount();
+
+    // when
+    emit();
+    await flushPromises();
+
+    // then
+    expect(query('[data-id="empty-state"]')?.textContent.trim()).toBe(emptyText);
+    expect(query('c-error-alert')?.message).toBe(error);
+    expect(global.d3.OrgChart).not.toHaveBeenCalled();
+    expect(query('lightning-spinner')).toBeNull();
+    await expect(element).toBeAccessible();
+  });
+
+  it('should say when there are more records than were loaded', async () => {
+    // given
+    Object.assign(element, contacts);
+    await mount();
+
+    // when
+    emitContacts([contact('A', null, 'Ann Lee')], true);
+    await flushPromises();
+
+    // then
+    expect(query('[data-id="more-records"]').textContent.trim()).toBe('Only the first 2000 records are shown.');
+  });
+
+  it.each([
+    ['records set from outside', { ...contacts, records: [{ id: 'a', parentId: null, name: 'Custom Root' }] }, 'a<'],
+    ['an invalid object name', { ...contacts, chartObjectApiName: 'Contact { Id }' }, expect.stringContaining('1<,2<1')]
+  ])('should load nothing with %s', async (_label, props, expected) => {
+    // given
+    Object.assign(element, props);
+
+    // when
+    await mount();
+
+    // then
+    expect(gql).not.toHaveBeenCalled();
+    expect(chartTree()).toEqual(expected);
+  });
+
+  it('should export photos as initials and show them again afterwards', async () => {
+    // given
+    await mount();
+    const photoNode = () =>
+      chart.callbacks.nodeContent({ data: { name: 'Ann Lee', imageUrl: '/photo' }, width: 220, height: 80 });
+
+    // when
+    query('[data-id="export-png"]').click();
+    const duringExport = photoNode();
+    const { onLoad } = chart.exportImg.mock.calls[0][0];
+    const result = onLoad('data:image/png;base64,x');
+
+    // then
+    expect(duringExport).not.toContain('<img');
+    expect(photoNode()).toContain('<img src="/photo"');
+    expect(result).toBe('data:image/png;base64,x');
+    expect(chart.render.mock.calls.length).toBeGreaterThanOrEqual(3);
   });
 });

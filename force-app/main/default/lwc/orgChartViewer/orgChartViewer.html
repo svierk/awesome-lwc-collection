@@ -51,6 +51,13 @@
         {nodeCountLabel}
       </p>
     </template>
+    <p
+      lwc:if={hasMoreRecords}
+      data-id="more-records"
+      class="slds-text-body_small slds-text-color_weak slds-var-p-horizontal_medium"
+    >
+      {moreRecordsLabel}
+    </p>
 
     <c-error-alert
       lwc:if={errorMessage}
@@ -61,13 +68,20 @@
     <div class="slds-var-m-top_small">
       <div class="chart-wrapper slds-is-relative slds-scrollable_none">
         <div class="chart-container slds-size_full" data-id="chart-container" lwc:dom="manual"></div>
-        <template lwc:if={isToolbarDisabled}>
+        <template lwc:if={showSpinner}>
           <div
             class="loading-overlay slds-is-absolute slds-grid slds-grid_align-center slds-grid_vertical-align-center"
           >
-            <lightning-spinner alternative-text="Loading chart library..." size="medium"></lightning-spinner>
+            <lightning-spinner alternative-text="Loading the org chart..." size="medium"></lightning-spinner>
           </div>
         </template>
+        <div
+          lwc:if={showEmptyState}
+          data-id="empty-state"
+          class="loading-overlay slds-is-absolute slds-grid slds-grid_align-center slds-grid_vertical-align-center"
+        >
+          <p>No records found.</p>
+        </div>
       </div>
     </div>
   </lightning-card>
