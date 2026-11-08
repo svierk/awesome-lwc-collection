@@ -114,6 +114,14 @@
 }
 
 /**
+ * Beside the sidebar the project name has a narrow column, so it is smaller
+ * there than on the landing page.
+ */
+.VPNavBarTitle.has-sidebar .title {
+  font-size: 13px;
+}
+
+/**
  * Zoomable screenshots (theme/components/ImageZoom.vue): the cursor says they
  * open larger, keyboard focus is visible, and the page behind the overlay
  * stays put.
