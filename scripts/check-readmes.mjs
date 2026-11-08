@@ -9,6 +9,7 @@
  * - the README starts with an H1 title,
  * - the "**Type:**" line follows the rules in component-type.mjs,
  * - the "**Available in:**" line matches the targets in the js-meta.xml,
+ * - the screenshots follow the rules in component-screenshot.mjs,
  * - a "## Usage" section exists and embeds the component's kebab-case tag,
  * - the "## Attributes" table covers exactly the @api properties of the JS,
  * - every dispatched CustomEvent is documented in an "## Events" table,
@@ -28,6 +29,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { checkScreenshots } from './component-screenshot.mjs';
 import { checkExceptions, checkType } from './component-type.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -130,6 +132,9 @@ function checkComponent(component, errors) {
   } else if (availabilityLine.trim() !== expectedLine) {
     fail(`Availability line does not match the js-meta.xml targets. Expected: "${expectedLine}"`);
   }
+
+  const exists = (src) => existsSync(resolve(lwcDir, component, src));
+  for (const message of checkScreenshots({ readme, meta, exists })) fail(message);
 
   const usage = getSection(readme, 'Usage');
   const tag = `c-${toKebabCase(component)}`;
