@@ -6,7 +6,7 @@ An interactive organization chart with search, expand/collapse and PNG export, p
 
 **Available in:** App Page · Home Page · Record Page
 
-<img src="../../../../../images/orgChartViewer/screenshot.png" alt="Org Chart Viewer" width="800"/>
+<img src="../../../../../images/orgChartViewer/teaser.webp" alt="Org Chart Viewer" width="800"/>
 
 ## Attributes
 

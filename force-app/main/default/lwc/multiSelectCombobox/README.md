@@ -6,7 +6,7 @@ Combobox with different configuration options that also supports multi select.
 
 **Available in:** App Page · Home Page · Record Page · Flow Screen
 
-<img src="../../../../../images/multiSelectCombobox/screenshot.png" alt="Multi Select Combobox" width="400"/>
+<img src="../../../../../images/multiSelectCombobox/teaser.webp" alt="Multi Select Combobox" width="400"/>
 
 ## Read on Medium
 
