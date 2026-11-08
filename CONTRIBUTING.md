@@ -43,7 +43,7 @@ New components are welcome when they cover a distinct, reusable need. A componen
     - `Building Block`: embedded in your own components and controlled through `@api` and events,
     - `Utility`: a small helper with exactly one purpose,
   - an `**Available in:**` line matching the targets in the `.js-meta.xml`,
-  - a screenshot (add the image to `images/` and reference it),
+  - a screenshot (add it as `images/<component>/screenshot.png` and reference it),
   - a `## Usage` section with an ` ```html ` snippet embedding the component tag,
   - a `## Attributes` table covering all `@api` properties (if the component has any),
   - a `## Events` table covering all dispatched custom events (if the component fires any),

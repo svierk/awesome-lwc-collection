@@ -6,7 +6,7 @@ Imports CSV files into Salesforce in steps: the file is read and previewed, its 
 
 **Available in:** App Page · Home Page · Record Page · Flow Screen
 
-<img src="../../../../../images/csv-importer.png" alt="csv-importer" width="500"/>
+<img src="../../../../../images/csvImporter/screenshot.png" alt="CSV Importer" width="800"/>
 
 ## Read on Medium
 

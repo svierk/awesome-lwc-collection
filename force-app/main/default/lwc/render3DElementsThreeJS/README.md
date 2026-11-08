@@ -6,7 +6,7 @@ A 3D viewer for glTF and GLB models using Three.js. Without a model, it shows a 
 
 **Available in:** App Page · Home Page · Record Page · Flow Screen
 
-<img src="../../../../../images/render-3d-elements.png" alt="render-3d-elements" width="500"/>
+<img src="../../../../../images/render3DElementsThreeJS/screenshot.png" alt="Render 3D Elements" width="720"/>
 
 ## Read on Medium
 

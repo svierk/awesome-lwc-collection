@@ -6,7 +6,7 @@ Configurable map component for displaying locations via Google Maps API.
 
 **Available in:** Record Page
 
-<img src="../../../../../images/custom-map-view.png" alt="custom-map-view" width="800"/>
+<img src="../../../../../images/customMapView/screenshot.png" alt="Custom Map View" width="800"/>
 
 ## Read on Medium
 

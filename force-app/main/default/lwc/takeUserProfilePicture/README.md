@@ -6,9 +6,7 @@ A simple component that makes use of the Media Capture and Streams API to allow 
 
 **Available in:** App Page · Home Page · Record Page · Flow Screen
 
-<img src="../../../../../images/take-user-profile-picture.png" alt="take-user-profile-picture" width="800"/>
-
-<img src="../../../../../images/take-user-profile-picture2.png" alt="take-user-profile-picture" width="800"/>
+<img src="../../../../../images/takeUserProfilePicture/screenshot.png" alt="Take User Profile Picture" width="800"/>
 
 ## Read on Medium
 

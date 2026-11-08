@@ -6,7 +6,7 @@ A simple utility for displaying Visualforce based PDF documents.
 
 **Available in:** App Page · Home Page · Record Page · Flow Screen
 
-<img src="../../../../../images/visualforce-to-pdf.png" alt="iframe" width="500"/>
+<img src="../../../../../images/visualforceToPdf/screenshot.png" alt="Visualforce To PDF" width="800"/>
 
 ## Attributes
 

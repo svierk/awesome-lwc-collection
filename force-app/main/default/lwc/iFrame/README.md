@@ -6,7 +6,7 @@ A custom iFrame component with different configuration options.
 
 **Available in:** App Page · Home Page · Record Page · Flow Screen
 
-<img src="../../../../../images/iframe.png" alt="iframe" width="500"/>
+<img src="../../../../../images/iFrame/screenshot.png" alt="iFrame" width="800"/>
 
 ## Read on Medium
 

@@ -6,7 +6,7 @@ Configurable map component for displaying locations via Google Maps API using LW
 
 **Available in:** Record Page
 
-<img src="../../../../../images/graphql-map-view.png" alt="graphql-map-view" width="800"/>
+<img src="../../../../../images/graphqlMapView/screenshot.png" alt="GraphQL Map View" width="800"/>
 
 ## Read on Medium
 
