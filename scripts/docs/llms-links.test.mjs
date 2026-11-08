@@ -54,6 +54,15 @@ test('absolutizeLinks drops the display width of an image', () => {
   );
 });
 
+test('absolutizeLinks replaces a teaser with its poster image', () => {
+  const markdown =
+    '<ComponentTeaser name="customCarousel" alt="Custom Carousel" width="590"/>\n\n```md\n<ComponentTeaser name="x" alt="y"/>\n```\n';
+  assert.equal(
+    absolutizeLinks(markdown, 'components/customCarousel.md', urls),
+    `![Custom Carousel](${site('images/customCarousel/poster.png')})\n\n\`\`\`md\n<ComponentTeaser name="x" alt="y"/>\n\`\`\`\n`
+  );
+});
+
 test('sourcePathFor finds index pages', () => {
   const isFile = (path) => path === 'components/index.md';
   assert.equal(sourcePathFor(`${base}components.md`, base, isFile), 'components/index.md');

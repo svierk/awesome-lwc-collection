@@ -6,7 +6,7 @@ A simple custom carousel with different configuration options.
 
 **Available in:** App Page · Home Page · Record Page · Flow Screen
 
-<img src="../../../../../images/customCarousel/screenshot.png" alt="Custom Carousel" width="590"/>
+<img src="../../../../../images/customCarousel/teaser.webp" alt="Custom Carousel" width="590"/>
 
 ## Attributes
 
