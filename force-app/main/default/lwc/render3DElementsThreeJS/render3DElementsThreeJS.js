@@ -134,6 +134,7 @@ export default class Render3DElementsThreeJS extends LightningElement {
     const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
     camera.position.z = 3;
     const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
     container.replaceChildren(renderer.domElement);
     Object.assign(this, { scene, camera, renderer, container });
 

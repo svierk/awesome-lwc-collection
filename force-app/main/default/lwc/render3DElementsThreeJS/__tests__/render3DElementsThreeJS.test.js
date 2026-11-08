@@ -40,6 +40,7 @@ describe('c-render3-d-elements-three-j-s', () => {
       camera: { position: { set: jest.fn() }, updateProjectionMatrix: jest.fn() },
       renderer: {
         setSize: jest.fn(),
+        setPixelRatio: jest.fn(),
         domElement: document.createElement('canvas'),
         render: jest.fn(),
         dispose: jest.fn()
@@ -149,6 +150,19 @@ describe('c-render3-d-elements-three-j-s', () => {
     expect(container().getAttribute('style')).toBe('height: 250px');
     expect(mocks.renderer.setSize.mock.calls).toEqual([[800, 250]]);
     expect(mocks.camera.aspect).toBeCloseTo(800 / 250);
+  });
+
+  it('should render in the resolution of the display', async () => {
+    // given
+    const original = window.devicePixelRatio;
+    Object.defineProperty(window, 'devicePixelRatio', { value: 2, configurable: true });
+
+    // when
+    await mount();
+
+    // then
+    expect(mocks.renderer.setPixelRatio).toHaveBeenCalledWith(2);
+    Object.defineProperty(window, 'devicePixelRatio', { value: original, configurable: true });
   });
 
   it('should apply the background color, the mouse controls and no rotation', async () => {
