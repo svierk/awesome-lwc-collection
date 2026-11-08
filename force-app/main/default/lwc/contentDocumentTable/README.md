@@ -6,7 +6,7 @@ A generic table to show shared documents from a Salesforce Files library.
 
 **Available in:** App Page · Home Page · Record Page · Flow Screen
 
-<img src="../../../../../images/content-document-table.png" alt="custom-datatable" width="400"/>
+<img src="../../../../../images/contentDocumentTable/screenshot.png" alt="Content Document Table" width="800"/>
 
 ## Read on Medium
 

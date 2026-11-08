@@ -6,7 +6,7 @@ Component to forward to a record page from flow.
 
 **Available in:** Flow Screen
 
-<img src="../../../../../images/open-record-page-flow-action.png" alt="open-record-page-flow-action" width="500"/>
+<img src="../../../../../images/openRecordPageFlowAction/screenshot.png" alt="Open Record Page Flow Action" width="800"/>
 
 ## Read on Medium
 

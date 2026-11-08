@@ -6,7 +6,7 @@ A drag and drop building block based on the HTML Drag and Drop API.
 
 **Available in:** App Page · Home Page · Record Page
 
-<img src="../../../../../images/drag-and-drop.png" alt="drag-and-drop" width="800"/>
+<img src="../../../../../images/dragAndDrop/screenshot.png" alt="Drag &amp; Drop" width="800"/>
 
 ## Read on Medium
 

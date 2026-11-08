@@ -6,7 +6,7 @@ A canvas-based signature capture component with mouse and touch support. Works o
 
 **Available in:** App Page · Home Page · Record Page · Flow Screen
 
-<img src="../../../../../images/signature-pad.png" alt="signature-pad" width="400"/>
+<img src="../../../../../images/signaturePad/screenshot.png" alt="Signature Pad" width="800"/>
 
 ## Attributes
 

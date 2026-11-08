@@ -6,7 +6,7 @@ A basic QR Code Generator with optional logo overlay using the external QRCode.j
 
 **Available in:** App Page · Home Page · Record Page · Flow Screen
 
-<img src="../../../../../images/qr-code-generator.png" alt="qr-code-generator" width="400"/>
+<img src="../../../../../images/qrCodeGenerator/screenshot.png" alt="QR Code Generator" width="800"/>
 
 ## Read on Medium
 
