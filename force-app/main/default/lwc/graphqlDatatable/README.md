@@ -6,7 +6,7 @@ A custom datatable powered by the GraphQL wire adapter (`lightning/graphql`) ins
 
 **Available in:** App Page · Home Page · Record Page · Flow Screen
 
-<img src="../../../../../images/graphqlDatatable/screenshot.png" alt="GraphQL Datatable" width="800"/>
+<img src="../../../../../images/graphqlDatatable/teaser.webp" alt="GraphQL Datatable" width="800"/>
 
 ## Read on Medium
 
