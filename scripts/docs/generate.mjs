@@ -11,6 +11,7 @@ import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, write
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { toTypeBadge } from '../component-type.mjs';
+import { rewriteImages } from './readme-images.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const lwcDir = join(root, 'force-app', 'main', 'default', 'lwc');
@@ -67,22 +68,6 @@ function parseReadme(markdown) {
   return { title, description };
 }
 
-/**
- * Rewrite the local screenshot `<img>` tags to Markdown images with an absolute
- * public path so VitePress applies the site `base` correctly on GitHub Pages.
- * The width stays as an attribute, so tall screenshots don't fill the column.
- * External images (e.g. medium.com) are absolute URLs and are left untouched.
- */
-function rewriteImages(markdown) {
-  return markdown.replace(/<img[^>]*\bsrc="(?:\.\.\/)+images\/([^"]+)"[^>]*>/g, (tag, file) => {
-    const altMatch = tag.match(/\balt="([^"]*)"/);
-    const alt = altMatch ? altMatch[1] : file;
-    const widthMatch = tag.match(/\bwidth="(\d+)"/);
-    const attributes = widthMatch ? `{width=${widthMatch[1]}}` : '';
-    return `![${alt}](/images/${file})${attributes}`;
-  });
-}
-
 function clean() {
   rmSync(componentsOutDir, { recursive: true, force: true });
   rmSync(publicDir, { recursive: true, force: true });
@@ -101,6 +86,7 @@ function copyAssets(components) {
 }
 
 function writeComponentPages(components) {
+  const hasTeaser = (name) => existsSync(join(imagesDir, name, 'teaser.mp4'));
   const meta = {};
   for (const name of components) {
     const source = readFileSync(join(lwcDir, name, 'README.md'), 'utf-8');
@@ -108,7 +94,7 @@ function writeComponentPages(components) {
     meta[name] = { title, description, hasIcon: existsSync(join(lwcDir, name, `${name}.svg`)) };
     writeFileSync(
       join(componentsOutDir, `${name}.md`),
-      `${frontmatter(description)}${toTypeBadge(rewriteImages(source))}`
+      `${frontmatter(description)}${toTypeBadge(rewriteImages(source, hasTeaser))}`
     );
   }
   return meta;

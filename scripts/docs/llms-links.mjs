@@ -41,8 +41,9 @@ export function resolveLink(target, pagePath, { siteUrl, repoBlob }) {
 }
 
 /**
- * Rewrite every Markdown link of one page, outside fenced code blocks, and drop
- * the display width of screenshots, which only the HTML page can use.
+ * Rewrite every Markdown link of one page, outside fenced code blocks. What only
+ * the HTML page can use goes: a teaser becomes its poster image, and screenshots
+ * lose their display width.
  */
 export function absolutizeLinks(markdown, pagePath, urls) {
   return markdown
@@ -51,6 +52,7 @@ export function absolutizeLinks(markdown, pagePath, urls) {
       i % 2
         ? part
         : part
+            .replace(/<ComponentTeaser name="([^"]+)" alt="([^"]*)"[^>]*\/>/g, '![$2](/images/$1/poster.png)')
             .replace(/\]\(([^)\s]+)/g, (m, target) => `](${resolveLink(target, pagePath, urls)}`)
             .replace(/(!\[[^\]]*\]\([^)\s]+\))\{width=\d+\}/g, '$1')
     )
