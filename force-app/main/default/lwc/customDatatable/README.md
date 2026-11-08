@@ -6,7 +6,7 @@ A basic custom datatable with different configuration options.
 
 **Available in:** App Page · Home Page · Record Page · Flow Screen
 
-<img src="../../../../../images/customDatatable/screenshot.png" alt="Custom Datatable" width="800"/>
+<img src="../../../../../images/customDatatable/teaser.webp" alt="Custom Datatable" width="800"/>
 
 ## Attributes
 
