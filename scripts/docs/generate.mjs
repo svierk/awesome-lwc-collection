@@ -70,13 +70,16 @@ function parseReadme(markdown) {
 /**
  * Rewrite the local screenshot `<img>` tags to Markdown images with an absolute
  * public path so VitePress applies the site `base` correctly on GitHub Pages.
+ * The width stays as an attribute, so tall screenshots don't fill the column.
  * External images (e.g. medium.com) are absolute URLs and are left untouched.
  */
 function rewriteImages(markdown) {
   return markdown.replace(/<img[^>]*\bsrc="(?:\.\.\/)+images\/([^"]+)"[^>]*>/g, (tag, file) => {
     const altMatch = tag.match(/\balt="([^"]*)"/);
     const alt = altMatch ? altMatch[1] : file;
-    return `![${alt}](/images/${file})`;
+    const widthMatch = tag.match(/\bwidth="(\d+)"/);
+    const attributes = widthMatch ? `{width=${widthMatch[1]}}` : '';
+    return `![${alt}](/images/${file})${attributes}`;
   });
 }
 

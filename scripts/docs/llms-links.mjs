@@ -40,12 +40,19 @@ export function resolveLink(target, pagePath, { siteUrl, repoBlob }) {
   return `${siteUrl}${page}${hash}`;
 }
 
-/** Rewrite every Markdown link of one page, outside fenced code blocks. */
+/**
+ * Rewrite every Markdown link of one page, outside fenced code blocks, and drop
+ * the display width of screenshots, which only the HTML page can use.
+ */
 export function absolutizeLinks(markdown, pagePath, urls) {
   return markdown
     .split(/(^```[\s\S]*?^```)/m)
     .map((part, i) =>
-      i % 2 ? part : part.replace(/\]\(([^)\s]+)/g, (m, target) => `](${resolveLink(target, pagePath, urls)}`)
+      i % 2
+        ? part
+        : part
+            .replace(/\]\(([^)\s]+)/g, (m, target) => `](${resolveLink(target, pagePath, urls)}`)
+            .replace(/(!\[[^\]]*\]\([^)\s]+\))\{width=\d+\}/g, '$1')
     )
     .join('');
 }

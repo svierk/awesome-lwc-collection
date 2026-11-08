@@ -46,6 +46,14 @@ test('absolutizeLinks leaves fenced code alone', () => {
   );
 });
 
+test('absolutizeLinks drops the display width of an image', () => {
+  const markdown = '![QR](/images/qr.png){width=270}\n\n```md\n![QR](/images/qr.png){width=270}\n```\n';
+  assert.equal(
+    absolutizeLinks(markdown, 'components/qrCodeGenerator.md', urls),
+    `![QR](${site('images/qr.png')})\n\n\`\`\`md\n![QR](/images/qr.png){width=270}\n\`\`\`\n`
+  );
+});
+
 test('sourcePathFor finds index pages', () => {
   const isFile = (path) => path === 'components/index.md';
   assert.equal(sourcePathFor(`${base}components.md`, base, isFile), 'components/index.md');
