@@ -57,7 +57,7 @@ jobs:
           eslint-command: npm run lint:sonar # writes the report the job summary reads the error/warning counts from
 
       - name: Run Tests
-        uses: svierk/sfdx-run-tests@v1.3.0
+        uses: svierk/sfdx-run-tests@v1.4.0
         with:
           apex: false
           lwc: true
@@ -124,7 +124,7 @@ jobs:
       # Code Analyzer wrote its report.
       - name: Upload SARIF
         if: ${{ !cancelled() && hashFiles('results.sarif') != '' }}
-        uses: github/codeql-action/upload-sarif@v4.39.1
+        uses: github/codeql-action/upload-sarif@v4.39.3
         with:
           sarif_file: results.sarif
 
@@ -139,20 +139,20 @@ jobs:
       # run against the code of the pull request. The Run Tests step below only
       # sees what's in the org, which on a pull request is the state of main.
       - name: Deploy Metadata
-        uses: svierk/sfdx-deploy@v1.4.1
+        uses: svierk/sfdx-deploy@v1.4.2
         with:
           dry-run: ${{ github.event_name == 'pull_request' }}
           test-level: ${{ github.event_name == 'pull_request' && 'RunLocalTests' || '' }}
 
       - name: Run Tests
-        uses: svierk/sfdx-run-tests@v1.3.0
+        uses: svierk/sfdx-run-tests@v1.4.0
         with:
           apex: true
           lwc: true
           flow: false # enable once Flow tests exist in the project
 
       - name: SonarCloud Scan
-        uses: SonarSource/sonarqube-scan-action@v8.4.0
+        uses: SonarSource/sonarqube-scan-action@v8.4.1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
