@@ -21,14 +21,17 @@ describe('c-content-document-preview', () => {
 
     // when
     document.body.appendChild(element);
-    const link = element.shadowRoot.querySelector('a');
-    link.click();
+    const button = element.shadowRoot.querySelector('lightning-button');
+    button.click();
     const { pageReference } = getNavigateCalledWith();
 
     // then
+    expect(button.label).toBe('File');
+    expect(button.variant).toBe('base');
     expect(pageReference).not.toBeNull();
     expect(pageReference.type).toBe('standard__namedPage');
     expect(pageReference.attributes.pageName).toBe('filePreview');
+    expect(pageReference.state.selectedRecordId).toBe('123');
     await expect(element).toBeAccessible();
   });
 });
