@@ -139,7 +139,7 @@ jobs:
       # run against the code of the pull request. The Run Tests step below only
       # sees what's in the org, which on a pull request is the state of main.
       - name: Deploy Metadata
-        uses: svierk/sfdx-deploy@v1.5.0
+        uses: svierk/sfdx-deploy@v1.6.0
         with:
           dry-run: ${{ github.event_name == 'pull_request' }}
           test-level: ${{ github.event_name == 'pull_request' && 'RunLocalTests' || '' }}
